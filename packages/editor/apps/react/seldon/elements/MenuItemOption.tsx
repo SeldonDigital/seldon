@@ -17,7 +17,7 @@ import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
 export interface MenuItemOptionProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
@@ -37,8 +37,7 @@ const sdn: MenuItemOptionProps = {
   role: "option",
   "aria-hidden": "false",
   icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
+    icon: "material-check",
     className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "optionIcon",
   },
@@ -90,7 +89,7 @@ export function MenuItemOption({
 }: MenuItemOptionProps) {
   const menuItemOptionClassName = combineClassNames("sdn-menu-item", className)
 
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
 
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 

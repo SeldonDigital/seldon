@@ -40,12 +40,12 @@ const sdn: MessageToolsUsedProps = {
   },
   icon: {
     icon: "material-build",
-    className: "sdn-icon sdn-icon--gl7b",
+    className: "sdn-icon sdn-icon--rdh1",
     "data-seldon-ref": "hariToolIcon",
   },
   textDescription: {
     children: "Tool",
-    className: "sdn-text-description sdn-text-description--20e0",
+    className: "sdn-text-description sdn-text-label--y8ur",
     "data-seldon-ref": "hariToolText",
   },
 }

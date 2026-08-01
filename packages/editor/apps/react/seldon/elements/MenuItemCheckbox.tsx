@@ -17,7 +17,7 @@ import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
 export interface MenuItemCheckboxProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
@@ -36,12 +36,11 @@ const sdn: MenuItemCheckboxProps = {
   "aria-hidden": "false",
   icon: {
     icon: "material-check",
-    "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
   },
 
   textLabel: {
-    children: "Checkbox",
+    children: "Checkbox Item",
     className: "sdn-text-label sdn-text-label--xohb",
   },
 }
@@ -77,7 +76,7 @@ export function MenuItemCheckbox({
 }: MenuItemCheckboxProps) {
   const menuItemCheckboxClassName = combineClassNames("sdn-menu-item", className)
 
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
 
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 

@@ -13,9 +13,12 @@
 
 import { HTMLAttributes } from "react"
 
-import { MenuItemRadio, MenuItemRadioProps } from "../elements/MenuItemRadio"
+import {
+  FormControlRadioButtonControl,
+  FormControlRadioButtonControlProps,
+} from "../elements/FormControlRadioButtonControl"
 import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
+import { InputRadioButton, InputRadioButtonProps } from "../primitives/InputRadioButton"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
@@ -27,11 +30,11 @@ export interface FormControlRadioProps extends HTMLAttributes<HTMLElement> {
   textLabel?: TextLabelProps | null
 
   frame?: FrameProps | null
-  menuItemRadio?: MenuItemRadioProps | null
-  icon?: IconProps | null
+  formControlRadioButtonControl?: FormControlRadioButtonControlProps | null
+  inputRadioButton?: InputRadioButtonProps | null
   textLabel2?: TextLabelProps | null
-  menuItemRadio2?: MenuItemRadioProps | null
-  icon2?: IconProps | null
+  formControlRadioButtonControl2?: FormControlRadioButtonControlProps | null
+  inputRadioButton2?: InputRadioButtonProps | null
   textLabel3?: TextLabelProps | null
 }
 
@@ -48,31 +51,29 @@ const sdn: FormControlRadioProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--pgac",
+    className: "sdn-frame sdn-frame--33uo",
   },
-  menuItemRadio: {
-    className: "sdn-menu-item sdn-menu-item-radio--mezf",
+  formControlRadioButtonControl: {
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
   },
-  icon: {
-    icon: "material-radioButtonChecked",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+  inputRadioButton: {
+    placeholder: "Placeholder text",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel2: {
     children: "Yes",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--uqg6",
   },
-  menuItemRadio2: {
-    className: "sdn-menu-item sdn-menu-item-radio--mezf",
+  formControlRadioButtonControl2: {
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
   },
-  icon2: {
-    icon: "material-radioButtonChecked",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+  inputRadioButton2: {
+    placeholder: "Placeholder text",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel3: {
     children: "No",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--uqg6",
   },
 }
 
@@ -84,14 +85,14 @@ const sdn: FormControlRadioProps = {
  * Type: Inline
  *
  * Structure:
- *   TextLabel        textLabel
- *   Frame            frame
- *     MenuItemRadio  menuItemRadio
- *       Icon         icon
- *       TextLabel    textLabel2
- *     MenuItemRadio  menuItemRadio2
- *       Icon         icon2
- *       TextLabel    textLabel3
+ *   TextLabel                        textLabel
+ *   Frame                            frame
+ *     FormControlRadioButtonControl  formControlRadioButtonControl
+ *       InputRadioButton             inputRadioButton
+ *       TextLabel                    textLabel2
+ *     FormControlRadioButtonControl  formControlRadioButtonControl2
+ *       InputRadioButton             inputRadioButton2
+ *       TextLabel                    textLabel3
  *
  * @example
  * ```tsx
@@ -99,9 +100,9 @@ const sdn: FormControlRadioProps = {
  *   aria-hidden="false"
  *   textLabel="{}"
  *   frame="{}"
- *   menuItemRadio="{}"
- *   icon="material-star"
- *   menuItemRadio2="{}"
+ *   formControlRadioButtonControl="{}"
+ *   inputRadioButton="{}"
+ *   formControlRadioButtonControl2="{}"
  * />
  * ```
  */
@@ -110,11 +111,11 @@ export function FormControlRadio({
   textLabel,
 
   frame,
-  menuItemRadio,
-  icon,
+  formControlRadioButtonControl,
+  inputRadioButton,
   textLabel2,
-  menuItemRadio2,
-  icon2,
+  formControlRadioButtonControl2,
+  inputRadioButton2,
   textLabel3,
 
   children,
@@ -126,11 +127,27 @@ export function FormControlRadio({
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
-  const menuItemRadioProps = mergeOptionalSlot(sdn.menuItemRadio, menuItemRadio, seldonRefs)
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const formControlRadioButtonControlProps = mergeOptionalSlot(
+    sdn.formControlRadioButtonControl,
+    formControlRadioButtonControl,
+    seldonRefs,
+  )
+  const inputRadioButtonProps = mergeOptionalSlot(
+    sdn.inputRadioButton,
+    inputRadioButton,
+    seldonRefs,
+  )
   const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
-  const menuItemRadio2Props = mergeOptionalSlot(sdn.menuItemRadio2, menuItemRadio2, seldonRefs)
-  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+  const formControlRadioButtonControl2Props = mergeOptionalSlot(
+    sdn.formControlRadioButtonControl2,
+    formControlRadioButtonControl2,
+    seldonRefs,
+  )
+  const inputRadioButton2Props = mergeOptionalSlot(
+    sdn.inputRadioButton2,
+    inputRadioButton2,
+    seldonRefs,
+  )
   const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
 
   return (
@@ -141,17 +158,19 @@ export function FormControlRadio({
         <>
           {textLabelProps !== null && <TextLabel {...textLabelProps} />}
           <Frame {...frameProps}>
-            {menuItemRadioProps !== null && (
-              <MenuItemRadio {...menuItemRadioProps}>
-                {iconProps !== null && <Icon {...iconProps} />}
+            {formControlRadioButtonControlProps !== null && (
+              <FormControlRadioButtonControl {...formControlRadioButtonControlProps}>
+                {inputRadioButtonProps !== null && <InputRadioButton {...inputRadioButtonProps} />}
                 {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-              </MenuItemRadio>
+              </FormControlRadioButtonControl>
             )}
-            {menuItemRadio2Props !== null && (
-              <MenuItemRadio {...menuItemRadio2Props}>
-                {icon2Props !== null && <Icon {...icon2Props} />}
+            {formControlRadioButtonControl2Props !== null && (
+              <FormControlRadioButtonControl {...formControlRadioButtonControl2Props}>
+                {inputRadioButton2Props !== null && (
+                  <InputRadioButton {...inputRadioButton2Props} />
+                )}
                 {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-              </MenuItemRadio>
+              </FormControlRadioButtonControl>
             )}
           </Frame>
         </>

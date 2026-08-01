@@ -18,7 +18,7 @@ import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
 export interface MenuOptionsProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
@@ -28,16 +28,6 @@ export interface MenuOptionsProps extends HTMLAttributes<HTMLElement> {
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
   textLabel2?: TextLabelProps | null
-
-  menuItemOption2?: MenuItemOptionProps | null
-  icon2?: IconProps | null
-  textLabel3?: TextLabelProps | null
-  textLabel4?: TextLabelProps | null
-
-  menuItemOption3?: MenuItemOptionProps | null
-  icon3?: IconProps | null
-  textLabel5?: TextLabelProps | null
-  textLabel6?: TextLabelProps | null
 }
 
 //
@@ -47,60 +37,19 @@ const sdn: MenuOptionsProps = {
   role: "listbox",
   "aria-hidden": "false",
   menuItemOption: {
-    role: "option",
-    "aria-hidden": "false",
     className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    icon: "material-check",
+    className: "sdn-icon sdn-icon--rdh1",
   },
   textLabel: {
     children: "Option",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
   textLabel2: {
     children: "Annotation",
-    className: "sdn-text-label sdn-text-label--lqmh",
-  },
-
-  menuItemOption2: {
-    role: "option",
-    "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item-option--6dxl",
-  },
-  icon2: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
-  },
-  textLabel3: {
-    children: "Option",
-    className: "sdn-text-label sdn-text-label--xohb",
-  },
-  textLabel4: {
-    children: "Annotation",
-    className: "sdn-text-label sdn-text-label--lqmh",
-  },
-
-  menuItemOption3: {
-    role: "option",
-    "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item-option--6dxl",
-  },
-  icon3: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
-  },
-  textLabel5: {
-    children: "Option",
-    className: "sdn-text-label sdn-text-label--xohb",
-  },
-  textLabel6: {
-    children: "Annotation",
-    className: "sdn-text-label sdn-text-label--lqmh",
+    className: "sdn-text-label sdn-text-label--ni4j",
   },
 }
 
@@ -116,14 +65,6 @@ const sdn: MenuOptionsProps = {
  *     Icon          icon
  *     TextLabel     textLabel
  *     TextLabel     textLabel2
- *   MenuItemOption  menuItemOption2
- *     Icon          icon2
- *     TextLabel     textLabel3
- *     TextLabel     textLabel4
- *   MenuItemOption  menuItemOption3
- *     Icon          icon3
- *     TextLabel     textLabel5
- *     TextLabel     textLabel6
  *
  * @example
  * ```tsx
@@ -140,36 +81,16 @@ export function MenuOptions({
   textLabel,
   textLabel2,
 
-  menuItemOption2,
-  icon2,
-  textLabel3,
-  textLabel4,
-
-  menuItemOption3,
-  icon3,
-  textLabel5,
-  textLabel6,
-
   children,
   seldonRefs,
   ...props
 }: MenuOptionsProps) {
   const menuOptionsClassName = combineClassNames("sdn-menu-options", className)
 
-  const menuItemOptionProps = mergeSlot(sdn.menuItemOption, menuItemOption, seldonRefs)
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const menuItemOptionProps = mergeOptionalSlot(sdn.menuItemOption, menuItemOption, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
   const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
-
-  const menuItemOption2Props = mergeSlot(sdn.menuItemOption2, menuItemOption2, seldonRefs)
-  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
-  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
-  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
-
-  const menuItemOption3Props = mergeSlot(sdn.menuItemOption3, menuItemOption3, seldonRefs)
-  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
-  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
-  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
 
   return (
     <Frame
@@ -187,20 +108,6 @@ export function MenuOptions({
               {iconProps !== null && <Icon {...iconProps} />}
               {textLabelProps !== null && <TextLabel {...textLabelProps} />}
               {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-            </MenuItemOption>
-          )}
-          {menuItemOption2Props !== null && (
-            <MenuItemOption {...menuItemOption2Props}>
-              {icon2Props !== null && <Icon {...icon2Props} />}
-              {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-              {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
-            </MenuItemOption>
-          )}
-          {menuItemOption3Props !== null && (
-            <MenuItemOption {...menuItemOption3Props}>
-              {icon3Props !== null && <Icon {...icon3Props} />}
-              {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
-              {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
             </MenuItemOption>
           )}
         </>

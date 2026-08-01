@@ -178,7 +178,7 @@ export const schema = {
   variants: [
     {
       id: "option",
-      label: "Option Menu Item",
+      label: "Option",
       intent: "Menu row that represents a selectable option.",
       overrides: {
         role: {
@@ -237,7 +237,7 @@ export const schema = {
     },
     {
       id: "checkbox",
-      label: "Checkbox Menu Item",
+      label: "Checkbox",
       intent: "Menu row that toggles a checked state.",
       overrides: {
         role: {
@@ -279,7 +279,7 @@ export const schema = {
     },
     {
       id: "radio",
-      label: "Radio Menu Item",
+      label: "Radio",
       intent: "Menu row that selects one option within a group.",
       overrides: {
         role: {

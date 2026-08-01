@@ -182,7 +182,7 @@ const sdn: Record<string, any> = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--gl7b",
+    className: "sdn-icon sdn-icon--rdh1",
   },
   input: {
     placeholder: "Placeholder text",

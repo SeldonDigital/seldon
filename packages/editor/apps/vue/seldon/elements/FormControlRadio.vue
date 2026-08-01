@@ -27,14 +27,14 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Type: Inline
  *
  * Structure:
- *   TextLabel        textLabel
- *   Frame            frame
- *     MenuItemRadio  menuItemRadio
- *       Icon         icon
- *       TextLabel    textLabel2
- *     MenuItemRadio  menuItemRadio2
- *       Icon         icon2
- *       TextLabel    textLabel3
+ *   TextLabel                        textLabel
+ *   Frame                            frame
+ *     FormControlRadioButtonControl  formControlRadioButtonControl
+ *       InputRadioButton             inputRadioButton
+ *       TextLabel                    textLabel2
+ *     FormControlRadioButtonControl  formControlRadioButtonControl2
+ *       InputRadioButton             inputRadioButton2
+ *       TextLabel                    textLabel3
  *
  * @example
  * ```vue
@@ -42,9 +42,9 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *   aria-hidden="false"
  *   textLabel="{}"
  *   frame="{}"
- *   menuItemRadio="{}"
- *   icon="material-star"
- *   menuItemRadio2="{}"
+ *   formControlRadioButtonControl="{}"
+ *   inputRadioButton="{}"
+ *   formControlRadioButtonControl2="{}"
  * />
  * ```
  */
@@ -54,9 +54,9 @@ export default {}
 <script setup lang="ts">
 import { computed } from "vue"
 
-import MenuItemRadio from "../elements/MenuItemRadio.vue"
+import FormControlRadioButtonControl from "../elements/FormControlRadioButtonControl.vue"
 import Frame from "../frames/Frame.vue"
-import Icon from "../primitives/Icon.vue"
+import InputRadioButton from "../primitives/InputRadioButton.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
@@ -64,11 +64,11 @@ const props = defineProps<{
   className?: string
   textLabel?: Record<string, unknown> | null
   frame?: Record<string, unknown> | null
-  menuItemRadio?: Record<string, unknown> | null
-  icon?: Record<string, unknown> | null
+  formControlRadioButtonControl?: Record<string, unknown> | null
+  inputRadioButton?: Record<string, unknown> | null
   textLabel2?: Record<string, unknown> | null
-  menuItemRadio2?: Record<string, unknown> | null
-  icon2?: Record<string, unknown> | null
+  formControlRadioButtonControl2?: Record<string, unknown> | null
+  inputRadioButton2?: Record<string, unknown> | null
   textLabel3?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
@@ -85,31 +85,29 @@ const sdn: Record<string, any> = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--pgac",
+    className: "sdn-frame sdn-frame--33uo",
   },
-  menuItemRadio: {
-    className: "sdn-menu-item sdn-menu-item-radio--mezf",
+  formControlRadioButtonControl: {
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
   },
-  icon: {
-    icon: "material-radioButtonChecked",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+  inputRadioButton: {
+    placeholder: "Placeholder text",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel2: {
     children: "Yes",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--uqg6",
   },
-  menuItemRadio2: {
-    className: "sdn-menu-item sdn-menu-item-radio--mezf",
+  formControlRadioButtonControl2: {
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
   },
-  icon2: {
-    icon: "material-radioButtonChecked",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+  inputRadioButton2: {
+    placeholder: "Placeholder text",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel3: {
     children: "No",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--uqg6",
   },
 }
 
@@ -119,17 +117,29 @@ const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
 )
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
-const menuItemRadioProps = computed(() =>
-  mergeOptionalSlot(sdn.menuItemRadio, props.menuItemRadio, props.seldonRefs),
+const formControlRadioButtonControlProps = computed(() =>
+  mergeOptionalSlot(
+    sdn.formControlRadioButtonControl,
+    props.formControlRadioButtonControl,
+    props.seldonRefs,
+  ),
 )
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputRadioButtonProps = computed(() =>
+  mergeOptionalSlot(sdn.inputRadioButton, props.inputRadioButton, props.seldonRefs),
+)
 const textLabel2Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
 )
-const menuItemRadio2Props = computed(() =>
-  mergeOptionalSlot(sdn.menuItemRadio2, props.menuItemRadio2, props.seldonRefs),
+const formControlRadioButtonControl2Props = computed(() =>
+  mergeOptionalSlot(
+    sdn.formControlRadioButtonControl2,
+    props.formControlRadioButtonControl2,
+    props.seldonRefs,
+  ),
 )
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const inputRadioButton2Props = computed(() =>
+  mergeOptionalSlot(sdn.inputRadioButton2, props.inputRadioButton2, props.seldonRefs),
+)
 const textLabel3Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
 )
@@ -140,14 +150,23 @@ const textLabel3Props = computed(() =>
     <slot>
       <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       <Frame v-bind="frameProps" v-if="frameProps !== null">
-        <MenuItemRadio v-if="menuItemRadioProps !== null" v-bind="menuItemRadioProps">
-          <Icon v-if="iconProps !== null" v-bind="iconProps" />
+        <FormControlRadioButtonControl
+          v-if="formControlRadioButtonControlProps !== null"
+          v-bind="formControlRadioButtonControlProps"
+        >
+          <InputRadioButton v-if="inputRadioButtonProps !== null" v-bind="inputRadioButtonProps" />
           <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-        </MenuItemRadio>
-        <MenuItemRadio v-if="menuItemRadio2Props !== null" v-bind="menuItemRadio2Props">
-          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+        </FormControlRadioButtonControl>
+        <FormControlRadioButtonControl
+          v-if="formControlRadioButtonControl2Props !== null"
+          v-bind="formControlRadioButtonControl2Props"
+        >
+          <InputRadioButton
+            v-if="inputRadioButton2Props !== null"
+            v-bind="inputRadioButton2Props"
+          />
           <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-        </MenuItemRadio>
+        </FormControlRadioButtonControl>
       </Frame>
     </slot>
   </div>
