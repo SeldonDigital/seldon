@@ -83,44 +83,44 @@
   --sdn-sizes-xsmall: 0.5rem;
   --sdn-sizes-small: 0.75rem;
   --sdn-sizes-medium: 1rem;
-  --sdn-sizes-large: 1.501rem;
-  --sdn-sizes-xlarge: 2.002rem;
-  --sdn-sizes-xxlarge: 2.998rem;
-  --sdn-sizes-huge: 3.998rem;
+  --sdn-sizes-large: 1.5rem;
+  --sdn-sizes-xlarge: 2rem;
+  --sdn-sizes-xxlarge: 3rem;
+  --sdn-sizes-huge: 4rem;
   /* Margins */
   --sdn-margins-tight: 0.25rem;
   --sdn-margins-compact: 0.5rem;
   --sdn-margins-cozy: 1rem;
-  --sdn-margins-comfortable: 2.002rem;
-  --sdn-margins-open: 3.998rem;
+  --sdn-margins-comfortable: 2rem;
+  --sdn-margins-open: 4rem;
   /* Paddings */
   --sdn-paddings-tight: 0.25rem;
   --sdn-paddings-compact: 0.5rem;
   --sdn-paddings-cozy: 1rem;
-  --sdn-paddings-comfortable: 2.002rem;
-  --sdn-paddings-open: 3.998rem;
+  --sdn-paddings-comfortable: 2rem;
+  --sdn-paddings-open: 4rem;
   /* Gaps */
   --sdn-gaps-tight: 0.25rem;
   --sdn-gaps-compact: 0.5rem;
   --sdn-gaps-cozy: 1rem;
-  --sdn-gaps-comfortable: 2.002rem;
-  --sdn-gaps-open: 3.998rem;
+  --sdn-gaps-comfortable: 2rem;
+  --sdn-gaps-open: 4rem;
   /* Corners */
-  --sdn-corners-tight: 0.031rem;
-  --sdn-corners-compact: 0.062rem;
+  --sdn-corners-tight: 0.03125rem;
+  --sdn-corners-compact: 0.0625rem;
   --sdn-corners-cozy: 0.125rem;
   --sdn-corners-comfortable: 0.25rem;
   --sdn-corners-open: 0.5rem;
   /* Font Sizes */
   --sdn-font-size-tiny: 0.5rem;
-  --sdn-font-size-xxsmall: 0.624rem;
+  --sdn-font-size-xxsmall: 0.625rem;
   --sdn-font-size-xsmall: 0.75rem;
   --sdn-font-size-small: 0.875rem;
   --sdn-font-size-medium: 1rem;
-  --sdn-font-size-large: 1.501rem;
-  --sdn-font-size-xlarge: 2.002rem;
-  --sdn-font-size-xxlarge: 2.998rem;
-  --sdn-font-size-huge: 3.998rem;
+  --sdn-font-size-large: 1.5rem;
+  --sdn-font-size-xlarge: 2rem;
+  --sdn-font-size-xxlarge: 3rem;
+  --sdn-font-size-huge: 4rem;
   /* Font Weights */
   --sdn-font-weight-thin: 100;
   --sdn-font-weight-xlight: 200;
@@ -140,8 +140,8 @@
   --sdn-line-height-comfortable: 2;
   --sdn-line-height-open: 2.5;
   /* Border Widths */
-  --sdn-border-width-xsmall: 0.031rem;
-  --sdn-border-width-small: 0.069rem;
+  --sdn-border-width-xsmall: 0.03125rem;
+  --sdn-border-width-small: 0.0625rem;
   --sdn-border-width-medium: 0.125rem;
   --sdn-border-width-large: 0.25rem;
   --sdn-border-width-xlarge: 0.5rem;

@@ -439,7 +439,7 @@ body {
   padding-inline-end: var(--sdn-paddings-compact);
   padding-bottom: var(--sdn-paddings-compact);
   padding-inline-start: var(--sdn-paddings-cozy);
-  box-shadow: 0px 1px 0.25rem 0.062rem hsl(0 0% 0% / 10%);
+  box-shadow: 0px 1px 0.25rem 0.0625rem hsl(0 0% 0% / 10%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -505,7 +505,7 @@ body {
   padding-inline-end: var(--sdn-paddings-compact);
   padding-bottom: var(--sdn-paddings-tight);
   padding-inline-start: var(--sdn-paddings-compact);
-  box-shadow: 0px 0px 0.062rem 0.062rem hsl(0 0% 0% / 8%);
+  box-shadow: 0px 0px 0.0625rem 0.0625rem hsl(0 0% 0% / 8%);
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
@@ -704,7 +704,7 @@ body {
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   width: 450px;
   height: fit-content;
   flex-shrink: 0;
@@ -717,7 +717,7 @@ body {
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 0.5rem 0.188rem color-mix(in srgb, var(--sdn-swatch-black) 15%, transparent);
+  box-shadow: 0px 4px 0.5rem 0.1875rem color-mix(in srgb, var(--sdn-swatch-black) 15%, transparent);
   width: 450px;
   height: fit-content;
   flex-shrink: 0;
@@ -730,7 +730,7 @@ body {
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   width: 500px;
   height: fit-content;
   flex-shrink: 0;
@@ -1035,7 +1035,7 @@ body {
   box-shadow:
     inset -0.5px -0.5px 0.5px 0px hsl(0 0% 15% / 20%),
     inset 0.5px 0.5px 0.5px 0px hsl(0 0% 96% / 30%),
-    0px 0px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-primary) 30%, transparent);
+    0px 0px 0.125rem 0.03125rem color-mix(in srgb, var(--sdn-swatch-primary) 30%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1199,7 +1199,7 @@ body {
   align-items: start;
   justify-content: start;
   gap: var(--sdn-gaps-compact);
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
@@ -1233,7 +1233,7 @@ body {
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
-  align-items: end;
+  align-items: center;
   justify-content: start;
   gap: var(--sdn-gaps-compact);
   padding-top: var(--sdn-paddings-tight);
@@ -1255,7 +1255,7 @@ body {
   align-items: start;
   justify-content: start;
   gap: var(--sdn-gaps-compact);
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1458,7 +1458,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -1474,7 +1474,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 4px 0.5rem 0.188rem hsl(0 0% 0% / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem hsl(0 0% 0% / 15%);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -1490,7 +1490,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 4px 0.5rem 0.188rem hsl(0 0% 0% / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem hsl(0 0% 0% / 15%);
   width: 450px;
   height: 400px;
   flex-shrink: 0;
@@ -1506,7 +1506,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   align-self: stretch;
   height: 500px;
   flex-shrink: 0;
@@ -1521,7 +1521,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0;
-  box-shadow: 0px 4px 0.5rem 0.188rem rgb(0 0 0 / 15%);
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -1887,9 +1887,9 @@ body {
   background-color: var(--sdn-swatch-gray);
   cursor: pointer;
   color: var(--sdn-hc-on-gray);
-  box-shadow: inset 0px 0px 0.125rem 0.031rem
+  box-shadow: inset 0px 0px 0.125rem 0.03125rem
     color-mix(in srgb, var(--sdn-swatch-black) 30%, transparent);
-  width: 1.501rem;
+  width: 1.5rem;
   height: fit-content;
   flex-shrink: 0;
   font-size: var(--sdn-font-size-xxsmall);
@@ -2140,7 +2140,7 @@ body {
 .sdn-button-menu--ipe0 {
   width: unset;
   flex-shrink: unset;
-  box-shadow: 0px 1px 0.062rem 0.062rem hsl(0 0% 0% / 10%);
+  box-shadow: 0px 1px 0.0625rem 0.0625rem hsl(0 0% 0% / 10%);
   flex: 1 0 0;
   min-width: 0;
 }
@@ -2156,7 +2156,7 @@ body {
 }
 
 .sdn-button-menu--truc {
-  box-shadow: 0px 1px 0.062rem 0.062rem hsl(0 0% 0% / 10%);
+  box-shadow: 0px 1px 0.0625rem 0.0625rem hsl(0 0% 0% / 10%);
 }
 
 .sdn-button-simple--dbgs {
@@ -2276,7 +2276,7 @@ body {
   align-self: unset;
   flex-shrink: unset;
   flex: 1 0 0;
-  height: 2.002rem;
+  height: 2rem;
   min-width: 0;
   border: var(--hairline) solid var(--sdn-swatch-primary);
 }
@@ -2285,7 +2285,7 @@ body {
   background-color: var(--sdn-swatch-offWhite);
   padding-top: 0;
   padding-bottom: 0;
-  box-shadow: inset 0px 0px 0.125rem 0.031rem
+  box-shadow: inset 0px 0px 0.125rem 0.03125rem
     color-mix(in srgb, var(--sdn-swatch-black) 12%, transparent);
   margin: var(--sdn-margins-tight);
   border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
@@ -2307,7 +2307,7 @@ body {
   align-self: unset;
   flex-shrink: unset;
   background-color: var(--sdn-swatch-offWhite);
-  box-shadow: inset 0px 0px 0.062rem 0.062rem
+  box-shadow: inset 0px 0px 0.0625rem 0.0625rem
     color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
   flex: 1 0 0;
   min-width: 0;
@@ -2514,7 +2514,8 @@ body {
   padding-bottom: var(--sdn-paddings-tight);
   padding-inline-start: var(--sdn-paddings-comfortable);
   box-shadow:
-    inset 0px 0px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-offWhite) 30%, transparent),
+    inset 0px 0px 0.125rem 0.03125rem
+      color-mix(in srgb, var(--sdn-swatch-offWhite) 30%, transparent),
     0px 0px 0.25rem 0.125rem color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent);
   width: fit-content;
   flex-shrink: 0;
@@ -2668,7 +2669,8 @@ body {
   align-items: start;
   justify-content: start;
   gap: var(--sdn-gaps-compact);
-  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.03125rem
+    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   padding: var(--sdn-paddings-compact);
   border-radius: var(--sdn-corners-tight);
   border: var(--hairline) solid var(--sdn-swatch-offBlack-b50);
@@ -3003,7 +3005,7 @@ body {
 }
 
 .sdn-icon--km45 {
-  width: 1.501rem;
+  width: 1.5rem;
   color: var(--sdn-hc-on-white);
 }
 
@@ -3012,7 +3014,7 @@ body {
 }
 
 .sdn-icon--mene {
-  width: 1.501rem;
+  width: 1.5rem;
 }
 
 .sdn-icon--pbp5 {
@@ -3085,9 +3087,9 @@ body {
 .sdn-image--98gd {
   align-self: unset;
   flex: unset;
-  width: 2.998rem;
+  width: 3rem;
   flex-shrink: 0;
-  height: 2.998rem;
+  height: 3rem;
   border-radius: 99999px;
   border: var(--sdn-border-width-medium) solid var(--sdn-swatch-offBlack);
 }
@@ -3095,9 +3097,9 @@ body {
 .sdn-image--9jgp {
   align-self: unset;
   flex: unset;
-  width: 2.998rem;
+  width: 3rem;
   flex-shrink: 0;
-  height: 2.998rem;
+  height: 3rem;
   border-radius: var(--sdn-corners-tight);
   border: var(--sdn-border-width-medium) solid var(--sdn-swatch-primary);
 }
@@ -3125,9 +3127,9 @@ body {
   align-self: unset;
   flex: unset;
   box-shadow: 0px 0px 0px 0.125rem var(--sdn-swatch-white);
-  width: 2.998rem;
+  width: 3rem;
   flex-shrink: 0;
-  height: 2.998rem;
+  height: 3rem;
   right: -5rem;
   position: absolute;
   border-radius: 99999px;
@@ -3137,9 +3139,9 @@ body {
 .sdn-image--to5v {
   align-self: unset;
   flex: unset;
-  width: 2.998rem;
+  width: 3rem;
   flex-shrink: 0;
-  height: 2.998rem;
+  height: 3rem;
   border-radius: 99999px;
 }
 
@@ -3147,9 +3149,9 @@ body {
   align-self: unset;
   flex: unset;
   box-shadow: 0px 0px 0px 0.125rem var(--sdn-swatch-white);
-  width: 2.998rem;
+  width: 3rem;
   flex-shrink: 0;
-  height: 2.998rem;
+  height: 3rem;
   right: -2.5rem;
   position: absolute;
   border-radius: 99999px;
@@ -3159,9 +3161,9 @@ body {
 .sdn-image--zjyq {
   align-self: unset;
   flex: unset;
-  width: 2.998rem;
+  width: 3rem;
   flex-shrink: 0;
-  height: 2.998rem;
+  height: 3rem;
   border-radius: 99999px;
   border: var(--sdn-border-width-medium) solid var(--sdn-swatch-primary);
 }
@@ -3199,7 +3201,7 @@ body {
   padding-bottom: var(--sdn-paddings-tight);
   padding-inline-start: var(--sdn-paddings-compact);
   flex: 1 0 0;
-  height: 2.002rem;
+  height: 2rem;
   min-width: 0;
   border: var(--hairline) solid var(--sdn-swatch-primary);
 }
