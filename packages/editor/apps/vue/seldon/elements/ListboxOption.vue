@@ -27,8 +27,9 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Type: Default
  *
  * Structure:
- *   Icon       icon       -> optionIcon
- *   TextLabel  textLabel  -> optionLabel
+ *   Icon       icon        -> optionIcon
+ *   TextLabel  textLabel   -> optionLabel
+ *   TextLabel  textLabel2  -> optionAnnotation
  *
  * @example
  * ```vue
@@ -52,6 +53,7 @@ const props = defineProps<{
   className?: string
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  textLabel2?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
@@ -64,13 +66,18 @@ const sdn: Record<string, any> = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "optionIcon",
   },
   textLabel: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "optionLabel",
+  },
+  textLabel2: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
+    "data-seldon-ref": "optionAnnotation",
   },
 }
 
@@ -80,6 +87,9 @@ const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRef
 const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
 )
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+)
 </script>
 
 <template>
@@ -87,6 +97,7 @@ const textLabelProps = computed(() =>
     <slot>
       <Icon v-if="iconProps !== null" v-bind="iconProps" />
       <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
     </slot>
   </div>
 </template>

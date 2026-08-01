@@ -95,7 +95,7 @@ const sdn: PanelPropertiesProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--6gst",

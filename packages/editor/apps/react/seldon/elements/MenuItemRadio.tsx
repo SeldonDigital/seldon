@@ -42,7 +42,7 @@ const sdn: MenuItemRadioProps = {
 
   textLabel: {
     children: "Radio",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }
 

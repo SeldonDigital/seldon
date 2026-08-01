@@ -102,7 +102,7 @@ const sdn: Record<string, any> = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     "data-seldon-ref": "workspaceName",
   },
   buttonIconic: {

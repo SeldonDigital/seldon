@@ -91,7 +91,7 @@ const sdn: PanelDialogProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     "data-seldon-ref": "dialogSearch",
   },
   buttonIconic: {

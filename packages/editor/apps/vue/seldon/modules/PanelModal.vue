@@ -118,7 +118,7 @@ const sdn: Record<string, any> = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--icju",
+    className: "sdn-input sdn-input--stob",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -135,7 +135,7 @@ const sdn: Record<string, any> = {
   },
   barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar-buttons sdn-bar-buttons--0pge",
+    className: "sdn-bar-buttons sdn-bar-buttons--dabm",
   },
   frame2: {
     wrapperElement: "div",

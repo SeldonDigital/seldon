@@ -5016,18 +5016,51 @@
         "props": []
       }
     ],
+    "optionAnnotation": [
+      {
+        "file": "app/menus/ComboboxListbox.tsx",
+        "component": "renderOption",
+        "line": 134,
+        "conditional": false,
+        "expression": "{ children: option.annotation }",
+        "inputs": [
+          {
+            "name": "option",
+            "declaredAt": {
+              "line": 41,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "option.annotation",
+            "inputs": [
+              {
+                "name": "option",
+                "declaredAt": {
+                  "line": 41,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "optionIcon": [
       {
         "file": "app/menus/ComboboxListbox.tsx",
         "component": "renderOption",
-        "line": 128,
+        "line": 132,
         "conditional": false,
         "expression": "{ icon: icon.icon as IconProps[\"icon\"] }",
         "inputs": [
           {
             "name": "icon",
             "declaredAt": {
-              "line": 103,
+              "line": 104,
               "kind": "const",
               "via": "resolveIcon"
             }
@@ -5049,7 +5082,7 @@
               {
                 "name": "icon",
                 "declaredAt": {
-                  "line": 103,
+                  "line": 104,
                   "kind": "const",
                   "via": "resolveIcon"
                 }
@@ -5071,7 +5104,7 @@
       {
         "file": "app/menus/ComboboxListbox.tsx",
         "component": "renderOption",
-        "line": 129,
+        "line": 133,
         "conditional": false,
         "expression": "{ children: option.name }",
         "inputs": [
@@ -8504,13 +8537,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "ComboboxListbox",
-          "line": 159,
+          "line": 177,
           "expression": "handleClose",
           "inputs": [
             {
               "name": "handleClose",
               "declaredAt": {
-                "line": 65,
+                "line": 66,
                 "kind": "parameter"
               }
             }
@@ -10478,13 +10511,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "ComboboxListbox",
-          "line": 160,
+          "line": 178,
           "expression": "onPointerLeave",
           "inputs": [
             {
               "name": "onPointerLeave",
               "declaredAt": {
-                "line": 65,
+                "line": 66,
                 "kind": "parameter"
               }
             }
@@ -10498,7 +10531,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 118,
+          "line": 119,
           "expression": "option.disabled || undefined",
           "inputs": [
             {
@@ -10514,7 +10547,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 118,
+          "line": 119,
           "expression": "option.disabled || undefined",
           "inputs": [
             {
@@ -10532,13 +10565,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 117,
+          "line": 118,
           "expression": "isSelected || undefined",
           "inputs": [
             {
               "name": "isSelected",
               "declaredAt": {
-                "line": 101,
+                "line": 102,
                 "kind": "const"
               }
             }
@@ -10548,13 +10581,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 117,
+          "line": 118,
           "expression": "isSelected || undefined",
           "inputs": [
             {
               "name": "isSelected",
               "declaredAt": {
-                "line": 101,
+                "line": 102,
                 "kind": "const"
               }
             }
@@ -10566,13 +10599,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 119,
+          "line": 120,
           "expression": "isHighlighted ? HIGHLIGHT_CLASS : undefined",
           "inputs": [
             {
               "name": "isHighlighted",
               "declaredAt": {
-                "line": 102,
+                "line": 103,
                 "kind": "const"
               }
             },
@@ -10589,13 +10622,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 119,
+          "line": 120,
           "expression": "isHighlighted ? HIGHLIGHT_CLASS : undefined",
           "inputs": [
             {
               "name": "isHighlighted",
               "declaredAt": {
-                "line": 102,
+                "line": 103,
                 "kind": "const"
               }
             },
@@ -10614,13 +10647,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 120,
+          "line": 121,
           "expression": "handleMouseDown",
           "inputs": [
             {
               "name": "handleMouseDown",
               "declaredAt": {
-                "line": 105,
+                "line": 106,
                 "kind": "const"
               }
             }
@@ -10630,13 +10663,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 120,
+          "line": 121,
           "expression": "handleMouseDown",
           "inputs": [
             {
               "name": "handleMouseDown",
               "declaredAt": {
-                "line": 105,
+                "line": 106,
                 "kind": "const"
               }
             }
@@ -10648,13 +10681,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 121,
+          "line": 122,
           "expression": "handleMouseEnter",
           "inputs": [
             {
               "name": "handleMouseEnter",
               "declaredAt": {
-                "line": 111,
+                "line": 112,
                 "kind": "const"
               }
             }
@@ -10664,13 +10697,13 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 121,
+          "line": 122,
           "expression": "handleMouseEnter",
           "inputs": [
             {
               "name": "handleMouseEnter",
               "declaredAt": {
-                "line": 111,
+                "line": 112,
                 "kind": "const"
               }
             }
@@ -10682,7 +10715,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 116,
+          "line": 117,
           "expression": "\"option\"",
           "inputs": [],
           "spread": true
@@ -10690,7 +10723,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 116,
+          "line": 117,
           "expression": "\"option\"",
           "inputs": [],
           "spread": true
@@ -10700,9 +10733,27 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
-          "line": 132,
+          "line": 141,
           "expression": "{}",
           "inputs": [],
+          "spread": false
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/menus/ComboboxListbox.tsx",
+          "component": "renderOption",
+          "line": 142,
+          "expression": "annotationSlot",
+          "inputs": [
+            {
+              "name": "annotationSlot",
+              "declaredAt": {
+                "line": 127,
+                "kind": "const"
+              }
+            }
+          ],
           "spread": false
         }
       ]

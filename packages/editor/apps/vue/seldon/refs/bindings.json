@@ -4035,14 +4035,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 414,
+        "line": 418,
         "conditional": false,
         "expression": "actionsButton.value",
         "inputs": [
           {
             "name": "actionsButton",
             "declaredAt": {
-              "line": 157,
+              "line": 158,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -4091,14 +4091,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 407,
+        "line": 411,
         "conditional": false,
         "expression": "toggleButtonSlot.value",
         "inputs": [
           {
             "name": "toggleButtonSlot",
             "declaredAt": {
-              "line": 343,
+              "line": 344,
               "kind": "const",
               "via": "computed"
             }
@@ -4129,14 +4129,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 408,
+        "line": 412,
         "conditional": false,
         "expression": "toggleIconSlot.value",
         "inputs": [
           {
             "name": "toggleIconSlot",
             "declaredAt": {
-              "line": 348,
+              "line": 349,
               "kind": "const",
               "via": "computed"
             }
@@ -4166,14 +4166,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 412,
+        "line": 416,
         "conditional": false,
         "expression": "displayButtonProps.value",
         "inputs": [
           {
             "name": "displayButtonProps",
             "declaredAt": {
-              "line": 390,
+              "line": 391,
               "kind": "const",
               "via": "computed"
             }
@@ -4186,14 +4186,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 413,
+        "line": 417,
         "conditional": false,
         "expression": "displayIconSlot.value",
         "inputs": [
           {
             "name": "displayIconSlot",
             "declaredAt": {
-              "line": 389,
+              "line": 390,
               "kind": "const",
               "via": "computed"
             }
@@ -4224,14 +4224,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 409,
+        "line": 413,
         "conditional": false,
         "expression": "fieldSlot.value",
         "inputs": [
           {
             "name": "fieldSlot",
             "declaredAt": {
-              "line": 364,
+              "line": 365,
               "kind": "const",
               "via": "computed"
             }
@@ -4280,14 +4280,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 410,
+        "line": 414,
         "conditional": false,
         "expression": "nodeIconSlot.value",
         "inputs": [
           {
             "name": "nodeIconSlot",
             "declaredAt": {
-              "line": 370,
+              "line": 371,
               "kind": "const",
               "via": "computed"
             }
@@ -4336,14 +4336,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 411,
+        "line": 415,
         "conditional": false,
         "expression": "labelSlot.value",
         "inputs": [
           {
             "name": "labelSlot",
             "declaredAt": {
-              "line": 379,
+              "line": 380,
               "kind": "const",
               "via": "computed"
             }
@@ -4475,6 +4475,39 @@
           }
         ],
         "props": []
+      }
+    ],
+    "optionAnnotation": [
+      {
+        "file": "app/menus/ComboboxListbox.vue",
+        "component": "ComboboxListbox",
+        "line": 92,
+        "conditional": false,
+        "expression": "{ children: option.annotation }",
+        "inputs": [
+          {
+            "name": "option",
+            "declaredAt": {
+              "line": 51,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "option.annotation",
+            "inputs": [
+              {
+                "name": "option",
+                "declaredAt": {
+                  "line": 51,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "optionIcon": [
@@ -7802,7 +7835,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 520,
+          "line": 524,
           "expression": "\"\"",
           "inputs": [],
           "spread": false
@@ -7840,13 +7873,13 @@
         {
           "file": "app/canvas/CanvasNode.vue",
           "component": "CanvasNode",
-          "line": 159,
+          "line": 139,
           "expression": "iconSymbol",
           "inputs": [
             {
               "name": "iconSymbol",
               "declaredAt": {
-                "line": 98,
+                "line": 90,
                 "kind": "const",
                 "via": "computed"
               }
@@ -7977,7 +8010,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 464,
+          "line": 468,
           "expression": "isDimmed || undefined",
           "inputs": [
             {
@@ -8004,7 +8037,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 465,
+          "line": 469,
           "expression": "isDuplicateLabel || undefined",
           "inputs": [
             {
@@ -8040,7 +8073,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 463,
+          "line": 467,
           "expression": "isSelected || undefined",
           "inputs": [
             {
@@ -8084,7 +8117,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 474,
+          "line": 478,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8118,13 +8151,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 476,
+          "line": 480,
           "expression": "displayButtonSlot",
           "inputs": [
             {
               "name": "displayButtonSlot",
               "declaredAt": {
-                "line": 401,
+                "line": 403,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8161,7 +8194,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 477,
+          "line": 481,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8195,7 +8228,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 475,
+          "line": 479,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8257,7 +8290,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 471,
+          "line": 475,
           "expression": "parentIsSelected || undefined",
           "inputs": [
             {
@@ -8308,13 +8341,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 469,
+          "line": 473,
           "expression": "dataDisplay",
           "inputs": [
             {
               "name": "dataDisplay",
               "declaredAt": {
-                "line": 418,
+                "line": 422,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8327,7 +8360,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 470,
+          "line": 474,
           "expression": "drag.draggingNodeId === nodeId || undefined",
           "inputs": [
             {
@@ -8350,7 +8383,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 468,
+          "line": 472,
           "expression": "entityType",
           "inputs": [
             {
@@ -8369,7 +8402,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 467,
+          "line": 471,
           "expression": "nodeId",
           "inputs": [
             {
@@ -8451,7 +8484,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 466,
+          "line": 470,
           "expression": "`object-panel-node-${nodeId}`",
           "inputs": [
             {
@@ -8487,13 +8520,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 472,
+          "line": 476,
           "expression": "draggable",
           "inputs": [
             {
               "name": "draggable",
               "declaredAt": {
-                "line": 246,
+                "line": 247,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8759,7 +8792,7 @@
         {
           "file": "app/menus/ComboboxListbox.vue",
           "component": "ComboboxListbox",
-          "line": 200,
+          "line": 206,
           "expression": "option.value === value || undefined",
           "inputs": [
             {
@@ -8784,9 +8817,34 @@
         {
           "file": "app/menus/ComboboxListbox.vue",
           "component": "ComboboxListbox",
-          "line": 202,
+          "line": 208,
           "expression": "{}",
           "inputs": [],
+          "spread": false
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/menus/ComboboxListbox.vue",
+          "component": "ComboboxListbox",
+          "line": 209,
+          "expression": "optionAnnotationSlot(option)",
+          "inputs": [
+            {
+              "name": "optionAnnotationSlot",
+              "declaredAt": {
+                "line": 97,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "option",
+              "declaredAt": {
+                "line": 51,
+                "kind": "parameter"
+              }
+            }
+          ],
           "spread": false
         }
       ]
@@ -8796,7 +8854,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 252,
+          "line": 262,
           "expression": "\"vertical\"",
           "inputs": [],
           "spread": false
@@ -8808,7 +8866,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 264,
+          "line": 274,
           "expression": "item.disabled || undefined",
           "inputs": [
             {
@@ -8826,7 +8884,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 261,
+          "line": 271,
           "expression": "index",
           "inputs": [
             {
@@ -8844,7 +8902,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 262,
+          "line": 272,
           "expression": "item.testId",
           "inputs": [
             {
@@ -8862,7 +8920,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 263,
+          "line": 273,
           "expression": "item.disabled",
           "inputs": [
             {
@@ -8880,7 +8938,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 259,
+          "line": 269,
           "expression": "\"\"",
           "inputs": [],
           "spread": false
@@ -8890,13 +8948,13 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 266,
+          "line": 276,
           "expression": "markerIcon(item)",
           "inputs": [
             {
               "name": "markerIcon",
               "declaredAt": {
-                "line": 64,
+                "line": 73,
                 "kind": "function"
               }
             },
@@ -8915,7 +8973,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 265,
+          "line": 275,
           "expression": "index === activeIndex ? 0 : -1",
           "inputs": [
             {
@@ -8941,13 +8999,13 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 267,
+          "line": 277,
           "expression": "labelSlot(item)",
           "inputs": [
             {
               "name": "labelSlot",
               "declaredAt": {
-                "line": 81,
+                "line": 91,
                 "kind": "function"
               }
             },
@@ -8966,13 +9024,13 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 268,
+          "line": 278,
           "expression": "shortcutSlot(item)",
           "inputs": [
             {
               "name": "shortcutSlot",
               "declaredAt": {
-                "line": 90,
+                "line": 100,
                 "kind": "function"
               }
             },
@@ -8991,7 +9049,7 @@
         {
           "file": "app/menus/MenuController.vue",
           "component": "MenuController",
-          "line": 260,
+          "line": 270,
           "expression": "\"button\"",
           "inputs": [],
           "spread": false

@@ -44,7 +44,7 @@ const sdn: MenuItemProps = {
 
   textLabel: {
     children: "Menu Item",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 
   textLabel2: {

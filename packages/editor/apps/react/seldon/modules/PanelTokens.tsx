@@ -132,23 +132,23 @@ const sdn: PanelTokensProps = {
     className: "sdn-text-label sdn-text-label--wotu",
   },
   formControlCombobox: {
-    className: "sdn-form-control sdn-form-control-combobox--womz",
+    className: "sdn-form-control sdn-form-control-combobox--rmtv",
   },
   comboboxField: {
     "aria-hidden": "false",
-    className: "sdn-combobox-field sdn-combobox-field--cv3v",
+    className: "sdn-combobox-field sdn-combobox-field--iuzk",
   },
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--0nya",
+    className: "sdn-icon sdn-icon--gl7b",
   },
   input: {
-    placeholder: "Value",
+    placeholder: "Placeholder text",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--gudi",
+    className: "sdn-input sdn-input--t0am",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -156,7 +156,7 @@ const sdn: PanelTokensProps = {
   icon4: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--0nya",
+    className: "sdn-icon sdn-icon--0aip",
   },
 }
 
@@ -299,10 +299,10 @@ export function PanelTokens({
                   {...formControlComboboxProps}
                   comboboxField={comboboxFieldProps}
                   icon={icon3Props}
-                  input2={inputProps}
+                  input={inputProps}
                   buttonIconic={buttonIconicProps}
                   icon2={icon4Props}
-                  input={null}
+                  textLabel={null}
                 />
               )}
             </Frame>

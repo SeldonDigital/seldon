@@ -266,7 +266,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--zhvk",
+    className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
     children: "Export Components",
@@ -365,7 +365,7 @@ const sdn: Record<string, any> = {
   icon2: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportFontLinksYesIcon",
   },
   textLabel5: {
@@ -383,7 +383,7 @@ const sdn: Record<string, any> = {
   icon3: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportFontLinksNoIcon",
   },
   textLabel6: {
@@ -425,7 +425,7 @@ const sdn: Record<string, any> = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportHiddenYesIcon",
   },
   textLabel8: {
@@ -443,7 +443,7 @@ const sdn: Record<string, any> = {
   icon5: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportHiddenNoIcon",
   },
   textLabel9: {
@@ -476,7 +476,7 @@ const sdn: Record<string, any> = {
   icon6: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllThemesYesIcon",
   },
   textLabel11: {
@@ -494,7 +494,7 @@ const sdn: Record<string, any> = {
   icon7: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllThemesNoIcon",
   },
   textLabel12: {
@@ -527,7 +527,7 @@ const sdn: Record<string, any> = {
   icon8: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllFontsYesIcon",
   },
   textLabel14: {
@@ -545,7 +545,7 @@ const sdn: Record<string, any> = {
   icon9: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllFontsNoIcon",
   },
   textLabel15: {
@@ -578,7 +578,7 @@ const sdn: Record<string, any> = {
   icon10: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllIconsYesIcon",
   },
   textLabel17: {
@@ -596,7 +596,7 @@ const sdn: Record<string, any> = {
   icon11: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllIconsNoIcon",
   },
   textLabel18: {
@@ -629,7 +629,7 @@ const sdn: Record<string, any> = {
   icon12: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportSavedWorkspaceYesIcon",
   },
   textLabel20: {
@@ -647,7 +647,7 @@ const sdn: Record<string, any> = {
   icon13: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportSavedWorkspaceNoIcon",
   },
   textLabel21: {
@@ -680,7 +680,7 @@ const sdn: Record<string, any> = {
   icon14: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportScriptsYesIcon",
   },
   textLabel23: {
@@ -698,7 +698,7 @@ const sdn: Record<string, any> = {
   icon15: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportScriptsNoIcon",
   },
   textLabel24: {

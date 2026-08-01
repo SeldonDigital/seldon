@@ -93,7 +93,7 @@ const sdn: Record<string, any> = {
   icon: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel2: {
     children: "Yes",
@@ -105,7 +105,7 @@ const sdn: Record<string, any> = {
   icon2: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
     children: "No",

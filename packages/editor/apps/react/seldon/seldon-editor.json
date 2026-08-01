@@ -652,8 +652,11 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "option",
-            "value": "fit"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
           }
         },
         "background": [
@@ -5482,25 +5485,25 @@
                       ]
                     },
                     {
-                      "id": "component-panel-womZp89y",
+                      "id": "component-formControl-RmTvIh6y",
                       "children": [
                         {
-                          "id": "component-panel-Mdhy1dTx"
+                          "id": "component-formControl-62CsXS9O"
                         },
                         {
-                          "id": "component-panel-CV3VuB6K",
+                          "id": "component-formControl-IuZKCw96",
                           "children": [
                             {
-                              "id": "component-panel-kmCLqkKm"
+                              "id": "component-formControl-VWD6VLxz"
                             },
                             {
-                              "id": "component-panel-0hqfPDSi"
+                              "id": "component-formControl-t0AMMhIb"
                             },
                             {
-                              "id": "component-panel-RtZAX07N",
+                              "id": "component-formControl-m3TOxWyc",
                               "children": [
                                 {
-                                  "id": "component-panel-T9NYp3Wz"
+                                  "id": "component-formControl-0AiP5iaP"
                                 }
                               ]
                             }
@@ -6784,7 +6787,15 @@
       "level": "part",
       "label": "Token Previews",
       "intent": "Used for preview and properties badges over the canvas.",
-      "tags": ["Properties", "tokens", "margins", "padding", "orientation", "align", "gap"],
+      "tags": [
+        "Properties",
+        "tokens",
+        "margins",
+        "padding",
+        "orientation",
+        "align",
+        "gap"
+      ],
       "componentTheme": "theme-seldon-default",
       "componentProperties": {
         "board": {
@@ -7587,6 +7598,12 @@
               "unit": "%",
               "value": 0
             }
+          }
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
           }
         }
       },
@@ -12032,6 +12049,12 @@
         "cursor": {
           "type": "option",
           "value": "pointer"
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
         }
       },
       "origin": "schema"
@@ -12042,18 +12065,7 @@
       "label": "Input",
       "theme": null,
       "template": "node:component-input-default",
-      "overrides": {
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          }
-        },
-        "cursor": {
-          "type": "option",
-          "value": "pointer"
-        }
-      },
+      "overrides": {},
       "origin": "schema"
     },
     "component-formControl-combobox": {
@@ -16074,6 +16086,10 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
           }
         }
       },
@@ -16109,6 +16125,10 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
           }
         }
       },
@@ -16235,10 +16255,6 @@
               "value": 80
             }
           }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
         },
         "shadow": [
           {
@@ -16397,7 +16413,7 @@
         "margin": {
           "top": {
             "type": "theme.ordinal",
-            "value": "@margin.compact"
+            "value": "@margin.tight"
           },
           "right": {
             "type": "theme.ordinal",
@@ -16405,7 +16421,7 @@
           },
           "bottom": {
             "type": "theme.ordinal",
-            "value": "@margin.compact"
+            "value": "@margin.tight"
           },
           "left": {
             "type": "theme.ordinal",
@@ -18045,9 +18061,20 @@
         },
         "background": [
           {
-            "kind": {
-              "type": "option",
-              "value": "none"
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offWhite"
+            },
+            "brightness": {
+              "type": "exact",
+              "value": {
+                "value": 0,
+                "unit": "%"
+              }
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
             }
           }
         ],
@@ -27691,10 +27718,14 @@
       "states": {
         "active": {
           "border": {},
-          "background": [{}]
+          "background": [
+            {}
+          ]
         },
         "hover": {
-          "background": [{}]
+          "background": [
+            {}
+          ]
         },
         "disabled": {
           "border": {},
@@ -33205,7 +33236,14 @@
       "label": "Select",
       "theme": null,
       "template": "catalog:select",
-      "overrides": {}
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      }
     },
     "component-text-UQdowOTH": {
       "type": "instance",
@@ -37404,134 +37442,6 @@
       },
       "origin": "user"
     },
-    "component-panel-womZp89y": {
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-sidebar-2uPZ39u3",
-      "overrides": {
-        "margin": {
-          "left": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          },
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.punch"
-          },
-          "brightness": {
-            "type": "empty",
-            "value": null
-          },
-          "opacity": {
-            "type": "empty",
-            "value": null
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "padding": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        }
-      },
-      "origin": "user"
-    },
-    "component-panel-Mdhy1dTx": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-sidebar-Z1zmMc8D",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user"
-    },
-    "component-panel-CV3VuB6K": {
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-sidebar-mM8WxFPb",
-      "overrides": {
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        }
-      },
-      "origin": "user"
-    },
-    "component-panel-kmCLqkKm": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-sidebar-DoazIPaX",
-      "overrides": {},
-      "origin": "user"
-    },
-    "component-panel-0hqfPDSi": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-sidebar-6cbpm69O",
-      "overrides": {},
-      "origin": "user"
-    },
-    "component-panel-RtZAX07N": {
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-sidebar-7qVFD3uK",
-      "overrides": {},
-      "origin": "user"
-    },
-    "component-panel-T9NYp3Wz": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-sidebar-eFnR83mZ",
-      "overrides": {},
-      "origin": "user"
-    },
     "component-item-w6EDAjYN": {
       "type": "instance",
       "level": "element",
@@ -39387,6 +39297,111 @@
       "template": "node:component-text-OSqsJTlD",
       "overrides": {},
       "origin": "schema"
+    },
+    "component-formControl-RmTvIh6y": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox",
+      "theme": null,
+      "template": "node:component-formControl-combobox",
+      "overrides": {
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.punch"
+          },
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-formControl-62CsXS9O": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-qFNT8tvQ",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "exclude"
+        }
+      },
+      "origin": "user"
+    },
+    "component-formControl-IuZKCw96": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-comboboxField-J44iG84R",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-formControl-VWD6VLxz": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-KwYtAK9a",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-formControl-t0AMMhIb": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-input-9VQUhF1b",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-formControl-m3TOxWyc": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-JVAOBBZz",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-formControl-0AiP5iaP": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-WrwE9FbU",
+      "overrides": {},
+      "origin": "user"
     }
   },
   "themes": {

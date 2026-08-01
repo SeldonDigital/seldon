@@ -83,7 +83,7 @@ const sdn: ItemPropertyProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--iegt",
+    className: "sdn-input sdn-input--9vqu",
     "data-seldon-ref": "propertyValueLabel",
   },
   buttonIconic2: {

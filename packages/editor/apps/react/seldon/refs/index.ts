@@ -447,7 +447,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   dialogSearch: {
     component: "Input",
     nodeId: "component-panel-pWiFt1bl",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     views: [
       {
         component: "PanelDialog",
@@ -1399,7 +1399,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariToolIcon: {
     component: "Icon",
     nodeId: "component-message-GL7BdSOW",
-    className: "sdn-icon sdn-icon--0nya",
+    className: "sdn-icon sdn-icon--gl7b",
     views: [
       {
         component: "MessageToolsUsed",
@@ -2043,7 +2043,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilter: {
     component: "Input",
     nodeId: "component-comboboxField-Lg6E5jtv",
-    className: "sdn-input sdn-input--lg6e",
+    className: "sdn-input sdn-input--yoqi",
     views: [
       {
         component: "SidebarProperties",
@@ -2071,7 +2071,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilterClearIcon: {
     component: "Icon",
     nodeId: "component-comboboxField-yANWz3qm",
-    className: "sdn-icon sdn-icon--yanw",
+    className: "sdn-icon sdn-icon--vsau",
     views: [
       {
         component: "SidebarProperties",
@@ -2085,7 +2085,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilterField: {
     component: "ComboboxFieldFilter",
     nodeId: "component-comboboxField-LSIWPWiC",
-    className: "sdn-combobox-field sdn-combobox-field-filter--lsiw",
+    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
     views: [
       {
         component: "SidebarProperties",
@@ -2099,7 +2099,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilterIcon: {
     component: "Icon",
     nodeId: "component-comboboxField-0NyAQIRn",
-    className: "sdn-icon sdn-icon--0nya",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "SidebarProperties",
@@ -2281,7 +2281,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyValueLabel: {
     component: "Input",
     nodeId: "component-input-IeGTgo7S",
-    className: "sdn-input sdn-input--iegt",
+    className: "sdn-input sdn-input--9vqu",
     views: [
       {
         component: "ItemProperty",
@@ -2645,7 +2645,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   workspaceName: {
     component: "Input",
     nodeId: "component-comboboxField-spqmpmg5",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     views: [
       {
         component: "SidebarObjects",

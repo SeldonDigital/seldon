@@ -42,7 +42,7 @@ const sdn: MenuItemCheckboxProps = {
 
   textLabel: {
     children: "Checkbox",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }
 

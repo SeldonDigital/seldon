@@ -36,12 +36,15 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *     ListboxOption  listboxOption
  *       Icon         icon3
  *       TextLabel    textLabel
+ *       TextLabel    textLabel2
  *     ListboxOption  listboxOption2
  *       Icon         icon4
- *       TextLabel    textLabel2
+ *       TextLabel    textLabel3
+ *       TextLabel    textLabel4
  *     ListboxOption  listboxOption3
  *       Icon         icon5
- *       TextLabel    textLabel3
+ *       TextLabel    textLabel5
+ *       TextLabel    textLabel6
  *
  * @example
  * ```vue
@@ -54,6 +57,7 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *   listbox="{}"
  *   listboxOption="{}"
  *   textLabel="{}"
+ *   textLabel2="{}"
  *   listboxOption2="{}"
  *   listboxOption3="{}"
  * />
@@ -80,12 +84,15 @@ const props = defineProps<{
   listboxOption?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  textLabel2?: Record<string, unknown> | null
   listboxOption2?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
-  textLabel2?: Record<string, unknown> | null
+  textLabel3?: Record<string, unknown> | null
+  textLabel4?: Record<string, unknown> | null
   listboxOption3?: Record<string, unknown> | null
   icon5?: Record<string, unknown> | null
-  textLabel3?: Record<string, unknown> | null
+  textLabel5?: Record<string, unknown> | null
+  textLabel6?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
@@ -131,11 +138,15 @@ const sdn: Record<string, any> = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
+  },
+  textLabel2: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
   },
   listboxOption2: {
     role: "option",
@@ -145,11 +156,15 @@ const sdn: Record<string, any> = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
-  textLabel2: {
+  textLabel3: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
+  },
+  textLabel4: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
   },
   listboxOption3: {
     role: "option",
@@ -159,11 +174,15 @@ const sdn: Record<string, any> = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
-  textLabel3: {
+  textLabel5: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
+  },
+  textLabel6: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
   },
 }
 
@@ -186,19 +205,28 @@ const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldon
 const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
 )
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+)
 const listboxOption2Props = computed(() =>
   mergeSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs),
 )
 const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
-const textLabel2Props = computed(() =>
-  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+const textLabel3Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
+)
+const textLabel4Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs),
 )
 const listboxOption3Props = computed(() =>
   mergeSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs),
 )
 const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
-const textLabel3Props = computed(() =>
-  mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
+const textLabel5Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs),
+)
+const textLabel6Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs),
 )
 </script>
 
@@ -219,12 +247,15 @@ const textLabel3Props = computed(() =>
         :listboxOption="listboxOptionProps"
         :icon="icon3Props"
         :textLabel="textLabelProps"
+        :textLabel2="textLabel2Props"
         :listboxOption2="listboxOption2Props"
         :icon2="icon4Props"
-        :textLabel2="textLabel2Props"
+        :textLabel3="textLabel3Props"
+        :textLabel4="textLabel4Props"
         :listboxOption3="listboxOption3Props"
         :icon3="icon5Props"
-        :textLabel3="textLabel3Props"
+        :textLabel5="textLabel5Props"
+        :textLabel6="textLabel6Props"
       />
     </slot>
   </div>

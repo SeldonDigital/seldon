@@ -123,12 +123,12 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--9xs7",
+    className: "sdn-bar sdn-bar--dxdv",
     "data-seldon-ref": "hariBar",
   },
   textTitle: {
     children: "Hari",
-    className: "sdn-text-title sdn-text-title--ulid",
+    className: "sdn-text-title sdn-text-title--hq4v",
   },
   frame: {
     wrapperElement: "div",

@@ -48,7 +48,7 @@ const sdn: ComboboxFieldFilterProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
   },
 
   buttonIconic: {

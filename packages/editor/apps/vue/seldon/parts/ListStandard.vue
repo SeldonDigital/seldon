@@ -134,7 +134,7 @@ const sdn: Record<string, any> = {
   },
   textTitle: {
     children: "Title",
-    className: "sdn-text-title sdn-text-label--yqnd",
+    className: "sdn-text-title sdn-text-title--drqy",
   },
   textSubtitle: {
     children: "Subtitle",
@@ -167,7 +167,7 @@ const sdn: Record<string, any> = {
   },
   textTitle2: {
     children: "Title",
-    className: "sdn-text-title sdn-text-label--yqnd",
+    className: "sdn-text-title sdn-text-title--drqy",
   },
   textSubtitle2: {
     children: "Subtitle",
@@ -200,7 +200,7 @@ const sdn: Record<string, any> = {
   },
   textTitle3: {
     children: "Title",
-    className: "sdn-text-title sdn-text-label--yqnd",
+    className: "sdn-text-title sdn-text-title--drqy",
   },
   textSubtitle3: {
     children: "Subtitle",

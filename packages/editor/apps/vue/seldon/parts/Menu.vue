@@ -99,7 +99,7 @@ const sdn: Record<string, any> = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
     children: "Menu Item",
@@ -117,7 +117,7 @@ const sdn: Record<string, any> = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
     children: "Menu Item",
@@ -139,7 +139,7 @@ const sdn: Record<string, any> = {
   icon3: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel5: {
     children: "Checkbox",
@@ -153,7 +153,7 @@ const sdn: Record<string, any> = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel6: {
     children: "Radio",

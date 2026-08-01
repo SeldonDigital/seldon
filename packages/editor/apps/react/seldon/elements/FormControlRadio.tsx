@@ -60,7 +60,7 @@ const sdn: FormControlRadioProps = {
   },
   textLabel2: {
     children: "Yes",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio2: {
     className: "sdn-menu-item sdn-menu-item-radio--mezf",
@@ -72,7 +72,7 @@ const sdn: FormControlRadioProps = {
   },
   textLabel3: {
     children: "No",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }
 

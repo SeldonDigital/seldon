@@ -79,7 +79,7 @@ const sdn: PanelModalProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--icju",
+    className: "sdn-input sdn-input--stob",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

@@ -66,7 +66,7 @@ const sdn: MenuProps = {
   },
   textLabel: {
     children: "Menu Item",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   textLabel2: {
     children: "⌘K",
@@ -85,7 +85,7 @@ const sdn: MenuProps = {
   },
   textLabel3: {
     children: "Menu Item",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   textLabel4: {
     children: "⌘K",

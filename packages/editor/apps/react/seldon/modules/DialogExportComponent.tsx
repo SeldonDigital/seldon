@@ -241,7 +241,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio2: {
     role: "menuitemradio",
@@ -259,7 +259,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   fieldset: {
     "aria-hidden": "false",
@@ -301,7 +301,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio4: {
     role: "menuitemradio",
@@ -319,7 +319,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   formControlRadio3: {
     "aria-hidden": "false",
@@ -352,7 +352,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio6: {
     role: "menuitemradio",
@@ -370,7 +370,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   formControlRadio4: {
     "aria-hidden": "false",
@@ -403,7 +403,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio8: {
     role: "menuitemradio",
@@ -421,7 +421,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   formControlRadio5: {
     "aria-hidden": "false",
@@ -454,7 +454,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio10: {
     role: "menuitemradio",
@@ -472,7 +472,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   formControlRadio6: {
     "aria-hidden": "false",
@@ -505,7 +505,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio12: {
     role: "menuitemradio",
@@ -523,7 +523,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   formControlRadio7: {
     "aria-hidden": "false",
@@ -556,7 +556,7 @@ const sdn: DialogExportComponentProps = {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadio14: {
     role: "menuitemradio",
@@ -574,7 +574,7 @@ const sdn: DialogExportComponentProps = {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 
   barButtons: {
