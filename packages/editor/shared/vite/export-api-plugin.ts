@@ -133,6 +133,17 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
 }
 
 /**
+ * Drops the bundled handler so the next export rebundles the current core and
+ * factory source. Without this a running dev server keeps the first bundle for
+ * its whole lifetime, so a schema edit does not reach an in-editor export.
+ */
+function invalidateOnSourceChange(file: string): void {
+  if (file.startsWith(coreRoot) || file.startsWith(factoryRoot)) {
+    cachedRunExport = null
+  }
+}
+
+/**
  * Serves the factory export over POST `/api/export` for both `vite dev` and
  * `vite preview`, replacing the former Next.js API route.
  */
@@ -141,6 +152,9 @@ export function exportApiPlugin(): Plugin {
     name: "seldon-export-api",
     configureServer(server) {
       server.middlewares.use(ROUTE, middleware)
+      server.watcher.on("change", invalidateOnSourceChange)
+      server.watcher.on("add", invalidateOnSourceChange)
+      server.watcher.on("unlink", invalidateOnSourceChange)
     },
     configurePreviewServer(server) {
       server.middlewares.use(ROUTE, middleware)
