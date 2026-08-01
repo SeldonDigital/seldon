@@ -9579,9 +9579,13 @@
               "type": "theme.categorical",
               "value": "@shadow.xlight"
             },
-            "style": {
-              "type": "empty",
-              "value": null
+            "color": {
+              "type": "exact",
+              "value": {
+                "red": 0,
+                "green": 0,
+                "blue": 0
+              }
             },
             "brightness": {
               "type": "empty",
@@ -9591,8 +9595,30 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 20
+                "value": 15
               }
+            },
+            "offsetX": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "offsetY": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 4
+              }
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.medium"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.small"
             }
           }
         ],
@@ -16110,6 +16136,33 @@
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.compact"
+        },
+        "shadow": [
+          {
+            "color": {
+              "type": "exact",
+              "value": {
+                "red": 0,
+                "green": 0,
+                "blue": 0
+              }
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 15
+              }
+            }
+          }
+        ],
+        "align": {
+          "type": "option",
+          "value": "top-left"
         }
       },
       "states": {
@@ -23082,21 +23135,6 @@
         },
         "shadow": [
           {
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.xxsmall"
-            },
-            "offsetY": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 2
-              }
-            },
             "color": {
               "type": "exact",
               "value": {
@@ -23104,6 +23142,10 @@
                 "saturation": 0,
                 "lightness": 0
               }
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
             }
           }
         ],
@@ -25446,21 +25488,6 @@
         },
         "shadow": [
           {
-            "offsetY": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 2
-              }
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.xxsmall"
-            },
             "color": {
               "type": "exact",
               "value": {
@@ -25468,6 +25495,10 @@
                 "saturation": 0,
                 "lightness": 0
               }
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
             }
           }
         ],
@@ -28772,9 +28803,13 @@
               "type": "theme.categorical",
               "value": "@shadow.xlight"
             },
-            "style": {
-              "type": "empty",
-              "value": null
+            "color": {
+              "type": "exact",
+              "value": {
+                "red": 0,
+                "green": 0,
+                "blue": 0
+              }
             },
             "brightness": {
               "type": "empty",
@@ -28784,8 +28819,30 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 20
+                "value": 15
               }
+            },
+            "offsetX": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "offsetY": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 4
+              }
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.medium"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.small"
             }
           }
         ]
@@ -29085,24 +29142,13 @@
         },
         "shadow": [
           {
-            "preset": {
+            "color": {
               "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
+              "value": "@swatch.black"
             },
             "brightness": {
               "type": "empty",
               "value": null
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
             }
           }
         ]
@@ -31207,24 +31253,9 @@
         },
         "shadow": [
           {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            },
             "brightness": {
               "type": "empty",
               "value": null
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
             }
           }
         ],

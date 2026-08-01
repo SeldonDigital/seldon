@@ -64,6 +64,11 @@ function formatNumber(value: number): string {
   return `${Math.round(value * 100) / 100}`
 }
 
+/** Formats a rem length to at most three decimals with no trailing zeros. */
+function formatRem(value: number): string {
+  return `${Math.round(value * 1000) / 1000}`
+}
+
 /** Pairs a resolved length's pixel and rem forms, e.g. `12px · 0.75rem`. */
 function formatLength(length: PixelValue | RemValue | EmptyValue | undefined): string | undefined {
   if (!length || length.type !== ValueType.EXACT) return undefined
@@ -72,5 +77,5 @@ function formatLength(length: PixelValue | RemValue | EmptyValue | undefined): s
   const px = unit === Unit.PX ? value : value * ROOT_FONT_SIZE_PX
   const rem = unit === Unit.PX ? value / ROOT_FONT_SIZE_PX : value
 
-  return `${formatNumber(px)}px · ${formatNumber(rem)}rem`
+  return `${formatNumber(px)}px · ${formatRem(rem)}rem`
 }

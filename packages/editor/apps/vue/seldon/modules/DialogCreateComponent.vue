@@ -342,7 +342,9 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-dialog", props.className))
+const rootClassName = computed(() =>
+  combineClassNames("sdn-dialog-create-component", props.className),
+)
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
 const textTitleProps = computed(() =>
