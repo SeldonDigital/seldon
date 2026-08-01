@@ -99,6 +99,7 @@ async function load(id: string): Promise<void> {
   }
   save.setRecord(record)
   history.reset(record.workspace)
+  save.markLoaded(record.id)
   status.value = "ready"
 }
 

@@ -1,7 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
 
-import type { ComponentExport, ComponentSchema } from "../../types"
+
+
+import type { ComponentExport, ComponentSchema } from "../../types";
+
 
 export const schema = {
   name: "Listbox Option",
@@ -144,6 +147,29 @@ export const schema = {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@font.label",
             },
+          },
+        },
+      },
+      {
+        component: Seldon.ComponentId.TEXT,
+        variant: "label",
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          color: {
+            type: Sdn.ValueType.COMPUTED,
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+          },
+          opacity: {
+            type: Sdn.ValueType.EXACT,
+            value: { unit: Sdn.Unit.PERCENT, value: 50 },
+          },
+          font: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@font.label",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@fontSize.xxsmall" },
           },
         },
       },

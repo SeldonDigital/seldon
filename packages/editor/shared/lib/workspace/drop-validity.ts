@@ -1,9 +1,12 @@
+import { findComponentSchema } from "@seldon/core/components/catalog"
+import { ComponentLevel } from "@seldon/core/components/constants"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 import { getNodeCatalogComponentId, getNodeChildIds } from "./node-tree"
 
 import type { Placement } from "../types"
 import type { Instance, Variant, Workspace } from "@seldon/core"
+import type { ComponentId } from "@seldon/core/components/constants"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
 /**
@@ -40,10 +43,7 @@ export function isValidDropTarget(
     nodeRelationshipService.areWithinSameVariant(target, subject, workspace)
   ) {
     if (placement === "inside") {
-      return (
-        typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
-        !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
-      )
+      return canNestInside(target, targetComponentId, subjectComponentId, workspace)
     }
 
     return true
@@ -62,10 +62,7 @@ export function isValidDropTarget(
 
     if (!rules.mutations.instantiate[subjectEntityType].allowed) return false
 
-    return (
-      typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
-      !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
-    )
+    return canNestInside(target, targetComponentId, subjectComponentId, workspace)
   }
 
   if (
@@ -80,6 +77,27 @@ export function isValidDropTarget(
   }
 
   return false
+}
+
+/**
+ * Whether the target may hold a child of `subjectComponentId`. A component may
+ * not be nested inside its own tree, because instantiating it there would expand
+ * forever. Frame-level containers ship no children of their own, so they nest
+ * freely, which is the exemption the core validators make.
+ */
+function canNestInside(
+  target: Variant | Instance | EntryNode,
+  targetComponentId: ComponentId,
+  subjectComponentId: ComponentId,
+  workspace: Workspace,
+): boolean {
+  if (!typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId)) {
+    return false
+  }
+
+  if (findComponentSchema(subjectComponentId)?.level === ComponentLevel.FRAME) return true
+
+  return !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
 }
 
 /**

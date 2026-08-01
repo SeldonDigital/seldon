@@ -39,7 +39,7 @@ function collectReferencedTreeNodeIds(workspace: Workspace): Set<string> {
 /**
  * Rebuilds a single schema-backed variant to its catalog definition while
  * leaving the default variant and other variants untouched. Keeps the variant's
- * deterministic root id so cross-board references stay linked, chains the
+ * root id and reuses its child ids so cross-board references stay linked, chains the
  * variant's children to the current default tree's children so default overrides
  * still cascade into the variant, and prunes the variant's orphaned fork nodes.
  * No-op when the target is not a schema-backed variant.
@@ -82,6 +82,7 @@ export function applyResetSchemaVariantToCatalog(
       workspace: draft,
       newNodes,
       defaultRef,
+      existingRef: oldRef,
     })
 
     for (const [id, node] of Object.entries(newNodes)) {

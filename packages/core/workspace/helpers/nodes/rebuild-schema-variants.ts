@@ -15,7 +15,8 @@ import type { BuildContext, CatalogSchemaVariant } from "./build-component-varia
  * Rebuilds one catalog schema variant against the reset default tree, writing its
  * nodes into `newNodes` and returning its tree ref. Chains the variant's children
  * to the matching default-tree children for complex schemas; emits a single leaf
- * for primitives.
+ * for primitives. `existingRef` is the variant's current tree ref on the board,
+ * whose child ids are reused so composing boards stay linked to them.
  */
 export function rebuildSchemaVariant(params: {
   catalogId: ComponentId
@@ -25,6 +26,7 @@ export function rebuildSchemaVariant(params: {
   workspace: Workspace
   newNodes: Record<string, EntryNode>
   defaultRef: ComponentTreeRef | undefined
+  existingRef?: ComponentTreeRef
 }): ComponentTreeRef {
   const {
     catalogId,
@@ -34,6 +36,7 @@ export function rebuildSchemaVariant(params: {
     workspace,
     newNodes,
     defaultRef,
+    existingRef,
   } = params
 
   if (!isComplexSchema(schema)) {
@@ -55,6 +58,7 @@ export function rebuildSchemaVariant(params: {
     ctx,
     defaultRef,
     variantRefs,
+    existingRef,
   )
 
   return variantRefs[0]

@@ -44,7 +44,7 @@ export default function EditorPage() {
 
   return (
     <LocalWorkspaceShell record={record}>
-      <ProjectInitialize workspace={record.workspace} />
+      <ProjectInitialize workspace={record.workspace} workspaceId={record.id} />
       <Editor />
     </LocalWorkspaceShell>
   )

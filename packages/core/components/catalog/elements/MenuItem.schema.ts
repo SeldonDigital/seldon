@@ -159,7 +159,7 @@ export const schema = {
           },
           opacity: {
             type: Sdn.ValueType.EXACT,
-            value: { unit: Sdn.Unit.PERCENT, value: 60 },
+            value: { unit: Sdn.Unit.PERCENT, value: 50 },
           },
           font: {
             preset: {
