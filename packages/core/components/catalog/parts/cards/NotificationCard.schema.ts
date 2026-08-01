@@ -178,14 +178,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
@@ -236,10 +228,6 @@ export const schema = {
         component: Seldon.ComponentId.BUTTON,
         variant: "label",
         overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
           background: [
             {
               kind: {
@@ -292,14 +280,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -336,10 +316,6 @@ export const schema = {
           component: Seldon.ComponentId.BUTTON,
           variant: "label",
           overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
             background: [
               {
                 kind: {
@@ -392,10 +368,6 @@ export const schema = {
             align: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
             height: {
               type: Sdn.ValueType.OPTION,
@@ -490,17 +462,9 @@ export const schema = {
           component: Seldon.ComponentId.BAR,
           variant: "buttonBar",
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.HORIZONTAL,
-            },
             align: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_RIGHT,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
             margin: {
               top: {

@@ -102,7 +102,7 @@ export function resolveOutlineColorsForNode(nodeId: string): OutlineColors {
 
 /**
  * Resolves the hover and selection outline colors for a node from the surface the
- * dashes land on. 
+ * dashes land on.
  */
 export function resolveOutlineColorsAroundNode(nodeId: string): OutlineColors {
   const element = getHtmlElementByNodeId(nodeId)

@@ -177,17 +177,9 @@ export const schema = {
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          symbol: {
-            type: Sdn.ValueType.OPTION,
-            value: "seldon-component",
-          },
           size: {
             type: Sdn.ValueType.COMPUTED,
             value: Sdn.ComputedFunction.AUTO_FIT,
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
         },
       },
@@ -202,10 +194,6 @@ export const schema = {
           cursor: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Cursor.POINTER,
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
           font: {
             preset: {
@@ -254,10 +242,6 @@ export const schema = {
             content: {
               type: Sdn.ValueType.EXACT,
               value: "Button",
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -394,10 +378,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Cursor.POINTER,
             },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -420,10 +400,6 @@ export const schema = {
             size: {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.AUTO_FIT,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             cursor: {
               type: Sdn.ValueType.OPTION,
@@ -461,17 +437,9 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
-            symbol: {
-              type: Sdn.ValueType.OPTION,
-              value: "seldon-component",
-            },
             size: {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.AUTO_FIT,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -729,24 +697,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.BUTTON,
           overrides: {
-            padding: {
-              top: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              right: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              bottom: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              left: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-            },
             corners: {
               topLeft: {
                 type: Sdn.ValueType.OPTION,
@@ -764,24 +714,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.BUTTON,
           overrides: {
-            padding: {
-              top: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              right: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              bottom: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              left: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-            },
             corners: {
               topLeft: {
                 type: Sdn.ValueType.OPTION,
@@ -805,24 +737,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.BUTTON,
           overrides: {
-            padding: {
-              top: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              right: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              bottom: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-              left: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.OPTICAL_PADDING,
-              },
-            },
             corners: {
               topLeft: { type: Sdn.ValueType.EMPTY, value: null },
               topRight: {

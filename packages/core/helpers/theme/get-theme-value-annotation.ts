@@ -65,9 +65,7 @@ function formatNumber(value: number): string {
 }
 
 /** Pairs a resolved length's pixel and rem forms, e.g. `12px · 0.75rem`. */
-function formatLength(
-  length: PixelValue | RemValue | EmptyValue | undefined,
-): string | undefined {
+function formatLength(length: PixelValue | RemValue | EmptyValue | undefined): string | undefined {
   if (!length || length.type !== ValueType.EXACT) return undefined
 
   const { unit, value } = length.value

@@ -235,11 +235,6 @@ export const schema = {
           component: Seldon.ComponentId.FRAME,
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
@@ -256,10 +251,6 @@ export const schema = {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@margin.compact",
                   },
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 brightness: {
                   type: Sdn.ValueType.EXACT,
@@ -309,11 +300,6 @@ export const schema = {
           component: Seldon.ComponentId.FRAME,
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
@@ -330,10 +316,6 @@ export const schema = {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@margin.compact",
                   },
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 brightness: {
                   type: Sdn.ValueType.EXACT,

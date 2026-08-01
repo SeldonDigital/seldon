@@ -157,10 +157,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
           align: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Align.CENTER,
@@ -294,17 +290,6 @@ export const schema = {
               endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
           ],
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
           corners: {
             topLeft: {
               type: Sdn.ValueType.EXACT,

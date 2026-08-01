@@ -183,7 +183,6 @@ export const schema = {
             value: Sdn.Orientation.HORIZONTAL,
           },
           align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
         },
@@ -268,19 +267,11 @@ export const schema = {
                     type: Sdn.ValueType.EXACT,
                     value: "Expertise",
                   },
-                  color: {
-                    type: Sdn.ValueType.COMPUTED,
-                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                  },
                   font: {
                     size: {
                       type: Sdn.ValueType.THEME_ORDINAL,
                       value: "@fontSize.xsmall",
                     },
-                  },
-                  wrapText: {
-                    type: Sdn.ValueType.OPTION,
-                    value: false,
                   },
                 },
               },
@@ -294,10 +285,6 @@ export const schema = {
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@size.small",
-                  },
-                  color: {
-                    type: Sdn.ValueType.COMPUTED,
-                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                   },
                 },
               },
@@ -431,7 +418,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
           },
@@ -564,10 +550,6 @@ export const schema = {
               component: Seldon.ComponentId.TEXT,
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: " | " },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
                 font: {
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
@@ -627,10 +609,6 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Start Project" },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
           ],
@@ -650,7 +628,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
           },
@@ -748,7 +725,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_RIGHT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
           },
@@ -806,7 +782,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
           },
@@ -845,10 +820,6 @@ export const schema = {
                       type: Sdn.ValueType.THEME_ORDINAL,
                       value: "@size.small",
                     },
-                    color: {
-                      type: Sdn.ValueType.COMPUTED,
-                      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    },
                   },
                 },
                 {
@@ -856,10 +827,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Menu" },
-                    color: {
-                      type: Sdn.ValueType.COMPUTED,
-                      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    },
                   },
                 },
               ],
@@ -874,7 +841,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
           },
@@ -894,7 +860,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_RIGHT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
           },
@@ -969,7 +934,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
           },
@@ -1029,7 +993,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_RIGHT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -1088,10 +1051,6 @@ export const schema = {
                     content: {
                       type: Sdn.ValueType.EXACT,
                       value: "Let's Connect",
-                    },
-                    color: {
-                      type: Sdn.ValueType.COMPUTED,
-                      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                     },
                     font: {
                       size: {
@@ -1174,7 +1133,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -1254,10 +1212,6 @@ export const schema = {
               component: Seldon.ComponentId.TEXT,
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: " | " },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {

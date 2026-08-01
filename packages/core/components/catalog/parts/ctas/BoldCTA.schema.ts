@@ -223,19 +223,11 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Experience superior skip tracing",
           },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@font.display",
             },
-          },
-          textAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.TextAlign.LEFT,
           },
         },
       },
@@ -247,10 +239,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "150+ data points per search.",
           },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -260,10 +248,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@fontSize.small",
             },
-          },
-          textAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.TextAlign.LEFT,
           },
         },
       },
@@ -303,10 +287,6 @@ export const schema = {
               content: {
                 type: Sdn.ValueType.EXACT,
                 value: "Get started",
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               },
               font: {
                 preset: {

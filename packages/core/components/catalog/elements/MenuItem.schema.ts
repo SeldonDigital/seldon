@@ -123,12 +123,7 @@ export const schema = {
         component: Seldon.ComponentId.ICON,
         overrides: {
           display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
-          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
         },
       },
       {
@@ -138,16 +133,6 @@ export const schema = {
           display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           content: { type: Sdn.ValueType.EXACT, value: "Menu Item" },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
-          font: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.label",
-            },
-          },
         },
       },
       {
@@ -156,20 +141,9 @@ export const schema = {
         overrides: {
           display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
           opacity: {
             type: Sdn.ValueType.EXACT,
             value: { unit: Sdn.Unit.PERCENT, value: 50 },
-          },
-          font: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.label",
-            },
           },
         },
       },
@@ -197,10 +171,6 @@ export const schema = {
               value: "material-check",
             },
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
@@ -210,10 +180,6 @@ export const schema = {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Option" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
@@ -222,11 +188,6 @@ export const schema = {
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             opacity: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PERCENT, value: 50 },
@@ -256,10 +217,6 @@ export const schema = {
               value: "material-check",
             },
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
@@ -269,10 +226,6 @@ export const schema = {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Checkbox Item" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
       ],
@@ -298,10 +251,6 @@ export const schema = {
               value: "material-radioButtonChecked",
             },
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
@@ -311,10 +260,6 @@ export const schema = {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Radio Item" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
       ],

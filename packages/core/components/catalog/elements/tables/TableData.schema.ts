@@ -210,12 +210,6 @@ export const schema = {
       children: [
         {
           component: Seldon.ComponentId.CHIP,
-          overrides: {
-            buttonSize: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
-            },
-          },
           children: [
             {
               component: Seldon.ComponentId.TEXT,
@@ -237,15 +231,10 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
             align: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
           },

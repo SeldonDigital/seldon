@@ -84,6 +84,8 @@ Use `mergeProperties(base, patch, options)` for two property snapshots. Pass the
 
 Workspace files store raw authoring state only. Node entries persist `template` and `overrides`. Effective merged properties and `ValueType.COMPUTED` results come from read-side compute selectors and are not persisted back into the workspace file.
 
+Do not store an override that equals the template value. Such an override leaves `reset` nothing to fall back to and breaks reset and re-override in the editor. For schema authoring guidance on redundant overrides, see `.cursor/rules/components.mdc`.
+
 ### Paths And References
 
 Authoritative property key unions live in `types/property-keys.ts`. They cover top-level keys, compound facet names, shorthand sides, and the layered paint keys `background` and `shadow`.

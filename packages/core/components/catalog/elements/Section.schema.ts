@@ -163,10 +163,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "About",
           },
-          color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.primary",
-          },
         },
       },
       {
@@ -176,10 +172,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Contact",
           },
-          color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.primary",
-          },
         },
       },
       {
@@ -188,10 +180,6 @@ export const schema = {
           content: {
             type: Sdn.ValueType.EXACT,
             value: "Support",
-          },
-          color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.primary",
           },
         },
       },
@@ -218,10 +206,6 @@ export const schema = {
             width: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@dimension.large",
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
           },
         },
@@ -503,10 +487,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "Privacy Policy",
             },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
-            },
           },
         },
         {
@@ -516,10 +496,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "Terms of Service",
             },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
-            },
           },
         },
         {
@@ -528,10 +504,6 @@ export const schema = {
             content: {
               type: Sdn.ValueType.EXACT,
               value: "Cookie Policy",
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
             },
           },
         },

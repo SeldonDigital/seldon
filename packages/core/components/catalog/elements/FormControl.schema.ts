@@ -174,10 +174,6 @@ export const schema = {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "Label",
-          },
           width: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -210,10 +206,6 @@ export const schema = {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Label",
-            },
             width: {
               type: Sdn.ValueType.EXACT,
               value: {
@@ -237,10 +229,6 @@ export const schema = {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Label",
-            },
             width: {
               type: Sdn.ValueType.EXACT,
               value: {
@@ -263,21 +251,11 @@ export const schema = {
         {
           component: Seldon.ComponentId.INPUT,
           variant: "checkbox",
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
         },
         {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Label",
-            },
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
@@ -294,21 +272,11 @@ export const schema = {
         {
           component: Seldon.ComponentId.INPUT,
           variant: "radio",
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
         },
         {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Label",
-            },
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,

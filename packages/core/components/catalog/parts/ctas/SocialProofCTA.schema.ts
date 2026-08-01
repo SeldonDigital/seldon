@@ -212,7 +212,6 @@ export const schema = {
             value:
               "We've saved us thousands of hours of work. We're able to help our customers 10x faster.",
           },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
