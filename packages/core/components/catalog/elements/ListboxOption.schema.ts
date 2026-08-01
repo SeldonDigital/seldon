@@ -154,6 +154,7 @@ export const schema = {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           color: {
