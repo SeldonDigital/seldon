@@ -15304,7 +15304,7 @@
         },
         "align": {
           "type": "option",
-          "value": "bottom-left"
+          "value": "left"
         }
       }
     },

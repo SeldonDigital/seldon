@@ -65,49 +65,49 @@
   --sdn-swatch-accent-bn30: hsl(239 65% 42%);
   --sdn-swatch-gray-b50: hsl(210 4% 78%);
   /* Sizes */
-  --sdn-sizes-tiny: 0.183rem;
-  --sdn-sizes-xxsmall: 0.322rem;
-  --sdn-sizes-xsmall: 0.567rem;
-  --sdn-sizes-small: 0.79rem;
+  --sdn-sizes-tiny: 0.1875rem;
+  --sdn-sizes-xxsmall: 0.328125rem;
+  --sdn-sizes-xsmall: 0.5625rem;
+  --sdn-sizes-small: 0.796875rem;
   --sdn-sizes-medium: 1rem;
-  --sdn-sizes-large: 1.394rem;
-  --sdn-sizes-xlarge: 1.763rem;
-  --sdn-sizes-xxlarge: 2.452rem;
-  --sdn-sizes-huge: 3.103rem;
+  --sdn-sizes-large: 1.390625rem;
+  --sdn-sizes-xlarge: 1.765625rem;
+  --sdn-sizes-xxlarge: 2.453125rem;
+  --sdn-sizes-huge: 3.109375rem;
   /* Margins */
-  --sdn-margins-tight: 0.322rem;
-  --sdn-margins-compact: 0.567rem;
+  --sdn-margins-tight: 0.328125rem;
+  --sdn-margins-compact: 0.5625rem;
   --sdn-margins-cozy: 1rem;
-  --sdn-margins-comfortable: 1.763rem;
-  --sdn-margins-open: 3.103rem;
+  --sdn-margins-comfortable: 1.765625rem;
+  --sdn-margins-open: 3.109375rem;
   /* Paddings */
-  --sdn-paddings-tight: 0.322rem;
-  --sdn-paddings-compact: 0.567rem;
+  --sdn-paddings-tight: 0.328125rem;
+  --sdn-paddings-compact: 0.5625rem;
   --sdn-paddings-cozy: 1rem;
-  --sdn-paddings-comfortable: 1.763rem;
-  --sdn-paddings-open: 3.103rem;
+  --sdn-paddings-comfortable: 1.765625rem;
+  --sdn-paddings-open: 3.109375rem;
   /* Gaps */
-  --sdn-gaps-tight: 0.322rem;
-  --sdn-gaps-compact: 0.567rem;
+  --sdn-gaps-tight: 0.328125rem;
+  --sdn-gaps-compact: 0.5625rem;
   --sdn-gaps-cozy: 1rem;
-  --sdn-gaps-comfortable: 1.763rem;
-  --sdn-gaps-open: 3.103rem;
+  --sdn-gaps-comfortable: 1.765625rem;
+  --sdn-gaps-open: 3.109375rem;
   /* Corners */
-  --sdn-corners-tight: 0.322rem;
-  --sdn-corners-compact: 0.567rem;
-  --sdn-corners-cozy: 1.394rem;
-  --sdn-corners-comfortable: 1.763rem;
-  --sdn-corners-open: 2.452rem;
+  --sdn-corners-tight: 0.328125rem;
+  --sdn-corners-compact: 0.5625rem;
+  --sdn-corners-cozy: 1.390625rem;
+  --sdn-corners-comfortable: 1.765625rem;
+  --sdn-corners-open: 2.453125rem;
   /* Font Sizes */
-  --sdn-font-size-tiny: 0.567rem;
-  --sdn-font-size-xxsmall: 0.681rem;
-  --sdn-font-size-xsmall: 0.79rem;
-  --sdn-font-size-small: 0.896rem;
+  --sdn-font-size-tiny: 0.5625rem;
+  --sdn-font-size-xxsmall: 0.6875rem;
+  --sdn-font-size-xsmall: 0.796875rem;
+  --sdn-font-size-small: 0.890625rem;
   --sdn-font-size-medium: 1rem;
-  --sdn-font-size-large: 1.394rem;
-  --sdn-font-size-xlarge: 1.763rem;
-  --sdn-font-size-xxlarge: 2.452rem;
-  --sdn-font-size-huge: 3.103rem;
+  --sdn-font-size-large: 1.390625rem;
+  --sdn-font-size-xlarge: 1.765625rem;
+  --sdn-font-size-xxlarge: 2.453125rem;
+  --sdn-font-size-huge: 3.109375rem;
   /* Font Weights */
   --sdn-font-weight-thin: 100;
   --sdn-font-weight-xlight: 200;
@@ -127,11 +127,11 @@
   --sdn-line-height-comfortable: 2;
   --sdn-line-height-open: 2.5;
   /* Border Widths */
-  --sdn-border-width-xsmall: 0.059rem;
-  --sdn-border-width-small: 0.112rem;
-  --sdn-border-width-medium: 0.183rem;
-  --sdn-border-width-large: 0.322rem;
-  --sdn-border-width-xlarge: 0.567rem;
+  --sdn-border-width-xsmall: 0.0625rem;
+  --sdn-border-width-small: 0.109375rem;
+  --sdn-border-width-medium: 0.1875rem;
+  --sdn-border-width-large: 0.328125rem;
+  --sdn-border-width-xlarge: 0.5625rem;
   /* High Contrast */
   --sdn-hc-on-white: hsl(210 4% 12%);
   --sdn-hc-on-gray: hsl(210 4% 98%);
