@@ -53,7 +53,7 @@ export function buildRouteStage(inputs: {
     ...candidateLines,
     `${historyBlock(inputs.history)}User message: ${JSON.stringify(inputs.message)}`,
     "",
-    'If the message asks for a design change, answer {"kind":"process"}.',
+    'If the message asks for a design change, answer {"kind":"process"}, even if the element it names seems vague, unnamed, or ambiguous to you -- you cannot see the canvas, so you cannot judge that. Never ask your own "which one do you mean?" question; later steps resolve the element against the real board.',
     // A clarification round-trip must return to processing: when the
     // assistant asked "which one?" and the user answers by selecting on the
     // canvas and saying "this one", routing that BACK to a reply loops the
