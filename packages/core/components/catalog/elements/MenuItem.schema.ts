@@ -1,7 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
 
-import type { ComponentExport, ComponentSchema } from "../../types"
+
+
+import type { ComponentExport, ComponentSchema } from "../../types";
+
 
 export const schema = {
   name: "Menu Item",
@@ -145,6 +148,7 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: { unit: Sdn.Unit.PERCENT, value: 50 },
           },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
         },
       },
     ],
@@ -180,6 +184,9 @@ export const schema = {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Option" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            padding: {
+              right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            },
           },
         },
         {

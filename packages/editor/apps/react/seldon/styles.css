@@ -1186,7 +1186,7 @@ body {
   align-items: start;
   justify-content: center;
   gap: var(--sdn-gaps-compact);
-  box-shadow: 0px 4px 0.5rem 0.188rem color-mix(in srgb, var(--sdn-swatch-black) 15%, transparent);
+  box-shadow: 0px 4px 0.5rem 0.188rem color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
@@ -1214,6 +1214,25 @@ body {
   border-radius: var(--sdn-corners-tight);
 }
 
+.sdn-menu-item-option {
+  cursor: pointer;
+  color: var(--sdn-hc-on-offWhite);
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: start;
+  gap: var(--sdn-gaps-compact);
+  padding-top: var(--sdn-paddings-tight);
+  padding-inline-end: var(--sdn-paddings-compact);
+  padding-bottom: var(--sdn-paddings-tight);
+  padding-inline-start: var(--sdn-paddings-compact);
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: var(--sdn-corners-tight);
+}
+
 .sdn-menu-options {
   background-color: var(--sdn-swatch-white);
   cursor: pointer;
@@ -1223,7 +1242,7 @@ body {
   align-items: start;
   justify-content: center;
   gap: var(--sdn-gaps-compact);
-  box-shadow: 0px 4px 0.5rem 0.188rem color-mix(in srgb, var(--sdn-swatch-black) 15%, transparent);
+  box-shadow: 0px 4px 0.5rem 0.188rem color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;

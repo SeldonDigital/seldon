@@ -37,7 +37,7 @@ const sdn: MenuOptionsProps = {
   role: "listbox",
   "aria-hidden": "false",
   menuItemOption: {
-    className: "sdn-menu-item sdn-menu-item-option--6dxl",
+    className: "sdn-menu-item-option sdn-menu-item-option--6dxl",
   },
   icon: {
     icon: "material-check",

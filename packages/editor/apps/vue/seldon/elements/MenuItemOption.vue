@@ -80,7 +80,7 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-menu-item", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-menu-item-option", props.className))
 const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
 const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
 const textLabelProps = computed(() =>

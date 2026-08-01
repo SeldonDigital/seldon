@@ -87,7 +87,7 @@ export function MenuItemOption({
   seldonRefs,
   ...props
 }: MenuItemOptionProps) {
-  const menuItemOptionClassName = combineClassNames("sdn-menu-item", className)
+  const menuItemOptionClassName = combineClassNames("sdn-menu-item-option", className)
 
   const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
 

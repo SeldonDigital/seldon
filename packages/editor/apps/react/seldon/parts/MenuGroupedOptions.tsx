@@ -49,7 +49,7 @@ const sdn: MenuGroupedOptionsProps = {
     className: "sdn-text-label sdn-text-label--oqkb",
   },
   menuItemOption: {
-    className: "sdn-menu-item sdn-menu-item-option--6dxl",
+    className: "sdn-menu-item-option sdn-menu-item-option--6dxl",
   },
   icon: {
     icon: "material-check",
