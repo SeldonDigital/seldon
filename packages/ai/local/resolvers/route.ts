@@ -16,11 +16,16 @@ export type RouteDecision =
   | { kind: "process" }
 
 /** Routes one message: conversational reply, or on to processing. */
-export async function route(context: TurnContext, history?: ChatMessage[]) {
+export async function route(
+  context: TurnContext,
+  history?: ChatMessage[],
+  pendingCandidates?: string[],
+) {
   const { prompt, schema } = buildRouteStage({
     message: context.message,
     history,
     hasSelection: context.resolved.selectedNodeId !== undefined,
+    pendingCandidates,
   })
   const { value: routeDecision, metrics } =
     await callOllamaFormat<RouteDecision>({

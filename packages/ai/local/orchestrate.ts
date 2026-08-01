@@ -1,3 +1,6 @@
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+
+import { nodeStringsSummary } from "../prompt/context-sections/node-strings"
 import { resolveModelId } from "../shared/model-thinking"
 import type {
   AgentMetrics,
@@ -191,6 +194,22 @@ export async function chatToActions(
   const turnWasCancelled = (): boolean => input.signal?.aborted === true
   if (turnWasCancelled()) return finish(CANCELLED_REPLY)
 
+  // Plain-word descriptions of the previous ask's pick list, deterministic
+  // and workspace-grounded, so a "which ones can I choose from?" follow-up
+  // is answered from the real candidates rather than improvised.
+  const pendingCandidates = (input.pendingClarification?.candidateIds ?? [])
+    .map((nodeId) => {
+      const node = input.workspace.nodes[nodeId]
+      if (!node) return undefined
+      const parts = [
+        getNodeCatalogId(node, input.workspace) ?? "",
+        node.label ?? "",
+        nodeStringsSummary(input.workspace, nodeId),
+      ].filter((part) => part !== "")
+      return parts.length > 0 ? parts.join(", ") : undefined
+    })
+    .filter((entry): entry is string => entry !== undefined)
+
   // Clarification guard, enforced in code rather than left to the router's
   // judgment: when the previous turn ended by asking which element was meant
   // and the user now has a node selected, the selection IS the answer -- the
@@ -204,7 +223,11 @@ export async function chatToActions(
   // turn ends with zero actions.
   const routeDecision = selectionAnswersPendingClarification
     ? ({ kind: "process" } as const)
-    : await route(context, input.history)
+    : await route(
+        context,
+        input.history,
+        pendingCandidates.length > 0 ? pendingCandidates : undefined,
+      )
   if (selectionAnswersPendingClarification) {
     recordStep(context, "route", {
       ok: true,
@@ -213,7 +236,11 @@ export async function chatToActions(
     })
   }
   const routeChoseConversation = routeDecision.kind === "reply"
-  if (routeChoseConversation) return finish(routeDecision.message)
+  // A conversational aside ("which ones can I choose from?") does not answer
+  // a pending ask -- carry it forward so selecting an element on the NEXT
+  // message still counts as the answer.
+  if (routeChoseConversation)
+    return finish(routeDecision.message, input.pendingClarification)
   if (turnWasCancelled()) return finish(CANCELLED_REPLY)
 
   // Stage 2: decompose into self-contained steps (a single instruction comes

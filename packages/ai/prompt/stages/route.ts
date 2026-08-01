@@ -27,7 +27,21 @@ export function buildRouteStage(inputs: {
   message: string
   history?: ChatMessage[]
   hasSelection?: boolean
+  /**
+   * Plain-word descriptions of the elements the previous turn's ask offered,
+   * so a follow-up like "which ones can I choose from?" gets the real list
+   * instead of an improvised non-answer (issue 06, second half).
+   */
+  pendingCandidates?: string[]
 }): PromptStage {
+  const candidateLines =
+    inputs.pendingCandidates && inputs.pendingCandidates.length > 0
+      ? [
+          "Your previous message asked the user to pick between these elements:",
+          ...inputs.pendingCandidates.map((entry) => `- ${entry}`),
+          "",
+        ]
+      : []
   const prompt = [
     "You are the chat assistant inside a design editor.",
     CAPABILITY_SUMMARY,
@@ -36,6 +50,7 @@ export function buildRouteStage(inputs: {
       ? "The user has an element selected on the canvas."
       : "Nothing is selected on the canvas.",
     "",
+    ...candidateLines,
     `${historyBlock(inputs.history)}User message: ${JSON.stringify(inputs.message)}`,
     "",
     'If the message asks for a design change, answer {"kind":"process"}.',
@@ -45,6 +60,7 @@ export function buildRouteStage(inputs: {
     // user forever (issue 02). Processing owns selection resolution.
     'If the previous assistant message asked which element was meant and this message answers it (a name, a nodeId, or "this one" with an element selected), answer {"kind":"process"}.',
     'If it is conversation (a greeting, thanks, a question about you or your capabilities), answer {"kind":"reply","message":"<your short, friendly answer>"}.',
+    'If the user asks what the choices are and a pick list is shown above, answer {"kind":"reply"} listing those elements in plain words.',
   ].join("\n")
   return { prompt, schema: ROUTE_SCHEMA }
 }
