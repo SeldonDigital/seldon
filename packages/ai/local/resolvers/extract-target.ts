@@ -16,6 +16,8 @@ export interface TargetHint {
   match?: string
   /** The edit applies to every element of a kind, not one particular one. */
   plural: boolean
+  /** A bounded plural's requested size ("the top two"), when named. */
+  count?: number
 }
 
 /**
@@ -35,6 +37,7 @@ export async function extractTargetHint(
     pointsAtSelection: boolean
     match: string
     plural: boolean
+    count: number
   }>({
     model: context.model,
     host: context.host,
@@ -49,10 +52,17 @@ export async function extractTargetHint(
   })
 
   const searchPhrase = (rawHint.match ?? "").trim()
+  // 0 is the sentinel for "no number was named", mirroring match's "" -> undefined.
+  // A count without a phrase is as meaningless as plural without one -- there
+  // is no class to narrow.
+  const requestedCount =
+    rawHint.count > 0 && searchPhrase !== "" ? rawHint.count : undefined
   return {
     pointsAtSelection: rawHint.pointsAtSelection,
     match: searchPhrase === "" ? undefined : searchPhrase,
     // Plural without a phrase is meaningless: there is no class to match.
-    plural: rawHint.plural && searchPhrase !== "",
+    // A named count implies plural even if the model's own boolean waffles.
+    plural: (rawHint.plural || requestedCount !== undefined) && searchPhrase !== "",
+    count: requestedCount,
   }
 }

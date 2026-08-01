@@ -49,6 +49,25 @@ const FALLBACK_POOL = 12
 /** How many ranked candidates the transcript's ranking step lists. */
 const RANKING_PREVIEW_COUNT = 5
 
+/** One embeddable descriptor for a single node: catalog id, label, string content, spatial label. */
+export function describeCandidate(
+  workspace: Workspace,
+  nodeId: string,
+  spatialLabel: string | undefined,
+): Candidate | undefined {
+  const node = workspace.nodes[nodeId]
+  const nodeIsMissing = node === undefined
+  if (nodeIsMissing) return undefined
+  const descriptorParts = [
+    getNodeCatalogId(node, workspace) ?? "",
+    node.label ?? "",
+    nodeStringsSummary(workspace, nodeId),
+  ].filter((part) => part !== "")
+  const nodeHasSpatialLabel = spatialLabel !== undefined && spatialLabel !== ""
+  if (nodeHasSpatialLabel) descriptorParts.push(`position: ${spatialLabel}`)
+  return { id: nodeId, text: descriptorParts.join(", ") }
+}
+
 /** Every node on the board as an embeddable candidate string. */
 function collectCandidates(
   workspace: Workspace,
@@ -69,18 +88,12 @@ function collectCandidates(
   const spatialLabelsByNodeId = spatialLabels(workspace, boardKey, nodeIds)
 
   return nodeIds.flatMap((nodeId) => {
-    const node = workspace.nodes[nodeId]
-    const nodeIsMissing = node === undefined
-    if (nodeIsMissing) return []
-    const descriptorParts = [
-      getNodeCatalogId(node, workspace) ?? "",
-      node.label ?? "",
-      nodeStringsSummary(workspace, nodeId),
-    ].filter((part) => part !== "")
-    const spatialLabel = spatialLabelsByNodeId.get(nodeId)
-    const nodeHasSpatialLabel = spatialLabel !== undefined
-    if (nodeHasSpatialLabel) descriptorParts.push(`position: ${spatialLabel}`)
-    return [{ id: nodeId, text: descriptorParts.join(", ") }]
+    const candidate = describeCandidate(
+      workspace,
+      nodeId,
+      spatialLabelsByNodeId.get(nodeId),
+    )
+    return candidate ? [candidate] : []
   })
 }
 

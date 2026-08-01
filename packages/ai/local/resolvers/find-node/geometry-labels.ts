@@ -148,6 +148,30 @@ function synonyms(position: SiblingPosition): string[] {
 }
 
 /**
+ * Numeric sibling order for every requested node, for callers that need to
+ * sort/slice a pool rather than just match label wording (e.g. narrowing
+ * "the top two" down to the first two by index). `references` carries which
+ * direction word corresponds to index 0 vs the last index, so a caller can
+ * tell "top"/"first" (ascending) apart from "bottom"/"last" (descending)
+ * without re-deriving orientation itself.
+ */
+export function siblingOrder(
+  workspace: Workspace,
+  boardKey: BoardKey | undefined,
+  nodeIds: readonly string[],
+): Map<string, SiblingPosition> {
+  const positionsByNodeId = new Map<string, SiblingPosition>()
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) return positionsByNodeId
+  const allPositions = siblingPositions(workspace, boardKey)
+  for (const nodeId of nodeIds) {
+    const position = allPositions.get(nodeId)
+    if (position !== undefined) positionsByNodeId.set(nodeId, position)
+  }
+  return positionsByNodeId
+}
+
+/**
  * The canonical spatial label for every requested node: the base positional
  * phrase plus its synonyms, comma-joined ("top, first, top-most"). Nodes with
  * no siblings (roots, only children) label as "" -- position carries no

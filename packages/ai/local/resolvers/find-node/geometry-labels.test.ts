@@ -5,7 +5,7 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 
-import { spatialLabels } from "./geometry-labels"
+import { siblingOrder, spatialLabels } from "./geometry-labels"
 
 describe("spatialLabels", () => {
   it("labels siblings by position with edge synonyms", () => {
@@ -54,5 +54,34 @@ describe("spatialLabels", () => {
     const workspace = createEmptyWorkspace()
     const labels = spatialLabels(workspace, undefined, ["x"])
     expect(labels.get("x")).toBe("")
+  })
+})
+
+describe("siblingOrder", () => {
+  it("exposes the numeric index and reference direction for each sibling", () => {
+    const workspace = addComponent(
+      { boardKey: ComponentId.BUTTON } as never,
+      createEmptyWorkspace(),
+    )
+    const board = workspace.boards[ComponentId.BUTTON]
+    const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+    if (boardHasNoVariantTrees) return
+    const children = (board.variants[0]?.children ?? []).map((ref) => ref.id)
+    expect(children.length).toBeGreaterThanOrEqual(2)
+
+    const order = siblingOrder(workspace, ComponentId.BUTTON, children)
+
+    const first = order.get(children[0]!)
+    const last = order.get(children[children.length - 1]!)
+    expect(first?.index).toBe(0)
+    expect(last?.index).toBe(children.length - 1)
+    expect(first?.count).toBe(children.length)
+    expect(first?.references).toEqual(["top", "bottom"])
+  })
+
+  it("returns an empty map without a board", () => {
+    const workspace = createEmptyWorkspace()
+    const order = siblingOrder(workspace, undefined, ["x"])
+    expect(order.size).toBe(0)
   })
 })

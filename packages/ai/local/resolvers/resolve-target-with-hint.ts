@@ -3,6 +3,7 @@ import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-
 import { type TurnContext, isClarification, recordStep } from "../turn-context"
 import { extractTargetHint } from "./extract-target"
 import { findNodeSemantic } from "./find-node"
+import { narrowClassTarget } from "./find-node/narrow-pool"
 import {
   type TargetResolution,
   resolveClassTarget,
@@ -129,6 +130,25 @@ export async function resolveTargetWithHint(
       context.resolved.resolvedKey,
       searchPhrase,
     )
+    const requestedCount = targetHint.count
+    if (
+      classResolution.kind === "resolved-many" &&
+      requestedCount !== undefined &&
+      classResolution.nodeIds.length > requestedCount
+    ) {
+      const exhaustiveMatchCount = classResolution.nodeIds.length
+      const narrowedResolution = await narrowClassTarget(
+        context,
+        classResolution.nodeIds,
+        requestedCount,
+        context.message,
+      )
+      recordStep(context, "resolve_target", {
+        ok: true,
+        output: `Matched "${searchPhrase}" as a class: ${exhaustiveMatchCount} nodes, narrowed to ${narrowedResolution.nodeIds.length} (count=${requestedCount}).`,
+      })
+      return narrowedResolution
+    }
     recordStep(context, "resolve_target", {
       ok: classResolution.kind === "resolved-many",
       output:

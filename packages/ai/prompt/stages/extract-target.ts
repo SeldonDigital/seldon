@@ -19,8 +19,9 @@ const EXTRACT_TARGET_SCHEMA = {
     pointsAtSelection: { type: "boolean" },
     match: { type: "string" },
     plural: { type: "boolean" },
+    count: { type: "integer" },
   },
-  required: ["pointsAtSelection", "match", "plural"],
+  required: ["pointsAtSelection", "match", "plural", "count"],
 }
 
 /**
@@ -48,6 +49,8 @@ export function buildExtractTargetStage(inputs: {
     'A plural or quantified phrase is still a name: "all the chips" -> match "chips", "every tab" -> match "tabs".',
     "plural: true when the edit applies to every element of a kind, judged by the grammatical number of the noun the edit applies to.",
     'Plural noun -> true: "the chips", "all the chips", "each tab". Singular noun -> false, even with a quantifier: "all of the text" is one element.',
+    'count: the number named for a BOUNDED plural reference, e.g. "the top two texts" -> 2, "the two chips about cars" -> 2. Set count to 0 when no number is named -- a plain plural like "all the chips" or "the chips" is unbounded -> 0.',
+    'A named count still means plural: true, even if the noun looks singular: "the top 2 text" -> plural true, count 2.',
   ].join("\n")
   return { prompt, schema: EXTRACT_TARGET_SCHEMA }
 }

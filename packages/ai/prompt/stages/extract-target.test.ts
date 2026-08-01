@@ -20,7 +20,7 @@ describe("buildExtractTargetStage", () => {
     expect(prompt).toContain("NOTHING selected")
   })
 
-  it("requires both fields, so a phrase is never discarded", () => {
+  it("requires all fields, so a phrase is never discarded", () => {
     const { schema } = buildExtractTargetStage({
       message: "make all the chips red",
       hasSelection: false,
@@ -28,7 +28,20 @@ describe("buildExtractTargetStage", () => {
     // The either/or this replaced could answer "selection" and drop the
     // phrase, leaving nothing downstream to search with.
     expect(schema).not.toHaveProperty("oneOf")
-    expect(schema.required).toEqual(["pointsAtSelection", "match", "plural"])
+    expect(schema.required).toEqual([
+      "pointsAtSelection",
+      "match",
+      "plural",
+      "count",
+    ])
+  })
+
+  it("tells the model how to name a bounded count", () => {
+    const { prompt } = buildExtractTargetStage({
+      message: "make the top two texts bold",
+      hasSelection: false,
+    })
+    expect(prompt).toContain("BOUNDED plural reference")
   })
 
   it("tells the model a plural phrase is still a name", () => {

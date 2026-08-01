@@ -114,3 +114,88 @@ export function seedChipRowWorkspace(): SeededWorkspace {
 
   return { workspace, boardKey: CHIP_ROW_BOARD, chipIds }
 }
+
+/** The board key the text-list seed is built on. */
+export const TEXT_LIST_BOARD = ComponentId.LIST
+
+/**
+ * Distinct topical text content, in the order the seed inserts them
+ * (top to bottom). Three of the five entries share a "cars" topic, so a
+ * semantic query ("the two texts about cars") and a spatial query ("the top
+ * two texts") each have one unambiguous correct answer to score against.
+ */
+export const TEXT_LIST_TOPICS = [
+  "The new sedan gets 40 miles per gallon on the highway.",
+  "Our latest smartphone features a faster processor and better camera.",
+  "This SUV comes standard with all-wheel drive and a V6 engine.",
+  "The recipe calls for two cups of flour and a pinch of salt.",
+  "Electric vehicles are becoming more affordable every year.",
+] as const
+
+export interface TextListSeed {
+  workspace: Workspace
+  boardKey: string
+  /** Text node ids in top-to-bottom order, matching {@link TEXT_LIST_TOPICS}. */
+  textNodeIds: string[]
+}
+
+/**
+ * A list board holding several text nodes with distinct topical content, in
+ * a fixed vertical order -- built the same way {@link seedChipRowWorkspace}
+ * is, but with content set per node so a semantic query ("the two about
+ * cars") has real distinguishing signal to rank against, not just
+ * interchangeable siblings.
+ */
+export function seedTextListWorkspace(): TextListSeed {
+  let workspace = addComponent(
+    { boardKey: TEXT_LIST_BOARD } as never,
+    createEmptyWorkspace(),
+  )
+
+  workspace = applyActions(workspace, [
+    { type: "add_variant", payload: { boardKey: TEXT_LIST_BOARD } },
+  ] as WorkspaceAction[])
+
+  const board = workspace.boards[TEXT_LIST_BOARD]
+  if (!board || !isComponentBoard(board))
+    throw new Error(`seed: ${TEXT_LIST_BOARD} board was not created`)
+  const userVariant = board.variants[board.variants.length - 1]
+  if (!userVariant) throw new Error("seed: no user variant to insert into")
+  const parentId = userVariant.id
+
+  for (let index = 0; index < TEXT_LIST_TOPICS.length; index++) {
+    const alreadyOnWorkspace = Boolean(workspace.boards[ComponentId.TEXT])
+    const insertAction: WorkspaceAction = alreadyOnWorkspace
+      ? ({
+          type: "insert_default_instance",
+          payload: { boardKey: ComponentId.TEXT, parentId },
+        } as WorkspaceAction)
+      : ({
+          type: "add_component_and_insert_default_instance",
+          payload: { boardKey: ComponentId.TEXT, target: { parentId } },
+        } as WorkspaceAction)
+    workspace = applyActions(workspace, [insertAction])
+  }
+
+  const textNodeIds = nodeIdsByCatalogId(workspace, TEXT_LIST_BOARD, "text")
+  if (textNodeIds.length !== TEXT_LIST_TOPICS.length)
+    throw new Error(
+      `seed: expected ${TEXT_LIST_TOPICS.length} texts on ${TEXT_LIST_BOARD}, got ${textNodeIds.length}`,
+    )
+
+  for (let index = 0; index < textNodeIds.length; index++) {
+    workspace = applyActions(workspace, [
+      {
+        type: "set_node_properties",
+        payload: {
+          nodeId: textNodeIds[index],
+          properties: {
+            content: { type: "exact", value: TEXT_LIST_TOPICS[index] },
+          },
+        },
+      } as unknown as WorkspaceAction,
+    ])
+  }
+
+  return { workspace, boardKey: TEXT_LIST_BOARD, textNodeIds }
+}
