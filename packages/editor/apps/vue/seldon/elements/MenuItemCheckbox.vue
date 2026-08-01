@@ -80,10 +80,10 @@ const textLabelProps = computed(() =>
 </script>
 
 <template>
-  <button :class="rootClassName" v-bind="rootAttrs">
+  <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
       <Icon v-if="iconProps !== null" v-bind="iconProps" />
       <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
     </slot>
-  </button>
+  </div>
 </template>

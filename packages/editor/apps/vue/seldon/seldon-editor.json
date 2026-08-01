@@ -15348,6 +15348,17 @@
             "type": "option",
             "value": "none"
           }
+        },
+        "color": {
+          "type": "theme.categorical",
+          "value": "@swatch.offBlack"
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
         }
       }
     },
@@ -16097,7 +16108,45 @@
       "label": "Menu",
       "theme": null,
       "template": "catalog:menu",
-      "overrides": {},
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "shadow": [
+          {
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 15
+              }
+            }
+          }
+        ]
+      },
       "states": {
         "hover": {},
         "focused": {

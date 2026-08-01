@@ -22,7 +22,7 @@ indirectly) * any machine learning or artificial intelligence system without wri
 /**
  * Combobox: ComboboxGroupedCombobox
  * Level: Part
- * Intent: Editable field paired with a listbox of options to choose from.
+ * Intent: Editable field paired with a menu of options to choose from.
  * Tags: combobox, select, dropdown, input, part, UI
  * Type: Custom
  *

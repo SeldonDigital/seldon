@@ -17,23 +17,20 @@ const MIN_SPACE_BELOW = 240
 
 /**
  * Controlled floating option list on the generated `MenuOptions`/`MenuItemOption`
- * chrome. The caller owns `open` and the `anchor`. Right-aligns a fixed-width
- * panel to the anchor, flips above when room is tight, and supports
- * arrow/enter/escape keyboard selection. Portals to `body` and re-stamps
- * `data-theme`/`data-mode` so it keeps the chrome theme. Powers the
- * objects-sidebar Display picker and is reusable for the properties sidebar.
+ * chrome. The caller owns `open` and the `anchor`. Left-aligns to the anchor,
+ * sits at least as wide as it, and grows to fit the widest option, capped to the
+ * viewport. Flips above when room is tight, and supports arrow/enter/escape
+ * keyboard selection. Portals to `body` and re-stamps `data-theme`/`data-mode`
+ * so it keeps the chrome theme. Powers the objects-sidebar Display picker and the
+ * properties sidebar.
  */
-const props = withDefaults(
-  defineProps<{
-    open: boolean
-    anchor: HTMLElement | null
-    optionGroups: ComboboxOptionItem[][]
-    value: string
-    resolveIcon?: (value: string) => string
-    width?: number
-  }>(),
-  { width: 200 },
-)
+const props = defineProps<{
+  open: boolean
+  anchor: HTMLElement | null
+  optionGroups: ComboboxOptionItem[][]
+  value: string
+  resolveIcon?: (value: string) => string
+}>()
 
 const emit = defineEmits<{
   (event: "select", value: string): void
@@ -44,7 +41,7 @@ const { chromeTheme } = storeToRefs(useEditorConfigStore())
 const resolvedMode = useResolvedInterfaceMode()
 
 const panelRef = ref<HTMLElement | null>(null)
-const position = ref<ListPosition>({ x: 0, y: 0, w: props.width })
+const position = ref<ListPosition>({ x: 0, y: 0, w: 0 })
 const highlightedValue = ref<string | undefined>(undefined)
 
 const flatOptions = computed<ComboboxOptionItem[]>(() =>
@@ -58,8 +55,6 @@ function place(): void {
     { width: window.innerWidth, height: window.innerHeight },
     {
       gap: PANEL_GAP,
-      width: props.width,
-      align: "end",
       minSpaceBelow: MIN_SPACE_BELOW,
     },
   )
@@ -68,7 +63,9 @@ function place(): void {
 const panelStyle = computed(() => ({
   position: "fixed" as const,
   zIndex: 60,
-  width: `${position.value.w}px`,
+  minWidth: `${position.value.w}px`,
+  width: "max-content",
+  maxWidth: `calc(100vw - ${position.value.x}px - 8px)`,
   outline: "none",
   left: `${position.value.x}px`,
   top: `${position.value.y}px`,

@@ -89,11 +89,11 @@ const textLabel2Props = computed(() =>
 </script>
 
 <template>
-  <button :class="rootClassName" v-bind="rootAttrs">
+  <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
       <Icon v-if="iconProps !== null" v-bind="iconProps" />
       <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
     </slot>
-  </button>
+  </div>
 </template>
