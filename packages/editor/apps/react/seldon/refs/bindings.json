@@ -4558,7 +4558,7 @@
       {
         "file": "app/menus/ComboboxOptions.tsx",
         "component": "renderOption",
-        "line": 135,
+        "line": 137,
         "conditional": false,
         "expression": "{ children: option.annotation }",
         "inputs": [
@@ -4591,14 +4591,14 @@
       {
         "file": "app/menus/ComboboxOptions.tsx",
         "component": "renderOption",
-        "line": 133,
+        "line": 135,
         "conditional": false,
         "expression": "{ icon: icon.icon as IconProps[\"icon\"] }",
         "inputs": [
           {
             "name": "icon",
             "declaredAt": {
-              "line": 104,
+              "line": 106,
               "kind": "const",
               "via": "resolveIcon"
             }
@@ -4620,7 +4620,7 @@
               {
                 "name": "icon",
                 "declaredAt": {
-                  "line": 104,
+                  "line": 106,
                   "kind": "const",
                   "via": "resolveIcon"
                 }
@@ -4642,7 +4642,7 @@
       {
         "file": "app/menus/ComboboxOptions.tsx",
         "component": "renderOption",
-        "line": 134,
+        "line": 136,
         "conditional": false,
         "expression": "{ children: option.name }",
         "inputs": [
@@ -8411,7 +8411,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "ComboboxOptions",
-          "line": 179,
+          "line": 181,
           "expression": "handleClose",
           "inputs": [
             {
@@ -10519,7 +10519,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 119,
+          "line": 121,
           "expression": "option.disabled || undefined",
           "inputs": [
             {
@@ -10535,7 +10535,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 119,
+          "line": 121,
           "expression": "option.disabled || undefined",
           "inputs": [
             {
@@ -10553,13 +10553,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 118,
+          "line": 120,
           "expression": "isSelected || undefined",
           "inputs": [
             {
               "name": "isSelected",
               "declaredAt": {
-                "line": 102,
+                "line": 104,
                 "kind": "const"
               }
             }
@@ -10569,13 +10569,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 118,
+          "line": 120,
           "expression": "isSelected || undefined",
           "inputs": [
             {
               "name": "isSelected",
               "declaredAt": {
-                "line": 102,
+                "line": 104,
                 "kind": "const"
               }
             }
@@ -10587,13 +10587,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 120,
+          "line": 122,
           "expression": "isHighlighted ? HIGHLIGHT_CLASS : undefined",
           "inputs": [
             {
               "name": "isHighlighted",
               "declaredAt": {
-                "line": 103,
+                "line": 105,
                 "kind": "const"
               }
             },
@@ -10610,13 +10610,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 120,
+          "line": 122,
           "expression": "isHighlighted ? HIGHLIGHT_CLASS : undefined",
           "inputs": [
             {
               "name": "isHighlighted",
               "declaredAt": {
-                "line": 103,
+                "line": 105,
                 "kind": "const"
               }
             },
@@ -10635,7 +10635,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 142,
+          "line": 144,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -10645,13 +10645,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 121,
+          "line": 123,
           "expression": "handleMouseDown",
           "inputs": [
             {
               "name": "handleMouseDown",
               "declaredAt": {
-                "line": 106,
+                "line": 108,
                 "kind": "const"
               }
             }
@@ -10661,13 +10661,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 121,
+          "line": 123,
           "expression": "handleMouseDown",
           "inputs": [
             {
               "name": "handleMouseDown",
               "declaredAt": {
-                "line": 106,
+                "line": 108,
                 "kind": "const"
               }
             }
@@ -10679,13 +10679,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 122,
+          "line": 124,
           "expression": "handleMouseEnter",
           "inputs": [
             {
               "name": "handleMouseEnter",
               "declaredAt": {
-                "line": 112,
+                "line": 114,
                 "kind": "const"
               }
             }
@@ -10695,13 +10695,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 122,
+          "line": 124,
           "expression": "handleMouseEnter",
           "inputs": [
             {
               "name": "handleMouseEnter",
               "declaredAt": {
-                "line": 112,
+                "line": 114,
                 "kind": "const"
               }
             }
@@ -10713,7 +10713,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 117,
+          "line": 119,
           "expression": "\"option\"",
           "inputs": [],
           "spread": true
@@ -10721,7 +10721,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 117,
+          "line": 119,
           "expression": "\"option\"",
           "inputs": [],
           "spread": true
@@ -10731,7 +10731,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 143,
+          "line": 145,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -10741,13 +10741,13 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "renderOption",
-          "line": 144,
+          "line": 146,
           "expression": "annotationSlot",
           "inputs": [
             {
               "name": "annotationSlot",
               "declaredAt": {
-                "line": 128,
+                "line": 130,
                 "kind": "const"
               }
             }
@@ -10761,7 +10761,7 @@
         {
           "file": "app/menus/ComboboxOptions.tsx",
           "component": "ComboboxOptions",
-          "line": 180,
+          "line": 182,
           "expression": "onPointerLeave",
           "inputs": [
             {

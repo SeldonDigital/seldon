@@ -4103,14 +4103,14 @@
       {
         "file": "app/menus/ComboboxOptions.vue",
         "component": "ComboboxOptions",
-        "line": 92,
+        "line": 89,
         "conditional": false,
         "expression": "{ children: option.annotation }",
         "inputs": [
           {
             "name": "option",
             "declaredAt": {
-              "line": 51,
+              "line": 48,
               "kind": "parameter"
             }
           }
@@ -4123,7 +4123,7 @@
               {
                 "name": "option",
                 "declaredAt": {
-                  "line": 51,
+                  "line": 48,
                   "kind": "parameter"
                 }
               }
@@ -4136,22 +4136,22 @@
       {
         "file": "app/menus/ComboboxOptions.vue",
         "component": "ComboboxOptions",
-        "line": 90,
+        "line": 87,
         "conditional": false,
         "expression": "{ icon: props.resolveIcon?.(option.value) ?? \"seldon-component\" }",
         "inputs": [
           {
             "name": "props",
             "declaredAt": {
-              "line": 26,
+              "line": 27,
               "kind": "const",
-              "via": "withDefaults"
+              "via": "defineProps"
             }
           },
           {
             "name": "option",
             "declaredAt": {
-              "line": 51,
+              "line": 48,
               "kind": "parameter"
             }
           }
@@ -4164,15 +4164,15 @@
               {
                 "name": "props",
                 "declaredAt": {
-                  "line": 26,
+                  "line": 27,
                   "kind": "const",
-                  "via": "withDefaults"
+                  "via": "defineProps"
                 }
               },
               {
                 "name": "option",
                 "declaredAt": {
-                  "line": 51,
+                  "line": 48,
                   "kind": "parameter"
                 }
               }
@@ -4185,14 +4185,14 @@
       {
         "file": "app/menus/ComboboxOptions.vue",
         "component": "ComboboxOptions",
-        "line": 91,
+        "line": 88,
         "conditional": false,
         "expression": "{ children: option.name }",
         "inputs": [
           {
             "name": "option",
             "declaredAt": {
-              "line": 51,
+              "line": 48,
               "kind": "parameter"
             }
           }
@@ -4205,7 +4205,7 @@
               {
                 "name": "option",
                 "declaredAt": {
-                  "line": 51,
+                  "line": 48,
                   "kind": "parameter"
                 }
               }
@@ -8957,13 +8957,13 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 206,
+          "line": 203,
           "expression": "option.value === value || undefined",
           "inputs": [
             {
               "name": "option",
               "declaredAt": {
-                "line": 51,
+                "line": 48,
                 "kind": "parameter"
               }
             },
@@ -8982,7 +8982,7 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 208,
+          "line": 205,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8992,7 +8992,7 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 209,
+          "line": 206,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9002,20 +9002,20 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 210,
+          "line": 207,
           "expression": "optionAnnotationSlot(option)",
           "inputs": [
             {
               "name": "optionAnnotationSlot",
               "declaredAt": {
-                "line": 97,
+                "line": 94,
                 "kind": "function"
               }
             },
             {
               "name": "option",
               "declaredAt": {
-                "line": 51,
+                "line": 48,
                 "kind": "parameter"
               }
             }
