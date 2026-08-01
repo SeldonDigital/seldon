@@ -22,29 +22,29 @@ indirectly) * any machine learning or artificial intelligence system without wri
 /**
  * Combobox: Combobox
  * Level: Part
- * Intent: Editable field paired with a listbox of options to choose from.
+ * Intent: Editable field paired with a menu of options to choose from.
  * Tags: combobox, select, dropdown, input, part, UI
  * Type: Default
  *
  * Structure:
- *   ComboboxField    comboboxField
- *     Icon           icon
- *     Input          input
- *     ButtonIconic   buttonIconic
- *       Icon         icon2
- *   Listbox          listbox
- *     ListboxOption  listboxOption
- *       Icon         icon3
- *       TextLabel    textLabel
- *       TextLabel    textLabel2
- *     ListboxOption  listboxOption2
- *       Icon         icon4
- *       TextLabel    textLabel3
- *       TextLabel    textLabel4
- *     ListboxOption  listboxOption3
- *       Icon         icon5
- *       TextLabel    textLabel5
- *       TextLabel    textLabel6
+ *   ComboboxField     comboboxField
+ *     Icon            icon
+ *     Input           input
+ *     ButtonIconic    buttonIconic
+ *       Icon          icon2
+ *   MenuOptions       menuOptions
+ *     MenuItemOption  menuItemOption
+ *       Icon          icon3
+ *       TextLabel     textLabel
+ *       TextLabel     textLabel2
+ *     MenuItemOption  menuItemOption2
+ *       Icon          icon4
+ *       TextLabel     textLabel3
+ *       TextLabel     textLabel4
+ *     MenuItemOption  menuItemOption3
+ *       Icon          icon5
+ *       TextLabel     textLabel5
+ *       TextLabel     textLabel6
  *
  * @example
  * ```vue
@@ -54,12 +54,12 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *   icon="material-star"
  *   input="{}"
  *   buttonIconic={() => {}}
- *   listbox="{}"
- *   listboxOption="{}"
+ *   menuOptions="{}"
+ *   menuItemOption="{}"
  *   textLabel="{}"
  *   textLabel2="{}"
- *   listboxOption2="{}"
- *   listboxOption3="{}"
+ *   menuItemOption2="{}"
+ *   menuItemOption3="{}"
  * />
  * ```
  */
@@ -70,7 +70,7 @@ export default {}
 import { computed } from "vue"
 
 import ComboboxField from "../elements/ComboboxField.vue"
-import Listbox from "../parts/Listbox.vue"
+import MenuOptions from "../parts/MenuOptions.vue"
 import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
@@ -80,16 +80,16 @@ const props = defineProps<{
   input?: Record<string, unknown> | null
   buttonIconic?: Record<string, unknown> | null
   icon2?: Record<string, unknown> | null
-  listbox?: Record<string, unknown> | null
-  listboxOption?: Record<string, unknown> | null
+  menuOptions?: Record<string, unknown> | null
+  menuItemOption?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
   textLabel2?: Record<string, unknown> | null
-  listboxOption2?: Record<string, unknown> | null
+  menuItemOption2?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
   textLabel3?: Record<string, unknown> | null
   textLabel4?: Record<string, unknown> | null
-  listboxOption3?: Record<string, unknown> | null
+  menuItemOption3?: Record<string, unknown> | null
   icon5?: Record<string, unknown> | null
   textLabel5?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
@@ -125,15 +125,15 @@ const sdn: Record<string, any> = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
   },
-  listbox: {
+  menuOptions: {
     role: "listbox",
     "aria-hidden": "false",
-    className: "sdn-listbox sdn-listbox--4wpg",
+    className: "sdn-menu-options sdn-menu-options--4wpg",
   },
-  listboxOption: {
+  menuItemOption: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon3: {
     icon: "seldon-component",
@@ -148,10 +148,10 @@ const sdn: Record<string, any> = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption2: {
+  menuItemOption2: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon4: {
     icon: "seldon-component",
@@ -166,10 +166,10 @@ const sdn: Record<string, any> = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption3: {
+  menuItemOption3: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon5: {
     icon: "seldon-component",
@@ -197,9 +197,11 @@ const buttonIconicProps = computed(() =>
   mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
 )
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
-const listboxProps = computed(() => mergeSlot(sdn.listbox, props.listbox, props.seldonRefs))
-const listboxOptionProps = computed(() =>
-  mergeSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs),
+const menuOptionsProps = computed(() =>
+  mergeSlot(sdn.menuOptions, props.menuOptions, props.seldonRefs),
+)
+const menuItemOptionProps = computed(() =>
+  mergeSlot(sdn.menuItemOption, props.menuItemOption, props.seldonRefs),
 )
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
 const textLabelProps = computed(() =>
@@ -208,8 +210,8 @@ const textLabelProps = computed(() =>
 const textLabel2Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
 )
-const listboxOption2Props = computed(() =>
-  mergeSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs),
+const menuItemOption2Props = computed(() =>
+  mergeSlot(sdn.menuItemOption2, props.menuItemOption2, props.seldonRefs),
 )
 const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
 const textLabel3Props = computed(() =>
@@ -218,8 +220,8 @@ const textLabel3Props = computed(() =>
 const textLabel4Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs),
 )
-const listboxOption3Props = computed(() =>
-  mergeSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs),
+const menuItemOption3Props = computed(() =>
+  mergeSlot(sdn.menuItemOption3, props.menuItemOption3, props.seldonRefs),
 )
 const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
 const textLabel5Props = computed(() =>
@@ -241,18 +243,18 @@ const textLabel6Props = computed(() =>
         :buttonIconic="buttonIconicProps"
         :icon2="icon2Props"
       />
-      <Listbox
-        v-if="listboxProps !== null"
-        v-bind="listboxProps"
-        :listboxOption="listboxOptionProps"
+      <MenuOptions
+        v-if="menuOptionsProps !== null"
+        v-bind="menuOptionsProps"
+        :menuItemOption="menuItemOptionProps"
         :icon="icon3Props"
         :textLabel="textLabelProps"
         :textLabel2="textLabel2Props"
-        :listboxOption2="listboxOption2Props"
+        :menuItemOption2="menuItemOption2Props"
         :icon2="icon4Props"
         :textLabel3="textLabel3Props"
         :textLabel4="textLabel4Props"
-        :listboxOption3="listboxOption3Props"
+        :menuItemOption3="menuItemOption3Props"
         :icon3="icon5Props"
         :textLabel5="textLabel5Props"
         :textLabel6="textLabel6Props"

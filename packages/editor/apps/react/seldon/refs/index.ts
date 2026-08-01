@@ -1948,8 +1948,8 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     className: "sdn-text-label sdn-text-label--lqmh",
     views: [
       {
-        component: "ListboxOption",
-        file: "elements/ListboxOption.tsx",
+        component: "MenuItemOption",
+        file: "elements/MenuItemOption.tsx",
         slot: "textLabel2",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
@@ -1962,8 +1962,8 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     className: "sdn-icon sdn-icon--xi68",
     views: [
       {
-        component: "ListboxOption",
-        file: "elements/ListboxOption.tsx",
+        component: "MenuItemOption",
+        file: "elements/MenuItemOption.tsx",
         slot: "icon",
         type: "IconProps",
         rendersWhen: "unless-null",
@@ -1976,8 +1976,8 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
-        component: "ListboxOption",
-        file: "elements/ListboxOption.tsx",
+        component: "MenuItemOption",
+        file: "elements/MenuItemOption.tsx",
         slot: "textLabel",
         type: "TextLabelProps",
         rendersWhen: "when-passed",

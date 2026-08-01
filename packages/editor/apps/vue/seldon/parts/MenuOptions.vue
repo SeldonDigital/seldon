@@ -20,29 +20,29 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *****/
 
 /**
- * List: box
+ * Menu: MenuOptions
  * Level: Part
- * Intent: Floating list of selectable options for a combobox or select.
- * Tags: listbox, options, select, combobox, part, overlay, UI
- * Type: Default
+ * Intent: Floating list of actions anchored to a trigger.
+ * Tags: menu, dropdown, actions, part, overlay, UI
+ * Type: Custom
  *
  * Structure:
- *   ListboxOption  listboxOption
- *     Icon         icon
- *     TextLabel    textLabel
- *     TextLabel    textLabel2
- *   ListboxOption  listboxOption2
- *     Icon         icon2
- *     TextLabel    textLabel3
- *     TextLabel    textLabel4
- *   ListboxOption  listboxOption3
- *     Icon         icon3
- *     TextLabel    textLabel5
- *     TextLabel    textLabel6
+ *   MenuItemOption  menuItemOption
+ *     Icon          icon
+ *     TextLabel     textLabel
+ *     TextLabel     textLabel2
+ *   MenuItemOption  menuItemOption2
+ *     Icon          icon2
+ *     TextLabel     textLabel3
+ *     TextLabel     textLabel4
+ *   MenuItemOption  menuItemOption3
+ *     Icon          icon3
+ *     TextLabel     textLabel5
+ *     TextLabel     textLabel6
  *
  * @example
  * ```vue
- * <Listbox
+ * <MenuOptions
  *   role="listbox"
  *   aria-hidden="false"
  * />
@@ -54,22 +54,22 @@ export default {}
 <script setup lang="ts">
 import { computed } from "vue"
 
-import ListboxOption from "../elements/ListboxOption.vue"
+import MenuItemOption from "../elements/MenuItemOption.vue"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
-  listboxOption?: Record<string, unknown> | null
+  menuItemOption?: Record<string, unknown> | null
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
   textLabel2?: Record<string, unknown> | null
-  listboxOption2?: Record<string, unknown> | null
+  menuItemOption2?: Record<string, unknown> | null
   icon2?: Record<string, unknown> | null
   textLabel3?: Record<string, unknown> | null
   textLabel4?: Record<string, unknown> | null
-  listboxOption3?: Record<string, unknown> | null
+  menuItemOption3?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
   textLabel5?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
@@ -82,10 +82,10 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   role: "listbox",
   "aria-hidden": "false",
-  listboxOption: {
+  menuItemOption: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon: {
     icon: "seldon-component",
@@ -100,10 +100,10 @@ const sdn: Record<string, any> = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption2: {
+  menuItemOption2: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon2: {
     icon: "seldon-component",
@@ -118,10 +118,10 @@ const sdn: Record<string, any> = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption3: {
+  menuItemOption3: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon3: {
     icon: "seldon-component",
@@ -138,10 +138,10 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-listbox", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-menu-options", props.className))
 const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const listboxOptionProps = computed(() =>
-  mergeSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs),
+const menuItemOptionProps = computed(() =>
+  mergeSlot(sdn.menuItemOption, props.menuItemOption, props.seldonRefs),
 )
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const textLabelProps = computed(() =>
@@ -150,8 +150,8 @@ const textLabelProps = computed(() =>
 const textLabel2Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
 )
-const listboxOption2Props = computed(() =>
-  mergeSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs),
+const menuItemOption2Props = computed(() =>
+  mergeSlot(sdn.menuItemOption2, props.menuItemOption2, props.seldonRefs),
 )
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 const textLabel3Props = computed(() =>
@@ -160,8 +160,8 @@ const textLabel3Props = computed(() =>
 const textLabel4Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs),
 )
-const listboxOption3Props = computed(() =>
-  mergeSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs),
+const menuItemOption3Props = computed(() =>
+  mergeSlot(sdn.menuItemOption3, props.menuItemOption3, props.seldonRefs),
 )
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
 const textLabel5Props = computed(() =>
@@ -175,21 +175,21 @@ const textLabel6Props = computed(() =>
 <template>
   <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
-      <ListboxOption v-if="listboxOptionProps !== null" v-bind="listboxOptionProps">
+      <MenuItemOption v-if="menuItemOptionProps !== null" v-bind="menuItemOptionProps">
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
         <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-      </ListboxOption>
-      <ListboxOption v-if="listboxOption2Props !== null" v-bind="listboxOption2Props">
+      </MenuItemOption>
+      <MenuItemOption v-if="menuItemOption2Props !== null" v-bind="menuItemOption2Props">
         <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
         <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
         <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
-      </ListboxOption>
-      <ListboxOption v-if="listboxOption3Props !== null" v-bind="listboxOption3Props">
+      </MenuItemOption>
+      <MenuItemOption v-if="menuItemOption3Props !== null" v-bind="menuItemOption3Props">
         <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
         <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
         <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
-      </ListboxOption>
+      </MenuItemOption>
     </slot>
   </div>
 </template>

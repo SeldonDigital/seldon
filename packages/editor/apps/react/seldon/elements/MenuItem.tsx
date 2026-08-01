@@ -11,15 +11,15 @@
  *
  *****/
 
-import { ButtonHTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
 
-import { HTMLButton } from "../native-react/HTML.Button"
+import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
-export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MenuItemProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
@@ -94,7 +94,7 @@ export function MenuItem({
   const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
 
   return (
-    <HTMLButton
+    <Frame
       className={menuItemClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
@@ -109,6 +109,6 @@ export function MenuItem({
           {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
         </>
       )}
-    </HTMLButton>
+    </Frame>
   )
 }

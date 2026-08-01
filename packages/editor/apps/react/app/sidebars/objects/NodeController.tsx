@@ -1,4 +1,4 @@
-import { ComboboxListbox } from "@app/menus"
+import { ComboboxOptions } from "@app/menus"
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import {
@@ -116,7 +116,7 @@ const NodeInner = function NodeInner({
     focusTargetRef: ref,
   })
 
-  // The row Display picker reuses the same floating `ComboboxListbox` widget as
+  // The row Display picker reuses the same floating `ComboboxOptions` widget as
   // the properties Display control. Its trigger stays visible (unlike the
   // on-demand actions menu), so a row's display is always one click away.
   const displayPicker = useRowDisplayPicker({
@@ -326,7 +326,7 @@ const NodeInner = function NodeInner({
           />
         </SidebarOverlays>
       </RowSelectionTarget>
-      <ComboboxListbox {...displayPicker.listbox} />
+      <ComboboxOptions {...displayPicker.options} />
       {actionsMenu.menu}
 
       {childrenSection}

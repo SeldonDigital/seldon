@@ -282,12 +282,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
             },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.label",
-              },
-            },
           },
         },
       ],
@@ -318,12 +312,6 @@ export const schema = {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.label",
-              },
             },
           },
         },

@@ -170,6 +170,11 @@ function onKeydown(event: KeyboardEvent): void {
       event.preventDefault()
       activeIndex.value = enabledIndexes.value[enabledIndexes.value.length - 1] ?? -1
       break
+    case "Enter":
+    case " ":
+      event.preventDefault()
+      selectActive()
+      break
     case "Escape":
       event.preventDefault()
       emit("close")
@@ -189,6 +194,14 @@ function handleSelect(item: MenuItemModel): void {
     focusReturnTarget(props.anchor)
     closedBySelect = false
   })
+}
+
+// A row is a Frame rather than a button, so Enter and Space run the action the
+// highlighted row would run on click.
+function selectActive(): void {
+  const item = props.items[activeIndex.value]
+  if (!item || item === "separator") return
+  handleSelect(item)
 }
 
 function onDocumentPointerDown(event: PointerEvent): void {
@@ -267,10 +280,8 @@ onBeforeUnmount(() => {
           <Hr v-if="item === 'separator'" />
           <MenuItem
             v-else
-            type="button"
             :data-menu-index="index"
             :data-testid="item.testId"
-            :disabled="item.disabled"
             :aria-disabled="item.disabled || undefined"
             :tabindex="index === activeIndex ? 0 : -1"
             :icon="markerIcon(item)"

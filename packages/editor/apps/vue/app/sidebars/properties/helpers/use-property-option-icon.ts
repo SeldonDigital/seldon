@@ -11,8 +11,8 @@ interface ResolverDeps {
 
 /**
  * Builds a per-option icon resolver for a property combobox. Returns an icon id
- * string for the `ComboboxListbox` option chrome. The icon decision comes from
- * the shared `resolvePropertyOptionIconBinding`; the string-based Vue listbox
+ * string for the `ComboboxOptions` option chrome. The icon decision comes from
+ * the shared `resolvePropertyOptionIconBinding`; the string-based Vue option list
  * maps the dynamic node kinds to their nearest icon id, since it renders icon
  * ids only.
  */

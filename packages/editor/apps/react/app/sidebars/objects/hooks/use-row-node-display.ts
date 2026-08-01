@@ -39,7 +39,7 @@ interface RowNodeDisplayInput {
 }
 
 interface RowNodeDisplay {
-  /** Option groups for the row's `ComboboxListbox` Display picker. */
+  /** Option groups for the row's `ComboboxOptions` Display picker. */
   displayOptionGroups: ComboboxOptionItem[][]
   /** Current picker value key: "default", "inherit", or a `Display` state. */
   displayValue: string
@@ -114,7 +114,7 @@ export function useRowNodeDisplay({
     }
   }
 
-  // The row Display picker reuses the same floating `ComboboxListbox` as the
+  // The row Display picker reuses the same floating `ComboboxOptions` as the
   // properties Display control. Two sections: Default/Inherit, then the concrete
   // states. Option values match `currentDisplayKey`.
   const displayOptionGroups: ComboboxOptionItem[][] = isEcho

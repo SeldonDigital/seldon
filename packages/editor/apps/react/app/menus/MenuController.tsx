@@ -295,6 +295,11 @@ function FloatingMenu({
         event.preventDefault()
         setActiveIndex(enabledIndexes[enabledIndexes.length - 1] ?? -1)
         break
+      case "Enter":
+      case " ":
+        event.preventDefault()
+        selectActive()
+        break
       case "Escape":
         event.preventDefault()
         onClose()
@@ -323,6 +328,15 @@ function FloatingMenu({
 
       closedBySelectRef.current = false
     })
+  }
+
+  // A row is a Frame rather than a button, so Enter and Space run the action
+  // the highlighted row would run on click.
+  const selectActive = () => {
+    const item = items[activeIndex]
+
+    if (!item || item === "separator") return
+    handleSelect(item)
   }
 
   const containerStyle: CSSProperties = {
@@ -355,10 +369,8 @@ function FloatingMenu({
           return (
             <MenuItem
               key={item.id}
-              type="button"
               data-menu-index={index}
               data-testid={item.testId}
-              disabled={item.disabled}
               aria-disabled={item.disabled || undefined}
               tabIndex={highlighted ? 0 : -1}
               onClick={() => handleSelect(item)}

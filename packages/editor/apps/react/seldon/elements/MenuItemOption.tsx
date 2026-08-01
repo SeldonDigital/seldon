@@ -19,7 +19,7 @@ import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
-export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
+export interface MenuItemOptionProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
@@ -33,7 +33,7 @@ export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
 //
 // Default property values
 //
-const sdn: ListboxOptionProps = {
+const sdn: MenuItemOptionProps = {
   role: "option",
   "aria-hidden": "false",
   icon: {
@@ -57,11 +57,11 @@ const sdn: ListboxOptionProps = {
 }
 
 /**
- * List: boxOption
+ * Menu Item: MenuItemOption
  * Level: Element
- * Intent: Single selectable row inside a listbox.
- * Tags: listbox, option, select, row, element, UI
- * Type: Default
+ * Intent: Single actionable row inside a menu.
+ * Tags: menu, menuitem, action, row, element, UI
+ * Type: Custom
  *
  * Structure:
  *   Icon       icon        -> optionIcon
@@ -70,13 +70,13 @@ const sdn: ListboxOptionProps = {
  *
  * @example
  * ```tsx
- * <ListboxOption
+ * <MenuItemOption
  *   role="option"
  *   aria-hidden="false"
  * />
  * ```
  */
-export function ListboxOption({
+export function MenuItemOption({
   className = "",
   icon,
 
@@ -87,8 +87,8 @@ export function ListboxOption({
   children,
   seldonRefs,
   ...props
-}: ListboxOptionProps) {
-  const listboxOptionClassName = combineClassNames("sdn-listbox-option", className)
+}: MenuItemOptionProps) {
+  const menuItemOptionClassName = combineClassNames("sdn-menu-item", className)
 
   const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
 
@@ -98,7 +98,7 @@ export function ListboxOption({
 
   return (
     <Frame
-      className={listboxOptionClassName}
+      className={menuItemOptionClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
       {...props}

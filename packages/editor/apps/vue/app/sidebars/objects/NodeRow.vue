@@ -2,7 +2,7 @@
 import { useDragStore } from "@app/canvas/drag-store"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import ComboboxOptions from "@app/menus/ComboboxOptions.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
 import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
@@ -499,7 +499,7 @@ function childRootId(childId: EntryNodeId): string {
       @close="closeActions"
     />
 
-    <ComboboxListbox
+    <ComboboxOptions
       v-if="!isEcho"
       :open="displayOpen"
       :anchor="displayAnchor"

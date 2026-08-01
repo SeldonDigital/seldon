@@ -13,7 +13,7 @@
 
 import { HTMLAttributes } from "react"
 
-import { ListboxOption, ListboxOptionProps } from "../elements/ListboxOption"
+import { MenuItemOption, MenuItemOptionProps } from "../elements/MenuItemOption"
 import { Frame, FrameProps } from "../frames/Frame"
 import { Hr, HrProps } from "../primitives/Hr"
 import { Icon, IconProps } from "../primitives/Icon"
@@ -21,17 +21,17 @@ import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
-export interface ListboxGroupedListboxProps extends HTMLAttributes<HTMLElement> {
+export interface MenuGroupedOptionsProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
   frame?: FrameProps | null
   textLabel?: TextLabelProps | null
-  listboxOption?: ListboxOptionProps | null
+  menuItemOption?: MenuItemOptionProps | null
   icon?: IconProps | null
   textLabel2?: TextLabelProps | null
   textLabel3?: TextLabelProps | null
-  listboxOption2?: ListboxOptionProps | null
+  menuItemOption2?: MenuItemOptionProps | null
   icon2?: IconProps | null
   textLabel4?: TextLabelProps | null
   textLabel5?: TextLabelProps | null
@@ -40,11 +40,11 @@ export interface ListboxGroupedListboxProps extends HTMLAttributes<HTMLElement> 
 
   frame2?: FrameProps | null
   textLabel6?: TextLabelProps | null
-  listboxOption3?: ListboxOptionProps | null
+  menuItemOption3?: MenuItemOptionProps | null
   icon3?: IconProps | null
   textLabel7?: TextLabelProps | null
   textLabel8?: TextLabelProps | null
-  listboxOption4?: ListboxOptionProps | null
+  menuItemOption4?: MenuItemOptionProps | null
   icon4?: IconProps | null
   textLabel9?: TextLabelProps | null
   textLabel10?: TextLabelProps | null
@@ -53,7 +53,7 @@ export interface ListboxGroupedListboxProps extends HTMLAttributes<HTMLElement> 
 //
 // Default property values
 //
-const sdn: ListboxGroupedListboxProps = {
+const sdn: MenuGroupedOptionsProps = {
   role: "listbox",
   "aria-hidden": "false",
   frame: {
@@ -66,8 +66,8 @@ const sdn: ListboxGroupedListboxProps = {
     children: "Group A",
     className: "sdn-text-label sdn-text-label--oqkb",
   },
-  listboxOption: {
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+  menuItemOption: {
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon: {
     icon: "seldon-component",
@@ -82,8 +82,8 @@ const sdn: ListboxGroupedListboxProps = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption2: {
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+  menuItemOption2: {
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon2: {
     icon: "seldon-component",
@@ -114,8 +114,8 @@ const sdn: ListboxGroupedListboxProps = {
     children: "Group B",
     className: "sdn-text-label sdn-text-label--oqkb",
   },
-  listboxOption3: {
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+  menuItemOption3: {
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon3: {
     icon: "seldon-component",
@@ -130,8 +130,8 @@ const sdn: ListboxGroupedListboxProps = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption4: {
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+  menuItemOption4: {
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon4: {
     icon: "seldon-component",
@@ -149,52 +149,52 @@ const sdn: ListboxGroupedListboxProps = {
 }
 
 /**
- * List: boxGroupedListbox
+ * Menu: MenuGroupedOptions
  * Level: Part
- * Intent: Floating list of selectable options for a combobox or select.
- * Tags: listbox, options, select, combobox, part, overlay, UI
+ * Intent: Floating list of actions anchored to a trigger.
+ * Tags: menu, dropdown, actions, part, overlay, UI
  * Type: Inline
  *
  * Structure:
- *   Frame            frame
- *     TextLabel      textLabel
- *     ListboxOption  listboxOption
- *       Icon         icon
- *       TextLabel    textLabel2
- *       TextLabel    textLabel3
- *     ListboxOption  listboxOption2
- *       Icon         icon2
- *       TextLabel    textLabel4
- *       TextLabel    textLabel5
- *   Hr               hr
- *   Frame            frame2
- *     TextLabel      textLabel6
- *     ListboxOption  listboxOption3
- *       Icon         icon3
- *       TextLabel    textLabel7
- *       TextLabel    textLabel8
- *     ListboxOption  listboxOption4
- *       Icon         icon4
- *       TextLabel    textLabel9
- *       TextLabel    textLabel10
+ *   Frame             frame
+ *     TextLabel       textLabel
+ *     MenuItemOption  menuItemOption
+ *       Icon          icon
+ *       TextLabel     textLabel2
+ *       TextLabel     textLabel3
+ *     MenuItemOption  menuItemOption2
+ *       Icon          icon2
+ *       TextLabel     textLabel4
+ *       TextLabel     textLabel5
+ *   Hr                hr
+ *   Frame             frame2
+ *     TextLabel       textLabel6
+ *     MenuItemOption  menuItemOption3
+ *       Icon          icon3
+ *       TextLabel     textLabel7
+ *       TextLabel     textLabel8
+ *     MenuItemOption  menuItemOption4
+ *       Icon          icon4
+ *       TextLabel     textLabel9
+ *       TextLabel     textLabel10
  *
  * @example
  * ```tsx
- * <ListboxGroupedListbox
+ * <MenuGroupedOptions
  *   role="listbox"
  *   aria-hidden="false"
  * />
  * ```
  */
-export function ListboxGroupedListbox({
+export function MenuGroupedOptions({
   className = "",
   frame,
   textLabel,
-  listboxOption,
+  menuItemOption,
   icon,
   textLabel2,
   textLabel3,
-  listboxOption2,
+  menuItemOption2,
   icon2,
   textLabel4,
   textLabel5,
@@ -203,11 +203,11 @@ export function ListboxGroupedListbox({
 
   frame2,
   textLabel6,
-  listboxOption3,
+  menuItemOption3,
   icon3,
   textLabel7,
   textLabel8,
-  listboxOption4,
+  menuItemOption4,
   icon4,
   textLabel9,
   textLabel10,
@@ -215,16 +215,16 @@ export function ListboxGroupedListbox({
   children,
   seldonRefs,
   ...props
-}: ListboxGroupedListboxProps) {
-  const listboxGroupedListboxClassName = combineClassNames("sdn-listbox", className)
+}: MenuGroupedOptionsProps) {
+  const menuGroupedOptionsClassName = combineClassNames("sdn-menu-options", className)
 
   const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
-  const listboxOptionProps = mergeOptionalSlot(sdn.listboxOption, listboxOption, seldonRefs)
+  const menuItemOptionProps = mergeOptionalSlot(sdn.menuItemOption, menuItemOption, seldonRefs)
   const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
   const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
   const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
-  const listboxOption2Props = mergeOptionalSlot(sdn.listboxOption2, listboxOption2, seldonRefs)
+  const menuItemOption2Props = mergeOptionalSlot(sdn.menuItemOption2, menuItemOption2, seldonRefs)
   const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
   const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
   const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
@@ -233,18 +233,18 @@ export function ListboxGroupedListbox({
 
   const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
   const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
-  const listboxOption3Props = mergeOptionalSlot(sdn.listboxOption3, listboxOption3, seldonRefs)
+  const menuItemOption3Props = mergeOptionalSlot(sdn.menuItemOption3, menuItemOption3, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
   const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
   const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
-  const listboxOption4Props = mergeOptionalSlot(sdn.listboxOption4, listboxOption4, seldonRefs)
+  const menuItemOption4Props = mergeOptionalSlot(sdn.menuItemOption4, menuItemOption4, seldonRefs)
   const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
   const textLabel9Props = mergeOptionalSlot(sdn.textLabel9, textLabel9, seldonRefs)
   const textLabel10Props = mergeOptionalSlot(sdn.textLabel10, textLabel10, seldonRefs)
 
   return (
     <Frame
-      className={listboxGroupedListboxClassName}
+      className={menuGroupedOptionsClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
@@ -255,37 +255,37 @@ export function ListboxGroupedListbox({
         <>
           <Frame {...frameProps}>
             {textLabelProps !== null && <TextLabel {...textLabelProps} />}
-            {listboxOptionProps !== null && (
-              <ListboxOption {...listboxOptionProps}>
+            {menuItemOptionProps !== null && (
+              <MenuItemOption {...menuItemOptionProps}>
                 {iconProps !== null && <Icon {...iconProps} />}
                 {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
                 {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-              </ListboxOption>
+              </MenuItemOption>
             )}
-            {listboxOption2Props !== null && (
-              <ListboxOption {...listboxOption2Props}>
+            {menuItemOption2Props !== null && (
+              <MenuItemOption {...menuItemOption2Props}>
                 {icon2Props !== null && <Icon {...icon2Props} />}
                 {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
                 {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
-              </ListboxOption>
+              </MenuItemOption>
             )}
           </Frame>
           {hrProps !== null && <Hr {...hrProps} />}
           <Frame {...frame2Props}>
             {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
-            {listboxOption3Props !== null && (
-              <ListboxOption {...listboxOption3Props}>
+            {menuItemOption3Props !== null && (
+              <MenuItemOption {...menuItemOption3Props}>
                 {icon3Props !== null && <Icon {...icon3Props} />}
                 {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
                 {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
-              </ListboxOption>
+              </MenuItemOption>
             )}
-            {listboxOption4Props !== null && (
-              <ListboxOption {...listboxOption4Props}>
+            {menuItemOption4Props !== null && (
+              <MenuItemOption {...menuItemOption4Props}>
                 {icon4Props !== null && <Icon {...icon4Props} />}
                 {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
                 {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
-              </ListboxOption>
+              </MenuItemOption>
             )}
           </Frame>
         </>

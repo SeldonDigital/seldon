@@ -15,9 +15,9 @@ import { HTMLAttributes } from "react"
 
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { ListboxOptionProps } from "../elements/ListboxOption"
+import { MenuItemOptionProps } from "../elements/MenuItemOption"
 import { Frame } from "../frames/Frame"
-import { Listbox, ListboxProps } from "../parts/Listbox"
+import { MenuOptions, MenuOptionsProps } from "../parts/MenuOptions"
 import { IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
 import { TextLabelProps } from "../primitives/TextLabel"
@@ -34,16 +34,16 @@ export interface ComboboxProps extends HTMLAttributes<HTMLElement> {
   buttonIconic?: ButtonIconicProps | null
   icon2?: IconProps | null
 
-  listbox?: ListboxProps | null
-  listboxOption?: ListboxOptionProps | null
+  menuOptions?: MenuOptionsProps | null
+  menuItemOption?: MenuItemOptionProps | null
   icon3?: IconProps | null
   textLabel?: TextLabelProps | null
   textLabel2?: TextLabelProps | null
-  listboxOption2?: ListboxOptionProps | null
+  menuItemOption2?: MenuItemOptionProps | null
   icon4?: IconProps | null
   textLabel3?: TextLabelProps | null
   textLabel4?: TextLabelProps | null
-  listboxOption3?: ListboxOptionProps | null
+  menuItemOption3?: MenuItemOptionProps | null
   icon5?: IconProps | null
   textLabel5?: TextLabelProps | null
   textLabel6?: TextLabelProps | null
@@ -79,15 +79,15 @@ const sdn: ComboboxProps = {
     className: "sdn-icon sdn-icon--vsau",
   },
 
-  listbox: {
+  menuOptions: {
     role: "listbox",
     "aria-hidden": "false",
-    className: "sdn-listbox sdn-listbox--4wpg",
+    className: "sdn-menu-options sdn-menu-options--4wpg",
   },
-  listboxOption: {
+  menuItemOption: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon3: {
     icon: "seldon-component",
@@ -102,10 +102,10 @@ const sdn: ComboboxProps = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption2: {
+  menuItemOption2: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon4: {
     icon: "seldon-component",
@@ -120,10 +120,10 @@ const sdn: ComboboxProps = {
     children: "Annotation",
     className: "sdn-text-label sdn-text-label--lqmh",
   },
-  listboxOption3: {
+  menuItemOption3: {
     role: "option",
     "aria-hidden": "false",
-    className: "sdn-listbox-option sdn-listbox-option--6dxl",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon5: {
     icon: "seldon-component",
@@ -143,29 +143,29 @@ const sdn: ComboboxProps = {
 /**
  * Combobox: Combobox
  * Level: Part
- * Intent: Editable field paired with a listbox of options to choose from.
+ * Intent: Editable field paired with a menu of options to choose from.
  * Tags: combobox, select, dropdown, input, part, UI
  * Type: Default
  *
  * Structure:
- *   ComboboxField    comboboxField
- *     Icon           icon
- *     Input          input
- *     ButtonIconic   buttonIconic
- *       Icon         icon2
- *   Listbox          listbox
- *     ListboxOption  listboxOption
- *       Icon         icon3
- *       TextLabel    textLabel
- *       TextLabel    textLabel2
- *     ListboxOption  listboxOption2
- *       Icon         icon4
- *       TextLabel    textLabel3
- *       TextLabel    textLabel4
- *     ListboxOption  listboxOption3
- *       Icon         icon5
- *       TextLabel    textLabel5
- *       TextLabel    textLabel6
+ *   ComboboxField     comboboxField
+ *     Icon            icon
+ *     Input           input
+ *     ButtonIconic    buttonIconic
+ *       Icon          icon2
+ *   MenuOptions       menuOptions
+ *     MenuItemOption  menuItemOption
+ *       Icon          icon3
+ *       TextLabel     textLabel
+ *       TextLabel     textLabel2
+ *     MenuItemOption  menuItemOption2
+ *       Icon          icon4
+ *       TextLabel     textLabel3
+ *       TextLabel     textLabel4
+ *     MenuItemOption  menuItemOption3
+ *       Icon          icon5
+ *       TextLabel     textLabel5
+ *       TextLabel     textLabel6
  *
  * @example
  * ```tsx
@@ -175,12 +175,12 @@ const sdn: ComboboxProps = {
  *   icon="material-star"
  *   input="{}"
  *   buttonIconic={() => {}}
- *   listbox="{}"
- *   listboxOption="{}"
+ *   menuOptions="{}"
+ *   menuItemOption="{}"
  *   textLabel="{}"
  *   textLabel2="{}"
- *   listboxOption2="{}"
- *   listboxOption3="{}"
+ *   menuItemOption2="{}"
+ *   menuItemOption3="{}"
  * />
  * ```
  */
@@ -192,16 +192,16 @@ export function Combobox({
   buttonIconic,
   icon2,
 
-  listbox,
-  listboxOption,
+  menuOptions,
+  menuItemOption,
   icon3,
   textLabel,
   textLabel2,
-  listboxOption2,
+  menuItemOption2,
   icon4,
   textLabel3,
   textLabel4,
-  listboxOption3,
+  menuItemOption3,
   icon5,
   textLabel5,
   textLabel6,
@@ -218,16 +218,16 @@ export function Combobox({
   const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
   const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
 
-  const listboxProps = mergeSlot(sdn.listbox, listbox, seldonRefs)
-  const listboxOptionProps = mergeSlot(sdn.listboxOption, listboxOption, seldonRefs)
+  const menuOptionsProps = mergeSlot(sdn.menuOptions, menuOptions, seldonRefs)
+  const menuItemOptionProps = mergeSlot(sdn.menuItemOption, menuItemOption, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
   const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
-  const listboxOption2Props = mergeSlot(sdn.listboxOption2, listboxOption2, seldonRefs)
+  const menuItemOption2Props = mergeSlot(sdn.menuItemOption2, menuItemOption2, seldonRefs)
   const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
   const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
   const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
-  const listboxOption3Props = mergeSlot(sdn.listboxOption3, listboxOption3, seldonRefs)
+  const menuItemOption3Props = mergeSlot(sdn.menuItemOption3, menuItemOption3, seldonRefs)
   const icon5Props = mergeSlot(sdn.icon5, icon5, seldonRefs)
   const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
   const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
@@ -247,18 +247,18 @@ export function Combobox({
               icon2={icon2Props}
             />
           )}
-          {listboxProps !== null && (
-            <Listbox
-              {...listboxProps}
-              listboxOption={listboxOptionProps}
+          {menuOptionsProps !== null && (
+            <MenuOptions
+              {...menuOptionsProps}
+              menuItemOption={menuItemOptionProps}
               icon={icon3Props}
               textLabel={textLabelProps}
               textLabel2={textLabel2Props}
-              listboxOption2={listboxOption2Props}
+              menuItemOption2={menuItemOption2Props}
               icon2={icon4Props}
               textLabel3={textLabel3Props}
               textLabel4={textLabel4Props}
-              listboxOption3={listboxOption3Props}
+              menuItemOption3={menuItemOption3Props}
               icon3={icon5Props}
               textLabel5={textLabel5Props}
               textLabel6={textLabel6Props}

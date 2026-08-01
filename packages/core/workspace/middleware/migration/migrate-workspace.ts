@@ -16,12 +16,13 @@ import { migrateV15DisplayPlaceholderToStub } from "./steps/migrate-00015-displa
 import { migrateV16LayeredOverrideLength } from "./steps/migrate-00016-layered-override-length"
 import { migrateV17DropInitialOverrides } from "./steps/migrate-00017-drop-initial-overrides"
 import { migrateV18UniqueNodeRefs } from "./steps/migrate-00018-unique-node-refs"
+import { migrateV19ListboxToMenu } from "./steps/migrate-00019-listbox-to-menu"
 import { repairBoardOrder } from "./steps/repair-board-order"
 
 import type { Workspace } from "../../model/workspace"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 18
+export const CURRENT_WORKSPACE_VERSION = 19
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -44,6 +45,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   16: migrateV16LayeredOverrideLength,
   17: migrateV17DropInitialOverrides,
   18: migrateV18UniqueNodeRefs,
+  19: migrateV19ListboxToMenu,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
@@ -70,13 +72,16 @@ if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
  * A duplicate node ref can enter a file at any version, through an import, a
  * hand edit, or a copy written by an older build, and verification refuses to
  * open the file. `migrateV18UniqueNodeRefs` runs here as well so such a file
- * still opens.
+ * still opens. `migrateV19ListboxToMenu` runs here for the same reason: a file
+ * stamped at the current version can still arrive holding `catalog:listbox`,
+ * which no catalog id resolves.
  */
 const REPAIR_STEPS: MigrationStep[] = [
   migrateV3ThemeRenames,
   migrateV6IconSetRenames,
   migrateV12DialogToPanels,
   migrateV18UniqueNodeRefs,
+  migrateV19ListboxToMenu,
   repairBoardOrder,
 ]
 

@@ -20,11 +20,11 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *****/
 
 /**
- * List: boxOption
+ * Menu Item: MenuItemOption
  * Level: Element
- * Intent: Single selectable row inside a listbox.
- * Tags: listbox, option, select, row, element, UI
- * Type: Default
+ * Intent: Single actionable row inside a menu.
+ * Tags: menu, menuitem, action, row, element, UI
+ * Type: Custom
  *
  * Structure:
  *   Icon       icon        -> optionIcon
@@ -33,7 +33,7 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *
  * @example
  * ```vue
- * <ListboxOption
+ * <MenuItemOption
  *   role="option"
  *   aria-hidden="false"
  * />
@@ -81,7 +81,7 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-listbox-option", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-menu-item", props.className))
 const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const textLabelProps = computed(() =>

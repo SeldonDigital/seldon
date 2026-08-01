@@ -132,11 +132,22 @@ export const schema = {
   },
   default: {
     children: [
-      { component: Seldon.ComponentId.MENU_ITEM },
-      { component: Seldon.ComponentId.MENU_ITEM },
+      {
+        component: Seldon.ComponentId.MENU_ITEM,
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+        },
+      },
+      {
+        component: Seldon.ComponentId.MENU_ITEM,
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+        },
+      },
       {
         component: Seldon.ComponentId.HR,
         overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
           margin: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.tight" },
             right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -148,10 +159,205 @@ export const schema = {
           },
         },
       },
-      { component: Seldon.ComponentId.MENU_ITEM, variant: "checkbox" },
-      { component: Seldon.ComponentId.MENU_ITEM, variant: "radio" },
+      {
+        component: Seldon.ComponentId.MENU_ITEM,
+        variant: "checkbox",
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+        },
+      },
+      {
+        component: Seldon.ComponentId.MENU_ITEM,
+        variant: "radio",
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+        },
+      },
     ],
   },
+  variants: [
+    {
+      id: "options",
+      label: "Options",
+      intent: "Menu of selectable options for a combobox or select.",
+      overrides: {
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+        padding: {
+          top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.compact",
+          },
+        },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.LISTBOX },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.MENU_ITEM,
+          variant: "option",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+          },
+        },
+        {
+          component: Seldon.ComponentId.MENU_ITEM,
+          variant: "option",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+          },
+        },
+        {
+          component: Seldon.ComponentId.MENU_ITEM,
+          variant: "option",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+          },
+        },
+      ],
+    },
+    {
+      id: "groupedOptions",
+      label: "Grouped Options",
+      intent: "Options menu whose rows are organized into labeled groups.",
+      overrides: {
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+        padding: {
+          top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.compact",
+          },
+        },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.LISTBOX },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Group A" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                margin: {
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
+                brightness: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.xsmall",
+                  },
+                },
+              },
+            },
+            { component: Seldon.ComponentId.MENU_ITEM, variant: "option" },
+            {
+              component: Seldon.ComponentId.MENU_ITEM,
+              variant: "option",
+              overrides: {
+                display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.HR,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+            margin: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.compact",
+              },
+              right: { type: Sdn.ValueType.EMPTY, value: null },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.compact",
+              },
+              left: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Group B" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                margin: {
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
+                brightness: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.xsmall",
+                  },
+                },
+              },
+            },
+            { component: Seldon.ComponentId.MENU_ITEM, variant: "option" },
+            { component: Seldon.ComponentId.MENU_ITEM, variant: "option" },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

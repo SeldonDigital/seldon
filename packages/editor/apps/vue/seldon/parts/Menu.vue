@@ -94,7 +94,7 @@ const sdn: Record<string, any> = {
   menuItem: {
     role: "menuitem",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon: {
     icon: "seldon-component",
@@ -112,7 +112,7 @@ const sdn: Record<string, any> = {
   menuItem2: {
     role: "menuitem",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon2: {
     icon: "seldon-component",
@@ -134,7 +134,7 @@ const sdn: Record<string, any> = {
   menuItemCheckbox: {
     role: "menuitemcheckbox",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon3: {
     icon: "material-check",
@@ -148,7 +148,7 @@ const sdn: Record<string, any> = {
   menuItemRadio: {
     role: "menuitemradio",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon4: {
     icon: "material-radioButtonChecked",

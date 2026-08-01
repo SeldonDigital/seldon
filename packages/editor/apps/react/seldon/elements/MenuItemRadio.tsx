@@ -11,15 +11,15 @@
  *
  *****/
 
-import { ButtonHTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
 
-import { HTMLButton } from "../native-react/HTML.Button"
+import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
-export interface MenuItemRadioProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MenuItemRadioProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
@@ -82,7 +82,7 @@ export function MenuItemRadio({
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
-    <HTMLButton
+    <Frame
       className={menuItemRadioClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
@@ -96,6 +96,6 @@ export function MenuItemRadio({
           {textLabelProps !== null && <TextLabel {...textLabelProps} />}
         </>
       )}
-    </HTMLButton>
+    </Frame>
   )
 }

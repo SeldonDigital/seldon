@@ -7,7 +7,7 @@ import { memo, useCallback } from "react"
 
 import { IndentationLevel } from "../hooks/use-indentation"
 import { LayerDragRow } from "./LayerDragRow"
-import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
+import { PropertyComboboxOptions } from "./PropertyComboboxOptions"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
 import { useRowProperty } from "./hooks/use-row-property"
 
@@ -192,7 +192,7 @@ function PropertyInner(props: RowPropertyProps) {
         />
       </LayerDragRow>
       {optionsMenu.menu}
-      <PropertyOptionsListbox control={control} onEndEdit={view.endEdit} />
+      <PropertyComboboxOptions control={control} onEndEdit={view.endEdit} />
       {childRows}
     </>
   )

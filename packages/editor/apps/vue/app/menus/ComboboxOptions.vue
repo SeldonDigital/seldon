@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
-import ListboxOption from "@seldon/components/elements/ListboxOption.vue"
-import Listbox from "@seldon/components/parts/Listbox.vue"
+import MenuItemOption from "@seldon/components/elements/MenuItemOption.vue"
+import MenuOptions from "@seldon/components/parts/MenuOptions.vue"
 import Hr from "@seldon/components/primitives/Hr.vue"
 import { computeListPosition } from "@seldon/editor/lib/menus/anchor-position"
 import { storeToRefs } from "pinia"
@@ -16,12 +16,12 @@ const PANEL_GAP = 4
 const MIN_SPACE_BELOW = 240
 
 /**
- * Controlled floating listbox on the generated `Listbox`/`ListboxOption` chrome.
- * The caller owns `open` and the `anchor`. Right-aligns a fixed-width panel to
- * the anchor, flips above when room is tight, and supports arrow/enter/escape
- * keyboard selection. Portals to `body` and re-stamps `data-theme`/`data-mode`
- * so it keeps the chrome theme. Powers the objects-sidebar Display picker and is
- * reusable for the properties sidebar.
+ * Controlled floating option list on the generated `MenuOptions`/`MenuItemOption`
+ * chrome. The caller owns `open` and the `anchor`. Right-aligns a fixed-width
+ * panel to the anchor, flips above when room is tight, and supports
+ * arrow/enter/escape keyboard selection. Portals to `body` and re-stamps
+ * `data-theme`/`data-mode` so it keeps the chrome theme. Powers the
+ * objects-sidebar Display picker and is reusable for the properties sidebar.
  */
 const props = withDefaults(
   defineProps<{
@@ -75,16 +75,16 @@ const panelStyle = computed(() => ({
   transform: position.value.positionAbove ? "translateY(-100%)" : undefined,
 }))
 
-// The scroll cap lives on the Listbox itself, which owns the border, radius, and
-// shadow, so the bordered box hugs the visible panel instead of being clipped by
-// an outer wrapper. Matches React, which applies these to the Listbox element.
-const listboxStyle = {
+// The scroll cap lives on the options surface itself, which owns the border,
+// radius, and shadow, so the bordered box hugs the visible panel instead of being
+// clipped by an outer wrapper. Matches React, which applies these the same way.
+const optionsStyle = {
   maxHeight: "24rem",
   overflowY: "auto" as const,
 }
 
-// The content reaches every slot by ref name. Both text slots are opt-in, so each
-// keeps a positional enabler; without one the slot would not render.
+// The content reaches every slot by ref name. Every slot on a menu row is opt-in,
+// so each keeps a positional enabler; without one the slot would not render.
 function optionRefs(option: ComboboxOptionItem): Record<string, Record<string, unknown>> {
   return {
     optionIcon: { icon: props.resolveIcon?.(option.value) ?? "seldon-component" },
@@ -196,22 +196,23 @@ onBeforeUnmount(() => {
       :data-mode="resolvedMode"
       @keydown="onKeydown"
     >
-      <Listbox :style="listboxStyle">
+      <MenuOptions :style="optionsStyle">
         <template v-for="(group, groupIndex) in optionGroups" :key="`group-${groupIndex}`">
           <Hr v-if="groupIndex > 0" />
-          <ListboxOption
+          <MenuItemOption
             v-for="option in group"
             :key="option.value"
             :class="optionClass(option)"
             :aria-selected="option.value === value || undefined"
             :seldon-refs="optionRefs(option)"
+            :icon="{}"
             :text-label="{}"
             :text-label2="optionAnnotationSlot(option)"
             @click="select(option.value)"
             @pointerenter="highlightedValue = option.value"
           />
         </template>
-      </Listbox>
+      </MenuOptions>
     </div>
   </Teleport>
 </template>

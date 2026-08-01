@@ -30,7 +30,7 @@ const TAG_TO_COMPONENT: Partial<Record<HtmlElement, ComponentId>> = {
   [HtmlElement.FIELDSET]: ComponentId.FIELDSET,
   [HtmlElement.FORM]: ComponentId.FIELDSET,
   [HtmlElement.MENU]: ComponentId.MENU,
-  [HtmlElement.OPTION]: ComponentId.LISTBOX_OPTION,
+  [HtmlElement.OPTION]: ComponentId.MENU_ITEM,
   [HtmlElement.LI]: ComponentId.LIST_ITEM,
   [HtmlElement.UL]: ComponentId.LIST,
   [HtmlElement.OL]: ComponentId.LIST,

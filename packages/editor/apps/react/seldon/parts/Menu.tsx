@@ -57,7 +57,7 @@ const sdn: MenuProps = {
   menuItem: {
     role: "menuitem",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon: {
     icon: "seldon-component",
@@ -76,7 +76,7 @@ const sdn: MenuProps = {
   menuItem2: {
     role: "menuitem",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon2: {
     icon: "seldon-component",
@@ -100,7 +100,7 @@ const sdn: MenuProps = {
   menuItemCheckbox: {
     role: "menuitemcheckbox",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon3: {
     icon: "material-check",
@@ -115,7 +115,7 @@ const sdn: MenuProps = {
   menuItemRadio: {
     role: "menuitemradio",
     "aria-hidden": "false",
-    className: "sdn-menu-item sdn-menu-item--rrtt",
+    className: "sdn-menu-item sdn-menu-item-option--6dxl",
   },
   icon4: {
     icon: "material-radioButtonChecked",

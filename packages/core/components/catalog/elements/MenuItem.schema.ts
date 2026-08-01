@@ -115,12 +115,14 @@ export const schema = {
     ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
     ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     ariaChecked: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
           color: {
@@ -133,6 +135,7 @@ export const schema = {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           content: { type: Sdn.ValueType.EXACT, value: "Menu Item" },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           color: {
@@ -151,7 +154,8 @@ export const schema = {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
-          content: { type: Sdn.ValueType.EXACT, value: "⌘K" },
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+          content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           color: {
             type: Sdn.ValueType.COMPUTED,
@@ -173,13 +177,13 @@ export const schema = {
   },
   variants: [
     {
-      id: "checkbox",
-      label: "Checkbox Menu Item",
-      intent: "Menu row that toggles a checked state.",
+      id: "option",
+      label: "Option Menu Item",
+      intent: "Menu row that represents a selectable option.",
       overrides: {
         role: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.AriaRole.MENUITEMCHECKBOX,
+          value: Sdn.AriaRole.OPTION,
         },
         ariaChecked: { type: Sdn.ValueType.EMPTY, value: null },
       },
@@ -187,6 +191,7 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             symbol: {
               type: Sdn.ValueType.OPTION,
               value: "material-check",
@@ -202,17 +207,71 @@ export const schema = {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "Checkbox Item" },
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            content: { type: Sdn.ValueType.EXACT, value: "Option" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.label",
-              },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+            opacity: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 50 },
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: "checkbox",
+      label: "Checkbox Menu Item",
+      intent: "Menu row that toggles a checked state.",
+      overrides: {
+        role: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaRole.MENUITEMCHECKBOX,
+        },
+        ariaChecked: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-check",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            content: { type: Sdn.ValueType.EXACT, value: "Checkbox Item" },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -233,6 +292,7 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             symbol: {
               type: Sdn.ValueType.OPTION,
               value: "material-radioButtonChecked",
@@ -248,17 +308,12 @@ export const schema = {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Radio Item" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.label",
-              },
             },
           },
         },
@@ -268,5 +323,5 @@ export const schema = {
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "HTMLButton" },
+  react: { returns: "Frame" },
 }

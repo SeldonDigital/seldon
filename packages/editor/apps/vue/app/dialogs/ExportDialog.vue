@@ -252,7 +252,12 @@ function radioItem(checked: boolean, onSelect: () => void) {
   }
 }
 
-/** The dot glyph for one side of a Yes/No pair. */
+/**
+ * The dot glyph for one side of a Yes/No pair. Every slot on a menu row is
+ * opt-in, so each bullet also keeps a positional enabler in the template. A ref
+ * alone reaches a slot that already renders; it cannot bring back one the row
+ * leaves off.
+ */
 function radioDot(checked: boolean) {
   return { icon: checked ? ICON_CHECKED : ICON_UNCHECKED, style: styles.opaque }
 }
@@ -365,45 +370,59 @@ const seldonRefs = computed(() => ({
       :form-control-radio="radioGroup('Generate Google Font API Links')"
       :text-label4="showSlot"
       :menu-item-radio="showSlot"
+      :icon2="showSlot"
       :text-label5="radioLabel"
       :menu-item-radio2="showSlot"
+      :icon3="showSlot"
       :text-label6="radioLabel"
       :fieldset="showSlot"
       :form-control-radio2="radioGroup('Hidden Components')"
       :text-label7="showSlot"
       :menu-item-radio3="showSlot"
+      :icon4="showSlot"
       :text-label8="radioLabel"
       :menu-item-radio4="showSlot"
+      :icon5="showSlot"
       :text-label9="radioLabel"
       :form-control-radio3="radioGroup('All Themes')"
       :text-label10="showSlot"
       :menu-item-radio5="showSlot"
+      :icon6="showSlot"
       :text-label11="radioLabel"
       :menu-item-radio6="showSlot"
+      :icon7="showSlot"
       :text-label12="radioLabel"
       :form-control-radio4="radioGroup('All Enabled Fonts')"
       :text-label13="showSlot"
       :menu-item-radio7="showSlot"
+      :icon8="showSlot"
       :text-label14="radioLabel"
       :menu-item-radio8="showSlot"
+      :icon9="showSlot"
       :text-label15="radioLabel"
       :form-control-radio5="radioGroup('All Enabled Icons')"
       :text-label16="showSlot"
       :menu-item-radio9="showSlot"
+      :icon10="showSlot"
       :text-label17="radioLabel"
       :menu-item-radio10="showSlot"
+      :icon11="showSlot"
       :text-label18="radioLabel"
       :form-control-radio6="radioGroup('Saved Workspace')"
       :text-label19="showSlot"
       :menu-item-radio11="showSlot"
+      :icon12="showSlot"
       :text-label20="radioLabel"
       :menu-item-radio12="showSlot"
+      :icon13="showSlot"
       :text-label21="radioLabel"
       :form-control-radio7="radioGroup('CLI Utility Scripts')"
       :text-label22="showSlot"
       :menu-item-radio13="showSlot"
+      :icon14="showSlot"
       :text-label23="radioLabel"
       :menu-item-radio14="showSlot"
+      :icon15="showSlot"
       :text-label24="radioLabel"
       :text-label25="showSlot"
       :text-label26="showSlot"
