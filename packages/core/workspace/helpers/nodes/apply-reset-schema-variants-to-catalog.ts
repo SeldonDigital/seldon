@@ -4,8 +4,12 @@ import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
-import { componentBoardDefaultNodeId } from "../components/entry-node-ids"
+import {
+  componentBoardDefaultNodeId,
+  componentBoardSchemaVariantNodeId,
+} from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
+import { commitRebuiltNodes } from "./commit-rebuilt-nodes"
 import { rebuildSchemaVariant } from "./rebuild-schema-variants"
 
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
@@ -13,7 +17,8 @@ import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 /**
  * Rebuilds every catalog schema variant of a component board to its catalog
  * definition, after the default variant has been reset. Keeps deterministic
- * variant root ids so other boards that reference them stay linked, chains
+ * variant root ids and reuses variant child ids so other boards that compose
+ * these variants stay linked to the nodes they template from, chains
  * variant child trees to the reset default tree's children, drops user variants,
  * normalizes variant order, and prunes orphaned nodes without the cross-board
  * cascade that variant deletion would trigger.
@@ -42,8 +47,10 @@ export function applyResetSchemaVariantsToCatalog(
     }
     const newNodes: Record<string, EntryNode> = {}
 
-    const schemaVariantRefs: ComponentTreeRef[] = (schema.variants ?? []).map((catalogVariant) =>
-      rebuildSchemaVariant({
+    const schemaVariantRefs: ComponentTreeRef[] = (schema.variants ?? []).map((catalogVariant) => {
+      const variantRootId = componentBoardSchemaVariantNodeId(boardKey, catalogVariant.id)
+
+      return rebuildSchemaVariant({
         catalogId,
         defaultVariantRootId,
         schema,
@@ -51,12 +58,11 @@ export function applyResetSchemaVariantsToCatalog(
         workspace: draft,
         newNodes,
         defaultRef,
-      }),
-    )
+        existingRef: board.variants.find((ref) => ref.id === variantRootId),
+      })
+    })
 
-    for (const [id, node] of Object.entries(newNodes)) {
-      draft.nodes[id] = node
-    }
+    commitRebuiltNodes(draft, newNodes)
 
     board.variants = [defaultRef, ...schemaVariantRefs]
 

@@ -5,7 +5,7 @@ import { CURRENT_WORKSPACE_VERSION, migrateWorkspace } from "./migrate-workspace
 
 describe("migrateWorkspace", () => {
   it("exposes the current version constant", () => {
-    expect(CURRENT_WORKSPACE_VERSION).toBe(18)
+    expect(CURRENT_WORKSPACE_VERSION).toBe(19)
   })
 
   it("leaves a workspace already at the current version unchanged", () => {

@@ -1,5 +1,6 @@
 "use client"
 
+import { getRenderedScale } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { bumpRemeasure } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 import { useLayoutEffect, useRef } from "react"
 
@@ -66,7 +67,7 @@ export function useCanvasReorderFlip(
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
 
-    const scale = getRootScale(root)
+    const scale = getRenderedScale(root)
     // Document order, so an ancestor is always visited before its descendants.
     const elements = root.querySelectorAll<HTMLElement>("[data-canvas-node-id]")
     const nextPositions = new Map<string, Point>()
@@ -187,15 +188,4 @@ function hasAnimatedAncestor(
   }
 
   return false
-}
-
-/** Derives the rendered scale of the root from its layout vs box width. */
-function getRootScale(root: HTMLElement): number {
-  const layoutWidth = root.offsetWidth
-
-  if (!layoutWidth) return 1
-  const renderedWidth = root.getBoundingClientRect().width
-  const scale = renderedWidth / layoutWidth
-
-  return scale > 0 ? scale : 1
 }

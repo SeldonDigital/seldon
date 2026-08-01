@@ -116,30 +116,18 @@ export const schema = {
         component: Seldon.ComponentId.LINK,
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Home" },
-          color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.primary",
-          },
         },
       },
       {
         component: Seldon.ComponentId.LINK,
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "About" },
-          color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.primary",
-          },
         },
       },
       {
         component: Seldon.ComponentId.LINK,
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Contact" },
-          color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.primary",
-          },
         },
       },
     ],

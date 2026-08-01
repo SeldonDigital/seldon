@@ -50,7 +50,7 @@ const sdn: ItemSectionProps = {
   icon: {
     icon: "material-unfoldMore",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--rezm",
     "data-seldon-ref": "sectionDisclosureIcon",
   },
 
@@ -71,7 +71,7 @@ const sdn: ItemSectionProps = {
   icon2: {
     icon: "material-add",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--0qvc",
+    className: "sdn-icon sdn-icon--ucf5",
     "data-seldon-ref": "sectionAddIcon",
   },
 
@@ -82,7 +82,7 @@ const sdn: ItemSectionProps = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--0qvc",
+    className: "sdn-icon sdn-icon--ucf5",
     "data-seldon-ref": "sectionActionsIcon",
   },
 }

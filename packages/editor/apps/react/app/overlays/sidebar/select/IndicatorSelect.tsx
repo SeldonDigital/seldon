@@ -1,6 +1,5 @@
 import { DropIndicator, OutlineBox } from "@app/overlays/primitives"
 
-import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 import type { Placement } from "@seldon/editor/lib/types"
@@ -26,15 +25,13 @@ const insideOutlineStyle: CSSProperties = {
  * Visual indicator for select tool showing where items will be dropped during drag operations.
  */
 export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
-  const indentation = useIndentation()
-
   // "inside" nests the dragged object, so outline the whole target row like a
   // selection instead of drawing an edge line.
   if (placement === "inside") {
     return <OutlineBox style={insideOutlineStyle} />
   }
 
-  const position = calculateIndicatorPosition(placement, indentation)
+  const position = calculateIndicatorPosition(placement)
 
-  return <DropIndicator color={SELECT_INDICATOR_COLOR} position={position} />
+  return <DropIndicator color={SELECT_INDICATOR_COLOR} position={position} dotOffset={0} />
 }

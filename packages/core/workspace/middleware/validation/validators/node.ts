@@ -1,5 +1,5 @@
-import { getComponentSchema } from "../../../../components/catalog"
-import { ComponentId, isComponentId } from "../../../../components/constants"
+import { findComponentSchema, getComponentSchema } from "../../../../components/catalog"
+import { ComponentId, ComponentLevel, isComponentId } from "../../../../components/constants"
 import { rules } from "../../../../rules/config/rules.config"
 import { ErrorMessages } from "../../../constants"
 import { getBoardByNodeId } from "../../../helpers/components/get-board-by-node-id"
@@ -42,6 +42,11 @@ export function assertMoveTargetAllowed(parent: EntryNode, message: string): voi
   check(!typeCheckingService.isDefaultVariant(parent), message)
 }
 
+/** Whether the component is one of the frame-level containers. */
+function isFrameLevelComponent(componentId: ComponentId): boolean {
+  return findComponentSchema(componentId)?.level === ComponentLevel.FRAME
+}
+
 export const nodeValidators = {
   isNotInstanceOfSelf: (
     workspace: Workspace,
@@ -58,14 +63,12 @@ export const nodeValidators = {
       sourceNodeComponent = getNodeComponentId(sourceNode, workspace)
     }
 
-    const targetNode = nodeRetrievalService.getNode(targetId, workspace)
+    // A frame-level container ships no children of its own, so nesting one inside
+    // another cannot expand forever. `notIntoOwnSubtree` still rejects the move
+    // that would.
+    if (isFrameLevelComponent(sourceNodeComponent)) return
 
-    if (
-      sourceNodeComponent === ComponentId.FRAME &&
-      getNodeComponentId(targetNode, workspace) === ComponentId.FRAME
-    ) {
-      return
-    }
+    const targetNode = nodeRetrievalService.getNode(targetId, workspace)
 
     check(
       !nodeRelationshipService.hasAncestorWithComponentId(
@@ -318,7 +321,7 @@ export function validateComponentCanBeInserted(
     }
 
     if (
-      componentId !== ComponentId.FRAME &&
+      !isFrameLevelComponent(componentId) &&
       nodeRelationshipService.hasAncestorWithComponentId(componentId, targetParent, workspace)
     ) {
       errors.push(ErrorMessages.cannotAddSelfAsInstance())

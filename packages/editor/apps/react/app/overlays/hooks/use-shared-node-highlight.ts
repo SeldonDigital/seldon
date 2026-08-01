@@ -24,15 +24,6 @@ const EMPTY_HIGHLIGHT: SharedNodeHighlight = {
   secondary: EMPTY_IDS,
 }
 
-type Mode = "downstream" | "chain" | "family"
-
-/** Maps the View menu metaphor labels to the graph traversal they perform. */
-const MODE_BY_HIGHLIGHT: Record<"leaves" | "branch" | "tree", Mode> = {
-  leaves: "downstream",
-  branch: "chain",
-  tree: "family",
-}
-
 /** Maps each node to its immediate template-source node id, and the reverse. */
 interface TemplateGraph {
   sourceOf: Map<string, string>
@@ -91,93 +82,57 @@ function collectUpstream(id: string, graph: TemplateGraph): Set<string> {
   return result
 }
 
-/** The topmost template source (catalog-rooted node) above or at `id`. */
-function findRootId(id: string, graph: TemplateGraph): string {
-  let current = id
-  let next = graph.sourceOf.get(current)
-
-  while (next) {
-    current = next
-    next = graph.sourceOf.get(current)
-  }
-
-  return current
-}
-
-function computeHighlight(
-  mode: Mode,
-  selectedNodeId: string,
-  workspace: Workspace,
-): SharedNodeHighlight {
+/**
+ * The branch around the selection: everything that inherits from it, plus the
+ * template chain it comes from.
+ */
+function computeHighlight(selectedNodeId: string, workspace: Workspace): SharedNodeHighlight {
   const graph = buildTemplateGraph(workspace)
-
   const primary = new Set<string>([selectedNodeId])
-
-  for (const id of collectDownstream(selectedNodeId, graph)) primary.add(id)
-
-  if (mode === "downstream") {
-    return { primary, secondary: EMPTY_IDS }
-  }
-
   const secondary = new Set<string>()
 
-  if (mode === "chain") {
-    for (const id of collectUpstream(selectedNodeId, graph)) secondary.add(id)
-
-    return { primary, secondary }
-  }
-
-  // family: everything connected to the same catalog root, minus the primary set.
-  const rootId = findRootId(selectedNodeId, graph)
-  const family = collectDownstream(rootId, graph)
-
-  family.add(rootId)
-
-  for (const id of family) {
-    if (!primary.has(id)) secondary.add(id)
-  }
+  for (const id of collectDownstream(selectedNodeId, graph)) primary.add(id)
+  for (const id of collectUpstream(selectedNodeId, graph)) secondary.add(id)
 
   return { primary, secondary }
 }
 
 let highlightCache: {
-  mode: Mode
   selectedNodeId: string
   workspace: Workspace
   value: SharedNodeHighlight
 } | null = null
 
 /**
- * Resolves the active Show Leaves / Branch / Tree highlight for the current
- * selection, driven by the View menu `componentHighlightMode` radio. The
- * `"selection"` mode shows no relationship overlay. The result is cached across
- * sidebar rows so the template graph is only walked once per selection.
+ * Resolves the branch around the current selection while Show Connectors is on
+ * in isolation mode. The result is cached across sidebar rows so the template
+ * graph is only walked once per selection.
+ *
+ * Isolation is what makes the branch worth marking, because it puts every board
+ * the selection reaches on the canvas at once. Outside it the canvas shows one
+ * board and there is nothing to point across, so the sidebar rows stay plain too.
  */
 export function useSharedNodeHighlight(): SharedNodeHighlight {
-  const { componentHighlightMode } = useEditorConfig()
+  const { showConnectors, isolatedView } = useEditorConfig()
   const { workspace } = useWorkspace({ usePreview: false })
   const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
 
-  const mode: Mode | null =
-    componentHighlightMode === "selection" ? null : MODE_BY_HIGHLIGHT[componentHighlightMode]
-
   return useMemo(() => {
-    if (!mode || !selectedNodeId) return EMPTY_HIGHLIGHT
-    if (!workspace.nodes[selectedNodeId]) return EMPTY_HIGHLIGHT
+    if (!showConnectors || !isolatedView) return EMPTY_HIGHLIGHT
+    if (!selectedNodeId || !workspace.nodes[selectedNodeId]) return EMPTY_HIGHLIGHT
 
     if (
       highlightCache &&
-      highlightCache.mode === mode &&
       highlightCache.selectedNodeId === selectedNodeId &&
       highlightCache.workspace === workspace
     ) {
       return highlightCache.value
     }
 
-    const value = computeHighlight(mode, selectedNodeId, workspace)
+    const value = computeHighlight(selectedNodeId, workspace)
 
-    highlightCache = { mode, selectedNodeId, workspace, value }
+    highlightCache = { selectedNodeId, workspace, value }
 
     return value
-  }, [mode, selectedNodeId, workspace])
+  }, [showConnectors, isolatedView, selectedNodeId, workspace])
 }

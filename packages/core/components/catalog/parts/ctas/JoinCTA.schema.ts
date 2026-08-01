@@ -169,15 +169,10 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
           align: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Align.CENTER_LEFT,
           },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
         },
@@ -204,10 +199,6 @@ export const schema = {
                   value: "@fontSize.small",
                 },
               },
-              textAlign: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.TextAlign.LEFT,
-              },
             },
           },
           {
@@ -224,10 +215,6 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@font.display",
                 },
-              },
-              textAlign: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.TextAlign.LEFT,
               },
               lines: { type: Sdn.ValueType.EXACT, value: 8 },
             },
@@ -251,10 +238,6 @@ export const schema = {
                   value: "@fontSize.small",
                 },
               },
-              textAlign: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.TextAlign.LEFT,
-              },
             },
           },
           {
@@ -270,20 +253,6 @@ export const schema = {
                   value: "@margin.cozy",
                 },
               },
-              background: [
-                {
-                  kind: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.BackgroundKind.COLOR,
-                  },
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.primary",
-                  },
-                  brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                  opacity: { type: Sdn.ValueType.EMPTY, value: null },
-                },
-              ],
               border: {
                 preset: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -317,10 +286,6 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-arrowForward",
                   },
-                  color: {
-                    type: Sdn.ValueType.COMPUTED,
-                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                  },
                 },
               },
               {
@@ -330,10 +295,6 @@ export const schema = {
                   content: {
                     type: Sdn.ValueType.EXACT,
                     value: "View the repo",
-                  },
-                  color: {
-                    type: Sdn.ValueType.COMPUTED,
-                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                   },
                 },
               },
@@ -593,10 +554,6 @@ export const schema = {
               {
                 component: Seldon.ComponentId.ICON,
                 overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-component",
-                  },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@size.xlarge",

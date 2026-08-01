@@ -155,10 +155,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
           gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.EVENLY_SPACED },
           margin: {
             top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
@@ -286,10 +282,6 @@ export const schema = {
                         type: Sdn.ValueType.COMPUTED,
                         value: Sdn.ComputedFunction.AUTO_FIT,
                       },
-                      color: {
-                        type: Sdn.ValueType.COMPUTED,
-                        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                      },
                       cursor: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Cursor.POINTER,
@@ -327,10 +319,6 @@ export const schema = {
                       size: {
                         type: Sdn.ValueType.COMPUTED,
                         value: Sdn.ComputedFunction.AUTO_FIT,
-                      },
-                      color: {
-                        type: Sdn.ValueType.COMPUTED,
-                        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                       },
                       cursor: {
                         type: Sdn.ValueType.OPTION,
@@ -370,10 +358,6 @@ export const schema = {
                         type: Sdn.ValueType.COMPUTED,
                         value: Sdn.ComputedFunction.AUTO_FIT,
                       },
-                      color: {
-                        type: Sdn.ValueType.COMPUTED,
-                        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                      },
                       cursor: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Cursor.POINTER,
@@ -412,10 +396,6 @@ export const schema = {
                         type: Sdn.ValueType.COMPUTED,
                         value: Sdn.ComputedFunction.AUTO_FIT,
                       },
-                      color: {
-                        type: Sdn.ValueType.COMPUTED,
-                        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                      },
                       cursor: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Cursor.POINTER,
@@ -453,10 +433,6 @@ export const schema = {
                       size: {
                         type: Sdn.ValueType.COMPUTED,
                         value: Sdn.ComputedFunction.AUTO_FIT,
-                      },
-                      color: {
-                        type: Sdn.ValueType.COMPUTED,
-                        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                       },
                       cursor: {
                         type: Sdn.ValueType.OPTION,

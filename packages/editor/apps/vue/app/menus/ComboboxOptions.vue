@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
-import ListboxOption from "@seldon/components/elements/ListboxOption.vue"
-import Listbox from "@seldon/components/parts/Listbox.vue"
+import MenuItemOption from "@seldon/components/elements/MenuItemOption.vue"
+import MenuOptions from "@seldon/components/parts/MenuOptions.vue"
 import Hr from "@seldon/components/primitives/Hr.vue"
 import { computeListPosition } from "@seldon/editor/lib/menus/anchor-position"
 import { storeToRefs } from "pinia"
@@ -16,24 +16,21 @@ const PANEL_GAP = 4
 const MIN_SPACE_BELOW = 240
 
 /**
- * Controlled floating listbox on the generated `Listbox`/`ListboxOption` chrome.
- * The caller owns `open` and the `anchor`. Right-aligns a fixed-width panel to
- * the anchor, flips above when room is tight, and supports arrow/enter/escape
+ * Controlled floating option list on the generated `MenuOptions`/`MenuItemOption`
+ * chrome. The caller owns `open` and the `anchor`. Left-aligns to the anchor,
+ * sits at least as wide as it, and grows to fit the widest option, capped to the
+ * viewport. Flips above when room is tight, and supports arrow/enter/escape
  * keyboard selection. Portals to `body` and re-stamps `data-theme`/`data-mode`
- * so it keeps the chrome theme. Powers the objects-sidebar Display picker and is
- * reusable for the properties sidebar.
+ * so it keeps the chrome theme. Powers the objects-sidebar Display picker and the
+ * properties sidebar.
  */
-const props = withDefaults(
-  defineProps<{
-    open: boolean
-    anchor: HTMLElement | null
-    optionGroups: ComboboxOptionItem[][]
-    value: string
-    resolveIcon?: (value: string) => string
-    width?: number
-  }>(),
-  { width: 200 },
-)
+const props = defineProps<{
+  open: boolean
+  anchor: HTMLElement | null
+  optionGroups: ComboboxOptionItem[][]
+  value: string
+  resolveIcon?: (value: string) => string
+}>()
 
 const emit = defineEmits<{
   (event: "select", value: string): void
@@ -44,7 +41,7 @@ const { chromeTheme } = storeToRefs(useEditorConfigStore())
 const resolvedMode = useResolvedInterfaceMode()
 
 const panelRef = ref<HTMLElement | null>(null)
-const position = ref<ListPosition>({ x: 0, y: 0, w: props.width })
+const position = ref<ListPosition>({ x: 0, y: 0, w: 0 })
 const highlightedValue = ref<string | undefined>(undefined)
 
 const flatOptions = computed<ComboboxOptionItem[]>(() =>
@@ -58,8 +55,6 @@ function place(): void {
     { width: window.innerWidth, height: window.innerHeight },
     {
       gap: PANEL_GAP,
-      width: props.width,
-      align: "end",
       minSpaceBelow: MIN_SPACE_BELOW,
     },
   )
@@ -68,28 +63,36 @@ function place(): void {
 const panelStyle = computed(() => ({
   position: "fixed" as const,
   zIndex: 60,
-  width: `${position.value.w}px`,
+  minWidth: `${position.value.w}px`,
+  width: "max-content",
+  maxWidth: `calc(100vw - ${position.value.x}px - 8px)`,
   outline: "none",
   left: `${position.value.x}px`,
   top: `${position.value.y}px`,
   transform: position.value.positionAbove ? "translateY(-100%)" : undefined,
 }))
 
-// The scroll cap lives on the Listbox itself, which owns the border, radius, and
-// shadow, so the bordered box hugs the visible panel instead of being clipped by
-// an outer wrapper. Matches React, which applies these to the Listbox element.
-const listboxStyle = {
+// The scroll cap lives on the options surface itself, which owns the border,
+// radius, and shadow, so the bordered box hugs the visible panel instead of being
+// clipped by an outer wrapper. Matches React, which applies these the same way.
+const optionsStyle = {
   maxHeight: "24rem",
   overflowY: "auto" as const,
 }
 
-// The content reaches both slots by ref name. `textLabel` is opt-in, so it keeps a
-// positional `{}` enabler; without it the label would not render.
+// The content reaches every slot by ref name. Every slot on a menu row is opt-in,
+// so each keeps a positional enabler; without one the slot would not render.
 function optionRefs(option: ComboboxOptionItem): Record<string, Record<string, unknown>> {
   return {
     optionIcon: { icon: props.resolveIcon?.(option.value) ?? "seldon-component" },
     optionLabel: { children: option.name },
+    optionAnnotation: { children: option.annotation },
   }
+}
+
+/** The annotation slot stays off when the option has no annotation. */
+function optionAnnotationSlot(option: ComboboxOptionItem): Record<string, unknown> | undefined {
+  return option.annotation ? {} : undefined
 }
 
 function optionClass(option: ComboboxOptionItem): string | undefined {
@@ -190,21 +193,23 @@ onBeforeUnmount(() => {
       :data-mode="resolvedMode"
       @keydown="onKeydown"
     >
-      <Listbox :style="listboxStyle">
+      <MenuOptions :style="optionsStyle">
         <template v-for="(group, groupIndex) in optionGroups" :key="`group-${groupIndex}`">
           <Hr v-if="groupIndex > 0" />
-          <ListboxOption
+          <MenuItemOption
             v-for="option in group"
             :key="option.value"
             :class="optionClass(option)"
             :aria-selected="option.value === value || undefined"
             :seldon-refs="optionRefs(option)"
+            :icon="{}"
             :text-label="{}"
+            :text-label2="optionAnnotationSlot(option)"
             @click="select(option.value)"
             @pointerenter="highlightedValue = option.value"
           />
         </template>
-      </Listbox>
+      </MenuOptions>
     </div>
   </Teleport>
 </template>

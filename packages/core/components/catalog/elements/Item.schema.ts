@@ -149,24 +149,15 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Align.CENTER,
           },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
         },
       },
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: { type: Sdn.ValueType.EMPTY, value: null },
           clip: {
             type: Sdn.ValueType.OPTION,
             value: true,
@@ -176,29 +167,11 @@ export const schema = {
           {
             component: Seldon.ComponentId.TEXT,
             variant: "title",
-            overrides: {
-              content: {
-                type: Sdn.ValueType.EXACT,
-                value: "Title",
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              },
-            },
           },
           {
             component: Seldon.ComponentId.TEXT,
             variant: "subtitle",
             overrides: {
-              content: {
-                type: Sdn.ValueType.EXACT,
-                value: "Subtitle",
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              },
               lines: {
                 type: Sdn.ValueType.EXACT,
                 value: 3,
@@ -209,12 +182,6 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BUTTON,
-        overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
-        },
       },
     ],
   },
@@ -227,12 +194,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.INPUT,
           variant: "checkbox",
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
         },
         {
           component: Seldon.ComponentId.AVATAR,
@@ -241,10 +202,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -285,12 +242,6 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BUTTON,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
         },
       ],
     },
@@ -308,12 +259,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.INPUT,
           variant: "checkbox",
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
         },
         {
           component: Seldon.ComponentId.AVATAR,
@@ -343,10 +288,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -387,12 +328,6 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BUTTON,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
         },
       ],
     },
@@ -409,38 +344,20 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
           },
         },
         {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Label",
-            },
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
         {
           component: Seldon.ComponentId.CHIP,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
           children: [
             {
               component: Seldon.ComponentId.ICON,
@@ -453,10 +370,6 @@ export const schema = {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.AUTO_FIT,
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {
@@ -466,10 +379,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Add",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -487,12 +396,6 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.CHIP,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
           children: [
             {
               component: Seldon.ComponentId.ICON,
@@ -505,10 +408,6 @@ export const schema = {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.AUTO_FIT,
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {
@@ -518,10 +417,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Remove",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -539,12 +434,6 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.CHIP,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
           children: [
             {
               component: Seldon.ComponentId.TEXT,
@@ -553,10 +442,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "999",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -663,10 +548,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "material-chevronDown",
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
           ],
@@ -740,10 +621,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "material-add",
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
           ],
@@ -788,10 +665,6 @@ export const schema = {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
                   value: "material-moreHoriz",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },
@@ -887,10 +760,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "material-chevronDown",
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
           ],
@@ -898,12 +767,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FORM_CONTROL,
           variant: "combobox",
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-          },
           children: [
             {
               component: Seldon.ComponentId.TEXT,
@@ -988,10 +851,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "material-add",
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
           ],
@@ -1036,10 +895,6 @@ export const schema = {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
                   value: "material-moreHoriz",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },

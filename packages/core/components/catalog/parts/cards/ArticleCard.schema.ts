@@ -164,14 +164,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "https://static.seldon.app/background-default-light.jpg",
           },
-          imageFit: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.ImageFit.COVER,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.EXACT,
             value: { unit: Sdn.Unit.PX, value: 200 },
@@ -181,14 +173,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
@@ -213,12 +197,6 @@ export const schema = {
         children: [
           {
             component: Seldon.ComponentId.CHIP,
-            overrides: {
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
-            },
             children: [
               {
                 component: Seldon.ComponentId.TEXT,
@@ -284,10 +262,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Align.CENTER_LEFT,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FILL,
-              },
               height: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Resize.FIT,
@@ -321,14 +295,6 @@ export const schema = {
               {
                 component: Seldon.ComponentId.FRAME,
                 overrides: {
-                  orientation: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Orientation.VERTICAL,
-                  },
-                  width: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Resize.FILL,
-                  },
                   height: {
                     type: Sdn.ValueType.OPTION,
                     value: Sdn.Resize.FIT,
@@ -371,10 +337,6 @@ export const schema = {
                 component: Seldon.ComponentId.BUTTON,
                 variant: "label",
                 overrides: {
-                  width: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Resize.FIT,
-                  },
                   background: [
                     {
                       kind: {
@@ -422,14 +384,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "https://static.seldon.app/background-default-light.jpg",
             },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PX, value: 200 },
@@ -439,14 +393,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -477,12 +423,6 @@ export const schema = {
           children: [
             {
               component: Seldon.ComponentId.CHIP,
-              overrides: {
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FIT,
-                },
-              },
               children: [
                 {
                   component: Seldon.ComponentId.TEXT,
@@ -516,10 +456,6 @@ export const schema = {
                   lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                   textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 3,
-                },
               },
             },
           ],
@@ -549,31 +485,15 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "https://static.seldon.app/background-default-light.jpg",
             },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
             width: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PX, value: 200 },
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
           },
         },
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -604,12 +524,6 @@ export const schema = {
           children: [
             {
               component: Seldon.ComponentId.CHIP,
-              overrides: {
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FIT,
-                },
-              },
               children: [
                 {
                   component: Seldon.ComponentId.TEXT,

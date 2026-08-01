@@ -121,7 +121,7 @@ const sdn: Record<string, any> = {
   },
   textTitle: {
     children: "Dialog",
-    className: "sdn-text-title sdn-text-title--8ah1",
+    className: "sdn-text-title sdn-text-title--qbtu",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -129,7 +129,7 @@ const sdn: Record<string, any> = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--taul",
+    className: "sdn-icon sdn-icon--rezm",
   },
   button: {
     className: "sdn-button sdn-button-iconic--pgsr",

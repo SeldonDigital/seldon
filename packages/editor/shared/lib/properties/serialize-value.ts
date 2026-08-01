@@ -424,7 +424,19 @@ export function serializeValue(
   node?: Variant | Instance | Board,
   propertyKey?: string,
 ): Value {
-  if (value === "" || value === "default") {
+  if (value === "") {
+    return { type: ValueType.EMPTY, value: null }
+  }
+
+  // Free-text attributes store the raw string. Skip the picker words below, so
+  // "none" stays the word a caption reads, and the numeric and theme coercion
+  // after them, so input like "001" stays the literal text rather than being
+  // turned into a dimension the property would reject.
+  if (propertyKey && isFreeTextProperty(propertyKey)) {
+    return { type: ValueType.EXACT, value }
+  }
+
+  if (value === "default") {
     return { type: ValueType.EMPTY, value: null }
   }
 
@@ -432,13 +444,6 @@ export function serializeValue(
   // it as a real OPTION (CSS 0), so keep it distinct for those.
   if (value === "none" && !supportsNoneOption(propertyKey)) {
     return { type: ValueType.EMPTY, value: null }
-  }
-
-  // Free-text attributes store the raw string. Skip the numeric and theme
-  // coercion below so input like "001" stays the literal text rather than being
-  // turned into a dimension the property would reject.
-  if (propertyKey && isFreeTextProperty(propertyKey)) {
-    return { type: ValueType.EXACT, value }
   }
 
   // Try to handle as a preset value using the dynamic mapping system

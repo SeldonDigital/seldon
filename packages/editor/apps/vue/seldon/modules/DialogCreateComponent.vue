@@ -158,7 +158,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--zhvk",
+    className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
     children: "Create Component",
@@ -238,7 +238,7 @@ const sdn: Record<string, any> = {
     children: "Name",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   input: {
     placeholder: "Component names must be unique",
@@ -254,7 +254,7 @@ const sdn: Record<string, any> = {
     children: "Level",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   comboboxField: {
     "aria-hidden": "false",
@@ -266,7 +266,7 @@ const sdn: Record<string, any> = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--iegt",
+    className: "sdn-input sdn-input--9vqu",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -284,7 +284,7 @@ const sdn: Record<string, any> = {
     children: "Intent",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   input3: {
     placeholder: "The purpose for this component",
@@ -300,7 +300,7 @@ const sdn: Record<string, any> = {
     children: "Tags",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   input4: {
     placeholder: "Comma separated",
@@ -342,7 +342,9 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-dialog", props.className))
+const rootClassName = computed(() =>
+  combineClassNames("sdn-dialog-create-component", props.className),
+)
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
 const textTitleProps = computed(() =>

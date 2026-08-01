@@ -8,7 +8,6 @@ import {
   getCssFromProperties,
   getNodeProperties,
 } from "@app/core"
-import { useSelectionStore } from "@app/workspace/selection-store"
 import Icon from "@seldon/components/primitives/Icon.vue"
 import { buildChildRenders } from "@seldon/editor/lib/canvas/node-render/build-child-renders"
 import { resolveRenderAsDiv } from "@seldon/editor/lib/canvas/node-render/resolve-render-as-div"
@@ -17,7 +16,6 @@ import { getPropertyHtmlAttributes } from "@seldon/editor/lib/canvas/property-ht
 import { resolveCanvasTag } from "@seldon/editor/lib/canvas/resolve-canvas-tag"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
-import { storeToRefs } from "pinia"
 import { computed } from "vue"
 
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
@@ -33,15 +31,9 @@ const props = withDefaults(
     initialThemeId?: string
     activeState?: NodeState
     repeatOverrides?: Record<string, string>
-    isRepeatCopy?: boolean
   }>(),
   { activeState: () => NORMAL_STATE },
 )
-
-const selection = useSelectionStore()
-const { selectedNodeId } = storeToRefs(selection)
-
-const isSelectedNode = computed(() => selectedNodeId.value === props.nodeId)
 
 const node = computed(() => props.workspace.nodes[props.nodeId])
 
@@ -131,18 +123,6 @@ const htmlAttributes = computed(() => {
   return base
 })
 
-// Dashed outline marking repeat echo copies, shown only while the repeated
-// child (index 0) is selected. Editor preview only. Mirrors React Node.tsx.
-const styleOverrides = computed<Record<string, string> | undefined>(() => {
-  if (props.isRepeatCopy && isSelectedNode.value) {
-    return {
-      outline: "1px dashed var(--sdn-swatch-primary)",
-      outlineOffset: "1px",
-    }
-  }
-  return undefined
-})
-
 const themeId = computed(() => node.value?.theme || props.initialThemeId)
 
 const visible = computed(() => node.value && catalogComponentId.value && !excluded.value)
@@ -158,7 +138,6 @@ const visible = computed(() => node.value && catalogComponentId.value && !exclud
       v-if="tag?.kind === 'icon'"
       :icon="iconSymbol"
       :className="className"
-      :style="styleOverrides"
       v-bind="htmlAttributes"
     />
 
@@ -166,17 +145,10 @@ const visible = computed(() => node.value && catalogComponentId.value && !exclud
       v-else-if="tag && tag.void"
       :is="tag.tag"
       :class="className"
-      :style="styleOverrides"
       v-bind="htmlAttributes"
     />
 
-    <component
-      v-else-if="tag"
-      :is="tag.tag"
-      :class="className"
-      :style="styleOverrides"
-      v-bind="htmlAttributes"
-    >
+    <component v-else-if="tag" :is="tag.tag" :class="className" v-bind="htmlAttributes">
       <template v-if="content">{{ content }}</template>
       <template v-else>
         <CanvasNode
@@ -188,7 +160,6 @@ const visible = computed(() => node.value && catalogComponentId.value && !exclud
           :initial-theme-id="themeId"
           :active-state="activeState"
           :repeat-overrides="child.repeatOverrides"
-          :is-repeat-copy="child.isRepeatCopy"
         />
       </template>
     </component>

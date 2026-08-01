@@ -9,14 +9,13 @@ export interface ChildRender {
   key: string
   nodeId: string
   rootPath: string
-  isRepeatCopy: boolean
   repeatOverrides?: Record<string, string>
 }
 
 /**
  * Expands a node's children into render slots, repeating a child `count` times
  * when it has a repeat. Echo copies (index > 0) carry per-index text/icon
- * overrides and are marked as repeat copies for the dashed preview outline.
+ * overrides.
  */
 export function buildChildRenders(
   node: EntryNode,
@@ -37,7 +36,6 @@ export function buildChildRenders(
         nodeId: childId,
         rootPath: childRootPath,
         repeatOverrides,
-        isRepeatCopy: false,
       })
       continue
     }
@@ -57,7 +55,6 @@ export function buildChildRenders(
               ...buildEchoOverrides(childRepeat.data, echoIndex),
             }
           : repeatOverrides,
-        isRepeatCopy: isEcho,
       })
     }
   }

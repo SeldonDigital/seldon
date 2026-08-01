@@ -53,8 +53,6 @@ export enum ComponentId {
   ITEM = "item",
   LIST_STANDARD = "listStandard",
   LIST_ITEM = "listItem",
-  LISTBOX = "listbox",
-  LISTBOX_OPTION = "listboxOption",
   MENU = "menu",
   MENU_ITEM = "menuItem",
   MESSAGE = "message",

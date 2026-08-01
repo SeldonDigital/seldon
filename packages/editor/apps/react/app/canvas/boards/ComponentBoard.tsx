@@ -11,7 +11,7 @@ import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-acce
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo, useRef } from "react"
 
-import { ValueType } from "@seldon/core"
+import { Align, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
@@ -24,6 +24,7 @@ import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 
 import type { Board } from "@seldon/core"
+import type { AlignValue } from "@seldon/core/properties/values/layout/align"
 import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
 import type { ThemeInstanceId } from "@seldon/core/themes/types"
 import type { CSSProperties, ReactNode } from "react"
@@ -45,6 +46,17 @@ export type ComponentBoardProps = {
    * board name; the normal single-board canvas omits it.
    */
   boardLabel?: string
+  /**
+   * Canvas size in pixels for the isolation gallery, applied inline so it wins
+   * over the board's generated class. The workspace `board` property is
+   * untouched, so leaving isolation restores the board's own size.
+   */
+  boardSize?: IsolationBoardSize
+}
+
+export interface IsolationBoardSize {
+  width?: number
+  height?: number
 }
 
 const boardRootStyle: CSSProperties = { position: "static" }
@@ -57,6 +69,8 @@ const PRIMARY_FONT_FAMILY = {
   type: ValueType.THEME_CATEGORICAL,
   value: "@fontFamily.primary",
 } as unknown as FontFamilyValue
+
+const CENTERED_ALIGN: AlignValue = { type: ValueType.OPTION, value: Align.CENTER }
 
 /**
  * Native table-part elements (`<td>`, `<th>`, `<tr>`, `<thead>`, `<tbody>`) are
@@ -107,10 +121,11 @@ export function ComponentBoard({
   variantRootIds: explicitVariantRootIds,
   useOwnKey,
   boardLabel,
+  boardSize,
 }: ComponentBoardProps) {
   const { workspace } = useWorkspace()
   const { selectedBoardId, selectedNodeRootId } = useSelection()
-  const { isolatedView } = useEditorConfig()
+  const { isolatedView, isolatedBoardKey } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
   const boardKey = useOwnKey
     ? resolveComponentKey(board, workspace)
@@ -123,8 +138,19 @@ export function ComponentBoard({
   // (Normal until changed) instead of inheriting the previously selected board's.
   const stateBoardKey = resolveComponentKey(board, workspace)
   const activeState = useActiveBoardState(stateBoardKey)
-  const properties = getNodeProperties(boardEntry, workspace)
+  const boardProperties = getNodeProperties(boardEntry, workspace)
   const boardRootRef = useRef<HTMLDivElement>(null)
+
+  // Isolation sizes each board to hold its node with slack around it, so center
+  // the content rather than letting it sit in the top-left corner. The anchored
+  // board keeps its own alignment: it is the reference rendering, and the widths
+  // of every other board are read from how its nodes lay out. The workspace
+  // `align` property is untouched, so leaving isolation restores the board's own
+  // alignment.
+  const centersContent = isolatedView && boardKey !== isolatedBoardKey
+  const properties = centersContent
+    ? { ...boardProperties, align: CENTERED_ALIGN }
+    : boardProperties
 
   useCanvasReorderFlip(boardRootRef, workspace)
 
@@ -132,10 +158,15 @@ export function ComponentBoard({
     () => resolveFontFamily({ fontFamily: PRIMARY_FONT_FAMILY, theme })?.value,
     [theme],
   )
-  const rootStyle = useMemo<CSSProperties>(
-    () => (baseFontFamily ? { ...boardRootStyle, fontFamily: baseFontFamily } : boardRootStyle),
-    [baseFontFamily],
-  )
+  const rootStyle = useMemo<CSSProperties>(() => {
+    const style: CSSProperties = { ...boardRootStyle }
+
+    if (baseFontFamily) style.fontFamily = baseFontFamily
+    if (boardSize?.width) style.width = boardSize.width
+    if (boardSize?.height) style.height = boardSize.height
+
+    return style
+  }, [baseFontFamily, boardSize?.width, boardSize?.height])
 
   const visibleVariantRootIds =
     explicitVariantRootIds ??

@@ -115,66 +115,94 @@ export const schema = {
     ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
     ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     ariaChecked: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
         },
       },
       {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
           content: { type: Sdn.ValueType.EXACT, value: "Menu Item" },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
-          font: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.label",
-            },
-          },
         },
       },
       {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
-          content: { type: Sdn.ValueType.EXACT, value: "⌘K" },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+          content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
           opacity: {
             type: Sdn.ValueType.EXACT,
-            value: { unit: Sdn.Unit.PERCENT, value: 60 },
+            value: { unit: Sdn.Unit.PERCENT, value: 50 },
           },
-          font: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.label",
-            },
-          },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
         },
       },
     ],
   },
   variants: [
     {
+      id: "option",
+      label: "Option",
+      intent: "Menu row that represents a selectable option.",
+      overrides: {
+        role: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaRole.OPTION,
+        },
+        ariaChecked: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-check",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            content: { type: Sdn.ValueType.EXACT, value: "Option" },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            padding: {
+              right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+            content: { type: Sdn.ValueType.EXACT, value: "Annotation" },
+            opacity: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 50 },
+            },
+          },
+        },
+      ],
+    },
+    {
       id: "checkbox",
-      label: "Checkbox Menu Item",
+      label: "Checkbox",
       intent: "Menu row that toggles a checked state.",
       overrides: {
         role: {
@@ -187,40 +215,28 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             symbol: {
               type: Sdn.ValueType.OPTION,
               value: "material-check",
             },
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Checkbox Item" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.label",
-              },
-            },
           },
         },
       ],
     },
     {
       id: "radio",
-      label: "Radio Menu Item",
+      label: "Radio",
       intent: "Menu row that selects one option within a group.",
       overrides: {
         role: {
@@ -233,33 +249,21 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             symbol: {
               type: Sdn.ValueType.OPTION,
               value: "material-radioButtonChecked",
             },
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
             content: { type: Sdn.ValueType.EXACT, value: "Radio Item" },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.label",
-              },
-            },
           },
         },
       ],
@@ -268,5 +272,5 @@ export const schema = {
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "HTMLButton" },
+  react: { returns: "Frame" },
 }

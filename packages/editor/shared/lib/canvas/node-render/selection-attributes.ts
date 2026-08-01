@@ -1,4 +1,17 @@
 /**
+ * The names of the attributes below, for code that reads or clears the contract
+ * rather than stamping it.
+ */
+export const CANVAS_SELECTION_ATTRIBUTES = [
+  "data-canvas-node-id",
+  "data-canvas-selection-id",
+  "data-selection-id",
+  "data-selection-kind",
+  "data-selection-root-id",
+  "data-component-id",
+] as const
+
+/**
  * The canvas selection/tracking data attributes stamped on every rendered node,
  * shared by the React and Vue canvases so both surfaces expose the same DOM
  * contract to selection, hover, and measurement. Property attributes (`src`,

@@ -1,4 +1,3 @@
-import { useTextFieldFocus } from "@app/canvas/hooks/use-text-field-focus"
 import { useZoomControlsStore } from "@app/canvas/hooks/use-zoom-controls"
 import React, { useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -13,12 +12,19 @@ import type { FC } from "react"
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_X = 0
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_Y = 50
 
+/**
+ * Space held during a drag is what pans. The key is only read at the drag, so a space
+ * typed into a field is still just a space, and the transform stays live while a field
+ * has focus. Passing an empty list here would mean no key at all is needed, which would
+ * hand every plain drag on the canvas to the pan.
+ */
+const PAN_ACTIVATION_KEYS = [" "]
+
 type Props = {
   children: React.ReactNode
 }
 
 export const TransformWrapper: FC<Props> = ({ children }) => {
-  const isTextFieldFocused = useTextFieldFocus()
   const [metaPressed, setMetaPressed] = useState(false)
 
   useHotkeys("meta", (event) => setMetaPressed(event.type === "keydown"), {
@@ -42,11 +48,10 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
       panning={{
         lockAxisX: false,
         wheelPanning: !metaPressed,
-        activationKeys: [" "],
+        activationKeys: PAN_ACTIVATION_KEYS,
         allowMiddleClickPan: false,
         allowRightClickPan: false,
       }}
-      disabled={isTextFieldFocused}
     >
       <>
         {children}

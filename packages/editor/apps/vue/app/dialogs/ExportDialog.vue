@@ -20,9 +20,6 @@ import type { MenuEntry } from "@app/menus/types"
 import type { ExportOptions, PlatformId } from "@seldon/factory/export/types"
 import type { CSSProperties } from "vue"
 
-const ICON_CHECKED = "material-radioButtonChecked"
-const ICON_UNCHECKED = "material-radioButtonUnchecked"
-
 /** Upper bound on a workspace name, matching the inline project rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
 
@@ -231,30 +228,21 @@ const styles: Record<string, CSSProperties> = {
   // background. Only an inline value outranks a generated pseudo-class rule.
   opaque: { opacity: 1 },
   opaquePointer: { cursor: "pointer", opacity: 1 },
-  radioItem: { cursor: "pointer", backgroundColor: "transparent" },
+  radioRow: { cursor: "pointer" },
 }
 
 // Display-only slots ship baked authored copy, so an empty object turns them on.
 // Interactive behavior rides in through `seldonRefs`.
 const showSlot = {}
 
-/** Radio copy, held opaque so the row states cannot dim it. */
-const radioLabel = { style: styles.opaque }
-
-// Wires a Yes/No radio item: checked state, role, and its select handler.
-function radioItem(checked: boolean, onSelect: () => void) {
-  return {
-    onClick: onSelect,
-    role: "radio",
-    "aria-checked": checked ? "true" : "false",
-    "aria-selected": checked || undefined,
-    style: styles.radioItem,
-  }
+/** Widens a row's hit area so a click beside the bullet still selects it. */
+function radioRow(onSelect: () => void) {
+  return { onClick: onSelect, style: styles.radioRow }
 }
 
-/** The dot glyph for one side of a Yes/No pair. */
-function radioDot(checked: boolean) {
-  return { icon: checked ? ICON_CHECKED : ICON_UNCHECKED, style: styles.opaque }
+/** Wires a native radio to its group name, its checked state, and what it sets. */
+function radioInput(group: string, checked: boolean, onSelect: () => void) {
+  return { name: group, checked, onChange: onSelect }
 }
 
 /** Names a Yes/No pair as one group, since each row is its own radio group. */
@@ -296,40 +284,26 @@ const seldonRefs = computed(() => ({
     style: styles.opaquePointer,
   },
 
-  exportFontLinksYes: radioItem(fontLinks.value, () => (fontLinks.value = true)),
-  exportFontLinksYesIcon: radioDot(fontLinks.value),
-  exportFontLinksNo: radioItem(!fontLinks.value, () => (fontLinks.value = false)),
-  exportFontLinksNoIcon: radioDot(!fontLinks.value),
+  exportFontLinksYes: radioRow(() => (fontLinks.value = true)),
+  exportFontLinksNo: radioRow(() => (fontLinks.value = false)),
 
-  exportHiddenYes: radioItem(includeHidden.value, () => (includeHidden.value = true)),
-  exportHiddenYesIcon: radioDot(includeHidden.value),
-  exportHiddenNo: radioItem(!includeHidden.value, () => (includeHidden.value = false)),
-  exportHiddenNoIcon: radioDot(!includeHidden.value),
+  exportHiddenYes: radioRow(() => (includeHidden.value = true)),
+  exportHiddenNo: radioRow(() => (includeHidden.value = false)),
 
-  exportAllThemesYes: radioItem(allThemes.value, () => (allThemes.value = true)),
-  exportAllThemesYesIcon: radioDot(allThemes.value),
-  exportAllThemesNo: radioItem(!allThemes.value, () => (allThemes.value = false)),
-  exportAllThemesNoIcon: radioDot(!allThemes.value),
+  exportAllThemesYes: radioRow(() => (allThemes.value = true)),
+  exportAllThemesNo: radioRow(() => (allThemes.value = false)),
 
-  exportAllFontsYes: radioItem(allFonts.value, () => (allFonts.value = true)),
-  exportAllFontsYesIcon: radioDot(allFonts.value),
-  exportAllFontsNo: radioItem(!allFonts.value, () => (allFonts.value = false)),
-  exportAllFontsNoIcon: radioDot(!allFonts.value),
+  exportAllFontsYes: radioRow(() => (allFonts.value = true)),
+  exportAllFontsNo: radioRow(() => (allFonts.value = false)),
 
-  exportAllIconsYes: radioItem(allIcons.value, () => (allIcons.value = true)),
-  exportAllIconsYesIcon: radioDot(allIcons.value),
-  exportAllIconsNo: radioItem(!allIcons.value, () => (allIcons.value = false)),
-  exportAllIconsNoIcon: radioDot(!allIcons.value),
+  exportAllIconsYes: radioRow(() => (allIcons.value = true)),
+  exportAllIconsNo: radioRow(() => (allIcons.value = false)),
 
-  exportSavedWorkspaceYes: radioItem(savedWorkspace.value, () => (savedWorkspace.value = true)),
-  exportSavedWorkspaceYesIcon: radioDot(savedWorkspace.value),
-  exportSavedWorkspaceNo: radioItem(!savedWorkspace.value, () => (savedWorkspace.value = false)),
-  exportSavedWorkspaceNoIcon: radioDot(!savedWorkspace.value),
+  exportSavedWorkspaceYes: radioRow(() => (savedWorkspace.value = true)),
+  exportSavedWorkspaceNo: radioRow(() => (savedWorkspace.value = false)),
 
-  exportScriptsYes: radioItem(includeScripts.value, () => (includeScripts.value = true)),
-  exportScriptsYesIcon: radioDot(includeScripts.value),
-  exportScriptsNo: radioItem(!includeScripts.value, () => (includeScripts.value = false)),
-  exportScriptsNoIcon: radioDot(!includeScripts.value),
+  exportScriptsYes: radioRow(() => (includeScripts.value = true)),
+  exportScriptsNo: radioRow(() => (includeScripts.value = false)),
 
   exportCancel: { onClick: cancel },
   exportConfirm: {
@@ -364,47 +338,73 @@ const seldonRefs = computed(() => ({
       :combobox-field="platformField"
       :form-control-radio="radioGroup('Generate Google Font API Links')"
       :text-label4="showSlot"
-      :menu-item-radio="showSlot"
-      :text-label5="radioLabel"
-      :menu-item-radio2="showSlot"
-      :text-label6="radioLabel"
+      :form-control-radio-button-control="showSlot"
+      :input-radio-button="radioInput('export-font-links', fontLinks, () => (fontLinks = true))"
+      :text-label5="showSlot"
+      :form-control-radio-button-control2="showSlot"
+      :input-radio-button2="radioInput('export-font-links', !fontLinks, () => (fontLinks = false))"
+      :text-label6="showSlot"
       :fieldset="showSlot"
       :form-control-radio2="radioGroup('Hidden Components')"
       :text-label7="showSlot"
-      :menu-item-radio3="showSlot"
-      :text-label8="radioLabel"
-      :menu-item-radio4="showSlot"
-      :text-label9="radioLabel"
+      :form-control-radio-button-control3="showSlot"
+      :input-radio-button3="
+        radioInput('export-hidden', includeHidden, () => (includeHidden = true))
+      "
+      :text-label8="showSlot"
+      :form-control-radio-button-control4="showSlot"
+      :input-radio-button4="
+        radioInput('export-hidden', !includeHidden, () => (includeHidden = false))
+      "
+      :text-label9="showSlot"
       :form-control-radio3="radioGroup('All Themes')"
       :text-label10="showSlot"
-      :menu-item-radio5="showSlot"
-      :text-label11="radioLabel"
-      :menu-item-radio6="showSlot"
-      :text-label12="radioLabel"
+      :form-control-radio-button-control5="showSlot"
+      :input-radio-button5="radioInput('export-all-themes', allThemes, () => (allThemes = true))"
+      :text-label11="showSlot"
+      :form-control-radio-button-control6="showSlot"
+      :input-radio-button6="radioInput('export-all-themes', !allThemes, () => (allThemes = false))"
+      :text-label12="showSlot"
       :form-control-radio4="radioGroup('All Enabled Fonts')"
       :text-label13="showSlot"
-      :menu-item-radio7="showSlot"
-      :text-label14="radioLabel"
-      :menu-item-radio8="showSlot"
-      :text-label15="radioLabel"
+      :form-control-radio-button-control7="showSlot"
+      :input-radio-button7="radioInput('export-all-fonts', allFonts, () => (allFonts = true))"
+      :text-label14="showSlot"
+      :form-control-radio-button-control8="showSlot"
+      :input-radio-button8="radioInput('export-all-fonts', !allFonts, () => (allFonts = false))"
+      :text-label15="showSlot"
       :form-control-radio5="radioGroup('All Enabled Icons')"
       :text-label16="showSlot"
-      :menu-item-radio9="showSlot"
-      :text-label17="radioLabel"
-      :menu-item-radio10="showSlot"
-      :text-label18="radioLabel"
+      :form-control-radio-button-control9="showSlot"
+      :input-radio-button9="radioInput('export-all-icons', allIcons, () => (allIcons = true))"
+      :text-label17="showSlot"
+      :form-control-radio-button-control10="showSlot"
+      :input-radio-button10="radioInput('export-all-icons', !allIcons, () => (allIcons = false))"
+      :text-label18="showSlot"
       :form-control-radio6="radioGroup('Saved Workspace')"
       :text-label19="showSlot"
-      :menu-item-radio11="showSlot"
-      :text-label20="radioLabel"
-      :menu-item-radio12="showSlot"
-      :text-label21="radioLabel"
+      :form-control-radio-button-control11="showSlot"
+      :input-radio-button11="
+        radioInput('export-saved-workspace', savedWorkspace, () => (savedWorkspace = true))
+      "
+      :text-label20="showSlot"
+      :form-control-radio-button-control12="showSlot"
+      :input-radio-button12="
+        radioInput('export-saved-workspace', !savedWorkspace, () => (savedWorkspace = false))
+      "
+      :text-label21="showSlot"
       :form-control-radio7="radioGroup('CLI Utility Scripts')"
       :text-label22="showSlot"
-      :menu-item-radio13="showSlot"
-      :text-label23="radioLabel"
-      :menu-item-radio14="showSlot"
-      :text-label24="radioLabel"
+      :form-control-radio-button-control13="showSlot"
+      :input-radio-button13="
+        radioInput('export-scripts', includeScripts, () => (includeScripts = true))
+      "
+      :text-label23="showSlot"
+      :form-control-radio-button-control14="showSlot"
+      :input-radio-button14="
+        radioInput('export-scripts', !includeScripts, () => (includeScripts = false))
+      "
+      :text-label24="showSlot"
       :text-label25="showSlot"
       :text-label26="showSlot"
       :seldon-refs="seldonRefs"

@@ -19,6 +19,13 @@ import type { CSSProperties, ComputedRef } from "vue"
 /** Neutral Display glyph for the picker trigger and the Default/Inherit options. */
 const DISPLAY_NEUTRAL_ICON: string = PROPERTY_ICONS.display
 
+/**
+ * Ancestor states that take the Display control off every row beneath them. Display
+ * has no meaning inside a parent that is mocked or excluded, and those rows keep
+ * their own stored value for when the parent leaves the state.
+ */
+const STATES_HIDING_CHILD_DISPLAY: ReadonlySet<Display> = new Set([Display.MOCK, Display.EXCLUDE])
+
 interface RowNodeDisplayInput {
   node: () => EntryNode
   workspace: () => Workspace
@@ -106,22 +113,17 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
 
   const displayIcon = computed<string>(() => resolveDisplayGlyph(currentDisplayKey.value))
 
-  // The node's own display plus every display inherited from its instance-
-  // ancestor chain. Climbs while each parent is an instance and includes the
-  // first non-instance parent, so a variant root's state still reaches its
-  // instance children.
-  function collectDisplayChainStates(): Display[] {
-    if (!input.nodeExistsInWorkspace()) return []
-
+  // Every display the node inherits from its instance-ancestor chain. Climbs while
+  // each parent is an instance and includes the first non-instance parent, so a
+  // variant root's state still reaches its instance children. A non-instance row
+  // inherits nothing.
+  function collectAncestorDisplayStates(): Display[] {
     const node = input.node()
+
+    if (!input.nodeExistsInWorkspace() || !typeCheckingService.isInstance(node)) return []
+
     const workspace = input.workspace()
     const states: Display[] = []
-    const ownDisplay = input.properties()?.display?.value
-
-    if (ownDisplay) states.push(ownDisplay)
-
-    if (!typeCheckingService.isInstance(node)) return states
-
     let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
 
     while (currentParent) {
@@ -139,7 +141,23 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
     return states
   }
 
-  const decoration = computed(() => resolveRowDisplayDecoration(collectDisplayChainStates()))
+  const ancestorDisplayStates = computed<Display[]>(() => collectAncestorDisplayStates())
+
+  const decoration = computed(() => {
+    const ownDisplay = input.nodeExistsInWorkspace()
+      ? input.properties()?.display?.value
+      : undefined
+
+    return resolveRowDisplayDecoration(
+      ownDisplay ? [ownDisplay, ...ancestorDisplayStates.value] : ancestorDisplayStates.value,
+    )
+  })
+
+  // The row's own state still decides its own control, so a mocked row keeps the
+  // picker it takes to leave the state. Only what sits beneath one loses it.
+  const isDisplayControlHidden = computed<boolean>(() =>
+    ancestorDisplayStates.value.some((state) => STATES_HIDING_CHILD_DISPLAY.has(state)),
+  )
 
   const isDimmed = computed<boolean>(() => decoration.value.isDimmed)
   const dimStyle = computed<CSSProperties | undefined>(() => decoration.value.dimStyle)
@@ -153,6 +171,7 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
     selectDisplay,
     resolveDisplayOptionIcon,
     displayIcon,
+    isDisplayControlHidden,
     isDimmed,
     dimStyle,
     labelDecorationStyle,

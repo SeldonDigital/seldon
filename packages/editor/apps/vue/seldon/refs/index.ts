@@ -36,37 +36,23 @@ export type SeldonRef =
   | "dialogSearchIcon"
   | "dialogTitle"
   | "exportAllFontsNo"
-  | "exportAllFontsNoIcon"
   | "exportAllFontsYes"
-  | "exportAllFontsYesIcon"
   | "exportAllIconsNo"
-  | "exportAllIconsNoIcon"
   | "exportAllIconsYes"
-  | "exportAllIconsYesIcon"
   | "exportAllThemesNo"
-  | "exportAllThemesNoIcon"
   | "exportAllThemesYes"
-  | "exportAllThemesYesIcon"
   | "exportCancel"
   | "exportConfirm"
   | "exportFontLinksNo"
-  | "exportFontLinksNoIcon"
   | "exportFontLinksYes"
-  | "exportFontLinksYesIcon"
   | "exportHiddenNo"
-  | "exportHiddenNoIcon"
   | "exportHiddenYes"
-  | "exportHiddenYesIcon"
   | "exportPlatform"
   | "exportRootPath"
   | "exportSavedWorkspaceNo"
-  | "exportSavedWorkspaceNoIcon"
   | "exportSavedWorkspaceYes"
-  | "exportSavedWorkspaceYesIcon"
   | "exportScriptsNo"
-  | "exportScriptsNoIcon"
   | "exportScriptsYes"
-  | "exportScriptsYesIcon"
   | "exportWorkspaceName"
   | "hariBar"
   | "hariClamp"
@@ -136,6 +122,7 @@ export type SeldonRef =
   | "objectsTree"
   | "objectsViewComponents"
   | "objectsViewResources"
+  | "optionAnnotation"
   | "optionIcon"
   | "optionLabel"
   | "propertiesTree"
@@ -446,7 +433,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   dialogSearch: {
     component: "Input",
     nodeId: "component-panel-pWiFt1bl",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     views: [
       {
         component: "PanelDialog",
@@ -528,170 +515,86 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     ],
   },
   exportAllFontsNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-yVKBdxqz",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-MVEPprzo",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio8",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl8",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportAllFontsNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-ELZAfUu6",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon9",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportAllFontsYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-e48Xe2Fa",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-S3RSoVPE",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio7",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl7",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportAllFontsYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-AAAIIBZA",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon8",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportAllIconsNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-rugVimbb",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-bQMEaAa4",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio10",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl10",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportAllIconsNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-HvqKiDjV",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon11",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportAllIconsYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-6ZzKEgPL",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-zIRqlgi1",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio9",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl9",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportAllIconsYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-uhkDW6j5",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon10",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportAllThemesNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-dHhbJMnp",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-mXBjESJ7",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio6",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl6",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportAllThemesNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-dE3r3x5s",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon7",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportAllThemesYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-Ll8MAURr",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-kEYPyGPc",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio5",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl5",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportAllThemesYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-6zRYcjko",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon6",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
@@ -724,114 +627,58 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     ],
   },
   exportFontLinksNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-ckamBjyC",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-wFOHcCqJ",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio2",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl2",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportFontLinksNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-L4bLvhoP",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon3",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportFontLinksYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-lKDfX83Z",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-e2r4Cxh5",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportFontLinksYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-XOpVCSGs",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon2",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportHiddenNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-cM5q9shs",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-UoQKNUaI",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio4",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl4",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportHiddenNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-BZN5sI4T",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon5",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportHiddenYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-wIfMpjAU",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-g8TxAT2z",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio3",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl3",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportHiddenYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-WG67k8nP",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon4",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
@@ -864,114 +711,58 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     ],
   },
   exportSavedWorkspaceNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-7E0knrLz",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-VLJbSASU",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio12",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl12",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportSavedWorkspaceNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-EwRweg8T",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon13",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportSavedWorkspaceYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-PabJ3D96",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-vcsfDcEC",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio11",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl11",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportSavedWorkspaceYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-wqWys28h",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon12",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportScriptsNo: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-yNBXWgOb",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-RludTrZ3",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio14",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl14",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportScriptsNoIcon: {
-    component: "Icon",
-    nodeId: "component-panel-xrKjwATK",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon15",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
   exportScriptsYes: {
-    component: "MenuItemRadio",
-    nodeId: "component-panel-6KIgaAzM",
-    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-l1Ymraon",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.vue",
-        slot: "menuItemRadio13",
-        type: "MenuItemRadioProps",
+        slot: "formControlRadioButtonControl13",
+        type: "FormControlRadioButtonControlProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  exportScriptsYesIcon: {
-    component: "Icon",
-    nodeId: "component-panel-dCrsBN4m",
-    className: "sdn-icon sdn-icon--3qou",
-    views: [
-      {
-        component: "DialogExportComponent",
-        file: "modules/DialogExportComponent.vue",
-        slot: "icon14",
-        type: "IconProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
@@ -992,7 +783,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariBar: {
     component: "Bar",
     nodeId: "component-panel-DxDVepgS",
-    className: "sdn-bar sdn-bar--9xs7",
+    className: "sdn-bar sdn-bar--dxdv",
     views: [
       {
         component: "PanelHari",
@@ -1076,7 +867,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariErrorText: {
     component: "TextDescription",
     nodeId: "component-text-gaFQYpvP",
-    className: "sdn-text-description sdn-text-label--lbxv",
+    className: "sdn-text-description sdn-text-label--xohb",
     views: [
       {
         component: "MessageError",
@@ -1160,7 +951,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariOutcomeLabel: {
     component: "TextLabel",
     nodeId: "component-text-PIf8vzL0",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "MessageOutcome",
@@ -1398,7 +1189,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariToolIcon: {
     component: "Icon",
     nodeId: "component-message-GL7BdSOW",
-    className: "sdn-icon sdn-icon--gl7b",
+    className: "sdn-icon sdn-icon--rdh1",
     views: [
       {
         component: "MessageToolsUsed",
@@ -1468,7 +1259,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariToolText: {
     component: "TextDescription",
     nodeId: "component-message-20e0rrCn",
-    className: "sdn-text-description sdn-text-description--20e0",
+    className: "sdn-text-description sdn-text-label--y8ur",
     views: [
       {
         component: "MessageToolsUsed",
@@ -1566,7 +1357,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuComponentLabel: {
     component: "TextLabel",
     nodeId: "component-bar-BKODTkFn",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1594,7 +1385,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuDevLabel: {
     component: "TextLabel",
     nodeId: "component-bar-Dsz3NduE",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1622,7 +1413,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuEditLabel: {
     component: "TextLabel",
     nodeId: "component-bar-Q8d6DDvh",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1650,7 +1441,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuFileLabel: {
     component: "TextLabel",
     nodeId: "component-bar-lbXVYN7P",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1678,7 +1469,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuHariLabel: {
     component: "TextLabel",
     nodeId: "component-bar-BJ3Eeqtv",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1692,7 +1483,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuMode: {
     component: "ButtonMenu",
     nodeId: "component-bar-nWDgCHuH",
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     views: [
       {
         component: "BarTopbar",
@@ -1734,7 +1525,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuTheme: {
     component: "ButtonMenu",
     nodeId: "component-button-trucC1Xo",
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     views: [
       {
         component: "BarTopbar",
@@ -1776,7 +1567,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuViewLabel: {
     component: "TextLabel",
     nodeId: "component-bar-gS6ioGdB",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1941,17 +1732,31 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  optionAnnotation: {
+    component: "TextLabel",
+    nodeId: "component-text-lqmhr2IY",
+    className: "sdn-text-label sdn-text-label--lqmh",
+    views: [
+      {
+        component: "MenuItemOption",
+        file: "elements/MenuItemOption.vue",
+        slot: "textLabel2",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   optionIcon: {
     component: "Icon",
     nodeId: "component-icon-3QOuNmn2",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
-        component: "ListboxOption",
-        file: "elements/ListboxOption.vue",
+        component: "MenuItemOption",
+        file: "elements/MenuItemOption.vue",
         slot: "icon",
         type: "IconProps",
-        rendersWhen: "unless-null",
+        rendersWhen: "when-passed",
       },
     ],
   },
@@ -1961,8 +1766,8 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
-        component: "ListboxOption",
-        file: "elements/ListboxOption.vue",
+        component: "MenuItemOption",
+        file: "elements/MenuItemOption.vue",
         slot: "textLabel",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
@@ -2028,7 +1833,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilter: {
     component: "Input",
     nodeId: "component-comboboxField-Lg6E5jtv",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     views: [
       {
         component: "SidebarProperties",
@@ -2266,7 +2071,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyValueLabel: {
     component: "Input",
     nodeId: "component-input-IeGTgo7S",
-    className: "sdn-input sdn-input--iegt",
+    className: "sdn-input sdn-input--9vqu",
     views: [
       {
         component: "ItemProperty",
@@ -2504,7 +2309,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionActionsIcon: {
     component: "Icon",
     nodeId: "component-item-X0ybtMzs",
-    className: "sdn-icon sdn-icon--0qvc",
+    className: "sdn-icon sdn-icon--ucf5",
     views: [
       {
         component: "ItemSection",
@@ -2532,7 +2337,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionAddIcon: {
     component: "Icon",
     nodeId: "component-item-CMEf5HDL",
-    className: "sdn-icon sdn-icon--0qvc",
+    className: "sdn-icon sdn-icon--ucf5",
     views: [
       {
         component: "ItemSection",
@@ -2560,7 +2365,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionDisclosureIcon: {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--rezm",
     views: [
       {
         component: "ItemSection",
@@ -2630,7 +2435,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   workspaceName: {
     component: "Input",
     nodeId: "component-comboboxField-spqmpmg5",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
     views: [
       {
         component: "SidebarObjects",

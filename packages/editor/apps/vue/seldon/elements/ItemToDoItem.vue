@@ -93,7 +93,7 @@ const sdn: Record<string, any> = {
   },
   chip: {
     "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
+    className: "sdn-chip sdn-chip--jsvs",
   },
   icon: {
     icon: "seldon-plus",
@@ -105,7 +105,7 @@ const sdn: Record<string, any> = {
   },
   chip2: {
     "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
+    className: "sdn-chip sdn-chip--jsvs",
   },
   icon2: {
     icon: "seldon-minus",
@@ -117,7 +117,7 @@ const sdn: Record<string, any> = {
   },
   chip3: {
     "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
+    className: "sdn-chip sdn-chip--jsvs",
   },
   textLabel4: {
     children: "999",

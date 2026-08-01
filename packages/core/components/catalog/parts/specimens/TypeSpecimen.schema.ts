@@ -183,10 +183,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Font Name",
           },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
         },
       },
       {
@@ -207,10 +203,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@padding.compact",
             },
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
           borderBottom: {
             preset: {
@@ -233,10 +225,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
           },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
         },
       },
       {
@@ -246,10 +234,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "abcdefghijklmnopqrstuvwxyz",
           },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
         },
       },
       {
@@ -258,10 +242,6 @@ export const schema = {
           content: {
             type: Sdn.ValueType.EXACT,
             value: "0123456789 ¿ ? ¡ ! & @ ‘ ’ “ ” « » % * ^ # $ £ € ¢ / ( ) [ ] { } . , ® ©",
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
         },
       },
@@ -283,10 +263,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@padding.cozy",
             },
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
           borderTop: {
             preset: {

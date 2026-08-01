@@ -162,7 +162,6 @@ export const schema = {
         variant: "label",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "00" },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           textAlign: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.TextAlign.CENTER,

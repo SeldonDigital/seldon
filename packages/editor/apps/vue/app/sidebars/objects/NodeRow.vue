@@ -2,7 +2,7 @@
 import { useDragStore } from "@app/canvas/drag-store"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import ComboboxOptions from "@app/menus/ComboboxOptions.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
 import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
@@ -21,7 +21,9 @@ import { useDispatch } from "@app/workspace/use-dispatch"
 import { useMoveObjects } from "@app/workspace/use-move-objects"
 import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import Frame from "@seldon/components/frames/Frame.vue"
-import { isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
+import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
+import { isNoOpDrop, isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
@@ -134,6 +136,7 @@ const {
   selectDisplay,
   resolveDisplayOptionIcon,
   displayIcon,
+  isDisplayControlHidden,
   isDimmed,
   dimStyle,
   labelDecorationStyle,
@@ -237,13 +240,16 @@ function onSelectDisplay(value: string): void {
   displayOpen.value = false
 }
 
-// Drag-and-drop (native, functional): validity via lib, before/after/inside
-// bands, and Alt to duplicate instead of move.
+// Drag-and-drop (native, functional): validity via lib, before/inside bands,
+// and Alt to duplicate instead of move.
 const dropZone = ref<Placement | null>(null)
 const dropValid = ref(false)
-const draggable = computed(
-  () => props.show && !props.isEcho && !isEditingName.value && !props.disableReordering,
-)
+const draggable = computed(() => {
+  if (!props.show || props.isEcho || isEditingName.value || props.disableReordering) return false
+  const target = node.value
+
+  return target !== undefined && canDragToReorder(props.workspace, target)
+})
 
 function onDragStart(event: DragEvent): void {
   drag.startDrag(props.nodeId)
@@ -260,12 +266,15 @@ function onDragEnd(): void {
   dropValid.value = false
 }
 
-function placementFromEvent(event: DragEvent): Placement {
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
+// There is no after band. The gap below a node is the gap above its next
+// sibling, and a parent's last slot is reached by dropping on the parent, which
+// appends. A row that cannot nest is one before band.
+function placementFromEvent(event: DragEvent, target: EntryNode): Placement {
+  if (!canNodeAcceptChildren(target, props.workspace)) return "before"
+  const element = event.currentTarget as HTMLElement
+  const rect = element.getBoundingClientRect()
   const offset = event.clientY - rect.top
-  if (offset < rect.height * 0.3) return "before"
-  if (offset > rect.height * 0.7) return "after"
+  if (offset < rect.height * 0.5) return "before"
   return "inside"
 }
 
@@ -276,8 +285,12 @@ function onDragOver(event: DragEvent): void {
   const target = node.value
   if (!subject || !target) return
 
-  const placement = placementFromEvent(event)
-  const valid = isValidDropTarget(target, subject, placement, props.workspace)
+  const placement = placementFromEvent(event, target)
+  // Alt duplicates, and a copy next to the original is a real edit, so the
+  // no-op rule only withholds a move that would change nothing.
+  const valid =
+    isValidDropTarget(target, subject, placement, props.workspace) &&
+    (event.altKey || !isNoOpDrop(target, subject, placement, props.workspace))
 
   dropZone.value = placement
   dropValid.value = valid
@@ -383,10 +396,13 @@ const displayButtonProps = computed(() => ({
   style: { position: "relative", zIndex: 10 },
 }))
 
-// Echo rows are stripped leaves with no display of their own, so their
-// nodeDisplay slot is removed. Real rows keep the slot on its generated default
-// and drive it through the `nodeDisplay` ref.
-const displayButtonSlot = computed(() => (props.isEcho ? null : undefined))
+// Echo rows are stripped leaves with no display of their own, and rows under a
+// mocked or excluded parent have no display worth setting, so both drop the
+// nodeDisplay slot. Every other row keeps the slot on its generated default and
+// drives it through the `nodeDisplay` ref.
+const displayButtonSlot = computed(() =>
+  props.isEcho || isDisplayControlHidden.value ? null : undefined,
+)
 
 // Drive every slot through its stable workspace ref. The trailing actions icon
 // has no ref; it stays on the generated `seldon-more` default and is hidden by
@@ -445,7 +461,6 @@ function childRootId(childId: EntryNodeId): string {
       class="objects-node"
       :class="{
         'objects-node--drop-before': dropZone === 'before' && dropValid,
-        'objects-node--drop-after': dropZone === 'after' && dropValid,
         'objects-node--drop-inside': dropZone === 'inside' && dropValid,
       }"
       :style="rootStyle"
@@ -484,7 +499,7 @@ function childRootId(childId: EntryNodeId): string {
       @close="closeActions"
     />
 
-    <ComboboxListbox
+    <ComboboxOptions
       v-if="!isEcho"
       :open="displayOpen"
       :anchor="displayAnchor"
@@ -521,9 +536,6 @@ function childRootId(childId: EntryNodeId): string {
 }
 .objects-node--drop-before {
   box-shadow: inset 0 2px 0 var(--sdn-swatch-active, #6366f1);
-}
-.objects-node--drop-after {
-  box-shadow: inset 0 -2px 0 var(--sdn-swatch-active, #6366f1);
 }
 .objects-node__summary {
   font-size: 11px;

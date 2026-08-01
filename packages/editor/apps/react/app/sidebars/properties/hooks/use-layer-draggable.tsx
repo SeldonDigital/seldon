@@ -1,11 +1,7 @@
-import { DragNodePreview } from "@app/sidebars/DragNodePreview"
+import { setRowDragPreview } from "@app/sidebars/row-drag-preview"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview"
-import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
-import { useEffect, useRef, useState } from "react"
-import { createRoot } from "react-dom/client"
+import { useEffect, useRef } from "react"
 
-import type { IconProps } from "@seldon/components/primitives/Icon"
 import type { LayeredPaintKey } from "@seldon/core"
 
 export const LAYER_DRAG_ACTION = "properties-reorder-layer"
@@ -13,20 +9,16 @@ export const LAYER_DRAG_ACTION = "properties-reorder-layer"
 /**
  * Makes a layered paint parent row (`background`/`shadow`) a drag source for
  * reordering its stack. Carries the property root and the dragged layer index,
- * and renders the same pill preview used by the objects sidebar.
+ * and shows the row itself as the drag image, the same way the objects sidebar
+ * does.
  */
 export function useLayerDraggable({
   property,
   layerIndex,
-  label,
-  icon,
 }: {
   property: LayeredPaintKey
   layerIndex: number
-  label: string
-  icon: string
 }) {
-  const [dragging, setDragging] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -41,23 +33,20 @@ export function useLayerDraggable({
         property,
         layerIndex,
       }),
-      onDragStart: () => setDragging(true),
-      onDrop: () => setDragging(false),
-      onGenerateDragPreview: ({ nativeSetDragImage }) => {
-        setCustomNativeDragPreview({
-          getOffset: pointerOutsideOfPreview({ x: "16px", y: "8px" }),
-          render: ({ container }) => {
-            const root = createRoot(container)
+      onGenerateDragPreview: ({ nativeSetDragImage, location }) => {
+        // The row root, so the image keeps the label, value, and row chrome as
+        // they sit in the sidebar. The drag source wrapper also holds the drop
+        // bands, which have no place in the image.
+        const row = (el.querySelector(".sdn-item-property") as HTMLElement | null) ?? el
 
-            root.render(<DragNodePreview label={label} icon={icon as IconProps["icon"]} />)
-
-            return () => root.unmount()
-          },
+        setRowDragPreview({
+          element: row,
+          input: location.current.input,
           nativeSetDragImage,
         })
       },
     })
-  }, [property, layerIndex, label, icon])
+  }, [property, layerIndex])
 
-  return { ref, dragging }
+  return { ref }
 }

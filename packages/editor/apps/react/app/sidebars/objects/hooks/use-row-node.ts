@@ -8,6 +8,7 @@ import {
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { getSelectionTarget, selectFromTarget } from "@app/workspace/selection-target"
+import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
@@ -100,18 +101,17 @@ export function useRowNode(
   const isParentOfSelectedNode = useIsParentOfSelection(node.id)
   const isNodeActive = parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
 
-  // Show Leaves / Branch / Tree lineage highlight from the View menu. Primary
-  // rows change when the selection is edited; secondary rows are related
-  // lineage that does not. The selected row keeps its own selection styling, so
-  // it is excluded here. When the mode is "selection" the sets are empty and no
-  // row lights up, which is the default.
+  // Show Connectors lineage highlight from the View menu, which the canvas draws
+  // lines for in isolation mode. Primary rows change when the selection is edited;
+  // secondary rows are related lineage that does not. The selected row keeps its own
+  // selection styling, so it is excluded here.
   const sharedHighlight = useSharedNodeHighlight()
   const isPrimaryShared = !isSelected && sharedHighlight.primary.has(node.id)
   const isSecondaryShared =
     !isSelected && !isPrimaryShared && sharedHighlight.secondary.has(node.id)
 
   const { dragging, ref } = useDraggable({
-    enable: show && !isEditingName && !disableReordering,
+    enable: show && !isEditingName && !disableReordering && canDragToReorder(workspace, node),
     target: node,
     onDragStart: () => toggle(expandedId, false),
   })
@@ -190,6 +190,7 @@ export function useRowNode(
     selectDisplay,
     resolveDisplayOptionIcon,
     displayIcon,
+    isDisplayControlHidden,
     isDimmed,
     dimStyle,
     labelDecorationStyle,
@@ -233,6 +234,7 @@ export function useRowNode(
     selectDisplay,
     resolveDisplayOptionIcon,
     displayIcon,
+    isDisplayControlHidden,
     onClick,
     onDoubleClick: handleDoubleClick,
     isExpanded: isExpandedState,

@@ -85,7 +85,7 @@ const sdn: Record<string, any> = {
   },
   textDescription: {
     children: "Something went wrong",
-    className: "sdn-text-description sdn-text-label--lbxv",
+    className: "sdn-text-description sdn-text-label--xohb",
     "data-seldon-ref": "hariErrorText",
   },
   buttonSimple: {

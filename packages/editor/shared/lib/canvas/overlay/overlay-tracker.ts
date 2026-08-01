@@ -3,8 +3,8 @@ import { canNodeAcceptChildren } from "../../workspace/can-node-accept-children"
 import { measureNode, measureSelection, rectsEqual } from "./measure"
 import {
   DEFAULT_OUTLINE_COLORS,
+  resolveOutlineColorsAroundNode,
   resolveOutlineColorsForBoard,
-  resolveOutlineColorsForNode,
 } from "./outline-colors"
 import {
   overlayStore,
@@ -144,7 +144,7 @@ export function createOverlayTracker(ctx: OverlayTrackerContext): OverlayTracker
     } else {
       const colors =
         hovered.kind === "node"
-          ? resolveOutlineColorsForNode(hovered.id)
+          ? resolveOutlineColorsAroundNode(hovered.id)
           : activeBoard
             ? resolveOutlineColorsForBoard(activeBoard)
             : null
@@ -162,7 +162,7 @@ export function createOverlayTracker(ctx: OverlayTrackerContext): OverlayTracker
       }
     } else {
       const colors = selected.nodeId
-        ? resolveOutlineColorsForNode(selected.nodeId)
+        ? resolveOutlineColorsAroundNode(selected.nodeId)
         : activeBoard
           ? resolveOutlineColorsForBoard(activeBoard)
           : null

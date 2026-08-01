@@ -51,10 +51,6 @@ import {
 import { exportConfig as itemExportConfig, schema as itemSchema } from "./elements/Item.schema"
 import { exportConfig as listExportConfig, schema as listSchema } from "./elements/List.schema"
 import {
-  exportConfig as listboxOptionExportConfig,
-  schema as listboxOptionSchema,
-} from "./elements/ListboxOption.schema"
-import {
   exportConfig as menuItemExportConfig,
   schema as menuItemSchema,
 } from "./elements/MenuItem.schema"
@@ -150,10 +146,6 @@ import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
-import {
-  exportConfig as listboxExportConfig,
-  schema as listboxSchema,
-} from "./parts/Listbox.schema"
 import { exportConfig as menuExportConfig, schema as menuSchema } from "./parts/Menu.schema"
 import { exportConfig as topbarExportConfig, schema as topbarSchema } from "./parts/Topbar.schema"
 import {
@@ -288,7 +280,6 @@ const elements: ComponentSchema[] = [
   itemSchema,
   menuItemSchema,
   messageSchema,
-  listboxOptionSchema,
   comboboxFieldSchema,
   navSchema,
   listSchema,
@@ -326,7 +317,6 @@ const parts: ComponentSchema[] = [
   cardStackedSchema,
   fieldsetSchema,
   listStandardSchema,
-  listboxSchema,
   menuSchema,
   comboboxSchema,
   articleCardSchema,
@@ -419,7 +409,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.MENU_ITEM]: menuItemExportConfig,
   [ComponentId.MESSAGE]: messageExportConfig,
-  [ComponentId.LISTBOX_OPTION]: listboxOptionExportConfig,
   [ComponentId.COMBOBOX_FIELD]: comboboxFieldExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
@@ -451,7 +440,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
-  [ComponentId.LISTBOX]: listboxExportConfig,
   [ComponentId.MENU]: menuExportConfig,
   [ComponentId.COMBOBOX]: comboboxExportConfig,
   [ComponentId.ARTICLE_CARD]: articleCardExportConfig,

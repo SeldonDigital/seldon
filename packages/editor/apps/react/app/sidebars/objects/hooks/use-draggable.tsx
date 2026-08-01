@@ -1,9 +1,10 @@
+import { setRowDragPreview } from "@app/sidebars/row-drag-preview"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source"
-import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
 import { useEffect, useRef, useState } from "react"
 
 import type { Instance, Variant } from "@seldon/core"
+
+export const MOVE_NODE_ACTION = "object-panel-move-node"
 
 /**
  * Makes an element draggable for drag-and-drop operations in the objects sidebar.
@@ -30,7 +31,7 @@ export function useDraggable({
       element: el,
       getInitialData: () => ({
         subjectNode: target,
-        action: "object-panel-move-node",
+        action: MOVE_NODE_ACTION,
       }),
       onDragStart: () => {
         onDragStart?.()
@@ -40,31 +41,12 @@ export function useDraggable({
       onGenerateDragPreview: ({ nativeSetDragImage, location }) => {
         // The drag image is the row's combobox-field only, which drops the
         // leading disclosure arrow and keeps the icon, label, and selected
-        // border exactly as they sit in the sidebar. Detached from the layout,
-        // the field has no surface, so pin its width and paint the sidebar
-        // background. `preserveOffsetOnSource` keeps the image under the cursor
-        // at the exact point the row was grabbed.
+        // border exactly as they sit in the sidebar.
         const field = (el.querySelector(".sdn-combobox-field") as HTMLElement | null) ?? el
-        const width = field.getBoundingClientRect().width
 
-        setCustomNativeDragPreview({
-          getOffset: preserveOffsetOnSource({
-            element: field,
-            input: location.current.input,
-          }),
-          render: ({ container }) => {
-            const clone = field.cloneNode(true) as HTMLElement
-
-            clone.style.width = `${width}px`
-            clone.style.margin = "0"
-            clone.style.backgroundColor = "var(--sdn-swatch-offWhite)"
-            clone
-              .querySelectorAll('[data-dragging="true"]')
-              .forEach((node) => node.removeAttribute("data-dragging"))
-            container.appendChild(clone)
-
-            return () => clone.remove()
-          },
+        setRowDragPreview({
+          element: field,
+          input: location.current.input,
           nativeSetDragImage,
         })
       },

@@ -138,18 +138,12 @@ export const schema = {
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
         },
       },
       {
         component: Seldon.ComponentId.INPUT,
         overrides: {
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           padding: {
             top: {
               type: Sdn.ValueType.EXACT,
@@ -229,10 +223,6 @@ export const schema = {
               size: {
                 type: Sdn.ValueType.COMPUTED,
                 value: Sdn.ComputedFunction.AUTO_FIT,
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               },
             },
           },

@@ -20,20 +20,22 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *****/
 
 /**
- * List: boxOption
- * Level: Element
- * Intent: Single selectable row inside a listbox.
- * Tags: listbox, option, select, row, element, UI
- * Type: Default
+ * Menu: MenuOptions
+ * Level: Part
+ * Intent: Floating list of actions anchored to a trigger.
+ * Tags: menu, dropdown, actions, part, overlay, UI
+ * Type: Custom
  *
  * Structure:
- *   Icon       icon       -> optionIcon
- *   TextLabel  textLabel  -> optionLabel
+ *   MenuItemOption  menuItemOption
+ *     Icon          icon
+ *     TextLabel     textLabel
+ *     TextLabel     textLabel2
  *
  * @example
  * ```vue
- * <ListboxOption
- *   role="option"
+ * <MenuOptions
+ *   role="listbox"
  *   aria-hidden="false"
  * />
  * ```
@@ -44,14 +46,17 @@ export default {}
 <script setup lang="ts">
 import { computed } from "vue"
 
+import MenuItemOption from "../elements/MenuItemOption.vue"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
-import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
+  menuItemOption?: Record<string, unknown> | null
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  textLabel2?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
@@ -59,34 +64,47 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  role: "option",
+  role: "listbox",
   "aria-hidden": "false",
+  menuItemOption: {
+    className: "sdn-menu-item-option sdn-menu-item-option--6dxl",
+  },
   icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
-    "data-seldon-ref": "optionIcon",
+    icon: "material-check",
+    className: "sdn-icon sdn-icon--rdh1",
   },
   textLabel: {
     children: "Option",
-    className: "sdn-text-label sdn-text-label--xohb",
-    "data-seldon-ref": "optionLabel",
+    className: "sdn-text-label sdn-text-label--y8ur",
+  },
+  textLabel2: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--ni4j",
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-listbox-option", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-menu-options", props.className))
 const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const menuItemOptionProps = computed(() =>
+  mergeOptionalSlot(sdn.menuItemOption, props.menuItemOption, props.seldonRefs),
+)
+const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
 const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
 )
 </script>
 
 <template>
   <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
-      <Icon v-if="iconProps !== null" v-bind="iconProps" />
-      <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      <MenuItemOption v-if="menuItemOptionProps !== null" v-bind="menuItemOptionProps">
+        <Icon v-if="iconProps !== null" v-bind="iconProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+      </MenuItemOption>
     </slot>
   </div>
 </template>

@@ -174,7 +174,6 @@ export const schema = {
             value: Sdn.Orientation.HORIZONTAL,
           },
           align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
         },
         children: [
@@ -182,10 +181,6 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
-              buttonSize: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.medium",
-              },
               background: [
                 {
                   kind: {
@@ -217,10 +212,6 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
-              buttonSize: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.medium",
-              },
               background: [
                 {
                   kind: {
@@ -253,7 +244,6 @@ export const schema = {
             variant: "title",
             overrides: {
               content: { type: Sdn.ValueType.EXACT, value: "August 2025" },
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               textAlign: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
@@ -272,10 +262,6 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
-              buttonSize: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.medium",
-              },
               background: [
                 {
                   kind: {
@@ -307,10 +293,6 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
-              buttonSize: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.medium",
-              },
               background: [
                 {
                   kind: {
@@ -343,7 +325,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.CONTAINER,
         overrides: {
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
           columns: {
             type: Sdn.ValueType.EXACT,
@@ -440,11 +421,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           padding: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
             right: {
@@ -483,7 +459,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
               columns: {
                 type: Sdn.ValueType.EXACT,
@@ -540,7 +515,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
               columns: {
                 type: Sdn.ValueType.EXACT,
@@ -644,7 +618,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
               columns: {
                 type: Sdn.ValueType.EXACT,
@@ -748,7 +721,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
               columns: {
                 type: Sdn.ValueType.EXACT,
@@ -772,9 +744,6 @@ export const schema = {
               {
                 component: Seldon.ComponentId.CALENDAR_DAY,
                 variant: "today",
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
                 children: [
                   {
                     component: Seldon.ComponentId.TEXT,
@@ -805,27 +774,6 @@ export const schema = {
               {
                 component: Seldon.ComponentId.CALENDAR_DAY,
                 variant: "selected",
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                  corners: {
-                    topLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    topRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                  },
-                },
                 children: [
                   {
                     component: Seldon.ComponentId.TEXT,
@@ -880,7 +828,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
               columns: {
                 type: Sdn.ValueType.EXACT,
@@ -984,7 +931,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
               columns: {
                 type: Sdn.ValueType.EXACT,
@@ -1047,10 +993,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.comfortable",
@@ -1065,10 +1007,6 @@ export const schema = {
                   value: Sdn.Orientation.HORIZONTAL,
                 },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
                 gap: {
                   type: Sdn.ValueType.THEME_ORDINAL,
                   value: "@gap.compact",
@@ -1079,10 +1017,6 @@ export const schema = {
                   component: Seldon.ComponentId.BUTTON,
                   variant: "iconic",
                   overrides: {
-                    buttonSize: {
-                      type: Sdn.ValueType.THEME_ORDINAL,
-                      value: "@fontSize.medium",
-                    },
                     background: [
                       {
                         kind: {
@@ -1118,10 +1052,6 @@ export const schema = {
                       type: Sdn.ValueType.EXACT,
                       value: "October 2020",
                     },
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1133,10 +1063,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,
@@ -1257,14 +1183,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.FRAME,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.VERTICAL,
-                },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
                 gap: {
                   type: Sdn.ValueType.THEME_ORDINAL,
                   value: "@gap.compact",
@@ -1274,10 +1192,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -1363,10 +1277,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -1471,10 +1381,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -1537,23 +1443,6 @@ export const schema = {
                       component: Seldon.ComponentId.CALENDAR_DAY,
                       variant: "selected",
                       overrides: {
-                        background: [
-                          {
-                            kind: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.BackgroundKind.COLOR,
-                            },
-                            color: {
-                              type: Sdn.ValueType.THEME_CATEGORICAL,
-                              value: "@swatch.primary",
-                            },
-                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                            opacity: {
-                              type: Sdn.ValueType.EXACT,
-                              value: { unit: Sdn.Unit.PERCENT, value: 100 },
-                            },
-                          },
-                        ],
                         corners: {
                           topLeft: {
                             type: Sdn.ValueType.OPTION,
@@ -1639,23 +1528,6 @@ export const schema = {
                       component: Seldon.ComponentId.CALENDAR_DAY,
                       variant: "selected",
                       overrides: {
-                        background: [
-                          {
-                            kind: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.BackgroundKind.COLOR,
-                            },
-                            color: {
-                              type: Sdn.ValueType.THEME_CATEGORICAL,
-                              value: "@swatch.primary",
-                            },
-                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                            opacity: {
-                              type: Sdn.ValueType.EXACT,
-                              value: { unit: Sdn.Unit.PERCENT, value: 100 },
-                            },
-                          },
-                        ],
                         corners: {
                           topLeft: {
                             type: Sdn.ValueType.OPTION,
@@ -1690,10 +1562,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -1793,10 +1661,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -1900,10 +1764,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.comfortable",
@@ -1918,10 +1778,6 @@ export const schema = {
                   value: Sdn.Orientation.HORIZONTAL,
                 },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
                 gap: {
                   type: Sdn.ValueType.THEME_ORDINAL,
                   value: "@gap.compact",
@@ -1936,10 +1792,6 @@ export const schema = {
                       type: Sdn.ValueType.EXACT,
                       value: "November 2020",
                     },
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1950,10 +1802,6 @@ export const schema = {
                   component: Seldon.ComponentId.BUTTON,
                   variant: "iconic",
                   overrides: {
-                    buttonSize: {
-                      type: Sdn.ValueType.THEME_ORDINAL,
-                      value: "@fontSize.medium",
-                    },
                     background: [
                       {
                         kind: {
@@ -1986,10 +1834,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,
@@ -2110,14 +1954,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.FRAME,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.VERTICAL,
-                },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
                 gap: {
                   type: Sdn.ValueType.THEME_ORDINAL,
                   value: "@gap.compact",
@@ -2127,10 +1963,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -2176,10 +2008,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -2279,10 +2107,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -2382,10 +2206,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -2485,10 +2305,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -2588,10 +2404,6 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
                     gap: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Gap.NONE,
@@ -2660,7 +2472,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
           },
           children: [
@@ -2680,10 +2491,6 @@ export const schema = {
               component: Seldon.ComponentId.BUTTON,
               variant: "iconic",
               overrides: {
-                buttonSize: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@fontSize.medium",
-                },
                 background: [
                   {
                     kind: {
@@ -2719,10 +2526,6 @@ export const schema = {
               component: Seldon.ComponentId.BUTTON,
               variant: "iconic",
               overrides: {
-                buttonSize: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@fontSize.medium",
-                },
                 background: [
                   {
                     kind: {
@@ -2759,7 +2562,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.CONTAINER,
           overrides: {
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
             columns: {
               type: Sdn.ValueType.EXACT,
@@ -2856,18 +2658,12 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
           },
           children: [
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,
@@ -3045,7 +2841,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,
@@ -3194,7 +2989,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,
@@ -3343,7 +3137,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,
@@ -3492,7 +3285,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Gap.NONE,

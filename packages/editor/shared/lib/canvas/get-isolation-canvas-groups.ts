@@ -14,7 +14,7 @@ export interface IsolationCanvasItem {
   isIsolatedBoard: boolean
   /**
    * Caption shown at the board's top-left. The anchored board reads
-   * `Isolation Mode: {variant} · {board}`; dependency boards use the board name.
+   * `Variant: {board} / {variant}`. Dependency boards use the board name.
    */
   label: string
 }
@@ -62,7 +62,7 @@ export function getIsolationCanvasGroups(
       board: isolatedBoard,
       variantRootIds: getBoardVariantRootIds(isolatedBoard),
       isIsolatedBoard: true,
-      label: `Isolation Mode · ${isolatedBoard.label} / ${variantName}`,
+      label: `Variant: ${isolatedBoard.label} / ${variantName}`,
     },
   ]
 

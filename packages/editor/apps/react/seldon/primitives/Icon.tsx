@@ -41,9 +41,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
-    | "material-chevronDoubleLeft"
-    | "material-chevronLeft"
-    | "material-chevronDoubleRight"
     | "material-expandMore"
     | "material-email"
     | "material-menu"
@@ -58,10 +55,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-neurology"
     | "material-outputCircle"
     | "material-buildCircle"
-    | "seldon-iconSocialTwitter"
-    | "seldon-iconSocialLinkedin"
-    | "seldon-iconSocialInstagram"
-    | "material-notifications"
     | "seldon-frame"
     | "material-gridOn"
     | "seldon-theme"
@@ -72,12 +65,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-iconSocialPinterest"
     | "seldon-iconSocialTiktok"
     | "seldon-iconSocialWhatsapp"
+    | "seldon-iconSocialLinkedin"
     | "seldon-iconSocialSpotify"
     | "seldon-iconSocialTwitch"
     | "seldon-iconSocialYoutube"
     | "seldon-iconSocialDiscord"
+    | "seldon-iconSocialTwitter"
     | "seldon-iconSocialMedium"
     | "seldon-iconSocialTelegram"
+    | "seldon-iconSocialInstagram"
     | "seldon-iconSocialGithub"
     | "seldon-deviceCustom"
     | "seldon-codeCube"
@@ -362,7 +358,10 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-brightnessLow"
     | "material-brightnessMedium"
     | "material-chevronDoubleDown"
+    | "material-chevronDoubleLeft"
+    | "material-chevronDoubleRight"
     | "material-chevronDoubleUp"
+    | "material-chevronLeft"
     | "material-chevronUp"
     | "material-event"
     | "material-fastForward"
@@ -413,6 +412,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-margin"
     | "material-nearMeDisabled"
     | "material-networkCheck"
+    | "material-notifications"
     | "material-notificationsActive"
     | "material-notificationsNone"
     | "material-opacity"
@@ -562,9 +562,6 @@ const iconMap = {
   "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
-  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
-  "material-chevronLeft": Icons.IconMaterialChevronLeft,
-  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-expandMore": Icons.IconMaterialExpandMore,
   "material-email": Icons.IconMaterialEmail,
   "material-menu": Icons.IconMaterialMenu,
@@ -579,10 +576,6 @@ const iconMap = {
   "material-neurology": Icons.IconMaterialNeurology,
   "material-outputCircle": Icons.IconMaterialOutputCircle,
   "material-buildCircle": Icons.IconMaterialBuildCircle,
-  "seldon-iconSocialTwitter": Icons.IconSocialTwitter,
-  "seldon-iconSocialLinkedin": Icons.IconSocialLinkedin,
-  "seldon-iconSocialInstagram": Icons.IconSocialInstagram,
-  "material-notifications": Icons.IconMaterialNotifications,
   "seldon-frame": Icons.IconSeldonFrame,
   "material-gridOn": Icons.IconMaterialGridOn,
   "seldon-theme": Icons.IconSeldonTheme,
@@ -593,12 +586,15 @@ const iconMap = {
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
   "seldon-iconSocialTiktok": Icons.IconSocialTiktok,
   "seldon-iconSocialWhatsapp": Icons.IconSocialWhatsapp,
+  "seldon-iconSocialLinkedin": Icons.IconSocialLinkedin,
   "seldon-iconSocialSpotify": Icons.IconSocialSpotify,
   "seldon-iconSocialTwitch": Icons.IconSocialTwitch,
   "seldon-iconSocialYoutube": Icons.IconSocialYoutube,
   "seldon-iconSocialDiscord": Icons.IconSocialDiscord,
+  "seldon-iconSocialTwitter": Icons.IconSocialTwitter,
   "seldon-iconSocialMedium": Icons.IconSocialMedium,
   "seldon-iconSocialTelegram": Icons.IconSocialTelegram,
+  "seldon-iconSocialInstagram": Icons.IconSocialInstagram,
   "seldon-iconSocialGithub": Icons.IconSocialGithub,
   "seldon-deviceCustom": Icons.IconSeldonDeviceCustom,
   "seldon-codeCube": Icons.IconSeldonCodeCube,
@@ -883,7 +879,10 @@ const iconMap = {
   "material-brightnessLow": Icons.IconMaterialBrightnessLow,
   "material-brightnessMedium": Icons.IconMaterialBrightnessMedium,
   "material-chevronDoubleDown": Icons.IconMaterialChevronDoubleDown,
+  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
+  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-chevronDoubleUp": Icons.IconMaterialChevronDoubleUp,
+  "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronUp": Icons.IconMaterialChevronUp,
   "material-event": Icons.IconMaterialEvent,
   "material-fastForward": Icons.IconMaterialFastForward,
@@ -934,6 +933,7 @@ const iconMap = {
   "material-margin": Icons.IconMaterialMargin,
   "material-nearMeDisabled": Icons.IconMaterialNearMeDisabled,
   "material-networkCheck": Icons.IconMaterialNetworkCheck,
+  "material-notifications": Icons.IconMaterialNotifications,
   "material-notificationsActive": Icons.IconMaterialNotificationsActive,
   "material-notificationsNone": Icons.IconMaterialNotificationsNone,
   "material-opacity": Icons.IconMaterialOpacity,

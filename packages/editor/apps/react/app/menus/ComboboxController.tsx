@@ -1,9 +1,9 @@
 /**
  * ComboboxController: the editable combobox VM. It owns the input behavior (focus,
  * commit, keyboard nav, blur) over the generated `Input` primitive. In
- * `combobox` mode it anchors the floating `ComboboxListbox`; in `standalone`
+ * `combobox` mode it anchors the floating `ComboboxOptions`; in `standalone`
  * mode it is a plain commit-on-blur input used for inline rename and dialog
- * fields. Option-list rendering lives in `ComboboxListbox`; the selection and
+ * fields. Option-list rendering lives in `ComboboxOptions`; the selection and
  * filter engine lives in `useComboboxState`.
  */
 import { Frame } from "@seldon/components/frames/Frame"

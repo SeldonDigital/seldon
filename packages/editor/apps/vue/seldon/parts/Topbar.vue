@@ -108,7 +108,7 @@ const sdn: Record<string, any> = {
   },
   textLabel: {
     children: "Expertise",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   icon: {
     icon: "material-expandMore",

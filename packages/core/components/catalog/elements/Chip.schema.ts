@@ -188,10 +188,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "999",
           },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -240,10 +236,6 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.AUTO_FIT,
             },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
@@ -252,10 +244,6 @@ export const schema = {
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
             content: { type: Sdn.ValueType.EXACT, value: "Assist" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -325,10 +313,6 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.AUTO_FIT,
             },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
       ],
@@ -369,10 +353,6 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.AUTO_FIT,
             },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
           },
         },
         {
@@ -381,10 +361,6 @@ export const schema = {
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
             content: { type: Sdn.ValueType.EXACT, value: "Filter" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -426,10 +402,6 @@ export const schema = {
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
             content: { type: Sdn.ValueType.EXACT, value: "Input" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -450,10 +422,6 @@ export const schema = {
             size: {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.AUTO_FIT,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -486,10 +454,6 @@ export const schema = {
           overrides: {
             display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
             content: { type: Sdn.ValueType.EXACT, value: "Suggestion" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,

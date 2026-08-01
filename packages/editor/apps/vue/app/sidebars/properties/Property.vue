@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import ComboboxOptions from "@app/menus/ComboboxOptions.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
 import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
@@ -280,7 +280,7 @@ function onDrop(event: DragEvent): void {
     @close="actionsMenu.close"
   />
 
-  <ComboboxListbox
+  <ComboboxOptions
     v-if="comboboxOpen"
     :open="comboboxOpen"
     :anchor="anchorEl"

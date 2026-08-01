@@ -8,13 +8,13 @@ import { imageUploadTargetForKey } from "@seldon/editor/lib/dialogs/image-upload
 import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
+  isPropertyResetValue,
 } from "@seldon/editor/lib/properties/commit-helpers"
 import { createPresetPropertyUpdate } from "@seldon/editor/lib/properties/inspector/compound-properties"
 import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
 import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
 import { getPropertiesSubjectId } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { updateProperty } from "@seldon/editor/lib/properties/inspector/property-update-handler"
-import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
@@ -391,7 +391,7 @@ export function useCommitPropertyValue(deps: CommitDeps) {
     }
 
     // Reset values (Default, None, empty string).
-    if (RESET_VALUES.includes(newValue as (typeof RESET_VALUES)[number])) {
+    if (isPropertyResetValue(property.key, newValue)) {
       if (themeCtx?.isThemeEditing) {
         themeCtx.resetThemeProperty(property)
         deps.onDone()

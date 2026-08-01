@@ -6,7 +6,7 @@ import type { ComponentExport, ComponentSchema } from "../../types"
 export const schema = {
   name: "Combobox",
   id: Seldon.ComponentId.COMBOBOX,
-  intent: "Editable field paired with a listbox of options to choose from.",
+  intent: "Editable field paired with a menu of options to choose from.",
   tags: ["combobox", "select", "dropdown", "input", "part", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
@@ -110,18 +110,40 @@ export const schema = {
   },
   default: {
     children: [
-      { component: Seldon.ComponentId.COMBOBOX_FIELD },
-      { component: Seldon.ComponentId.LISTBOX },
+      {
+        component: Seldon.ComponentId.COMBOBOX_FIELD,
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+        },
+      },
+      {
+        component: Seldon.ComponentId.MENU,
+        variant: "options",
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+        },
+      },
     ],
   },
   variants: [
     {
       id: "grouped",
       label: "Grouped Combobox",
-      intent: "Combobox whose listbox organizes options into labeled groups.",
+      intent: "Combobox whose options menu organizes rows into labeled groups.",
       children: [
-        { component: Seldon.ComponentId.COMBOBOX_FIELD },
-        { component: Seldon.ComponentId.LISTBOX, variant: "grouped" },
+        {
+          component: Seldon.ComponentId.COMBOBOX_FIELD,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.STUB },
+          },
+        },
+        {
+          component: Seldon.ComponentId.MENU,
+          variant: "groupedOptions",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.MOCK },
+          },
+        },
       ],
     },
   ],

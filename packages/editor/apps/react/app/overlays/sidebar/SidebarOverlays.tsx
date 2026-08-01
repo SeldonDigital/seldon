@@ -137,7 +137,7 @@ export function SidebarOverlays({
         <DragDropZone
           target={node}
           placement="before"
-          bandStyle={getZoneBandStyle("before", canHaveChildren, isExpanded, isDragging)}
+          bandStyle={getZoneBandStyle("before", canHaveChildren, isDragging)}
           onClick={handleRowClickWrapper}
           onDoubleClick={handleRowDoubleClickWrapper}
           onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -147,18 +147,7 @@ export function SidebarOverlays({
           <DragDropZone
             target={node}
             placement="inside"
-            bandStyle={getZoneBandStyle("inside", canHaveChildren, isExpanded, isDragging)}
-            onClick={handleRowClickWrapper}
-            onDoubleClick={handleRowDoubleClickWrapper}
-            onCanvasTrackingEnter={onCanvasTrackingEnter}
-            onCanvasTrackingLeave={onCanvasTrackingLeave}
-          />
-        )}
-        {!isExpanded && (
-          <DragDropZone
-            target={node}
-            placement="after"
-            bandStyle={getZoneBandStyle("after", canHaveChildren, isExpanded, isDragging)}
+            bandStyle={getZoneBandStyle("inside", canHaveChildren, isDragging)}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -201,10 +190,12 @@ const rowWrapperStyle: CSSProperties = { position: "relative", width: "100%" }
  * pointer position chooses the placement. Without distinct bands the zones fully
  * overlap and only the topmost one is ever reachable.
  *
- * - Container, collapsed: before (top 30%), inside (middle 40%), after (bottom 30%).
- * - Container, expanded: before (top 50%), inside (bottom 50%); the after-sibling
- *   position stays reachable through the next sibling's before band.
- * - Leaf: before (top 50%), after (bottom 50%); no inside band is rendered.
+ * - Container: before (top half), inside (bottom half).
+ * - Leaf: before (the whole row); no inside band is rendered.
+ *
+ * There is no after band. The gap below a node is the gap above its next sibling,
+ * and the last slot in a parent is reached by dropping on the parent, which
+ * appends.
  *
  * The band only captures pointer events while a drag is active, so its native
  * drop targets receive the drag. When idle it is non-interactive, letting the
@@ -213,7 +204,6 @@ const rowWrapperStyle: CSSProperties = { position: "relative", width: "100%" }
 function getZoneBandStyle(
   placement: Placement,
   canHaveChildren: boolean,
-  isExpanded: boolean,
   isDragging: boolean,
 ): CSSProperties {
   const base: CSSProperties = {
@@ -223,20 +213,13 @@ function getZoneBandStyle(
     pointerEvents: isDragging ? "auto" : "none",
   }
 
-  if (canHaveChildren && !isExpanded) {
-    if (placement === "before") return { ...base, top: 0, height: "30%" }
-    if (placement === "inside") return { ...base, top: "30%", height: "40%" }
-
-    return { ...base, bottom: 0, height: "30%" }
+  if (!canHaveChildren) {
+    return { ...base, top: 0, bottom: 0 }
   }
 
-  if (canHaveChildren && isExpanded) {
-    if (placement === "before") return { ...base, top: 0, height: "50%" }
-
-    return { ...base, bottom: 0, height: "50%" }
+  if (placement === "before") {
+    return { ...base, top: 0, height: "50%" }
   }
-
-  if (placement === "before") return { ...base, top: 0, height: "50%" }
 
   return { ...base, bottom: 0, height: "50%" }
 }

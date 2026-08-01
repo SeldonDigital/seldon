@@ -182,6 +182,12 @@ export function useEditorShortcuts(): void {
         config.toggleWireframeMode()
 
         return
+      case "e":
+        event.preventDefault()
+        // The connectors only draw in isolation mode.
+        if (config.isolatedView) config.toggleShowConnectors()
+
+        return
       case "r":
         event.preventDefault()
         toggleRefBadges()

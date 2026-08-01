@@ -457,7 +457,9 @@ export function rebuildDefaultChildren(
 
 /**
  * Builds one catalog schema variant and appends its tree ref. The variant uses
- * its own child slots when present, otherwise `fallbackChildSlots`.
+ * its own child slots when present, otherwise `fallbackChildSlots`. Pass
+ * `existingRef` when rebuilding a variant already on a board, so its child ids
+ * are reused and boards that compose this variant stay linked to them.
  */
 export function appendComplexSchemaVariant(
   componentId: ComponentId,
@@ -467,6 +469,7 @@ export function appendComplexSchemaVariant(
   ctx: BuildContext,
   defaultRef: ComponentTreeRef | undefined,
   variantTreeRefs: ComponentTreeRef[],
+  existingRef?: ComponentTreeRef,
 ): void {
   const variantRootId = componentBoardSchemaVariantNodeId(componentId, catalogVariant.id)
   const variantChildSlots = catalogVariant.children?.length
@@ -484,6 +487,7 @@ export function appendComplexSchemaVariant(
     },
     ctx,
     defaultRef,
+    existingRef,
   )
 
   variantTreeRefs.push(variantRef)

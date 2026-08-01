@@ -11,15 +11,15 @@
  *
  *****/
 
-import { ButtonHTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
 
-import { HTMLButton } from "../native-react/HTML.Button"
+import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
-export interface MenuItemCheckboxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MenuItemCheckboxProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
@@ -36,12 +36,11 @@ const sdn: MenuItemCheckboxProps = {
   "aria-hidden": "false",
   icon: {
     icon: "material-check",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
 
   textLabel: {
-    children: "Checkbox",
+    children: "Checkbox Item",
     className: "sdn-text-label sdn-text-label--xohb",
   },
 }
@@ -77,12 +76,12 @@ export function MenuItemCheckbox({
 }: MenuItemCheckboxProps) {
   const menuItemCheckboxClassName = combineClassNames("sdn-menu-item", className)
 
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
 
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
-    <HTMLButton
+    <Frame
       className={menuItemCheckboxClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
@@ -96,6 +95,6 @@ export function MenuItemCheckbox({
           {textLabelProps !== null && <TextLabel {...textLabelProps} />}
         </>
       )}
-    </HTMLButton>
+    </Frame>
   )
 }

@@ -112,7 +112,9 @@ export function useComboboxState<ItemT extends { name: string; value: string; co
       onValueChange(option.value)
     }
 
-    setOpen(false)
+    // Ends like the keyboard paths do. A field left focused after the value is set
+    // keeps every editor shortcut and the canvas pan pointed at the field.
+    finishSubmit(false)
   }
 
   function handleInputChange(newValue: string) {

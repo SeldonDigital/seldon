@@ -9,17 +9,17 @@ interface Position {
 }
 
 /**
- * Calculates the position for a drop indicator line.
+ * Calculates the position for a drop indicator line. The line spans the full
+ * width of its row. Each nesting level already indents the row through the
+ * `IndentationLevel` padding, so an indentation offset here would apply it twice
+ * and leave the line too narrow to see under the drag preview.
+ *
  * @param placement - "before", "after", or "inside" placement
- * @param indentation - Indentation level (0-based)
  * @returns Position object with top/bottom, left, right, and height
  */
-export function calculateIndicatorPosition(placement: Placement, indentation: number): Position {
-  // Calculate left position: 0.5rem padding + 1rem per level + 0.25rem indicator width
-  const left = (0.5 + 1 * indentation + 0.25) * 16
-
+export function calculateIndicatorPosition(placement: Placement): Position {
   const position: Position = {
-    left,
+    left: 0,
     right: 0,
     height: 1,
   }

@@ -119,7 +119,7 @@ html:not(.sdn-show-focus)
 /*
  * The Export Components dialog authors a resting border on its fields, so
  * blanking the border above would drop it for as long as the field holds focus.
- * Restore the resting color instead, the way the menu and listbox rules do.
+ * Restore the resting color instead, the way the menu rules do.
  */
 html:not(.sdn-show-focus)
   .sdn-dialog-export-component
@@ -134,7 +134,7 @@ html:not(.sdn-show-focus)
 }
 
 /*
- * Menus and listboxes author a focused state that exports as a visible-focus
+ * Menus and option lists author a focused state that exports as a visible-focus
  * cascade (punch border on the surface, punch tint on every item leaf). Gate
  * it like the other focus visuals: restore the resting border and let leaves
  * inherit their item color. Activated and disabled leaves keep their own
@@ -143,7 +143,7 @@ html:not(.sdn-show-focus)
 html:not(.sdn-show-focus)
   .sdn-menu:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]) {
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]) {
   border-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 html:not(.sdn-show-focus)
@@ -151,10 +151,10 @@ html:not(.sdn-show-focus)
   [class*="sdn-text-label"],
 html:not(.sdn-show-focus) .sdn-menu:is(:focus-visible, :has(:focus-visible)) [class*="sdn-icon"],
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-text-label"],
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"] {
   color: inherit;
 }
@@ -168,10 +168,10 @@ html:not(.sdn-show-focus)
   .sdn-menu:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"].sdn-state-activated,
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-text-label"].sdn-state-activated,
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"].sdn-state-activated {
   color: var(--sdn-swatch-active);
 }
@@ -182,10 +182,10 @@ html:not(.sdn-show-focus)
   .sdn-menu:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"][aria-disabled="true"],
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-text-label"][aria-disabled="true"],
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"][aria-disabled="true"] {
   color: var(--sdn-swatch-gray);
 }
@@ -197,10 +197,10 @@ html:not(.sdn-show-focus)
   .sdn-menu:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"][aria-invalid="true"],
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-text-label"][aria-invalid="true"],
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  .sdn-menu-options:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-icon"][aria-invalid="true"] {
   color: var(--sdn-swatch-negative);
 }

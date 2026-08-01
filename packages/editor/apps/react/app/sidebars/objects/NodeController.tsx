@@ -1,4 +1,4 @@
-import { ComboboxListbox } from "@app/menus"
+import { ComboboxOptions } from "@app/menus"
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import {
@@ -82,6 +82,7 @@ const NodeInner = function NodeInner({
     selectDisplay,
     resolveDisplayOptionIcon,
     displayIcon,
+    isDisplayControlHidden,
     onClick,
     onDoubleClick,
     isExpanded,
@@ -115,7 +116,7 @@ const NodeInner = function NodeInner({
     focusTargetRef: ref,
   })
 
-  // The row Display picker reuses the same floating `ComboboxListbox` widget as
+  // The row Display picker reuses the same floating `ComboboxOptions` widget as
   // the properties Display control. Its trigger stays visible (unlike the
   // on-demand actions menu), so a row's display is always one click away.
   const displayPicker = useRowDisplayPicker({
@@ -236,7 +237,7 @@ const NodeInner = function NodeInner({
   // the disclosure arrow, buttons, border, and background untinted.
   const nodeTypeStyle = nodeTypeColor ? { style: { color: nodeTypeColor } } : undefined
 
-  // Show Leaves / Branch / Tree lineage fill from the View menu. Primary rows
+  // Show Connectors lineage fill from the View menu. Primary rows
   // read as a strong accent fill (they change when the selection is edited);
   // secondary rows read faintly (related lineage that does not change). The fill
   // uses the same `--sdn-swatch-active` accent as selection, so the selected row
@@ -261,10 +262,11 @@ const NodeInner = function NodeInner({
     ...(Object.keys(comboboxFieldStyle).length > 0 ? { style: comboboxFieldStyle } : {}),
   }
 
-  // Echo rows are stripped leaves with no display of their own, so their
-  // nodeDisplay slot is removed. Real rows keep the slot on its generated
-  // default and drive it through the `nodeDisplay` ref.
-  const displayButtonSlot = isEcho ? null : undefined
+  // Echo rows are stripped leaves with no display of their own, and rows under a
+  // mocked or excluded parent have no display worth setting, so both drop the
+  // nodeDisplay slot. Every other row keeps the slot on its generated default and
+  // drives it through the `nodeDisplay` ref.
+  const displayButtonSlot = isEcho || isDisplayControlHidden ? null : undefined
 
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
@@ -324,7 +326,7 @@ const NodeInner = function NodeInner({
           />
         </SidebarOverlays>
       </RowSelectionTarget>
-      <ComboboxListbox {...displayPicker.listbox} />
+      <ComboboxOptions {...displayPicker.options} />
       {actionsMenu.menu}
 
       {childrenSection}

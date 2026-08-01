@@ -58,7 +58,7 @@ const sdn: ItemToDoItemProps = {
 
   chip: {
     "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
+    className: "sdn-chip sdn-chip--jsvs",
   },
   icon: {
     icon: "seldon-plus",
@@ -71,7 +71,7 @@ const sdn: ItemToDoItemProps = {
 
   chip2: {
     "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
+    className: "sdn-chip sdn-chip--jsvs",
   },
   icon2: {
     icon: "seldon-minus",
@@ -84,7 +84,7 @@ const sdn: ItemToDoItemProps = {
 
   chip3: {
     "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
+    className: "sdn-chip sdn-chip--jsvs",
   },
   textLabel4: {
     children: "999",

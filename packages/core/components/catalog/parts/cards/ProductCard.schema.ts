@@ -164,14 +164,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "https://static.seldon.app/background-default-light.jpg",
           },
-          imageFit: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.ImageFit.COVER,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.EXACT,
             value: { unit: Sdn.Unit.PX, value: 220 },
@@ -181,14 +173,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
@@ -214,10 +198,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.CHIP,
             overrides: {
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   kind: {
@@ -316,9 +296,18 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-star",
                   },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@size.medium",
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.primary",
+                  },
+                },
+              },
+              {
+                component: Seldon.ComponentId.ICON,
+                overrides: {
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-star",
                   },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -333,10 +322,6 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-star",
                   },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@size.medium",
-                  },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@swatch.primary",
@@ -350,10 +335,6 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-star",
                   },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@size.medium",
-                  },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@swatch.primary",
@@ -366,27 +347,6 @@ export const schema = {
                   symbol: {
                     type: Sdn.ValueType.OPTION,
                     value: "material-star",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@size.medium",
-                  },
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.primary",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "material-star",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@size.medium",
                   },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -398,12 +358,6 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.BUTTON,
-            overrides: {
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
-            },
             children: [
               {
                 component: Seldon.ComponentId.ICON,
@@ -443,14 +397,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "https://static.seldon.app/background-default-light.jpg",
             },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PX, value: 220 },
@@ -460,14 +406,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -553,31 +491,15 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "https://static.seldon.app/background-default-light.jpg",
             },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
             width: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PX, value: 160 },
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
           },
         },
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -640,12 +562,6 @@ export const schema = {
             },
             {
               component: Seldon.ComponentId.BUTTON,
-              overrides: {
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FIT,
-                },
-              },
               children: [
                 {
                   component: Seldon.ComponentId.ICON,

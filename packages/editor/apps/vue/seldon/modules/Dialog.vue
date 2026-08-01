@@ -128,7 +128,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--zhvk",
+    className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
     children: "Dialog",
@@ -150,7 +150,7 @@ const sdn: Record<string, any> = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--yoqi",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

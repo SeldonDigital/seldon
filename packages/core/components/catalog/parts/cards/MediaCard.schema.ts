@@ -160,18 +160,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.IMAGE,
         overrides: {
-          source: {
-            type: Sdn.ValueType.EXACT,
-            value: "https://static.seldon.app/background-default-dark.jpg",
-          },
-          imageFit: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.ImageFit.COVER,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.EXACT,
             value: { unit: Sdn.Unit.PX, value: 200 },
@@ -181,14 +169,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
@@ -219,10 +199,6 @@ export const schema = {
                 type: Sdn.ValueType.EXACT,
                 value: "Designing with cards",
               },
-              lines: {
-                type: Sdn.ValueType.EXACT,
-                value: 2,
-              },
             },
           },
           {
@@ -235,10 +211,6 @@ export const schema = {
               align: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Align.CENTER_LEFT,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FILL,
               },
               height: {
                 type: Sdn.ValueType.OPTION,
@@ -281,14 +253,6 @@ export const schema = {
               {
                 component: Seldon.ComponentId.FRAME,
                 overrides: {
-                  orientation: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Orientation.VERTICAL,
-                  },
-                  width: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Resize.FILL,
-                  },
                   height: {
                     type: Sdn.ValueType.OPTION,
                     value: Sdn.Resize.FIT,
@@ -338,10 +302,6 @@ export const schema = {
           {
             component: Seldon.ComponentId.BUTTON,
             overrides: {
-              align: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Align.CENTER,
-              },
               width: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Resize.FILL,
@@ -365,10 +325,6 @@ export const schema = {
                     type: Sdn.ValueType.EXACT,
                     value: "Play now",
                   },
-                  width: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Resize.FIT,
-                  },
                 },
               },
             ],
@@ -386,18 +342,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.IMAGE,
           overrides: {
-            source: {
-              type: Sdn.ValueType.EXACT,
-              value: "https://static.seldon.app/background-default-dark.jpg",
-            },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PX, value: 160 },
@@ -407,14 +351,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -450,10 +386,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Designing with cards",
-                },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 2,
                 },
               },
             },

@@ -574,10 +574,6 @@ export const schema = {
                 value: "@padding.cozy",
               },
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
             border: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -613,16 +609,10 @@ export const schema = {
               component: Seldon.ComponentId.INPUT,
               variant: "checkbox",
               overrides: {
-                checked: { type: Sdn.ValueType.OPTION, value: false },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.black",
-                },
-                accentColor: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
                 },
               },
             },
@@ -635,10 +625,6 @@ export const schema = {
                   value: "Get snacks for the road",
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {
@@ -672,10 +658,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
-            },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
             },
             border: {
               preset: {
@@ -714,14 +696,9 @@ export const schema = {
               overrides: {
                 checked: { type: Sdn.ValueType.OPTION, value: true },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.black",
-                },
-                accentColor: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
                 },
               },
             },
@@ -773,26 +750,16 @@ export const schema = {
                 value: "@padding.cozy",
               },
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
           },
           children: [
             {
               component: Seldon.ComponentId.INPUT,
               variant: "checkbox",
               overrides: {
-                checked: { type: Sdn.ValueType.OPTION, value: false },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.black",
-                },
-                accentColor: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
                 },
               },
             },
@@ -805,10 +772,6 @@ export const schema = {
                   value: "Arrange day trips",
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {

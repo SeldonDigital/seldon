@@ -151,14 +151,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Empty message",
           },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -217,14 +209,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "User message",
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -266,14 +250,6 @@ export const schema = {
             content: {
               type: Sdn.ValueType.EXACT,
               value: "Assistant message",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -339,10 +315,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.tight",
@@ -356,14 +328,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Thinking...",
-                },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -438,14 +402,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "Reasoning...",
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -482,10 +438,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.tight",
@@ -503,10 +455,6 @@ export const schema = {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.AUTO_FIT,
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {
@@ -516,14 +464,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "set_properties(target, ...)",
-                },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -550,10 +490,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.tight",
@@ -571,10 +507,6 @@ export const schema = {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.AUTO_FIT,
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {
@@ -584,14 +516,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "find_nodes(query)",
-                },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -662,10 +586,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.tight",
@@ -683,10 +603,6 @@ export const schema = {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.AUTO_FIT,
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
               },
             },
             {
@@ -700,10 +616,6 @@ export const schema = {
                 width: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Resize.FILL,
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -726,14 +638,6 @@ export const schema = {
             content: {
               type: Sdn.ValueType.EXACT,
               value: "Button background: primary -> accent",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -803,10 +707,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.tight",
@@ -837,14 +737,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Something went wrong",
-                },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {

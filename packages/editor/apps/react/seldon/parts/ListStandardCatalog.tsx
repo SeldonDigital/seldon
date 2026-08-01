@@ -59,7 +59,7 @@ const sdn: ListStandardCatalogProps = {
   "aria-hidden": "false",
   textSubtitle: {
     children: "Component Level",
-    className: "sdn-text-subtitle sdn-text-label--yqnd",
+    className: "sdn-text-subtitle sdn-text-title--drqy",
   },
 
   container: {

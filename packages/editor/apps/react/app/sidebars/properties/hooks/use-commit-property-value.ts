@@ -9,6 +9,7 @@ import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
   dispatchPropertyReset,
+  isPropertyResetValue,
 } from "@seldon/editor/lib/properties/commit-helpers"
 import { createPresetPropertyUpdate } from "@seldon/editor/lib/properties/inspector/compound-properties"
 import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
@@ -19,7 +20,6 @@ import {
   REPEAT_ROW_KEY,
   parseRepeatDataRowKey,
 } from "@seldon/editor/lib/properties/inspector/repeat-display"
-import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
@@ -291,7 +291,7 @@ export function useCommitPropertyValue({
       }
 
       // Handle reset values (Default, None, empty string)
-      if (RESET_VALUES.includes(newValue as (typeof RESET_VALUES)[number])) {
+      if (isPropertyResetValue(property.key, newValue)) {
         // Theme rows reset their entry override; node reset paths do not apply.
         if (themeEditingContext?.isThemeEditing) {
           themeEditingContext.resetThemeProperty(property)

@@ -168,7 +168,6 @@ export const schema = {
             value: Sdn.Orientation.HORIZONTAL,
           },
           align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.TOP_LEFT },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.comfortable" },
         },
@@ -515,7 +514,6 @@ export const schema = {
             value: Sdn.Orientation.HORIZONTAL,
           },
           align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
         },
@@ -531,7 +529,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Align.CENTER_LEFT,
               },
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             },
             children: [
@@ -633,7 +630,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
           },
@@ -649,7 +645,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.CENTER_LEFT,
                 },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 gap: {
                   type: Sdn.ValueType.THEME_ORDINAL,
@@ -668,10 +663,6 @@ export const schema = {
                     width: {
                       type: Sdn.ValueType.THEME_ORDINAL,
                       value: "@dimension.small",
-                    },
-                    height: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
                     },
                   },
                 },
@@ -734,7 +725,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.TOP_LEFT },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
           },
@@ -750,7 +740,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.TOP_LEFT,
                 },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 gap: {
                   type: Sdn.ValueType.OPTION,
@@ -1177,10 +1166,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.FRAME,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.VERTICAL,
-                },
                 align: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.TOP_RIGHT,
@@ -1230,10 +1215,6 @@ export const schema = {
                           type: Sdn.ValueType.EXACT,
                           value: "English",
                         },
-                        color: {
-                          type: Sdn.ValueType.COMPUTED,
-                          value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                        },
                         font: {
                           preset: {
                             type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -1256,10 +1237,6 @@ export const schema = {
                         size: {
                           type: Sdn.ValueType.COMPUTED,
                           value: Sdn.ComputedFunction.AUTO_FIT,
-                        },
-                        color: {
-                          type: Sdn.ValueType.COMPUTED,
-                          value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                         },
                       },
                     },
@@ -1327,10 +1304,6 @@ export const schema = {
                               type: Sdn.ValueType.COMPUTED,
                               value: Sdn.ComputedFunction.AUTO_FIT,
                             },
-                            color: {
-                              type: Sdn.ValueType.COMPUTED,
-                              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                            },
                           },
                         },
                       ],
@@ -1371,10 +1344,6 @@ export const schema = {
                             size: {
                               type: Sdn.ValueType.COMPUTED,
                               value: Sdn.ComputedFunction.AUTO_FIT,
-                            },
-                            color: {
-                              type: Sdn.ValueType.COMPUTED,
-                              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                             },
                           },
                         },
@@ -1417,10 +1386,6 @@ export const schema = {
                               type: Sdn.ValueType.COMPUTED,
                               value: Sdn.ComputedFunction.AUTO_FIT,
                             },
-                            color: {
-                              type: Sdn.ValueType.COMPUTED,
-                              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                            },
                           },
                         },
                       ],
@@ -1462,10 +1427,6 @@ export const schema = {
                               type: Sdn.ValueType.COMPUTED,
                               value: Sdn.ComputedFunction.AUTO_FIT,
                             },
-                            color: {
-                              type: Sdn.ValueType.COMPUTED,
-                              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                            },
                           },
                         },
                       ],
@@ -1490,7 +1451,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
           },
@@ -1506,7 +1466,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.CENTER_LEFT,
                 },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               },
               children: [
@@ -1622,7 +1581,6 @@ export const schema = {
               value: Sdn.Orientation.HORIZONTAL,
             },
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.TOP_LEFT },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
           },
@@ -1645,15 +1603,10 @@ export const schema = {
             {
               component: Seldon.ComponentId.FRAME,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.VERTICAL,
-                },
                 align: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.TOP_LEFT,
                 },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 gap: {
                   type: Sdn.ValueType.THEME_ORDINAL,
@@ -1687,10 +1640,6 @@ export const schema = {
                     align: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.Align.TOP_LEFT,
-                    },
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
                     },
                     height: {
                       type: Sdn.ValueType.OPTION,
@@ -1959,7 +1908,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
           },
@@ -1975,7 +1923,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.CENTER_LEFT,
                 },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               },
               children: [
@@ -2048,10 +1995,6 @@ export const schema = {
                       type: Sdn.ValueType.EXACT,
                       value: "Back to top",
                     },
-                    color: {
-                      type: Sdn.ValueType.COMPUTED,
-                      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    },
                     font: {
                       preset: {
                         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -2074,10 +2017,6 @@ export const schema = {
                     size: {
                       type: Sdn.ValueType.COMPUTED,
                       value: Sdn.ComputedFunction.AUTO_FIT,
-                    },
-                    color: {
-                      type: Sdn.ValueType.COMPUTED,
-                      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                     },
                   },
                 },

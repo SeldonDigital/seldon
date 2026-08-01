@@ -60,7 +60,7 @@ const sdn: PanelPaletteProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--88jo",
+    className: "sdn-frame sdn-frame--snek",
   },
 }
 

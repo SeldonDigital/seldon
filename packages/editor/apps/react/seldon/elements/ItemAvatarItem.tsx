@@ -56,7 +56,7 @@ const sdn: ItemAvatarItemProps = {
 
   avatarRounded: {
     "aria-hidden": "false",
-    className: "sdn-avatar sdn-avatar--a890",
+    className: "sdn-avatar sdn-avatar-rounded--fb5j",
   },
   image: {
     src: "/avatar-user.png",

@@ -48,6 +48,8 @@ export function useEditorShortcuts() {
     togglePanels,
     toggleShowSelection,
     toggleWireframeMode,
+    toggleShowConnectors,
+    isolatedView,
     toggleShowUnusedProperties,
     toggleShowUnusedFonts,
     toggleShowUnusedIcons,
@@ -191,6 +193,9 @@ export function useEditorShortcuts() {
 
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })
+
+  // Component connector overlay, which only draws in isolation mode
+  useHotkeys("e", () => isolatedView && toggleShowConnectors(), { preventDefault: true })
 
   // Ref connector overlay. Turning it on reads the linked folder, which needs this
   // keypress to count as the gesture.

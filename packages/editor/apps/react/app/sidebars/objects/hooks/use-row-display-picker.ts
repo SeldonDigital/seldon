@@ -20,8 +20,8 @@ interface DisplayPickerInput {
 interface DisplayPickerResult {
   /** Slot props for the row's `nodeDisplay` iconic-button trigger. */
   buttonProps: ButtonIconicProps & { ref: RefObject<HTMLButtonElement | null> }
-  /** Props for the floating `ComboboxListbox` value list. */
-  listbox: {
+  /** Props for the floating `ComboboxOptions` value list. */
+  options: {
     open: boolean
     position: ComboboxPosition
     handleClose: () => void
@@ -40,7 +40,7 @@ const TRIGGER_STYLE: CSSProperties = { position: "relative", zIndex: 10 }
 
 /**
  * Drives the objects-sidebar row Display picker with the same floating
- * `ComboboxListbox` widget the properties Display control uses. Owns the open
+ * `ComboboxOptions` widget the properties Display control uses. Owns the open
  * state, keyboard highlight, and the panel position anchored to the row's
  * Display button.
  */
@@ -94,7 +94,7 @@ export function useRowDisplayPicker({
       onClick: handleOpen,
       style: TRIGGER_STYLE,
     },
-    listbox: {
+    options: {
       open,
       position,
       handleClose,

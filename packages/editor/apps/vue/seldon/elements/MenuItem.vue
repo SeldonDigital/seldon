@@ -47,7 +47,7 @@ import { computed } from "vue"
 
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
-import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -65,22 +65,21 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   icon: {
     icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
     children: "Menu Item",
     className: "sdn-text-label sdn-text-label--xohb",
   },
   textLabel2: {
-    children: "⌘K",
+    children: "Annotation",
     className: "sdn-text-label sdn-text-label--fdei",
   },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-menu-item", props.className))
 const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
 const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
 )
@@ -90,11 +89,11 @@ const textLabel2Props = computed(() =>
 </script>
 
 <template>
-  <button :class="rootClassName" v-bind="rootAttrs">
+  <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
       <Icon v-if="iconProps !== null" v-bind="iconProps" />
       <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
     </slot>
-  </button>
+  </div>
 </template>

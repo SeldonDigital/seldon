@@ -90,7 +90,7 @@ const sdn: BarTopbarProps = {
   },
   textLabel: {
     children: "File",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuFileLabel",
   },
   buttonSimple2: {
@@ -99,7 +99,7 @@ const sdn: BarTopbarProps = {
   },
   textLabel2: {
     children: "Edit",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuEditLabel",
   },
   buttonSimple3: {
@@ -108,7 +108,7 @@ const sdn: BarTopbarProps = {
   },
   textLabel3: {
     children: "Component",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuComponentLabel",
   },
   buttonSimple4: {
@@ -117,7 +117,7 @@ const sdn: BarTopbarProps = {
   },
   textLabel4: {
     children: "Hari",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuHariLabel",
   },
   buttonSimple5: {
@@ -126,7 +126,7 @@ const sdn: BarTopbarProps = {
   },
   textLabel5: {
     children: "View",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuViewLabel",
   },
   buttonSimple6: {
@@ -135,7 +135,7 @@ const sdn: BarTopbarProps = {
   },
   textLabel6: {
     children: "Dev",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuDevLabel",
   },
 
@@ -145,7 +145,7 @@ const sdn: BarTopbarProps = {
     className: "sdn-frame sdn-frame--nzij",
   },
   buttonMenu: {
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     "data-seldon-ref": "menuTheme",
   },
   textLabel7: {
@@ -159,7 +159,7 @@ const sdn: BarTopbarProps = {
     className: "sdn-icon sdn-icon--y2ct",
   },
   buttonMenu2: {
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     "data-seldon-ref": "menuMode",
   },
   textLabel8: {

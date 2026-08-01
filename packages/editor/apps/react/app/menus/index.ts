@@ -5,7 +5,7 @@ export {
   type DropdownTriggerProps,
 } from "./MenuController"
 export { ComboboxController } from "./ComboboxController"
-export { ComboboxListbox } from "./ComboboxListbox"
+export { ComboboxOptions } from "./ComboboxOptions"
 export { useComboboxState } from "./hooks/use-combobox-state"
 export { useComboboxPosition, type ComboboxPosition } from "./hooks/use-combobox-position"
 export type {

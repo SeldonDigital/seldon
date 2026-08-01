@@ -533,7 +533,7 @@ function getConnectorRoute(input: {
  * Drops repeated and mid-line points, so a badge level with its node collapses the
  * elbow to a single straight run instead of three segments on the same line.
  */
-function simplify(points: ConnectorPoint[]): ConnectorPoint[] {
+export function simplify(points: ConnectorPoint[]): ConnectorPoint[] {
   const kept: ConnectorPoint[] = []
 
   for (const point of points) {

@@ -1,19 +1,19 @@
 /**
  * View-model for the floating option list of a combobox. Renders the generated
- * `Listbox` (its Frame is the positioned surface) with one generated
- * `ListboxOption` per option. Option rows bind through the
- * `optionIcon`/`optionLabel` slot refs when the icon is a plain id, and fall
- * back to children when the icon is a dynamic node the string-based `Icon`
- * slot cannot host.
+ * `MenuOptions` (its Frame is the positioned surface) with one generated
+ * `MenuItemOption` per option. Option rows bind through the `optionIcon`,
+ * `optionLabel`, and `optionAnnotation` slot refs when the icon is a plain id,
+ * and fall back to children when the icon is a dynamic node the string-based
+ * `Icon` slot cannot host.
  *
  * Only functional placement (fixed position, scroll) is applied inline; all
  * appearance comes from the authored component CSS.
  */
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
-import { ListboxOption } from "@seldon/components/elements/ListboxOption"
+import { MenuItemOption } from "@seldon/components/elements/MenuItemOption"
 import { Frame } from "@seldon/components/frames/Frame"
-import { Listbox } from "@seldon/components/parts/Listbox"
+import { MenuOptions } from "@seldon/components/parts/MenuOptions"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { Fragment } from "react"
@@ -30,7 +30,7 @@ interface Position {
   positionAbove?: boolean
 }
 
-interface ComboboxListboxProps {
+interface ComboboxOptionsProps {
   open: boolean
   position: Position
   handleClose: () => void
@@ -52,6 +52,7 @@ const HIGHLIGHT_CLASS = "sdn-state-activated"
 // option state CSS (`:hover`, `[aria-selected]`, `[aria-disabled]`) scopes to it
 // on the children path exactly as it does on the slot path.
 const OPTION_LABEL_CLASS = "sdn-text-label sdn-text-label--xohb"
+const OPTION_ANNOTATION_CLASS = "sdn-text-label sdn-text-label--lqmh"
 
 const backdropStyle: CSSProperties = {
   position: "fixed",
@@ -62,7 +63,7 @@ const backdropStyle: CSSProperties = {
 // The portal root only scopes the chrome theme and mode swap; it lays out nothing.
 const themeScopeStyle: CSSProperties = { display: "contents" }
 
-export function ComboboxListbox({
+export function ComboboxOptions({
   open,
   position,
   handleClose,
@@ -74,7 +75,7 @@ export function ComboboxListbox({
   resolveIcon,
   onSelect,
   onHighlight,
-}: ComboboxListboxProps) {
+}: ComboboxOptionsProps) {
   const { chromeTheme } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
 
@@ -87,7 +88,9 @@ export function ComboboxListbox({
     zIndex: 10,
     top: position.y,
     left: position.x,
-    width: position.w,
+    minWidth: position.w,
+    width: "max-content",
+    maxWidth: `calc(100vw - ${position.x}px - 8px)`,
     maxHeight: "24rem",
     overflowY: "auto",
     ...(position.positionAbove ? { transform: "translateY(-100%)" } : {}),
@@ -121,22 +124,41 @@ export function ComboboxListbox({
       onMouseEnter: handleMouseEnter,
     }
 
+    // Every slot on a menu row is opt-in, so each keeps a positional enabler;
+    // without one the slot would not render. The annotation stays off when the
+    // option has none.
+    const annotationSlot = option.annotation ? {} : undefined
+
     if (icon.kind === "iconId") {
-      // The content reaches both slots by ref name. `textLabel` is opt-in, so it
-      // keeps a positional `{}` enabler; without it the label would not render.
+      // The content reaches every slot by ref name.
       const optionRefs = {
         optionIcon: { icon: icon.icon as IconProps["icon"] },
         optionLabel: { children: option.name },
+        optionAnnotation: { children: option.annotation },
       }
 
-      return <ListboxOption key={option.value} {...common} textLabel={{}} seldonRefs={optionRefs} />
+      return (
+        <MenuItemOption
+          key={option.value}
+          {...common}
+          icon={{}}
+          textLabel={{}}
+          textLabel2={annotationSlot}
+          seldonRefs={optionRefs}
+        />
+      )
     }
 
+    const annotationNode = option.annotation ? (
+      <TextLabel className={OPTION_ANNOTATION_CLASS}>{option.annotation}</TextLabel>
+    ) : null
+
     return (
-      <ListboxOption key={option.value} {...common}>
+      <MenuItemOption key={option.value} {...common}>
         {icon.node}
         <TextLabel className={OPTION_LABEL_CLASS}>{option.name}</TextLabel>
-      </ListboxOption>
+        {annotationNode}
+      </MenuItemOption>
     )
   }
 
@@ -157,9 +179,9 @@ export function ComboboxListbox({
   return createPortal(
     <Frame data-theme={chromeTheme} data-mode={resolvedMode} style={themeScopeStyle}>
       <Frame onClick={handleClose} style={backdropStyle} />
-      <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
+      <MenuOptions style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}
-      </Listbox>
+      </MenuOptions>
     </Frame>,
     document.body,
   )

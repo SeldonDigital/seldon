@@ -1,14 +1,28 @@
+import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
 import {
   isLayeredPaintRoot,
   layeredFacetPath,
   parsePropertyPath,
 } from "@seldon/editor/lib/properties/property-paths"
+import { isFreeTextProperty } from "@seldon/editor/lib/properties/serialize-value"
 
 import type {
   LayeredPaintKey,
   PropertyKey,
   SubPropertyKey,
 } from "@seldon/core/properties/types/property-keys"
+
+/**
+ * Whether a committed value asks to clear the property. `Default` and `None` are
+ * picker labels rather than stored values, so a free-text property takes them as
+ * the literal text and only an empty field clears it.
+ */
+export function isPropertyResetValue(propertyKey: string, value: string): boolean {
+  if (value === "") return true
+  if (isFreeTextProperty(propertyKey)) return false
+
+  return RESET_VALUES.includes(value as (typeof RESET_VALUES)[number])
+}
 
 /**
  * Resolves the preset sub-property key for a compound or layered-paint property.

@@ -15,7 +15,7 @@ import {
 import type { MenuEntry } from "@app/menus/types"
 import type { FormControlRadioProps } from "@seldon/components/elements/FormControlRadio"
 import type { DialogExportComponentProps } from "@seldon/components/modules/DialogExportComponent"
-import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { InputRadioButtonProps } from "@seldon/components/primitives/InputRadioButton"
 import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
 import type { CSSProperties, ChangeEvent, KeyboardEvent, MouseEvent, PointerEvent } from "react"
 
@@ -163,40 +163,26 @@ function ExportComponentsDialog({
         style: styles.opaquePointer,
       },
 
-      exportFontLinksYes: radioItem(fontLinks, () => setFontLinks(true)),
-      exportFontLinksYesIcon: radioDot(fontLinks),
-      exportFontLinksNo: radioItem(!fontLinks, () => setFontLinks(false)),
-      exportFontLinksNoIcon: radioDot(!fontLinks),
+      exportFontLinksYes: radioRow(() => setFontLinks(true)),
+      exportFontLinksNo: radioRow(() => setFontLinks(false)),
 
-      exportHiddenYes: radioItem(includeHidden, () => setIncludeHidden(true)),
-      exportHiddenYesIcon: radioDot(includeHidden),
-      exportHiddenNo: radioItem(!includeHidden, () => setIncludeHidden(false)),
-      exportHiddenNoIcon: radioDot(!includeHidden),
+      exportHiddenYes: radioRow(() => setIncludeHidden(true)),
+      exportHiddenNo: radioRow(() => setIncludeHidden(false)),
 
-      exportAllThemesYes: radioItem(allThemes, () => setAllThemes(true)),
-      exportAllThemesYesIcon: radioDot(allThemes),
-      exportAllThemesNo: radioItem(!allThemes, () => setAllThemes(false)),
-      exportAllThemesNoIcon: radioDot(!allThemes),
+      exportAllThemesYes: radioRow(() => setAllThemes(true)),
+      exportAllThemesNo: radioRow(() => setAllThemes(false)),
 
-      exportAllFontsYes: radioItem(allFonts, () => setAllFonts(true)),
-      exportAllFontsYesIcon: radioDot(allFonts),
-      exportAllFontsNo: radioItem(!allFonts, () => setAllFonts(false)),
-      exportAllFontsNoIcon: radioDot(!allFonts),
+      exportAllFontsYes: radioRow(() => setAllFonts(true)),
+      exportAllFontsNo: radioRow(() => setAllFonts(false)),
 
-      exportAllIconsYes: radioItem(allIcons, () => setAllIcons(true)),
-      exportAllIconsYesIcon: radioDot(allIcons),
-      exportAllIconsNo: radioItem(!allIcons, () => setAllIcons(false)),
-      exportAllIconsNoIcon: radioDot(!allIcons),
+      exportAllIconsYes: radioRow(() => setAllIcons(true)),
+      exportAllIconsNo: radioRow(() => setAllIcons(false)),
 
-      exportSavedWorkspaceYes: radioItem(savedWorkspace, () => setSavedWorkspace(true)),
-      exportSavedWorkspaceYesIcon: radioDot(savedWorkspace),
-      exportSavedWorkspaceNo: radioItem(!savedWorkspace, () => setSavedWorkspace(false)),
-      exportSavedWorkspaceNoIcon: radioDot(!savedWorkspace),
+      exportSavedWorkspaceYes: radioRow(() => setSavedWorkspace(true)),
+      exportSavedWorkspaceNo: radioRow(() => setSavedWorkspace(false)),
 
-      exportScriptsYes: radioItem(includeScripts, () => setIncludeScripts(true)),
-      exportScriptsYesIcon: radioDot(includeScripts),
-      exportScriptsNo: radioItem(!includeScripts, () => setIncludeScripts(false)),
-      exportScriptsNoIcon: radioDot(!includeScripts),
+      exportScriptsYes: radioRow(() => setIncludeScripts(true)),
+      exportScriptsNo: radioRow(() => setIncludeScripts(false)),
 
       exportCancel: { onClick: cancel },
       exportConfirm: { onClick: save, "aria-disabled": exporting, style: confirmStyle },
@@ -211,19 +197,12 @@ function ExportComponentsDialog({
       platformLabel,
       openPlatform,
       platformOpen,
-      fontLinks,
       setFontLinks,
-      includeHidden,
       setIncludeHidden,
-      allThemes,
       setAllThemes,
-      allFonts,
       setAllFonts,
-      allIcons,
       setAllIcons,
-      savedWorkspace,
       setSavedWorkspace,
-      includeScripts,
       setIncludeScripts,
       exporting,
       confirmStyle,
@@ -244,61 +223,101 @@ function ExportComponentsDialog({
       textLabel3: {},
       comboboxField: {},
 
+      // Every slot in a radio row is opt-in, so each row passes a positional
+      // enabler. The native input carries its group name and checked state here,
+      // and the row's ref adds the click target around it.
       formControlRadio: radioGroup("Generate Google Font API Links"),
       textLabel4: {},
-      menuItemRadio: {},
-      textLabel5: radioLabel,
-      menuItemRadio2: {},
-      textLabel6: radioLabel,
+      formControlRadioButtonControl: {},
+      inputRadioButton: radioInput("export-font-links", fontLinks, () => setFontLinks(true)),
+      textLabel5: {},
+      formControlRadioButtonControl2: {},
+      inputRadioButton2: radioInput("export-font-links", !fontLinks, () => setFontLinks(false)),
+      textLabel6: {},
 
       fieldset: {},
 
       formControlRadio2: radioGroup("Hidden Components"),
       textLabel7: {},
-      menuItemRadio3: {},
-      textLabel8: radioLabel,
-      menuItemRadio4: {},
-      textLabel9: radioLabel,
+      formControlRadioButtonControl3: {},
+      inputRadioButton3: radioInput("export-hidden", includeHidden, () => setIncludeHidden(true)),
+      textLabel8: {},
+      formControlRadioButtonControl4: {},
+      inputRadioButton4: radioInput("export-hidden", !includeHidden, () => setIncludeHidden(false)),
+      textLabel9: {},
 
       formControlRadio3: radioGroup("All Themes"),
       textLabel10: {},
-      menuItemRadio5: {},
-      textLabel11: radioLabel,
-      menuItemRadio6: {},
-      textLabel12: radioLabel,
+      formControlRadioButtonControl5: {},
+      inputRadioButton5: radioInput("export-all-themes", allThemes, () => setAllThemes(true)),
+      textLabel11: {},
+      formControlRadioButtonControl6: {},
+      inputRadioButton6: radioInput("export-all-themes", !allThemes, () => setAllThemes(false)),
+      textLabel12: {},
 
       formControlRadio4: radioGroup("All Enabled Fonts"),
       textLabel13: {},
-      menuItemRadio7: {},
-      textLabel14: radioLabel,
-      menuItemRadio8: {},
-      textLabel15: radioLabel,
+      formControlRadioButtonControl7: {},
+      inputRadioButton7: radioInput("export-all-fonts", allFonts, () => setAllFonts(true)),
+      textLabel14: {},
+      formControlRadioButtonControl8: {},
+      inputRadioButton8: radioInput("export-all-fonts", !allFonts, () => setAllFonts(false)),
+      textLabel15: {},
 
       formControlRadio5: radioGroup("All Enabled Icons"),
       textLabel16: {},
-      menuItemRadio9: {},
-      textLabel17: radioLabel,
-      menuItemRadio10: {},
-      textLabel18: radioLabel,
+      formControlRadioButtonControl9: {},
+      inputRadioButton9: radioInput("export-all-icons", allIcons, () => setAllIcons(true)),
+      textLabel17: {},
+      formControlRadioButtonControl10: {},
+      inputRadioButton10: radioInput("export-all-icons", !allIcons, () => setAllIcons(false)),
+      textLabel18: {},
 
       formControlRadio6: radioGroup("Saved Workspace"),
       textLabel19: {},
-      menuItemRadio11: {},
-      textLabel20: radioLabel,
-      menuItemRadio12: {},
-      textLabel21: radioLabel,
+      formControlRadioButtonControl11: {},
+      inputRadioButton11: radioInput("export-saved-workspace", savedWorkspace, () =>
+        setSavedWorkspace(true),
+      ),
+      textLabel20: {},
+      formControlRadioButtonControl12: {},
+      inputRadioButton12: radioInput("export-saved-workspace", !savedWorkspace, () =>
+        setSavedWorkspace(false),
+      ),
+      textLabel21: {},
 
       formControlRadio7: radioGroup("CLI Utility Scripts"),
       textLabel22: {},
-      menuItemRadio13: {},
-      textLabel23: radioLabel,
-      menuItemRadio14: {},
-      textLabel24: radioLabel,
+      formControlRadioButtonControl13: {},
+      inputRadioButton13: radioInput("export-scripts", includeScripts, () =>
+        setIncludeScripts(true),
+      ),
+      textLabel23: {},
+      formControlRadioButtonControl14: {},
+      inputRadioButton14: radioInput("export-scripts", !includeScripts, () =>
+        setIncludeScripts(false),
+      ),
+      textLabel24: {},
 
       textLabel25: {},
       textLabel26: {},
     }),
-    [],
+    [
+      fontLinks,
+      setFontLinks,
+      includeHidden,
+      setIncludeHidden,
+      allThemes,
+      setAllThemes,
+      allFonts,
+      setAllFonts,
+      allIcons,
+      setAllIcons,
+      savedWorkspace,
+      setSavedWorkspace,
+      includeScripts,
+      setIncludeScripts,
+    ],
   )
 
   return (
@@ -327,25 +346,14 @@ function ExportComponentsDialog({
   )
 }
 
-const iconChecked: IconProps["icon"] = "material-radioButtonChecked"
-const iconUnchecked: IconProps["icon"] = "material-radioButtonUnchecked"
-
-/** Wires a Yes/No radio item: checked state, role, and its select handler. */
-function radioItem(checked: boolean, onSelect: () => void) {
-  return {
-    onClick: onSelect,
-    role: "radio",
-    "aria-checked": checked ? "true" : "false",
-    "aria-selected": checked || undefined,
-    style: styles.radioItem,
-  }
+/** Widens a row's hit area so a click beside the bullet still selects it. */
+function radioRow(onSelect: () => void) {
+  return { onClick: onSelect, style: styles.radioRow }
 }
 
-/**
- * The dot glyph for a Yes/No pair.
- */
-function radioDot(checked: boolean) {
-  return { icon: checked ? iconChecked : iconUnchecked, style: styles.opaque }
+/** Wires a native radio to its group name, its checked state, and what it sets. */
+function radioInput(group: string, checked: boolean, onSelect: () => void): InputRadioButtonProps {
+  return { name: group, checked, onChange: onSelect }
 }
 
 /** Names a Yes/No pair as one group. */
@@ -366,15 +374,11 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
     opacity: 1,
   },
-  radioItem: {
+  radioRow: {
     cursor: "pointer",
-    backgroundColor: "transparent",
   },
   busy: {
     opacity: 0.5,
     pointerEvents: "none",
   },
 }
-
-/** Radio copy, held opaque so the row states cannot dim it. */
-const radioLabel = { style: styles.opaque }

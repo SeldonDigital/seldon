@@ -39,6 +39,8 @@ export type MenuAlign = "start" | "end"
 export type ComboboxOptionItem = {
   value: string
   name: string
+  /** The resolved value behind a theme token, shown after the name. */
+  annotation?: string
   hidden?: boolean
   disabled?: boolean
   color?: HSL

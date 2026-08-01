@@ -206,12 +206,6 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BUTTON,
-        overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
-        },
         children: [
           {
             component: Seldon.ComponentId.ICON,
@@ -278,17 +272,9 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
             align: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
             height: {
               type: Sdn.ValueType.OPTION,
@@ -328,12 +314,6 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BUTTON,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
           children: [
             {
               component: Seldon.ComponentId.TEXT,
@@ -411,10 +391,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Orientation.HORIZONTAL,
             },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -438,10 +414,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.FRAME,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.VERTICAL,
-                },
                 align: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.CENTER,
@@ -489,10 +461,6 @@ export const schema = {
             {
               component: Seldon.ComponentId.FRAME,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.VERTICAL,
-                },
                 align: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Align.CENTER,

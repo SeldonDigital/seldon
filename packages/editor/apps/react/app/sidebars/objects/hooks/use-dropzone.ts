@@ -1,11 +1,9 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { isNoOpDrop, isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
 import { useEffect, useRef, useState } from "react"
 
 import { invariant } from "@seldon/core"
-import { rules } from "@seldon/core/rules/config/rules.config"
-import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import type { Instance, Variant, Workspace } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
@@ -23,7 +21,7 @@ type DropzoneParams = {
  */
 export function useDropzone({ target, placement, onDragEnter, onDragLeave }: DropzoneParams) {
   const ref = useRef(null)
-  const [isValidDropTarget, setValidDropTarget] = useState(false)
+  const [isValidTarget, setValidTarget] = useState(false)
   const { workspace } = useWorkspace({ usePreview: false })
 
   useEffect(() => {
@@ -39,106 +37,68 @@ export function useDropzone({ target, placement, onDragEnter, onDragLeave }: Dro
         duplicate: input.altKey,
       }),
       getDropEffect: ({ input }) => (input.altKey ? "copy" : "move"),
-      onDragEnter: ({ source }) => {
+      onDragEnter: ({ source, location }) => {
         onDragEnter?.()
 
         const subjectNode = source.data.subjectNode as Variant | Instance | EntryNode
-        const isValid = isValidTargetForSubjectNode(target, subjectNode, placement, workspace)
+        const isValid = isDroppable({
+          target,
+          subject: subjectNode,
+          placement,
+          duplicate: location.current.input.altKey,
+          workspace,
+        })
 
-        setValidDropTarget(isValid)
+        setValidTarget(isValid)
       },
       onDragLeave: () => {
         onDragLeave?.()
-        setValidDropTarget(false)
+        setValidTarget(false)
       },
-      canDrop: ({ source }) => {
+      canDrop: ({ source, input }) => {
         const subjectNode = source.data.subjectNode as Variant | Instance | EntryNode
 
-        return isValidTargetForSubjectNode(target, subjectNode, placement, workspace)
+        return isDroppable({
+          target,
+          subject: subjectNode,
+          placement,
+          duplicate: input.altKey,
+          workspace,
+        })
       },
       onDrop: () => {
-        setValidDropTarget(false)
+        setValidTarget(false)
       },
     })
   }, [placement, onDragEnter, onDragLeave, target, workspace])
 
   return {
     ref,
-    isValidDropTarget,
+    isValidDropTarget: isValidTarget,
   }
 }
 
-function isValidTargetForSubjectNode(
-  target: Variant | Instance | EntryNode,
-  subject: Variant | Instance | EntryNode,
-  placement: Placement,
-  workspace: Workspace,
-): boolean {
-  if (!target || !subject) return false
+interface DroppableParams {
+  target: Variant | Instance | EntryNode
+  subject: Variant | Instance | EntryNode
+  placement: Placement
+  duplicate: boolean
+  workspace: Workspace
+}
 
-  if (workspace.nodes[target.id] === undefined) {
-    return false
-  }
+/**
+ * A drop is offered when it is structurally valid and would actually change the
+ * order. Alt-drag duplicates instead of moving, and a copy placed next to the
+ * original is a real edit, so the no-op rule does not apply to it.
+ */
+function isDroppable({
+  target,
+  subject,
+  placement,
+  duplicate,
+  workspace,
+}: DroppableParams): boolean {
+  if (!isValidDropTarget(target, subject, placement, workspace)) return false
 
-  if (placement === "inside") {
-    const targetEntityType = typeCheckingService.getEntityType(target)
-
-    if (!rules.mutations.insertInto[targetEntityType].allowed) {
-      return false
-    }
-  }
-
-  const subjectComponentId = getNodeCatalogComponentId(subject, workspace)
-  const targetComponentId = getNodeCatalogComponentId(target, workspace)
-
-  if (
-    typeCheckingService.isInstance(subject) &&
-    typeCheckingService.isInstance(target) &&
-    subjectComponentId &&
-    targetComponentId &&
-    nodeRelationshipService.areWithinSameVariant(target, subject, workspace)
-  ) {
-    if (placement === "inside") {
-      return (
-        typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
-        !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
-      )
-    }
-
-    return true
-  }
-
-  // Variant subject dropped inside a container instantiates a new child instance.
-  // The insertInto allowance for the target was already checked above; here we
-  // confirm the variant can be instantiated and the container accepts its level.
-  if (
-    typeCheckingService.isVariant(subject) &&
-    placement === "inside" &&
-    subjectComponentId &&
-    targetComponentId
-  ) {
-    const subjectEntityType = typeCheckingService.getEntityType(subject)
-
-    if (!rules.mutations.instantiate[subjectEntityType].allowed) {
-      return false
-    }
-
-    return (
-      typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
-      !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
-    )
-  }
-
-  if (
-    typeCheckingService.isVariant(subject) &&
-    typeCheckingService.isVariant(target) &&
-    subjectComponentId &&
-    targetComponentId &&
-    subjectComponentId === targetComponentId &&
-    placement !== "inside"
-  ) {
-    return true
-  }
-
-  return false
+  return duplicate || !isNoOpDrop(target, subject, placement, workspace)
 }

@@ -83,7 +83,7 @@ const sdn: DialogCreateComponentProps = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--zhvk",
+    className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
     children: "Create Component",
@@ -165,7 +165,7 @@ const sdn: DialogCreateComponentProps = {
     children: "Name",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   input: {
     placeholder: "Component names must be unique",
@@ -181,7 +181,7 @@ const sdn: DialogCreateComponentProps = {
     children: "Level",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   comboboxField: {
     "aria-hidden": "false",
@@ -193,7 +193,7 @@ const sdn: DialogCreateComponentProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--iegt",
+    className: "sdn-input sdn-input--9vqu",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -211,7 +211,7 @@ const sdn: DialogCreateComponentProps = {
     children: "Intent",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   input3: {
     placeholder: "The purpose for this component",
@@ -227,7 +227,7 @@ const sdn: DialogCreateComponentProps = {
     children: "Tags",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--cr3i",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
   input4: {
     placeholder: "Comma separated",
@@ -387,7 +387,7 @@ export function DialogCreateComponent({
   seldonRefs,
   ...props
 }: DialogCreateComponentProps) {
-  const dialogCreateComponentClassName = combineClassNames("sdn-dialog", className)
+  const dialogCreateComponentClassName = combineClassNames("sdn-dialog-create-component", className)
 
   const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
   const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)

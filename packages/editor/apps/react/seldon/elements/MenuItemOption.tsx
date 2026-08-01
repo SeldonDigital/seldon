@@ -17,27 +17,28 @@ import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
-export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
+export interface MenuItemOptionProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
   icon?: IconProps | null
 
   textLabel?: TextLabelProps | null
+
+  textLabel2?: TextLabelProps | null
 }
 
 //
 // Default property values
 //
-const sdn: ListboxOptionProps = {
+const sdn: MenuItemOptionProps = {
   role: "option",
   "aria-hidden": "false",
   icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    icon: "material-check",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "optionIcon",
   },
 
@@ -46,46 +47,57 @@ const sdn: ListboxOptionProps = {
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "optionLabel",
   },
+
+  textLabel2: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
+    "data-seldon-ref": "optionAnnotation",
+  },
 }
 
 /**
- * List: boxOption
+ * Menu Item: MenuItemOption
  * Level: Element
- * Intent: Single selectable row inside a listbox.
- * Tags: listbox, option, select, row, element, UI
- * Type: Default
+ * Intent: Single actionable row inside a menu.
+ * Tags: menu, menuitem, action, row, element, UI
+ * Type: Custom
  *
  * Structure:
- *   Icon       icon       -> optionIcon
- *   TextLabel  textLabel  -> optionLabel
+ *   Icon       icon        -> optionIcon
+ *   TextLabel  textLabel   -> optionLabel
+ *   TextLabel  textLabel2  -> optionAnnotation
  *
  * @example
  * ```tsx
- * <ListboxOption
+ * <MenuItemOption
  *   role="option"
  *   aria-hidden="false"
  * />
  * ```
  */
-export function ListboxOption({
+export function MenuItemOption({
   className = "",
   icon,
 
   textLabel,
 
+  textLabel2,
+
   children,
   seldonRefs,
   ...props
-}: ListboxOptionProps) {
-  const listboxOptionClassName = combineClassNames("sdn-listbox-option", className)
+}: MenuItemOptionProps) {
+  const menuItemOptionClassName = combineClassNames("sdn-menu-item-option", className)
 
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
 
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+
   return (
     <Frame
-      className={listboxOptionClassName}
+      className={menuItemOptionClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
@@ -96,6 +108,7 @@ export function ListboxOption({
         <>
           {iconProps !== null && <Icon {...iconProps} />}
           {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+          {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
         </>
       )}
     </Frame>

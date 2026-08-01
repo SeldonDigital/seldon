@@ -141,15 +141,15 @@ const sdn: Record<string, any> = {
   },
   textOption: {
     children: "Option 01",
-    className: "sdn-text-option sdn-text-label--yqnd",
+    className: "sdn-text-option sdn-text-title--drqy",
   },
   textOption2: {
     children: "Option 02",
-    className: "sdn-text-option sdn-text-label--yqnd",
+    className: "sdn-text-option sdn-text-title--drqy",
   },
   textOption3: {
     children: "Option 03",
-    className: "sdn-text-option sdn-text-label--yqnd",
+    className: "sdn-text-option sdn-text-title--drqy",
   },
 }
 

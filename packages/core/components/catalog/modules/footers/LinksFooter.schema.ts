@@ -161,7 +161,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Orientation.HORIZONTAL,
           },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           padding: {
             top: {
@@ -323,10 +322,6 @@ export const schema = {
                 variant: "footer",
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Partners" },
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.primary",
-                  },
                 },
               },
             ],
@@ -478,7 +473,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Align.BOTTOM_LEFT,
           },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           padding: {
             top: {

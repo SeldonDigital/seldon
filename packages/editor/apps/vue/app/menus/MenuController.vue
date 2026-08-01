@@ -57,6 +57,15 @@ const showMarkerColumn = computed(() =>
 )
 
 /**
+ * The activated tint, withheld from a disabled item so its marker and label dim
+ * together. A disabled item keeps its marker, because what the setting is set to
+ * is worth reading where it cannot be changed.
+ */
+function activatedClassName(item: MenuItemModel): string | undefined {
+  return item.active && !item.disabled ? "sdn-state-activated" : undefined
+}
+
+/**
  * Leading marker slot props for an item. Marked items render a check (or radio
  * dot for `bullet` sets), tinted when also activated; unmarked items render the
  * same glyph hidden so labels stay aligned. Null drops the column entirely.
@@ -68,7 +77,8 @@ function markerIcon(item: MenuItemModel): Record<string, unknown> | null {
     return {
       icon: glyph,
       "aria-hidden": "true",
-      className: item.active ? "sdn-state-activated" : undefined,
+      "aria-disabled": item.disabled ? "true" : undefined,
+      className: activatedClassName(item),
     }
   }
   return {
@@ -82,7 +92,7 @@ function labelSlot(item: MenuItemModel): Record<string, unknown> {
   return {
     children: item.label,
     "aria-disabled": item.disabled ? "true" : undefined,
-    className: item.active ? "sdn-state-activated" : undefined,
+    className: activatedClassName(item),
     style: item.labelStyle,
   }
 }
@@ -160,6 +170,11 @@ function onKeydown(event: KeyboardEvent): void {
       event.preventDefault()
       activeIndex.value = enabledIndexes.value[enabledIndexes.value.length - 1] ?? -1
       break
+    case "Enter":
+    case " ":
+      event.preventDefault()
+      selectActive()
+      break
     case "Escape":
       event.preventDefault()
       emit("close")
@@ -179,6 +194,14 @@ function handleSelect(item: MenuItemModel): void {
     focusReturnTarget(props.anchor)
     closedBySelect = false
   })
+}
+
+// A row is a Frame rather than a button, so Enter and Space run the action the
+// highlighted row would run on click.
+function selectActive(): void {
+  const item = props.items[activeIndex.value]
+  if (!item || item === "separator") return
+  handleSelect(item)
 }
 
 function onDocumentPointerDown(event: PointerEvent): void {
@@ -257,10 +280,8 @@ onBeforeUnmount(() => {
           <Hr v-if="item === 'separator'" />
           <MenuItem
             v-else
-            type="button"
             :data-menu-index="index"
             :data-testid="item.testId"
-            :disabled="item.disabled"
             :aria-disabled="item.disabled || undefined"
             :tabindex="index === activeIndex ? 0 : -1"
             :icon="markerIcon(item)"

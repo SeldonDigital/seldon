@@ -10,3 +10,12 @@ export const ISOLATION_EXCLUDED_CATALOG_IDS: ReadonlySet<string> = new Set([
   ComponentId.FRAME,
   ComponentId.CONTAINER,
 ])
+
+/**
+ * Catalog ids left out of the isolation canvas height baseline. Image ships a
+ * large default that would set the height for every board in its level group,
+ * so it takes the group height like its siblings without setting it.
+ */
+export const ISOLATION_HEIGHT_EXCLUDED_CATALOG_IDS: ReadonlySet<string> = new Set([
+  ComponentId.IMAGE,
+])

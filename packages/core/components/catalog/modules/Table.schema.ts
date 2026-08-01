@@ -168,7 +168,6 @@ export const schema = {
             value: Sdn.Orientation.HORIZONTAL,
           },
           align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           padding: {
             top: {
@@ -210,7 +209,6 @@ export const schema = {
             variant: "subtitle",
             overrides: {
               content: { type: Sdn.ValueType.EXACT, value: "Table name" },
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             },
           },
           {
@@ -336,10 +334,6 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.TABLE_GRID,
-        overrides: {
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-        },
         children: [
           {
             component: Seldon.ComponentId.TABLE_HEAD,
@@ -452,10 +446,6 @@ export const schema = {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Resize.FIT,
                       },
-                      cellAlign: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Align.CENTER_LEFT,
-                      },
                     },
                     children: [
                       {
@@ -468,10 +458,6 @@ export const schema = {
                           align: {
                             type: Sdn.ValueType.OPTION,
                             value: Sdn.Align.CENTER_LEFT,
-                          },
-                          width: {
-                            type: Sdn.ValueType.OPTION,
-                            value: Sdn.Resize.FILL,
                           },
                           height: {
                             type: Sdn.ValueType.OPTION,
@@ -609,10 +595,6 @@ export const schema = {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Resize.FIT,
                       },
-                      cellAlign: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Align.CENTER_LEFT,
-                      },
                     },
                     children: [
                       {
@@ -625,10 +607,6 @@ export const schema = {
                           align: {
                             type: Sdn.ValueType.OPTION,
                             value: Sdn.Align.CENTER_LEFT,
-                          },
-                          width: {
-                            type: Sdn.ValueType.OPTION,
-                            value: Sdn.Resize.FILL,
                           },
                           height: {
                             type: Sdn.ValueType.OPTION,
@@ -766,10 +744,6 @@ export const schema = {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Resize.FIT,
                       },
-                      cellAlign: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Align.CENTER_LEFT,
-                      },
                     },
                     children: [
                       {
@@ -782,10 +756,6 @@ export const schema = {
                           align: {
                             type: Sdn.ValueType.OPTION,
                             value: Sdn.Align.CENTER_LEFT,
-                          },
-                          width: {
-                            type: Sdn.ValueType.OPTION,
-                            value: Sdn.Resize.FILL,
                           },
                           height: {
                             type: Sdn.ValueType.OPTION,
@@ -923,10 +893,6 @@ export const schema = {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Resize.FIT,
                       },
-                      cellAlign: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Align.CENTER_LEFT,
-                      },
                     },
                     children: [
                       {
@@ -939,10 +905,6 @@ export const schema = {
                           align: {
                             type: Sdn.ValueType.OPTION,
                             value: Sdn.Align.CENTER_LEFT,
-                          },
-                          width: {
-                            type: Sdn.ValueType.OPTION,
-                            value: Sdn.Resize.FILL,
                           },
                           height: {
                             type: Sdn.ValueType.OPTION,
@@ -1080,10 +1042,6 @@ export const schema = {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Resize.FIT,
                       },
-                      cellAlign: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Align.CENTER_LEFT,
-                      },
                     },
                     children: [
                       {
@@ -1096,10 +1054,6 @@ export const schema = {
                           align: {
                             type: Sdn.ValueType.OPTION,
                             value: Sdn.Align.CENTER_LEFT,
-                          },
-                          width: {
-                            type: Sdn.ValueType.OPTION,
-                            value: Sdn.Resize.FILL,
                           },
                           height: {
                             type: Sdn.ValueType.OPTION,
@@ -1246,7 +1200,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Align.CENTER_RIGHT,
           },
-          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           padding: {
             top: {
@@ -1417,10 +1370,6 @@ export const schema = {
       children: [
         {
           component: Seldon.ComponentId.TABLE_GRID,
-          overrides: {
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          },
           children: [
             {
               component: Seldon.ComponentId.TABLE_HEAD,
@@ -1490,10 +1439,6 @@ export const schema = {
                               component: Seldon.ComponentId.BUTTON,
                               variant: "iconic",
                               overrides: {
-                                buttonSize: {
-                                  type: Sdn.ValueType.THEME_ORDINAL,
-                                  value: "@fontSize.medium",
-                                },
                                 background: [
                                   {
                                     kind: {
@@ -1574,10 +1519,6 @@ export const schema = {
                               component: Seldon.ComponentId.BUTTON,
                               variant: "iconic",
                               overrides: {
-                                buttonSize: {
-                                  type: Sdn.ValueType.THEME_ORDINAL,
-                                  value: "@fontSize.medium",
-                                },
                                 background: [
                                   {
                                     kind: {
@@ -1674,17 +1615,9 @@ export const schema = {
                         {
                           component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            orientation: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Orientation.VERTICAL,
-                            },
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER_LEFT,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -1807,17 +1740,9 @@ export const schema = {
                         {
                           component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            orientation: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Orientation.VERTICAL,
-                            },
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER_LEFT,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -1956,17 +1881,9 @@ export const schema = {
                         {
                           component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            orientation: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Orientation.VERTICAL,
-                            },
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER_LEFT,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -2089,17 +2006,9 @@ export const schema = {
                         {
                           component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            orientation: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Orientation.VERTICAL,
-                            },
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER_LEFT,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -2238,17 +2147,9 @@ export const schema = {
                         {
                           component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            orientation: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Orientation.VERTICAL,
-                            },
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER_LEFT,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -2396,7 +2297,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             padding: {
               top: {
@@ -2441,10 +2341,6 @@ export const schema = {
               variant: "description",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "1-10 of 97" },
-                width: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FILL,
-                },
               },
             },
             {
@@ -2560,10 +2456,6 @@ export const schema = {
       children: [
         {
           component: Seldon.ComponentId.TABLE_GRID,
-          overrides: {
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          },
           children: [
             {
               component: Seldon.ComponentId.TABLE_HEAD,
@@ -2973,12 +2865,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -2990,10 +2876,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3020,12 +2902,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3037,10 +2913,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3067,12 +2939,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3084,10 +2950,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3114,12 +2976,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3131,10 +2987,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3181,12 +3033,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3198,10 +3044,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3228,12 +3070,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3245,10 +3081,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3275,12 +3107,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3292,10 +3118,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,
@@ -3322,12 +3144,6 @@ export const schema = {
                     },
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
-                      overrides: {
-                        cellAlign: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Align.CENTER_LEFT,
-                        },
-                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -3339,10 +3155,6 @@ export const schema = {
                             align: {
                               type: Sdn.ValueType.OPTION,
                               value: Sdn.Align.CENTER,
-                            },
-                            width: {
-                              type: Sdn.ValueType.OPTION,
-                              value: Sdn.Resize.FILL,
                             },
                             height: {
                               type: Sdn.ValueType.OPTION,

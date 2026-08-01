@@ -164,10 +164,6 @@ export const schema = {
         component: Seldon.ComponentId.BAR,
         variant: "tabs",
         overrides: {
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
           corners: {
             bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
             bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -177,14 +173,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           padding: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -203,29 +191,11 @@ export const schema = {
               value: "@padding.tight",
             },
           },
-          gap: { type: Sdn.ValueType.EMPTY, value: null },
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
         },
       },
       {
         component: Seldon.ComponentId.BAR,
         variant: "buttonBar",
-        overrides: {
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
-        },
       },
     ],
   },

@@ -169,28 +169,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.BAR,
         overrides: {
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
-          padding: {
-            top: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.compact",
-            },
-            right: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.compact",
-            },
-            bottom: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.compact",
-            },
-            left: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.cozy",
-            },
-          },
           background: [
             {
               kind: {
@@ -211,33 +189,6 @@ export const schema = {
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
           ],
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderTop: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderRight: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
           borderBottom: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
             style: {
@@ -255,14 +206,6 @@ export const schema = {
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
-          borderLeft: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
           corners: {
             bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
             bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -276,10 +219,6 @@ export const schema = {
               content: {
                 type: Sdn.ValueType.EXACT,
                 value: "Panel",
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               },
             },
           },
@@ -295,14 +234,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.FRAME,
         overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
           padding: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -325,17 +256,6 @@ export const schema = {
             type: Sdn.ValueType.THEME_ORDINAL,
             value: "@gap.compact",
           },
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
         },
       },
       {
@@ -345,10 +265,6 @@ export const schema = {
           align: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Align.CENTER_RIGHT,
-          },
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
           },
           padding: {
             top: {
@@ -388,17 +304,6 @@ export const schema = {
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
           ],
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
           borderTop: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
             style: {
@@ -413,30 +318,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.BorderWidth.HAIRLINE,
             },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderRight: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderBottom: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderLeft: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
@@ -459,28 +340,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.BAR,
           overrides: {
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-            padding: {
-              top: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@padding.compact",
-              },
-              right: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@padding.compact",
-              },
-              bottom: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@padding.compact",
-              },
-              left: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@padding.cozy",
-              },
-            },
             background: [
               {
                 kind: {
@@ -501,33 +360,6 @@ export const schema = {
                 opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
-            border: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@border.none",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderTop: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderRight: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
             borderBottom: {
               preset: { type: Sdn.ValueType.EMPTY, value: null },
               style: {
@@ -545,14 +377,6 @@ export const schema = {
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
-            borderLeft: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
             corners: {
               bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
               bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -567,10 +391,6 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "Modal",
                 },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                },
                 font: {
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
@@ -584,14 +404,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -614,17 +426,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.compact",
             },
-            border: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@border.none",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
           },
         },
         {
@@ -634,10 +435,6 @@ export const schema = {
             align: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_RIGHT,
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
             },
             padding: {
               top: {
@@ -677,17 +474,6 @@ export const schema = {
                 opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
-            border: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@border.none",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
             borderTop: {
               preset: { type: Sdn.ValueType.EMPTY, value: null },
               style: {
@@ -702,30 +488,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.BorderWidth.HAIRLINE,
               },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderRight: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderBottom: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderLeft: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
@@ -815,10 +577,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.BAR,
           overrides: {
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -857,33 +615,6 @@ export const schema = {
                 opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
-            border: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@border.none",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderTop: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            borderRight: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
             borderBottom: {
               preset: { type: Sdn.ValueType.EMPTY, value: null },
               style: {
@@ -901,14 +632,6 @@ export const schema = {
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
-            borderLeft: {
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
             corners: {
               bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
               bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -922,10 +645,6 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Palette",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   size: {
@@ -998,14 +717,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -1027,17 +738,6 @@ export const schema = {
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.compact",
-            },
-            border: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@border.none",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },

@@ -222,10 +222,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: "material-arrowUpward",
               },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@size.medium",
-              },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@swatch.punch",
@@ -335,10 +331,6 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "material-arrowUpward",
                 },
-                size: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@size.medium",
-                },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.punch",
@@ -373,14 +365,6 @@ export const schema = {
             source: {
               type: Sdn.ValueType.EXACT,
               value: "https://static.seldon.app/background-default-light.jpg",
-            },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
             },
             height: {
               type: Sdn.ValueType.EXACT,

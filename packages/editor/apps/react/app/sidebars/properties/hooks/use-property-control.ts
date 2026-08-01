@@ -103,7 +103,7 @@ export type PropertyControlView =
 /**
  * ViewModel for a property control. Composes the display derivation, write
  * router, and combobox controller, then returns a discriminated view state
- * that `buildPropertyValueInput` and `PropertyOptionsListbox` bind to.
+ * that `buildPropertyValueInput` and `PropertyComboboxOptions` bind to.
  */
 export function usePropertyControl({
   property,
