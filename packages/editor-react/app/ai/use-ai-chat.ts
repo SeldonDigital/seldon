@@ -15,6 +15,7 @@ import type {
   ActionRepair,
   AgentStreamEvent,
   AgentToolCall,
+  PendingClarification,
   ThinkingLevelOption,
 } from "@seldon/ai"
 import {
@@ -80,6 +81,12 @@ export interface HariTurn {
   warnings?: string[]
   rejected?: RejectedAction[]
   error?: string
+  /**
+   * Set when this turn ended by asking the user something. The NEXT turn
+   * echoes the latest one back to the agent, so answering by selecting on
+   * the canvas is honored in code.
+   */
+  clarification?: PendingClarification
 }
 
 interface AiChatState {
@@ -254,6 +261,10 @@ export function useHari() {
 
       const store = useStore.getState()
       const history = buildHistory(store.turns)
+      // The previous turn's ask, echoed back: with a node selected, the
+      // agent skips its router -- the selection answers the question.
+      const pendingClarification =
+        store.turns[store.turns.length - 1]?.clarification
       const { model, thinkingLevel } = store
       // The turn trusts the model's discovered capability over the server's
       // name check, so a newly installed thinking model reasons end to end.
@@ -275,7 +286,7 @@ export function useHari() {
         const resourceTargetId = getResourceTargetId(current)
         const noThink = useDebugStore.getState().noThink
 
-        const { actions, workspace, reply, ineffective, rejected, debug } =
+        const { actions, workspace, reply, ineffective, rejected, clarification, debug } =
           await runAgentChat(
             {
               workspace: current,
@@ -291,6 +302,7 @@ export function useHari() {
               thinkingLevel,
               thinkingCapable,
               noThink,
+              pendingClarification,
             },
             (event) => applyTurnEvent(turnId, event),
             controller.signal,
@@ -364,6 +376,7 @@ export function useHari() {
           repairs: debug.repairs.length > 0 ? debug.repairs : undefined,
           warnings: warnings.length > 0 ? warnings : undefined,
           rejected: report.rejected.length > 0 ? report.rejected : undefined,
+          clarification,
           status: failed ? "error" : "done",
         })
         useStore.getState().setStatus(failed ? "error" : "idle")

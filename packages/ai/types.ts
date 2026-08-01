@@ -29,6 +29,29 @@ export type SelectionScope =
   | "iconSet"
   | "media"
 
+/**
+ * Why a turn ended with a question instead of an edit. Mirrors the resolver
+ * reasons; lives here because it crosses the editor protocol boundary.
+ */
+export type MessageReason =
+  | "not-found"
+  | "several"
+  | "no-target"
+  | "off-board"
+  | "no-index"
+
+/**
+ * A turn that ended by asking the user something, as data. The editor stores
+ * this with the assistant message and echoes it back on the user's next
+ * turn (as `pendingClarification`), so answering by selecting on the canvas
+ * is enforced in code rather than left to the router's judgment.
+ */
+export interface PendingClarification {
+  reason: MessageReason
+  /** Node ids offered as the pick list, when the ask was a "several". */
+  candidateIds?: string[]
+}
+
 /** Input to {@link chatToActions}. The workspace is read for context only; it is never mutated here. */
 export interface ChatToActionsInput {
   workspace: Workspace
@@ -69,6 +92,11 @@ export interface ChatToActionsInput {
    * A test lever for clamping overthinking on direct edits.
    */
   noThink?: boolean
+  /**
+   * The previous turn's clarification, echoed back by the editor. With a node
+   * selected, this skips the router: the selection IS the answer.
+   */
+  pendingClarification?: PendingClarification
   /** Streams turn events as they happen, so the caller can render live. */
   onEvent?: (event: AgentStreamEvent) => void
   /**
@@ -170,5 +198,7 @@ export interface ChatToActionsResult {
   ineffective: string[]
   /** Actions the reducer rejected during the turn, with the reducer's reason. */
   rejected: RejectedActionResult[]
+  /** Set when the turn ended by asking the user something; echo it back next turn. */
+  clarification?: PendingClarification
   debug: AgentDebug
 }

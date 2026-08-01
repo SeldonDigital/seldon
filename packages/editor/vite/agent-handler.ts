@@ -4,6 +4,7 @@ import {
   type AgentStreamEvent,
   type ChatMessage,
   type ModelThinking,
+  type PendingClarification,
   type RejectedActionResult,
   type SelectionScope,
   type ThinkingLevelOption,
@@ -33,6 +34,8 @@ export type AgentRequestBody = {
   thinkingLevel?: ThinkingLevelOption
   thinkingCapable?: boolean
   noThink?: boolean
+  /** The previous turn's ask, echoed back so a selection can answer it. */
+  pendingClarification?: PendingClarification
 }
 
 export type AgentResult = {
@@ -42,6 +45,8 @@ export type AgentResult = {
   reply: string
   ineffective: string[]
   rejected: RejectedActionResult[]
+  /** Set when the turn ended by asking the user something; echo it back next turn. */
+  clarification?: PendingClarification
   debug: AgentDebug
 }
 
@@ -64,7 +69,7 @@ export async function runAgent(
     throw new Error("Missing message in request body.")
   }
 
-  const { actions, workspace, reply, ineffective, rejected, debug } =
+  const { actions, workspace, reply, ineffective, rejected, clarification, debug } =
     await chatToActions({
       workspace: body.workspace,
       message: body.message,
@@ -79,11 +84,12 @@ export async function runAgent(
       thinkingLevel: body.thinkingLevel,
       thinkingCapable: body.thinkingCapable,
       noThink: body.noThink,
+      pendingClarification: body.pendingClarification,
       onEvent,
       signal,
     })
 
-  return { actions, workspace, reply, ineffective, rejected, debug }
+  return { actions, workspace, reply, ineffective, rejected, clarification, debug }
 }
 
 /** Session-config choices the Hari palette renders. */

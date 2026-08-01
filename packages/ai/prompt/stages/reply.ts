@@ -9,6 +9,20 @@ export interface ReplyOutcomeLine {
   body: string
 }
 
+/**
+ * Longest outcome body the reply model sees. Bodies are one- or two-sentence
+ * resolver messages; anything longer is machine context that leaked in, and
+ * the reply model paraphrases such blobs into hallucinated nonsense
+ * (issue 06). Clamping is defense in depth -- the known leak is fixed at its
+ * source in resolve-target.
+ */
+const BODY_LIMIT = 600
+
+function clampBody(body: string): string {
+  if (body.length <= BODY_LIMIT) return body
+  return `${body.slice(0, BODY_LIMIT)} [...]`
+}
+
 const REPLY_SCHEMA = {
   type: "object",
   properties: { message: { type: "string", minLength: 1 } },
@@ -34,7 +48,7 @@ export function buildConversationalReplyStage(inputs: {
     "Outcomes:",
     ...inputs.outcomes.map(
       (entry, index) =>
-        `${index + 1}. [${entry.status}] ${entry.step} -> ${entry.body}`,
+        `${index + 1}. [${entry.status}] ${entry.step} -> ${clampBody(entry.body)}`,
     ),
   ].join("\n")
   return { prompt, schema: REPLY_SCHEMA }

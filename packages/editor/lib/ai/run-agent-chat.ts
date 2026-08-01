@@ -4,6 +4,7 @@ import type {
   AgentStreamEvent,
   ChatMessage,
   ModelThinking,
+  PendingClarification,
   RejectedActionResult,
   SelectionScope,
   ThinkingLevelOption,
@@ -28,6 +29,8 @@ export type AgentChatRequest = {
   thinkingLevel?: ThinkingLevelOption
   thinkingCapable?: boolean
   noThink?: boolean
+  /** The previous turn's ask, echoed back so a selection can answer it. */
+  pendingClarification?: PendingClarification
 }
 
 /** Session-config choices the Hari palette renders, from `/api/agent/config`. */
@@ -50,6 +53,8 @@ export type AgentChatResponse = {
   reply: string
   ineffective: string[]
   rejected: RejectedActionResult[]
+  /** Set when the turn ended by asking the user something; echo it back next turn. */
+  clarification?: PendingClarification
   debug: AgentDebug
 }
 

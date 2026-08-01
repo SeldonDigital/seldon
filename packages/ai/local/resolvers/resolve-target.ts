@@ -6,7 +6,8 @@ import {
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
-import { activeBoardSection } from "../../prompt/context-sections/active-board"
+import type { MessageReason } from "../../types"
+
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
 import type { SelectionScope } from "../../types"
@@ -30,17 +31,7 @@ export type TargetSpec = "selection" | { nodeId: string }
  * for -- so they must stay distinguishable. Merging them is how a broken
  * outcome reads as a working one.
  */
-export type MessageReason =
-  /** Nothing matched the phrase. */
-  | "not-found"
-  /** Several nodes matched; the user picks. */
-  | "several"
-  /** No phrase and no selection, so nothing was searched at all. */
-  | "no-target"
-  /** One match, but outside the active board: needs confirmation. */
-  | "off-board"
-  /** The embedding index is unavailable and the board is too big to list. */
-  | "no-index"
+export type { MessageReason } from "../../types"
 
 export type TargetResolution =
   | { kind: "resolved"; nodeId: string }
@@ -50,7 +41,13 @@ export type TargetResolution =
    * refuses explicitly rather than picking one.
    */
   | { kind: "resolved-many"; nodeIds: string[] }
-  | { kind: "message"; text: string; reason: MessageReason }
+  | {
+      kind: "message"
+      text: string
+      reason: MessageReason
+      /** The pick list as data, when the reason is "several". */
+      candidateIds?: string[]
+    }
 
 interface NodeMatch {
   id: string
@@ -74,49 +71,6 @@ function boardNodeIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
     ids.add(ref.id)
   })
   return ids
-}
-
-/** The distinct component catalog ids present in a board's variant trees. */
-function boardCatalogIds(
-  workspace: Workspace,
-  boardKey: BoardKey,
-): Set<string> {
-  const ids = new Set<string>()
-  const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return ids
-  walkBoardTreeRefs(board.variants, (ref) => {
-    const node = workspace.nodes[ref.id]
-    if (!node) return
-    const catalogId = getNodeCatalogId(node, workspace)
-    if (catalogId) ids.add(catalogId)
-  })
-  return ids
-}
-
-/**
- * The tier-2 fallback appended to a selection miss: the active board's node
- * trees plus the settable values of the components on it. When the selection
- * can't be resolved, the model walks up to the board and picks a target with the
- * values already in hand, instead of a blind re-search. Returns "" when no
- * active component board exists, so the caller adds nothing.
- */
-function tierTwoBlock(
-  workspace: Workspace,
-  activeKey: BoardKey | undefined,
-): string {
-  if (activeKey === undefined) return ""
-  const board = workspace.boards[activeKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ""
-  const block = [
-    ...activeBoardSection(workspace, activeKey, board).lines,
-    ...componentValuesSection(boardCatalogIds(workspace, activeKey), workspace),
-  ]
-    .join("\n")
-    .trim()
-  return block
-    ? `\n\nActive board (tier 2) and its settable values:\n${block}`
-    : ""
 }
 
 /** The settable values of one node's component, appended when a match is found off-board. */
@@ -319,6 +273,7 @@ function widen(
     kind: "message",
     text: `Several nodes match "${query}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
     reason: "several",
+    candidateIds: matches.slice(0, MATCH_LIMIT).map((match) => match.id),
   }
 }
 
@@ -360,6 +315,9 @@ export function resolveNodeTarget(
           kind: "message",
           text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
           reason: "several",
+          candidateIds: within
+            .slice(0, MATCH_LIMIT)
+            .map((partMatch) => partMatch.id),
         }
       }
       return widen(workspace, match, activeKey, scope)
@@ -373,7 +331,11 @@ export function resolveNodeTarget(
       : "Nothing is selected"
     return {
       kind: "message",
-      text: `${selectionNote}, so 'this' is ambiguous. Pick the target from the active board below, or pass an explicit target { nodeId }, or ask the user which node to change.${tierTwoBlock(workspace, activeKey)}`,
+      // This text's only reader is the reply stage and then the user: keep it
+      // human. The old version appended the whole active-board context here
+      // (a directive for the removed free-tool-calling loop), and the reply
+      // model paraphrased that blob into hallucinated nonsense (issue 06).
+      text: `${selectionNote}, so I don't know which element to change. Name the element, or select it on the canvas and ask again.`,
       reason: "no-target",
     }
   }
