@@ -86,7 +86,7 @@ const sdn: TopbarSpreadProps = {
   },
   text: {
     children: " | ",
-    className: "sdn-text sdn-text--s4kj",
+    className: "sdn-text sdn-text-label--jndm",
   },
   linkPlain5: {
     children: "JP",

@@ -14,6 +14,7 @@ import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
 import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
 import { stringifyValue } from "../../../helpers/properties/stringify-value"
 import { parseThemeRef } from "../../../helpers/theme/get-theme-key-components"
+import { getThemeValueAnnotation } from "../../../helpers/theme/get-theme-value-annotation"
 import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
 import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
@@ -37,7 +38,12 @@ import type { PropertyKey } from "../../../properties/types/property-keys"
 import type { PropertySchema } from "../../../properties/types/schema"
 import type { Theme, Workspace } from "@seldon/core"
 
-export type PropertyPickerOption = { value: string; name: string }
+export type PropertyPickerOption = {
+  value: string
+  name: string
+  /** The resolved value behind a theme token, shown beside the name. */
+  annotation?: string
+}
 
 export type PropertyPickerResult = {
   options: PropertyPickerOption[][]
@@ -432,6 +438,7 @@ function createThemeOptions(
     return {
       value: themeKey,
       name: getThemeValueName(themeKey, theme),
+      annotation: getThemeValueAnnotation(themeKey, theme),
     }
   })
 }

@@ -96,7 +96,7 @@ const sdn: TopbarCompactProps = {
   },
   text: {
     children: " | ",
-    className: "sdn-text sdn-text--s4kj",
+    className: "sdn-text sdn-text-label--jndm",
   },
   linkPlain6: {
     children: "JP",

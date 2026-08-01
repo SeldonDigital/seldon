@@ -37,12 +37,12 @@ const sdn: MenuItemCheckboxProps = {
   icon: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
 
   textLabel: {
     children: "Checkbox",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
 }
 

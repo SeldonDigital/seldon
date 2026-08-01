@@ -1,10 +1,10 @@
 /**
  * View-model for the floating option list of a combobox. Renders the generated
  * `Listbox` (its Frame is the positioned surface) with one generated
- * `ListboxOption` per option. Option rows bind through the
- * `optionIcon`/`optionLabel` slot refs when the icon is a plain id, and fall
- * back to children when the icon is a dynamic node the string-based `Icon`
- * slot cannot host.
+ * `ListboxOption` per option. Option rows bind through the `optionIcon`,
+ * `optionLabel`, and `optionAnnotation` slot refs when the icon is a plain id,
+ * and fall back to children when the icon is a dynamic node the string-based
+ * `Icon` slot cannot host.
  *
  * Only functional placement (fixed position, scroll) is applied inline; all
  * appearance comes from the authored component CSS.
@@ -52,6 +52,7 @@ const HIGHLIGHT_CLASS = "sdn-state-activated"
 // option state CSS (`:hover`, `[aria-selected]`, `[aria-disabled]`) scopes to it
 // on the children path exactly as it does on the slot path.
 const OPTION_LABEL_CLASS = "sdn-text-label sdn-text-label--xohb"
+const OPTION_ANNOTATION_CLASS = "sdn-text-label sdn-text-label--lqmh"
 
 const backdropStyle: CSSProperties = {
   position: "fixed",
@@ -121,21 +122,38 @@ export function ComboboxListbox({
       onMouseEnter: handleMouseEnter,
     }
 
+    // Both text slots are opt-in, so each keeps a positional enabler; without one
+    // the slot would not render. The annotation stays off when the option has none.
+    const annotationSlot = option.annotation ? {} : undefined
+
     if (icon.kind === "iconId") {
-      // The content reaches both slots by ref name. `textLabel` is opt-in, so it
-      // keeps a positional `{}` enabler; without it the label would not render.
+      // The content reaches every slot by ref name.
       const optionRefs = {
         optionIcon: { icon: icon.icon as IconProps["icon"] },
         optionLabel: { children: option.name },
+        optionAnnotation: { children: option.annotation },
       }
 
-      return <ListboxOption key={option.value} {...common} textLabel={{}} seldonRefs={optionRefs} />
+      return (
+        <ListboxOption
+          key={option.value}
+          {...common}
+          textLabel={{}}
+          textLabel2={annotationSlot}
+          seldonRefs={optionRefs}
+        />
+      )
     }
+
+    const annotationNode = option.annotation ? (
+      <TextLabel className={OPTION_ANNOTATION_CLASS}>{option.annotation}</TextLabel>
+    ) : null
 
     return (
       <ListboxOption key={option.value} {...common}>
         {icon.node}
         <TextLabel className={OPTION_LABEL_CLASS}>{option.name}</TextLabel>
+        {annotationNode}
       </ListboxOption>
     )
   }

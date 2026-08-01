@@ -38,12 +38,15 @@ export interface ComboboxProps extends HTMLAttributes<HTMLElement> {
   listboxOption?: ListboxOptionProps | null
   icon3?: IconProps | null
   textLabel?: TextLabelProps | null
+  textLabel2?: TextLabelProps | null
   listboxOption2?: ListboxOptionProps | null
   icon4?: IconProps | null
-  textLabel2?: TextLabelProps | null
+  textLabel3?: TextLabelProps | null
+  textLabel4?: TextLabelProps | null
   listboxOption3?: ListboxOptionProps | null
   icon5?: IconProps | null
-  textLabel3?: TextLabelProps | null
+  textLabel5?: TextLabelProps | null
+  textLabel6?: TextLabelProps | null
 }
 
 //
@@ -89,11 +92,15 @@ const sdn: ComboboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
+  },
+  textLabel2: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
   },
   listboxOption2: {
     role: "option",
@@ -103,11 +110,15 @@ const sdn: ComboboxProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
-  textLabel2: {
+  textLabel3: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
+  },
+  textLabel4: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
   },
   listboxOption3: {
     role: "option",
@@ -117,11 +128,15 @@ const sdn: ComboboxProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
-  textLabel3: {
+  textLabel5: {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
+  },
+  textLabel6: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
   },
 }
 
@@ -142,12 +157,15 @@ const sdn: ComboboxProps = {
  *     ListboxOption  listboxOption
  *       Icon         icon3
  *       TextLabel    textLabel
+ *       TextLabel    textLabel2
  *     ListboxOption  listboxOption2
  *       Icon         icon4
- *       TextLabel    textLabel2
+ *       TextLabel    textLabel3
+ *       TextLabel    textLabel4
  *     ListboxOption  listboxOption3
  *       Icon         icon5
- *       TextLabel    textLabel3
+ *       TextLabel    textLabel5
+ *       TextLabel    textLabel6
  *
  * @example
  * ```tsx
@@ -160,6 +178,7 @@ const sdn: ComboboxProps = {
  *   listbox="{}"
  *   listboxOption="{}"
  *   textLabel="{}"
+ *   textLabel2="{}"
  *   listboxOption2="{}"
  *   listboxOption3="{}"
  * />
@@ -177,12 +196,15 @@ export function Combobox({
   listboxOption,
   icon3,
   textLabel,
+  textLabel2,
   listboxOption2,
   icon4,
-  textLabel2,
+  textLabel3,
+  textLabel4,
   listboxOption3,
   icon5,
-  textLabel3,
+  textLabel5,
+  textLabel6,
 
   children,
   seldonRefs,
@@ -200,12 +222,15 @@ export function Combobox({
   const listboxOptionProps = mergeSlot(sdn.listboxOption, listboxOption, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
   const listboxOption2Props = mergeSlot(sdn.listboxOption2, listboxOption2, seldonRefs)
   const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
-  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
   const listboxOption3Props = mergeSlot(sdn.listboxOption3, listboxOption3, seldonRefs)
   const icon5Props = mergeSlot(sdn.icon5, icon5, seldonRefs)
-  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
 
   return (
     <Frame className={comboboxClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -228,12 +253,15 @@ export function Combobox({
               listboxOption={listboxOptionProps}
               icon={icon3Props}
               textLabel={textLabelProps}
+              textLabel2={textLabel2Props}
               listboxOption2={listboxOption2Props}
               icon2={icon4Props}
-              textLabel2={textLabel2Props}
+              textLabel3={textLabel3Props}
+              textLabel4={textLabel4Props}
               listboxOption3={listboxOption3Props}
               icon3={icon5Props}
-              textLabel3={textLabel3Props}
+              textLabel5={textLabel5Props}
+              textLabel6={textLabel6Props}
             />
           )}
         </>

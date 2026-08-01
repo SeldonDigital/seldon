@@ -53,7 +53,7 @@ const sdn: ItemToDoItemProps = {
 
   textLabel: {
     children: "Label",
-    className: "sdn-text-label sdn-text--s4kj",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
 
   chip: {

@@ -70,7 +70,7 @@ const sdn: TopbarProps = {
   },
   textLabel: {
     children: "Expertise",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   icon: {
     icon: "material-expandMore",

@@ -60,7 +60,7 @@ const sdn: PanelModalProps = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--yje0",
+    className: "sdn-bar sdn-bar--zhvk",
   },
   textTitle: {
     children: "Modal",

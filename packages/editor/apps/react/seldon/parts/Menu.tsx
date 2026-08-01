@@ -62,11 +62,11 @@ const sdn: MenuProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
     children: "Menu Item",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   textLabel2: {
     children: "⌘K",
@@ -81,11 +81,11 @@ const sdn: MenuProps = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
     children: "Menu Item",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   textLabel4: {
     children: "⌘K",
@@ -105,7 +105,7 @@ const sdn: MenuProps = {
   icon3: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel5: {
     children: "Checkbox",
@@ -120,7 +120,7 @@ const sdn: MenuProps = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel6: {
     children: "Radio",

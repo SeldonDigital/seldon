@@ -48,7 +48,7 @@ const sdn: MessageOutcomeProps = {
   },
   textLabel: {
     children: "Applied",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "hariOutcomeLabel",
   },
 

@@ -26,6 +26,8 @@ export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
   icon?: IconProps | null
 
   textLabel?: TextLabelProps | null
+
+  textLabel2?: TextLabelProps | null
 }
 
 //
@@ -37,7 +39,7 @@ const sdn: ListboxOptionProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "optionIcon",
   },
 
@@ -45,6 +47,12 @@ const sdn: ListboxOptionProps = {
     children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "optionLabel",
+  },
+
+  textLabel2: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--lqmh",
+    "data-seldon-ref": "optionAnnotation",
   },
 }
 
@@ -56,8 +64,9 @@ const sdn: ListboxOptionProps = {
  * Type: Default
  *
  * Structure:
- *   Icon       icon       -> optionIcon
- *   TextLabel  textLabel  -> optionLabel
+ *   Icon       icon        -> optionIcon
+ *   TextLabel  textLabel   -> optionLabel
+ *   TextLabel  textLabel2  -> optionAnnotation
  *
  * @example
  * ```tsx
@@ -73,6 +82,8 @@ export function ListboxOption({
 
   textLabel,
 
+  textLabel2,
+
   children,
   seldonRefs,
   ...props
@@ -82,6 +93,8 @@ export function ListboxOption({
   const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
 
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
 
   return (
     <Frame
@@ -96,6 +109,7 @@ export function ListboxOption({
         <>
           {iconProps !== null && <Icon {...iconProps} />}
           {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+          {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
         </>
       )}
     </Frame>

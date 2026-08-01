@@ -8,6 +8,7 @@ import { parseNodeLink } from "../../model/template-ref"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { rebuildDefaultChildren } from "./build-component-variants"
 import { collectTreeRefIds } from "./collect-tree-ref-ids"
+import { commitRebuiltNodes } from "./commit-rebuilt-nodes"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
 
@@ -78,9 +79,7 @@ export function applyResetDefaultVariantToCatalog(
         ? { id: defaultVariantRootId, children: childRefs }
         : { id: defaultVariantRootId }
 
-      for (const [id, node] of Object.entries(newNodes)) {
-        draft.nodes[id] = node
-      }
+      commitRebuiltNodes(draft, newNodes)
     }
 
     const newIds = new Set(collectTreeRefIds(board.variants[0]))

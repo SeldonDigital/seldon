@@ -9,6 +9,7 @@ import {
   componentBoardSchemaVariantNodeId,
 } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
+import { commitRebuiltNodes } from "./commit-rebuilt-nodes"
 import { rebuildSchemaVariant } from "./rebuild-schema-variants"
 
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
@@ -61,9 +62,7 @@ export function applyResetSchemaVariantsToCatalog(
       })
     })
 
-    for (const [id, node] of Object.entries(newNodes)) {
-      draft.nodes[id] = node
-    }
+    commitRebuiltNodes(draft, newNodes)
 
     board.variants = [defaultRef, ...schemaVariantRefs]
 

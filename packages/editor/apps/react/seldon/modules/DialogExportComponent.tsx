@@ -234,14 +234,14 @@ const sdn: DialogExportComponentProps = {
   icon2: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportFontLinksYesIcon",
   },
   textLabel5: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio2: {
     role: "menuitemradio",
@@ -252,14 +252,14 @@ const sdn: DialogExportComponentProps = {
   icon3: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportFontLinksNoIcon",
   },
   textLabel6: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   fieldset: {
     "aria-hidden": "false",
@@ -294,14 +294,14 @@ const sdn: DialogExportComponentProps = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportHiddenYesIcon",
   },
   textLabel8: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio4: {
     role: "menuitemradio",
@@ -312,14 +312,14 @@ const sdn: DialogExportComponentProps = {
   icon5: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportHiddenNoIcon",
   },
   textLabel9: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   formControlRadio3: {
     "aria-hidden": "false",
@@ -345,14 +345,14 @@ const sdn: DialogExportComponentProps = {
   icon6: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllThemesYesIcon",
   },
   textLabel11: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio6: {
     role: "menuitemradio",
@@ -363,14 +363,14 @@ const sdn: DialogExportComponentProps = {
   icon7: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllThemesNoIcon",
   },
   textLabel12: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   formControlRadio4: {
     "aria-hidden": "false",
@@ -396,14 +396,14 @@ const sdn: DialogExportComponentProps = {
   icon8: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllFontsYesIcon",
   },
   textLabel14: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio8: {
     role: "menuitemradio",
@@ -414,14 +414,14 @@ const sdn: DialogExportComponentProps = {
   icon9: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllFontsNoIcon",
   },
   textLabel15: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   formControlRadio5: {
     "aria-hidden": "false",
@@ -447,14 +447,14 @@ const sdn: DialogExportComponentProps = {
   icon10: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllIconsYesIcon",
   },
   textLabel17: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio10: {
     role: "menuitemradio",
@@ -465,14 +465,14 @@ const sdn: DialogExportComponentProps = {
   icon11: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportAllIconsNoIcon",
   },
   textLabel18: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   formControlRadio6: {
     "aria-hidden": "false",
@@ -498,14 +498,14 @@ const sdn: DialogExportComponentProps = {
   icon12: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportSavedWorkspaceYesIcon",
   },
   textLabel20: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio12: {
     role: "menuitemradio",
@@ -516,14 +516,14 @@ const sdn: DialogExportComponentProps = {
   icon13: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportSavedWorkspaceNoIcon",
   },
   textLabel21: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   formControlRadio7: {
     "aria-hidden": "false",
@@ -549,14 +549,14 @@ const sdn: DialogExportComponentProps = {
   icon14: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportScriptsYesIcon",
   },
   textLabel23: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio14: {
     role: "menuitemradio",
@@ -567,14 +567,14 @@ const sdn: DialogExportComponentProps = {
   icon15: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "exportScriptsNoIcon",
   },
   textLabel24: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
 
   barButtons: {

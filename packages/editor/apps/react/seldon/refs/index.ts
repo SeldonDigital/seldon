@@ -136,6 +136,7 @@ export type SeldonRef =
   | "objectsTree"
   | "objectsViewComponents"
   | "objectsViewResources"
+  | "optionAnnotation"
   | "optionIcon"
   | "optionLabel"
   | "propertiesTree"
@@ -544,7 +545,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportAllFontsNoIcon: {
     component: "Icon",
     nodeId: "component-panel-ELZAfUu6",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -572,7 +573,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportAllFontsYesIcon: {
     component: "Icon",
     nodeId: "component-panel-AAAIIBZA",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -600,7 +601,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportAllIconsNoIcon: {
     component: "Icon",
     nodeId: "component-panel-HvqKiDjV",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -628,7 +629,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportAllIconsYesIcon: {
     component: "Icon",
     nodeId: "component-panel-uhkDW6j5",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -656,7 +657,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportAllThemesNoIcon: {
     component: "Icon",
     nodeId: "component-panel-dE3r3x5s",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -684,7 +685,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportAllThemesYesIcon: {
     component: "Icon",
     nodeId: "component-panel-6zRYcjko",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -740,7 +741,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportFontLinksNoIcon: {
     component: "Icon",
     nodeId: "component-panel-L4bLvhoP",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -768,7 +769,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportFontLinksYesIcon: {
     component: "Icon",
     nodeId: "component-panel-XOpVCSGs",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -796,7 +797,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportHiddenNoIcon: {
     component: "Icon",
     nodeId: "component-panel-BZN5sI4T",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -824,7 +825,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportHiddenYesIcon: {
     component: "Icon",
     nodeId: "component-panel-WG67k8nP",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -880,7 +881,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportSavedWorkspaceNoIcon: {
     component: "Icon",
     nodeId: "component-panel-EwRweg8T",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -908,7 +909,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportSavedWorkspaceYesIcon: {
     component: "Icon",
     nodeId: "component-panel-wqWys28h",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -936,7 +937,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportScriptsNoIcon: {
     component: "Icon",
     nodeId: "component-panel-xrKjwATK",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -964,7 +965,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportScriptsYesIcon: {
     component: "Icon",
     nodeId: "component-panel-dCrsBN4m",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "DialogExportComponent",
@@ -992,7 +993,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariBar: {
     component: "Bar",
     nodeId: "component-panel-DxDVepgS",
-    className: "sdn-bar sdn-bar--9xs7",
+    className: "sdn-bar sdn-bar--dxdv",
     views: [
       {
         component: "PanelHari",
@@ -1076,7 +1077,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariErrorText: {
     component: "TextDescription",
     nodeId: "component-text-gaFQYpvP",
-    className: "sdn-text-description sdn-text-label--lbxv",
+    className: "sdn-text-description sdn-text-label--xohb",
     views: [
       {
         component: "MessageError",
@@ -1160,7 +1161,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariOutcomeLabel: {
     component: "TextLabel",
     nodeId: "component-text-PIf8vzL0",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "MessageOutcome",
@@ -1398,7 +1399,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariToolIcon: {
     component: "Icon",
     nodeId: "component-message-GL7BdSOW",
-    className: "sdn-icon sdn-icon--gl7b",
+    className: "sdn-icon sdn-icon--0nya",
     views: [
       {
         component: "MessageToolsUsed",
@@ -1566,7 +1567,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuComponentLabel: {
     component: "TextLabel",
     nodeId: "component-bar-BKODTkFn",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1594,7 +1595,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuDevLabel: {
     component: "TextLabel",
     nodeId: "component-bar-Dsz3NduE",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1622,7 +1623,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuEditLabel: {
     component: "TextLabel",
     nodeId: "component-bar-Q8d6DDvh",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1650,7 +1651,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuFileLabel: {
     component: "TextLabel",
     nodeId: "component-bar-lbXVYN7P",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1678,7 +1679,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuHariLabel: {
     component: "TextLabel",
     nodeId: "component-bar-BJ3Eeqtv",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1776,7 +1777,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuViewLabel: {
     component: "TextLabel",
     nodeId: "component-bar-gS6ioGdB",
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-label--xohb",
     views: [
       {
         component: "BarTopbar",
@@ -1941,10 +1942,24 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  optionAnnotation: {
+    component: "TextLabel",
+    nodeId: "component-text-lqmhr2IY",
+    className: "sdn-text-label sdn-text-label--lqmh",
+    views: [
+      {
+        component: "ListboxOption",
+        file: "elements/ListboxOption.tsx",
+        slot: "textLabel2",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   optionIcon: {
     component: "Icon",
     nodeId: "component-icon-3QOuNmn2",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "ListboxOption",
@@ -2028,7 +2043,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilter: {
     component: "Input",
     nodeId: "component-comboboxField-Lg6E5jtv",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--lg6e",
     views: [
       {
         component: "SidebarProperties",
@@ -2056,7 +2071,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilterClearIcon: {
     component: "Icon",
     nodeId: "component-comboboxField-yANWz3qm",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--yanw",
     views: [
       {
         component: "SidebarProperties",
@@ -2070,7 +2085,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilterField: {
     component: "ComboboxFieldFilter",
     nodeId: "component-comboboxField-LSIWPWiC",
-    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
+    className: "sdn-combobox-field sdn-combobox-field-filter--lsiw",
     views: [
       {
         component: "SidebarProperties",
@@ -2084,7 +2099,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertyFilterIcon: {
     component: "Icon",
     nodeId: "component-comboboxField-0NyAQIRn",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--0nya",
     views: [
       {
         component: "SidebarProperties",

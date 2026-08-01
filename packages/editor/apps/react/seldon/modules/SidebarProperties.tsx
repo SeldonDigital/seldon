@@ -53,13 +53,13 @@ const sdn: SidebarPropertiesProps = {
     className: "sdn-frame sdn-frame--uief",
   },
   comboboxFieldFilter: {
-    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
+    className: "sdn-combobox-field sdn-combobox-field-filter--lsiw",
     "data-seldon-ref": "propertyFilterField",
   },
   icon: {
     icon: "material-filterList",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--0nya",
     "data-seldon-ref": "propertyFilterIcon",
   },
   input: {
@@ -67,7 +67,7 @@ const sdn: SidebarPropertiesProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
+    className: "sdn-input sdn-input--lg6e",
     "data-seldon-ref": "propertyFilter",
   },
   buttonIconic: {
@@ -77,7 +77,7 @@ const sdn: SidebarPropertiesProps = {
   icon2: {
     icon: "material-close",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--yanw",
     "data-seldon-ref": "propertyFilterClearIcon",
   },
   buttonMenu: {
@@ -149,7 +149,7 @@ export function SidebarProperties({
   seldonRefs,
   ...props
 }: SidebarPropertiesProps) {
-  const sidebarPropertiesClassName = combineClassNames("sdn-sidebar-objects", className)
+  const sidebarPropertiesClassName = combineClassNames("sdn-sidebar-properties", className)
 
   const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
   const comboboxFieldFilterProps = mergeOptionalSlot(

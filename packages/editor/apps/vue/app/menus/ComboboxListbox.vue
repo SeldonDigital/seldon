@@ -83,13 +83,19 @@ const listboxStyle = {
   overflowY: "auto" as const,
 }
 
-// The content reaches both slots by ref name. `textLabel` is opt-in, so it keeps a
-// positional `{}` enabler; without it the label would not render.
+// The content reaches every slot by ref name. Both text slots are opt-in, so each
+// keeps a positional enabler; without one the slot would not render.
 function optionRefs(option: ComboboxOptionItem): Record<string, Record<string, unknown>> {
   return {
     optionIcon: { icon: props.resolveIcon?.(option.value) ?? "seldon-component" },
     optionLabel: { children: option.name },
+    optionAnnotation: { children: option.annotation },
   }
+}
+
+/** The annotation slot stays off when the option has no annotation. */
+function optionAnnotationSlot(option: ComboboxOptionItem): Record<string, unknown> | undefined {
+  return option.annotation ? {} : undefined
 }
 
 function optionClass(option: ComboboxOptionItem): string | undefined {
@@ -200,6 +206,7 @@ onBeforeUnmount(() => {
             :aria-selected="option.value === value || undefined"
             :seldon-refs="optionRefs(option)"
             :text-label="{}"
+            :text-label2="optionAnnotationSlot(option)"
             @click="select(option.value)"
             @pointerenter="highlightedValue = option.value"
           />

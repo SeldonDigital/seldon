@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 276,
+  "scannedFiles": 281,
   "refs": {
     "boardState": [
       {
@@ -4437,14 +4437,14 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 280,
+        "line": 282,
         "conditional": false,
         "expression": "{ ...actionsMenu.buttonIconic }",
         "inputs": [
           {
             "name": "actionsMenu",
             "declaredAt": {
-              "line": 114,
+              "line": 115,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -4493,7 +4493,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 273,
+        "line": 275,
         "conditional": false,
         "expression": "{ ...buttonIconic }",
         "inputs": [
@@ -4530,7 +4530,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 274,
+        "line": 276,
         "conditional": false,
         "expression": "mergeStateProps(toggleIcon, disabledRef)",
         "inputs": [
@@ -4545,14 +4545,14 @@
           {
             "name": "toggleIcon",
             "declaredAt": {
-              "line": 204,
+              "line": 205,
               "kind": "const"
             }
           },
           {
             "name": "disabledRef",
             "declaredAt": {
-              "line": 223,
+              "line": 224,
               "kind": "const",
               "via": "buildDisabledRefProps"
             }
@@ -4580,14 +4580,14 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 278,
+        "line": 280,
         "conditional": false,
         "expression": "{ ...displayPicker.buttonProps }",
         "inputs": [
           {
             "name": "displayPicker",
             "declaredAt": {
-              "line": 121,
+              "line": 122,
               "kind": "const",
               "via": "useRowDisplayPicker"
             }
@@ -4600,7 +4600,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 279,
+        "line": 281,
         "conditional": false,
         "expression": "{ ...displayIcon }",
         "inputs": [
@@ -4638,14 +4638,14 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 275,
+        "line": 277,
         "conditional": false,
         "expression": "{ ...comboboxField }",
         "inputs": [
           {
             "name": "comboboxField",
             "declaredAt": {
-              "line": 259,
+              "line": 260,
               "kind": "const"
             }
           }
@@ -4709,7 +4709,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 276,
+        "line": 278,
         "conditional": false,
         "expression": "mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef)",
         "inputs": [
@@ -4732,7 +4732,7 @@
           {
             "name": "disabledRef",
             "declaredAt": {
-              "line": 223,
+              "line": 224,
               "kind": "const",
               "via": "buildDisabledRefProps"
             }
@@ -4740,21 +4740,21 @@
           {
             "name": "dimRef",
             "declaredAt": {
-              "line": 227,
+              "line": 228,
               "kind": "const"
             }
           },
           {
             "name": "nodeTypeStyle",
             "declaredAt": {
-              "line": 237,
+              "line": 238,
               "kind": "const"
             }
           },
           {
             "name": "invalidRef",
             "declaredAt": {
-              "line": 232,
+              "line": 233,
               "kind": "const",
               "via": "buildInvalidRefProps"
             }
@@ -4854,7 +4854,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 277,
+        "line": 279,
         "conditional": false,
         "expression": "mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef)",
         "inputs": [
@@ -4869,14 +4869,14 @@
           {
             "name": "nodeLabel",
             "declaredAt": {
-              "line": 218,
+              "line": 219,
               "kind": "const"
             }
           },
           {
             "name": "disabledRef",
             "declaredAt": {
-              "line": 223,
+              "line": 224,
               "kind": "const",
               "via": "buildDisabledRefProps"
             }
@@ -4884,21 +4884,21 @@
           {
             "name": "dimRef",
             "declaredAt": {
-              "line": 227,
+              "line": 228,
               "kind": "const"
             }
           },
           {
             "name": "nodeTypeStyle",
             "declaredAt": {
-              "line": 237,
+              "line": 238,
               "kind": "const"
             }
           },
           {
             "name": "invalidRef",
             "declaredAt": {
-              "line": 232,
+              "line": 233,
               "kind": "const",
               "via": "buildInvalidRefProps"
             }
@@ -5945,7 +5945,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 215,
+              "line": 217,
               "kind": "const"
             }
           }
@@ -5972,7 +5972,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 215,
+                  "line": 217,
                   "kind": "const"
                 }
               }
@@ -5985,21 +5985,21 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 192,
+        "line": 194,
         "conditional": false,
         "expression": "{ children: controller.from.join(\"\\n\"), style: styles.multiline, }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 162,
+              "line": 164,
               "kind": "parameter"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 215,
+              "line": 217,
               "kind": "const"
             }
           }
@@ -6012,7 +6012,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 162,
+                  "line": 164,
                   "kind": "parameter"
                 }
               }
@@ -6025,7 +6025,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 215,
+                  "line": 217,
                   "kind": "const"
                 }
               }
@@ -6038,7 +6038,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "buildNoteRow",
-        "line": 173,
+        "line": 175,
         "conditional": false,
         "expression": "{ children: note }",
         "inputs": [
@@ -6071,14 +6071,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 189,
+        "line": 191,
         "conditional": false,
         "expression": "{ children: controller.name }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 162,
+              "line": 164,
               "kind": "parameter"
             }
           }
@@ -6091,7 +6091,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 162,
+                  "line": 164,
                   "kind": "parameter"
                 }
               }
@@ -6104,14 +6104,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 191,
+        "line": 193,
         "conditional": false,
         "expression": "{ children: controller.pass }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 162,
+              "line": 164,
               "kind": "parameter"
             }
           }
@@ -6124,7 +6124,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 162,
+                  "line": 164,
                   "kind": "parameter"
                 }
               }
@@ -6137,14 +6137,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 190,
+        "line": 192,
         "conditional": false,
         "expression": "{ children: location }",
         "inputs": [
           {
             "name": "location",
             "declaredAt": {
-              "line": 184,
+              "line": 186,
               "kind": "const"
             }
           }
@@ -6157,7 +6157,7 @@
               {
                 "name": "location",
                 "declaredAt": {
-                  "line": 184,
+                  "line": 186,
                   "kind": "const"
                 }
               }
@@ -6220,7 +6220,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 215,
+              "line": 217,
               "kind": "const"
             }
           }
@@ -6247,7 +6247,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 215,
+                  "line": 217,
                   "kind": "const"
                 }
               }
@@ -6274,7 +6274,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 215,
+              "line": 217,
               "kind": "const"
             }
           }
@@ -6300,7 +6300,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 215,
+                  "line": 217,
                   "kind": "const"
                 }
               }
@@ -8661,13 +8661,13 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 320,
+          "line": 340,
           "expression": "handleKeyDown",
           "inputs": [
             {
               "name": "handleKeyDown",
               "declaredAt": {
-                "line": 260,
+                "line": 280,
                 "kind": "const"
               }
             }
@@ -8824,7 +8824,7 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 318,
+          "line": 338,
           "expression": "-1",
           "inputs": [],
           "spread": false
@@ -8860,7 +8860,7 @@
         {
           "file": "app/canvas/boards/ComponentBoard.tsx",
           "component": "wrapTablePartBoard",
-          "line": 82,
+          "line": 96,
           "expression": "\"table\"",
           "inputs": [],
           "spread": false
@@ -8868,7 +8868,7 @@
         {
           "file": "app/canvas/boards/ComponentBoard.tsx",
           "component": "wrapTablePartBoard",
-          "line": 83,
+          "line": 97,
           "expression": "\"tbody\"",
           "inputs": [],
           "spread": false
@@ -8876,7 +8876,7 @@
         {
           "file": "app/canvas/boards/ComponentBoard.tsx",
           "component": "wrapTablePartBoard",
-          "line": 84,
+          "line": 98,
           "expression": "\"tr\"",
           "inputs": [],
           "spread": false
@@ -8884,7 +8884,7 @@
         {
           "file": "app/canvas/boards/ComponentBoard.tsx",
           "component": "wrapTablePartBoard",
-          "line": 90,
+          "line": 104,
           "expression": "\"table\"",
           "inputs": [],
           "spread": false
@@ -8892,7 +8892,7 @@
         {
           "file": "app/canvas/boards/ComponentBoard.tsx",
           "component": "wrapTablePartBoard",
-          "line": 91,
+          "line": 105,
           "expression": "\"tbody\"",
           "inputs": [],
           "spread": false
@@ -8900,7 +8900,7 @@
         {
           "file": "app/canvas/boards/ComponentBoard.tsx",
           "component": "wrapTablePartBoard",
-          "line": 96,
+          "line": 110,
           "expression": "\"table\"",
           "inputs": [],
           "spread": false
@@ -9600,7 +9600,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 287,
+          "line": 289,
           "expression": "isDimmed || undefined",
           "inputs": [
             {
@@ -9619,7 +9619,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 288,
+          "line": 290,
           "expression": "isDuplicateLabel || undefined",
           "inputs": [
             {
@@ -9655,7 +9655,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 286,
+          "line": 288,
           "expression": "isSelected || undefined",
           "inputs": [
             {
@@ -9706,7 +9706,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 308,
+          "line": 310,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9740,13 +9740,13 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 310,
+          "line": 312,
           "expression": "displayButtonSlot",
           "inputs": [
             {
               "name": "displayButtonSlot",
               "declaredAt": {
-                "line": 267,
+                "line": 269,
                 "kind": "const"
               }
             }
@@ -9774,7 +9774,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 311,
+          "line": 313,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9808,7 +9808,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 309,
+          "line": 311,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9871,7 +9871,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 313,
+          "line": 315,
           "expression": "onClick",
           "inputs": [
             {
@@ -9924,7 +9924,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 314,
+          "line": 316,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -9977,13 +9977,13 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 315,
+          "line": 317,
           "expression": "handleCanvasTrackingEnter",
           "inputs": [
             {
               "name": "handleCanvasTrackingEnter",
               "declaredAt": {
-                "line": 128,
+                "line": 129,
                 "kind": "const",
                 "via": "useSidebarCanvasTracking"
               }
@@ -10013,13 +10013,13 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 316,
+          "line": 318,
           "expression": "handleCanvasTrackingLeave",
           "inputs": [
             {
               "name": "handleCanvasTrackingLeave",
               "declaredAt": {
-                "line": 128,
+                "line": 129,
                 "kind": "const",
                 "via": "useSidebarCanvasTracking"
               }
@@ -10712,13 +10712,13 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 338,
+          "line": 361,
           "expression": "item.disabled",
           "inputs": [
             {
               "name": "item",
               "declaredAt": {
-                "line": 33,
+                "line": 34,
                 "kind": "parameter"
               }
             }
@@ -10730,29 +10730,15 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 345,
-          "expression": "markerIconProps(item, showMarkerColumn)",
+          "line": 368,
+          "expression": "marker",
           "inputs": [
             {
-              "name": "markerIconProps",
+              "name": "marker",
               "declaredAt": {
-                "line": 43,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 33,
-                "kind": "parameter"
-              }
-            },
-            {
-              "name": "showMarkerColumn",
-              "declaredAt": {
-                "line": 248,
+                "line": 351,
                 "kind": "const",
-                "via": "items.some"
+                "via": "markerIconProps"
               }
             }
           ],
@@ -10763,20 +10749,20 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 341,
+          "line": 364,
           "expression": "() => handleSelect(item)",
           "inputs": [
             {
               "name": "handleSelect",
               "declaredAt": {
-                "line": 290,
+                "line": 310,
                 "kind": "const"
               }
             },
             {
               "name": "item",
               "declaredAt": {
-                "line": 33,
+                "line": 34,
                 "kind": "parameter"
               }
             }
@@ -10788,20 +10774,20 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 342,
+          "line": 365,
           "expression": "() => { if (!item.disabled) setActiveIndex(index) }",
           "inputs": [
             {
               "name": "item",
               "declaredAt": {
-                "line": 33,
+                "line": 34,
                 "kind": "parameter"
               }
             },
             {
               "name": "setActiveIndex",
               "declaredAt": {
-                "line": 188,
+                "line": 208,
                 "kind": "const",
                 "via": "useState"
               }
@@ -10809,7 +10795,7 @@
             {
               "name": "index",
               "declaredAt": {
-                "line": 193,
+                "line": 213,
                 "kind": "parameter"
               }
             }
@@ -10821,13 +10807,13 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 340,
+          "line": 363,
           "expression": "highlighted ? 0 : -1",
           "inputs": [
             {
               "name": "highlighted",
               "declaredAt": {
-                "line": 330,
+                "line": 350,
                 "kind": "const"
               }
             }
@@ -10839,14 +10825,15 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 346,
-          "expression": "{ children: item.label, \"aria-disabled\": item.disabled ? \"true\" : undefined, className: item.active ? \"sdn-state-activated\" : undefined, style: item.labelStyle,...",
+          "line": 369,
+          "expression": "label",
           "inputs": [
             {
-              "name": "item",
+              "name": "label",
               "declaredAt": {
-                "line": 33,
-                "kind": "parameter"
+                "line": 352,
+                "kind": "const",
+                "via": "labelProps"
               }
             }
           ],
@@ -10857,14 +10844,14 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 352,
-          "expression": "item.shortcut ? { children: item.shortcut } : null",
+          "line": 370,
+          "expression": "shortcut",
           "inputs": [
             {
-              "name": "item",
+              "name": "shortcut",
               "declaredAt": {
-                "line": 33,
-                "kind": "parameter"
+                "line": 353,
+                "kind": "const"
               }
             }
           ],
@@ -10875,7 +10862,7 @@
         {
           "file": "app/menus/MenuController.tsx",
           "component": "FloatingMenu",
-          "line": 335,
+          "line": 358,
           "expression": "\"button\"",
           "inputs": [],
           "spread": false
@@ -10977,13 +10964,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "buildNoteRow",
-          "line": 176,
+          "line": 178,
           "expression": "separator",
           "inputs": [
             {
               "name": "separator",
               "declaredAt": {
-                "line": 174,
+                "line": 176,
                 "kind": "const"
               }
             }
@@ -10993,13 +10980,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 210,
+          "line": 212,
           "expression": "separator",
           "inputs": [
             {
               "name": "separator",
               "declaredAt": {
-                "line": 174,
+                "line": 176,
                 "kind": "const"
               }
             }
@@ -11011,7 +10998,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "buildNoteRow",
-          "line": 176,
+          "line": 178,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11019,7 +11006,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 206,
+          "line": 208,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11029,7 +11016,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 207,
+          "line": 209,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11039,13 +11026,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 208,
+          "line": 210,
           "expression": "pass",
           "inputs": [
             {
               "name": "pass",
               "declaredAt": {
-                "line": 198,
+                "line": 200,
                 "kind": "const"
               }
             }
@@ -11057,13 +11044,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 209,
+          "line": 211,
           "expression": "from",
           "inputs": [
             {
               "name": "from",
               "declaredAt": {
-                "line": 199,
+                "line": 201,
                 "kind": "const"
               }
             }
@@ -11713,7 +11700,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 128,
+          "line": 130,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -11723,7 +11710,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 132,
+          "line": 134,
           "expression": "viewSlot",
           "inputs": [
             {
@@ -11741,7 +11728,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 133,
+          "line": 135,
           "expression": "viewFieldSlot",
           "inputs": [
             {
@@ -11759,7 +11746,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 134,
+          "line": 136,
           "expression": "viewFieldSlot",
           "inputs": [
             {
@@ -11811,9 +11798,17 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 131,
-          "expression": "{}",
-          "inputs": [],
+          "line": 133,
+          "expression": "sectionLabelSlot",
+          "inputs": [
+            {
+              "name": "sectionLabelSlot",
+              "declaredAt": {
+                "line": 110,
+                "kind": "const"
+              }
+            }
+          ],
           "spread": false
         }
       ],
@@ -11821,9 +11816,17 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 135,
-          "expression": "{}",
-          "inputs": [],
+          "line": 137,
+          "expression": "sectionLabelSlot",
+          "inputs": [
+            {
+              "name": "sectionLabelSlot",
+              "declaredAt": {
+                "line": 110,
+                "kind": "const"
+              }
+            }
+          ],
           "spread": false
         }
       ]

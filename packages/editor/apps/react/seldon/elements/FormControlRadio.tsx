@@ -56,11 +56,11 @@ const sdn: FormControlRadioProps = {
   icon: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel2: {
     children: "Yes",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
   menuItemRadio2: {
     className: "sdn-menu-item sdn-menu-item-radio--mezf",
@@ -68,11 +68,11 @@ const sdn: FormControlRadioProps = {
   icon2: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
     children: "No",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
 }
 

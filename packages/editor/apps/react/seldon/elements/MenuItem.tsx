@@ -39,12 +39,12 @@ const sdn: MenuItemProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
 
   textLabel: {
     children: "Menu Item",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--jndm",
   },
 
   textLabel2: {
