@@ -40,6 +40,55 @@ function workspaceTheme(workspace: Workspace): Theme | undefined {
   }
 }
 
+/** Prose unit words to the Unit suffixes core's exact validators store. */
+const UNIT_BY_WORD: Record<string, string> = {
+  px: "px",
+  pixel: "px",
+  pixels: "px",
+  rem: "rem",
+  "%": "%",
+  percent: "%",
+  deg: "deg",
+  degree: "deg",
+  degrees: "deg",
+}
+
+/**
+ * Parses a prose length ("100 pixels", "2rem", "50%", "100") into the
+ * `{value, unit}` object a unit-bearing exact validator accepts. Core
+ * rejects the prose form outright ("width doesn't accept an exact value of
+ * 100 pixels"), and asking the model for the structured form is asking it
+ * to author the committed value -- the same mistake the color pipeline
+ * removed. A missing unit falls to the schema's default; an unparseable or
+ * disallowed answer returns undefined and passes through untouched, so the
+ * reducer's validation stays the final honest gate.
+ */
+export function parseExactLength(
+  rawValue: string | number,
+  allowedUnits: readonly string[],
+  defaultUnit: string | undefined,
+): { value: number; unit: string } | undefined {
+  if (typeof rawValue === "number") {
+    const unitForBareNumber = defaultUnit ?? allowedUnits[0]
+    if (unitForBareNumber === undefined) return undefined
+    return { value: rawValue, unit: unitForBareNumber }
+  }
+  const lengthMatch = rawValue
+    .trim()
+    .match(/^(-?\d+(?:\.\d+)?)\s*([a-z%]+)?$/i)
+  if (lengthMatch === null) return undefined
+  const numericValue = Number(lengthMatch[1])
+  const spokenUnit = lengthMatch[2]?.toLowerCase()
+  const resolvedUnit =
+    spokenUnit !== undefined
+      ? UNIT_BY_WORD[spokenUnit]
+      : (defaultUnit ?? allowedUnits[0])
+  const unitIsUsable =
+    resolvedUnit !== undefined && allowedUnits.includes(resolvedUnit)
+  if (!unitIsUsable) return undefined
+  return { value: numericValue, unit: resolvedUnit }
+}
+
 /**
  * Resolves the value for one property key with a single shallow-tagged-union
  * call, mirroring the deterministic-first choice order the editor itself
@@ -108,6 +157,23 @@ export async function resolvePropertyValue(
     return {
       kind: "resolved",
       value: { type: themeReferenceTag, value: valuePick.value },
+    }
+  }
+  // A unit-bearing exact answer arrives as prose ("100 pixels") and the
+  // schema wants {value, unit} -- the parse is arithmetic over words that
+  // are sitting right there, so it happens here, not in the model. Returned
+  // pre-tagged: the repair pass walks INTO untagged objects and would wrap
+  // the value and unit leaves separately.
+  const pickIsUnitBearingExact =
+    valuePick.pick === "exact" && allowedUnits.length > 0
+  if (pickIsUnitBearingExact) {
+    const parsedLength = parseExactLength(
+      valuePick.value,
+      [...allowedUnits],
+      getPropertySchema(schemaKey)?.units?.default,
+    )
+    if (parsedLength !== undefined) {
+      return { kind: "resolved", value: { type: "exact", value: parsedLength } }
     }
   }
   return { kind: "resolved", value: valuePick.value }

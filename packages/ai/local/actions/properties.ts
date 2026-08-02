@@ -1,3 +1,4 @@
+import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
 import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
@@ -184,10 +185,21 @@ export async function executeSetProperties(
   }
   recordStep(context, "commit", { ok: true })
 
+  // Tagged values render through core's own display form ("100px", "@swatch
+  // .primary"), never raw JSON in a user-facing sentence.
+  const describeValue = (rawValue: unknown): string => {
+    const valueIsTagged =
+      typeof rawValue === "object" && rawValue !== null && "type" in rawValue
+    if (valueIsTagged) {
+      const displayForm = stringifyValue(rawValue as never)
+      if (displayForm !== undefined) return displayForm
+    }
+    return JSON.stringify(rawValue)
+  }
   const describedChanges = propertyNames.keys
     .map(
       (propertyKey) =>
-        `${propertyKey} to ${JSON.stringify(propertyValues[propertyKey])}`,
+        `${propertyKey} to ${describeValue(propertyValues[propertyKey])}`,
     )
     .join(", ")
   const [onlyWriteNodeId] = writeNodes.keys()
