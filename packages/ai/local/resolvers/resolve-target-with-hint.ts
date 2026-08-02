@@ -1,8 +1,15 @@
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 
 import { type TurnContext, isClarification, recordStep } from "../turn-context"
 import { extractTargetHint } from "./extract-target"
-import { findNodeSemantic } from "./find-node"
+import { findNodeSemantic, labelNumberTieBreak } from "./find-node"
+import {
+  pickDirectionalEndpoint,
+} from "./find-node/geometry-labels"
 import { narrowClassTarget } from "./find-node/narrow-pool"
 import {
   type TargetResolution,
@@ -99,6 +106,73 @@ export function resolveCreatedMention(
   if (exactMatchNodeId) return { kind: "exact", nodeId: exactMatchNodeId }
 
   return undefined
+}
+
+/**
+ * Resolves a reference whose noun is "variant" against the active board's
+ * own variants array: label number first ("the second variant" -> the node
+ * LABELED "Variant 02" -- the numbering the user reads, which the catalog
+ * presets sitting above it make disagree with position), then a directional
+ * end ("the last variant"), then an honest ask listing exactly the variants
+ * -- never the embedding search's mixed cluster. Undefined when no board is
+ * active or it has fewer than two variants, letting the general path handle
+ * the degenerate shapes.
+ */
+function resolveVariantReference(
+  context: TurnContext,
+): TargetResolution | undefined {
+  const boardKey = context.resolved.resolvedKey
+  if (boardKey === undefined) return undefined
+  const activeBoard = context.state.workspace.boards[boardKey]
+  const boardHasNoVariants =
+    !activeBoard ||
+    (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard)) ||
+    activeBoard.variants.length < 2
+  if (boardHasNoVariants) return undefined
+
+  const variantRootIds = activeBoard.variants.map(
+    (variantRef) => variantRef.id,
+  )
+  const numberedWinnerId = labelNumberTieBreak(
+    context.state.workspace,
+    context.message,
+    variantRootIds,
+  )
+  if (numberedWinnerId !== undefined) {
+    recordStep(context, "resolve_target", {
+      ok: true,
+      output: `Resolved the variant reference by label number to ${numberedWinnerId} (deterministic, no model call).`,
+    })
+    return { kind: "resolved", nodeId: numberedWinnerId }
+  }
+  const directionalWinnerId = pickDirectionalEndpoint(
+    context.state.workspace,
+    boardKey,
+    context.message,
+    variantRootIds,
+  )
+  if (directionalWinnerId !== undefined) {
+    recordStep(context, "resolve_target", {
+      ok: true,
+      output: `Resolved the variant reference by board order to ${directionalWinnerId} (deterministic, no model call).`,
+    })
+    return { kind: "resolved", nodeId: directionalWinnerId }
+  }
+
+  const variantLines = variantRootIds
+    .map((nodeId) => {
+      const label = context.state.workspace.nodes[nodeId]?.label ?? nodeId
+      return `- ${nodeId}: "${label}"`
+    })
+    .join("\n")
+  const askText = `This board has ${variantRootIds.length} variants and the message doesn't say which one:\n${variantLines}\nName one, or select it on the canvas and ask again.`
+  recordStep(context, "resolve_target", { ok: false, output: askText })
+  return {
+    kind: "message",
+    text: askText,
+    reason: "several",
+    candidateIds: variantRootIds,
+  }
 }
 
 /**
@@ -223,6 +297,17 @@ export async function resolveTargetWithHint(
           : `Resolved ${deterministicResolution.nodeIds.length} nodes.`,
     })
     return deterministicResolution
+  }
+
+  // "Variant" is a structural word, not a catalog kind (variant roots carry
+  // their component's catalogId) -- and the board knows exactly which nodes
+  // are its variants, so a variant reference never needs the embedding
+  // search, whose margin lets stray content ride into the tie and defeat
+  // the deterministic tiebreaks.
+  const nounNamesAVariant = /^variants?$/i.test(targetHint.baseNode ?? "")
+  if (nounNamesAVariant) {
+    const variantResolution = resolveVariantReference(context)
+    if (variantResolution !== undefined) return variantResolution
   }
 
   // The deterministic pass missed or found several matches: let the semantic

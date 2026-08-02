@@ -10,6 +10,10 @@
 import { describe, expect, it } from "vitest"
 import type { BoardKey } from "@seldon/core/workspace/types"
 
+import { isComponentBoard } from "@seldon/core/workspace/model/components"
+import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+
 import { resolveContext } from "../local/editor-context"
 import { resolveTargetWithHint } from "../local/resolvers/resolve-target-with-hint"
 import type { TurnContext } from "../local/turn-context"
@@ -102,6 +106,36 @@ describe.skipIf(!process.env.SELDON_AI_LIVE)(
         for (const nodeId of resolution.nodeIds) {
           expect(carTextIds).toContain(nodeId)
         }
+      },
+      120_000,
+    )
+
+    it(
+      'resolves "the second variant" to the label Variant 02, not the second position',
+      async () => {
+        let { workspace } = seedTextListWorkspace()
+        workspace = applyActions(workspace, [
+          { type: "add_variant", payload: { boardKey: TEXT_LIST_BOARD } },
+          { type: "add_variant", payload: { boardKey: TEXT_LIST_BOARD } },
+        ] as WorkspaceAction[])
+        const board = workspace.boards[TEXT_LIST_BOARD]
+        if (!board || !isComponentBoard(board)) throw new Error("no board")
+        const context: TurnContext = {
+          state: createTurnState(workspace),
+          resolved: resolveContext({
+            workspace,
+            activeBoardKey: TEXT_LIST_BOARD as BoardKey,
+            scope: "board",
+          }),
+          message: "make the second variant yellow",
+          model: MODEL,
+          calls: [],
+          steps: [],
+        }
+        const resolution = await resolveTargetWithHint(context)
+        expect(resolution.kind).toBe("resolved")
+        if (resolution.kind !== "resolved") return
+        expect(workspace.nodes[resolution.nodeId]?.label).toBe("Variant 02")
       },
       120_000,
     )

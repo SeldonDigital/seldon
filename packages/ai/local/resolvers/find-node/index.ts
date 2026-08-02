@@ -16,7 +16,11 @@ import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
 import type { MessageReason } from "../resolve-target"
 import { rankBySimilarity } from "./embed-rank"
-import { pickDirectionalEndpoint, spatialLabels } from "./geometry-labels"
+import {
+  ordinalNumberInQuery,
+  pickDirectionalEndpoint,
+  spatialLabels,
+} from "./geometry-labels"
 
 /**
  * The embedding-based find_node: matches a natural-language phrase against
@@ -95,6 +99,33 @@ function collectCandidates(
     )
     return candidate ? [candidate] : []
   })
+}
+
+/**
+ * Deterministic tie-break by the numbers already in the nodes' own labels:
+ * "the second variant" names the node LABELED "Variant 02", because the
+ * auto-name numbering is what the user reads -- NOT the positionally-second
+ * variant, which can be a catalog preset sitting above the numbered ones.
+ * Runs before the positional tiebreaks for exactly that reason: where label
+ * numbers and positions disagree, the label wins. Embeddings cannot make
+ * this mapping (the WORD "second" to the DIGITS "02" is arithmetic), so it
+ * is code. Matches labels only, never content -- string values are full of
+ * incidental digits.
+ */
+export function labelNumberTieBreak(
+  workspace: Workspace,
+  query: string,
+  tiedNodeIds: readonly string[],
+): string | undefined {
+  const namedNumber = ordinalNumberInQuery(query)
+  if (namedNumber === undefined) return undefined
+  const numberedLabelPattern = new RegExp(`\\b0*${namedNumber}\\b`)
+  const labeledWithThatNumber = tiedNodeIds.filter((nodeId) => {
+    const nodeLabel = workspace.nodes[nodeId]?.label ?? ""
+    return numberedLabelPattern.test(nodeLabel)
+  })
+  const exactlyOneCarriesTheNumber = labeledWithThatNumber.length === 1
+  return exactlyOneCarriesTheNumber ? labeledWithThatNumber[0] : undefined
 }
 
 /**
@@ -244,6 +275,26 @@ export async function findNodeSemantic(
   const tiedCluster = rankedCandidates.filter(
     (rankedEntry) => bestMatch.score - rankedEntry.score < ESCALATION_MARGIN,
   )
+
+  // A number in the query first tries the nodes' own label numbers ("the
+  // second variant" -> "Variant 02") -- the numbering the user reads beats
+  // the positional reading when both exist, so this precedes the spatial
+  // tiebreaks. The message is the fallback source of the number, same as
+  // for direction words below.
+  for (const numberSource of [query, context.message]) {
+    const labeledWinnerId = labelNumberTieBreak(
+      context.state.workspace,
+      numberSource,
+      tiedCluster.map((rankedEntry) => rankedEntry.id),
+    )
+    if (labeledWinnerId !== undefined) {
+      recordStep(context, "find_node_label_number", {
+        ok: true,
+        output: `Near-tie broken by label number: "${numberSource}" names the number in ${labeledWinnerId}'s label (deterministic, no model call).`,
+      })
+      return { kind: "resolved", nodeId: labeledWinnerId }
+    }
+  }
 
   // Unless the query names a position: elements tied on similarity but
   // differing spatially ("the last button" over three buttons) resolve by

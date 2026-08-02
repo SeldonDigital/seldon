@@ -77,6 +77,21 @@ function siblingPositions(
     !activeBoard ||
     (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard))
   if (boardHasNoVariantTrees) return positionsByNodeId
+
+  // The variant roots are ordered siblings too -- of the board, not of any
+  // ref the walk below visits, so without this "the last variant" could
+  // never resolve: no root ever carried a position. Their pseudo-parent is
+  // the board key, which no node id collides with, and their order is the
+  // variants array -- the top-to-bottom order the sidebar shows.
+  activeBoard.variants.forEach((variantRef, variantIndex) => {
+    positionsByNodeId.set(variantRef.id, {
+      parentId: String(boardKey),
+      index: variantIndex,
+      count: activeBoard.variants.length,
+      references: ["top", "bottom"] as const,
+    })
+  })
+
   walkBoardTreeRefs(activeBoard.variants, (ref) => {
     const childRefs = ref.children ?? []
     const refIsALeaf = childRefs.length === 0
@@ -92,6 +107,23 @@ function siblingPositions(
     })
   })
   return positionsByNodeId
+}
+
+/**
+ * The number an ordinal word or digit in the query names, when exactly one
+ * appears: "the second variant" -> 2, "variant 3" -> 3. Two numbers name a
+ * range or a compound the caller cannot arbitrate deterministically.
+ */
+export function ordinalNumberInQuery(query: string): number | undefined {
+  const namedNumbers: number[] = []
+  ORDINALS.forEach((ordinalWord, ordinalIndex) => {
+    if (new RegExp(`\\b${ordinalWord}\\b`, "i").test(query))
+      namedNumbers.push(ordinalIndex + 1)
+  })
+  const digitMatches = query.match(/\b\d{1,2}\b/g) ?? []
+  for (const digits of digitMatches) namedNumbers.push(Number(digits))
+  const exactlyOneNumberNamed = namedNumbers.length === 1
+  return exactlyOneNumberNamed ? namedNumbers[0] : undefined
 }
 
 /**

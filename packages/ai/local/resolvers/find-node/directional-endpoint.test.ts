@@ -84,17 +84,32 @@ describe("pickDirectionalEndpoint", () => {
 
   it("ignores only-children riding along in the cluster", () => {
     const { workspace, textNodeIds, boardKey } = seededTextCluster()
-    // The board root variants themselves have no labelable siblings from the
-    // walk's perspective; an unpositioned node in the cluster must not veto
-    // the row pick. Use a node id with no sibling entry at all: the board's
-    // own variant root.
-    const board = workspace.boards[boardKey]
-    if (!board || !isComponentBoard(board)) throw new Error("no list board")
-    const variantRootId = board.variants[board.variants.length - 1]!.id
+    // An unpositioned node in the cluster must not veto the row pick. The
+    // TEXT board's default root is one: it exists in the workspace (the
+    // seed's inserts created that board) but sits outside the active list
+    // board's walk, so it has no position entry here at all. (Variant roots
+    // of the ACTIVE board no longer qualify -- they are positioned among
+    // the board's variants now, which is the feature.)
+    const offBoardTextId = "component-text-default"
+    expect(workspace.nodes[offBoardTextId]).toBeDefined()
     const picked = pickDirectionalEndpoint(workspace, boardKey, "last text", [
       ...textNodeIds,
-      variantRootId,
+      offBoardTextId,
     ])
     expect(picked).toBe(textNodeIds[textNodeIds.length - 1])
+  })
+
+  it('resolves "the last variant" across the board\'s variant roots', () => {
+    const { workspace, boardKey } = seededTextCluster()
+    const board = workspace.boards[boardKey]
+    if (!board || !isComponentBoard(board)) throw new Error("no list board")
+    const variantRootIds = board.variants.map((variantRef) => variantRef.id)
+    const picked = pickDirectionalEndpoint(
+      workspace,
+      boardKey,
+      "the last variant",
+      variantRootIds,
+    )
+    expect(picked).toBe(variantRootIds[variantRootIds.length - 1])
   })
 })
