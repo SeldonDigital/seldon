@@ -15,6 +15,7 @@ import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { countNamedBeforeNoun } from "../resolvers/extract-target"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
+import { resolveVariantReference } from "../resolvers/resolve-target-with-hint"
 import {
   type FamilyOutcome,
   type TurnContext,
@@ -139,15 +140,25 @@ export async function executeAddComponent(
     (context.resolved.scope === "instance" ||
       context.resolved.scope === "variant")
   if (messageNamedADestination) {
-    const destinationResolution = resolveNodeTarget(
-      workspace,
-      context.resolved.resolvedKey,
-      context.resolved.selectedNodeId,
-      context.resolved.selectedBoardId,
-      { nodeId: destinationPhrase },
-      destinationPhrase,
-      context.resolved.scope,
-    )
+    // A destination naming a variant resolves off the board's variants
+    // array ("the new variant" -> the newest, "the second variant" -> the
+    // label number), never by label substring -- no label contains the
+    // string "new variant", so the generic search below can only miss.
+    const destinationNamesAVariant = /\bvariants?\b/i.test(destinationPhrase)
+    const variantDestination = destinationNamesAVariant
+      ? resolveVariantReference(context, destinationPhrase)
+      : undefined
+    const destinationResolution =
+      variantDestination ??
+      resolveNodeTarget(
+        workspace,
+        context.resolved.resolvedKey,
+        context.resolved.selectedNodeId,
+        context.resolved.selectedBoardId,
+        { nodeId: destinationPhrase },
+        destinationPhrase,
+        context.resolved.scope,
+      )
     const destinationNeedsClarification = isClarification(destinationResolution)
     recordStep(context, "resolve_destination", {
       ok: !destinationNeedsClarification,

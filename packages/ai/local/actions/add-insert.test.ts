@@ -127,6 +127,40 @@ describe("executeAddComponent", () => {
     expect(context.state.actions).toHaveLength(0)
   })
 
+  it('resolves "the new variant" to the newest variant and inserts the count there', async () => {
+    // The live failure: no label contains the string "new variant", so the
+    // generic substring search could only miss. The newest variant is the
+    // variants array's end -- derivable, no search.
+    modelAnswers("chip", "the new variant")
+    const { workspace } = seedChipRowWorkspace()
+    const chipRowBoard = workspace.boards[CHIP_ROW_BOARD]
+    const seedDidNotProduceComponentBoard =
+      !chipRowBoard || !isComponentBoard(chipRowBoard)
+    if (seedDidNotProduceComponentBoard)
+      throw new Error("seed produced no chip row board")
+    const newestVariantId =
+      chipRowBoard.variants[chipRowBoard.variants.length - 1]!.id
+    const context: TurnContext = {
+      state: createTurnState(workspace),
+      resolved: resolveContext({
+        workspace,
+        activeBoardKey: CHIP_ROW_BOARD as BoardKey,
+        scope: "board",
+      }),
+      message: "add four chips to the new variant",
+      calls: [],
+      steps: [],
+    }
+    const outcome = await executeAddComponent(context)
+
+    expect(outcome.kind).toBe("applied")
+    expect(context.state.actions).toHaveLength(4)
+    const insertParents = context.state.actions.map(
+      (action) => (action.payload as { parentId?: string }).parentId,
+    )
+    expect(new Set(insertParents)).toEqual(new Set([newestVariantId]))
+  })
+
   it("keeps a destination the user actually spoke", async () => {
     modelAnswers("chip", "the list")
     const context = contextWithSelection("add a chip to the list")

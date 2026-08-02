@@ -118,8 +118,9 @@ export function resolveCreatedMention(
  * active or it has fewer than two variants, letting the general path handle
  * the degenerate shapes.
  */
-function resolveVariantReference(
+export function resolveVariantReference(
   context: TurnContext,
+  referencePhrase: string,
 ): TargetResolution | undefined {
   const boardKey = context.resolved.resolvedKey
   if (boardKey === undefined) return undefined
@@ -135,7 +136,7 @@ function resolveVariantReference(
   )
   const numberedWinnerId = labelNumberTieBreak(
     context.state.workspace,
-    context.message,
+    referencePhrase,
     variantRootIds,
   )
   if (numberedWinnerId !== undefined) {
@@ -145,10 +146,25 @@ function resolveVariantReference(
     })
     return { kind: "resolved", nodeId: numberedWinnerId }
   }
+  // "The new variant" names the most recently added one -- variants append,
+  // so newest is the array's end. Deterministic, and covers the natural
+  // follow-up phrasing right after creating a variant in an earlier turn
+  // (created-this-turn references resolve before any of this runs).
+  const phraseNamesTheNewestVariant = /\b(new|newest|latest)\b/i.test(
+    referencePhrase,
+  )
+  if (phraseNamesTheNewestVariant) {
+    const newestVariantId = variantRootIds[variantRootIds.length - 1]!
+    recordStep(context, "resolve_target", {
+      ok: true,
+      output: `Resolved "the new variant" to ${newestVariantId}, the most recently added variant (deterministic, no model call).`,
+    })
+    return { kind: "resolved", nodeId: newestVariantId }
+  }
   const directionalWinnerId = pickDirectionalEndpoint(
     context.state.workspace,
     boardKey,
-    context.message,
+    referencePhrase,
     variantRootIds,
   )
   if (directionalWinnerId !== undefined) {
@@ -306,7 +322,7 @@ export async function resolveTargetWithHint(
   // the deterministic tiebreaks.
   const nounNamesAVariant = /^variants?$/i.test(targetHint.baseNode ?? "")
   if (nounNamesAVariant) {
-    const variantResolution = resolveVariantReference(context)
+    const variantResolution = resolveVariantReference(context, context.message)
     if (variantResolution !== undefined) return variantResolution
   }
 
