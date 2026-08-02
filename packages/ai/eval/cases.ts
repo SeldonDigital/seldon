@@ -213,6 +213,26 @@ export const EVAL_CASES: EvalCase[] = [
     expected: singleStep({ intent: "add_component" }),
   },
   {
+    // The destination noun ("variant") used to steal this to add_variant,
+    // which then CREATED a variant instead of inserting the chip.
+    id: "add-into-variant",
+    message: "add a chip to the new variant",
+    scope: "board",
+    seed: "chipRow",
+    expected: singleStep({ intent: "add_component" }),
+  },
+  {
+    // A counted add stays one step; the count is read in code by the handler.
+    id: "add-counted",
+    message: "add four chips",
+    scope: "board",
+    seed: "chipRow",
+    expected: {
+      decomposedStepCount: 1,
+      steps: [{ intent: "add_component" }],
+    },
+  },
+  {
     id: "insert-into",
     message: "put an icon inside the button",
     scope: "board",

@@ -112,7 +112,7 @@ export const V1_INTENTS: readonly V1Intent[] = [
     intent: "add_component",
     family: "add",
     description:
-      "Add a catalog component to the workspace, or insert one under a parent node. Code routes between board, variant, and child insertion.",
+      'Add a catalog component to the workspace, or insert one under a parent node -- wherever it goes, including into a variant ("add a chip", "add a chip to the new variant", "put an icon inside the button").',
     actionTypes: [
       "add_component",
       "add_component_and_insert_default_instance",
@@ -122,7 +122,13 @@ export const V1_INTENTS: readonly V1Intent[] = [
   {
     intent: "add_variant",
     family: "add",
-    description: "Add a new variant to a component's board.",
+    // Third sibling-steal fixed by description contrast (after reset/set and
+    // the theme pair in 34876982): "add a chip to the new variant" classified
+    // here off the destination noun and CREATED a variant instead of
+    // inserting the chip. If a fourth appears, stop tuning descriptions and
+    // split classification into family-then-member picks.
+    description:
+      "Add a new, empty variant to a component's board. NOT for inserting an element into a variant -- adding something INTO a variant is add_component.",
     actionTypes: ["add_variant"],
   },
   {

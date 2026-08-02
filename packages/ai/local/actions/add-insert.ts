@@ -13,6 +13,7 @@ import { resolveCatalogId } from "../../shared/catalog-ids"
 import { withCreatedIdentity } from "../../shared/created-nodes"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
+import { countNamedBeforeNoun } from "../resolvers/extract-target"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
 import {
   type FamilyOutcome,
@@ -33,6 +34,39 @@ function allCatalogIds(): string[] {
     ...catalog.modules,
     ...catalog.screens,
   ].map((schema) => schema.id)
+}
+
+/** Hard cap on inserts per request -- a safety valve, like decompose's MAX_STEPS. */
+const MAX_INSERTS_PER_TURN = 10
+
+/** Articles/pointers stripped before checking a destination against the message. */
+const DESTINATION_FILLER_WORDS =
+  /\b(the|a|an|this|that|these|those|my|new|current)\b/g
+
+/**
+ * Whether the extracted destination's content words all literally appear in
+ * the message. The model invents destinations for messages that name none --
+ * "Add four chips" answered destination "container", which then failed
+ * resolution and killed the turn. A destination the user never spoke can
+ * only be an invention, so it is checked against the message and dropped;
+ * an all-filler phrase ("this") names nothing to search for either.
+ */
+function destinationWasSpoken(
+  message: string,
+  destinationPhrase: string,
+): boolean {
+  const contentWords = destinationPhrase
+    .toLowerCase()
+    .replace(DESTINATION_FILLER_WORDS, " ")
+    .split(/\s+/)
+    .filter((word) => word !== "")
+  if (contentWords.length === 0) return false
+  return contentWords.every((word) =>
+    new RegExp(
+      `\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
+      "i",
+    ).test(message),
+  )
 }
 
 /**
@@ -63,9 +97,23 @@ async function extractAddRequest(
   })
   const destinationPhrase = addRequestAnswer.destination.trim()
   const messageNamedNoDestination = destinationPhrase === ""
+  if (messageNamedNoDestination) {
+    return { catalogId: addRequestAnswer.component, destination: null }
+  }
+  const destinationIsInvented = !destinationWasSpoken(
+    context.message,
+    destinationPhrase,
+  )
+  if (destinationIsInvented) {
+    recordStep(context, "resolve_destination", {
+      ok: true,
+      output: `The model answered destination "${destinationPhrase}", which the message never says -- discarded as invented; treating the message as naming no destination (deterministic).`,
+    })
+    return { catalogId: addRequestAnswer.component, destination: null }
+  }
   return {
     catalogId: addRequestAnswer.component,
-    destination: messageNamedNoDestination ? null : destinationPhrase,
+    destination: destinationPhrase,
   }
 }
 
@@ -118,24 +166,65 @@ export async function executeAddComponent(
     parentId = context.resolved.selectedNodeId
   }
 
-  const workspaceBeforeCommit = workspace
-  const componentBoardAlreadyExists = Boolean(
-    workspace.boards[addRequest.catalogId],
+  // "add four chips" is one instruction with a count, read off the message
+  // in code -- never one decompose step per chip, and never a model number.
+  const requestedCount = countNamedBeforeNoun(
+    context.message,
+    addRequest.catalogId,
   )
+  const insertCount = requestedCount ?? 1
+  const countExceedsTheSafetyValve = insertCount > MAX_INSERTS_PER_TURN
+  if (countExceedsTheSafetyValve) {
+    return {
+      kind: "message",
+      text: `That asks for ${insertCount} ${addRequest.catalogId}s at once; I can add up to ${MAX_INSERTS_PER_TURN} per request. Ask again with a smaller number.`,
+    }
+  }
+
+  const workspaceBeforeCommit = workspace
   try {
     const insertUnderAParent = parentId !== undefined
     if (insertUnderAParent) {
-      const insertAction: WorkspaceAction = componentBoardAlreadyExists
-        ? ({
-            type: "insert_default_instance",
-            payload: { boardKey: addRequest.catalogId, parentId },
-          } as WorkspaceAction)
-        : ({
-            type: "add_component_and_insert_default_instance",
-            payload: { boardKey: addRequest.catalogId, target: { parentId } },
-          } as WorkspaceAction)
-      commit(context.state, insertAction)
+      for (let insertIndex = 0; insertIndex < insertCount; insertIndex++) {
+        // Re-derived each pass: the first insert may create the board.
+        const componentBoardAlreadyExists = Boolean(
+          context.state.workspace.boards[addRequest.catalogId],
+        )
+        const insertAction: WorkspaceAction = componentBoardAlreadyExists
+          ? ({
+              type: "insert_default_instance",
+              payload: { boardKey: addRequest.catalogId, parentId },
+            } as WorkspaceAction)
+          : ({
+              type: "add_component_and_insert_default_instance",
+              payload: { boardKey: addRequest.catalogId, target: { parentId } },
+            } as WorkspaceAction)
+        try {
+          commit(context.state, insertAction)
+        } catch (caught) {
+          const someInsertsLanded = insertIndex > 0
+          if (someInsertsLanded) {
+            // The landed inserts are already committed; report the honest
+            // partial outcome rather than pretending all-or-nothing.
+            return {
+              kind: "message",
+              text: `Added ${insertIndex} of ${insertCount} ${addRequest.catalogId}s inside ${parentId}, then failed: ${commitFailureReason(caught)}`,
+            }
+          }
+          throw caught
+        }
+      }
     } else {
+      const componentBoardAlreadyExists = Boolean(
+        workspace.boards[addRequest.catalogId],
+      )
+      const severalNeedAPlaceToGo = insertCount > 1
+      if (severalNeedAPlaceToGo) {
+        return {
+          kind: "message",
+          text: `Adding ${insertCount} ${addRequest.catalogId}s needs a place to put them. Select a container on the canvas, or name one.`,
+        }
+      }
       if (componentBoardAlreadyExists) {
         return {
           kind: "message",
@@ -156,7 +245,9 @@ export async function executeAddComponent(
   recordStep(context, "commit", { ok: true })
 
   const summaryReply = parentId
-    ? `Added a ${addRequest.catalogId} inside ${parentId}.`
+    ? insertCount > 1
+      ? `Added ${insertCount} ${addRequest.catalogId}s inside ${parentId}.`
+      : `Added a ${addRequest.catalogId} inside ${parentId}.`
     : `Added the ${addRequest.catalogId} component as its own board.`
   return {
     kind: "applied",

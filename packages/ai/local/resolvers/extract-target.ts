@@ -69,9 +69,10 @@ const COUNT_WORDS_BY_NAME: Record<string, number> = {
  * ("the two texts about cars" -> 0, deterministically, with the exact shape
  * in its examples) -- and a count is arithmetic over words that are sitting
  * right there, so it is read in code, the same stance geometry-labels takes:
- * the model matches wording, it never counts.
+ * the model matches wording, it never counts. Also consumed by the add flow
+ * ("add four chips" -> 4 inserts).
  */
-function countNamedBeforeNoun(
+export function countNamedBeforeNoun(
   message: string,
   bareNoun: string,
 ): number | undefined {
