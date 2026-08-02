@@ -1,3 +1,4 @@
+import { getInheritedNodeProperties } from "@seldon/core/workspace/compute/compute-node-properties"
 import { getPropertyStatus } from "@seldon/core/workspace/helpers/properties/property-status"
 import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
 import type { Workspace } from "@seldon/core/workspace/types"
@@ -84,6 +85,47 @@ export function nodeStringsSummary(
   const strings = collectNodeStrings(workspace, nodeId)
   if (strings.length === 0) return ""
   return strings.map(({ path, text }) => `${path}="${text}"`).join(", ")
+}
+
+/**
+ * The content string someone typed onto this node, or undefined. Authored
+ * content is what makes a node "a text" in the user's vocabulary -- a list
+ * item carrying a typed sentence reads as "a text", its untouched siblings
+ * do not. Override status alone cannot say who wrote it: the catalog itself
+ * overrides "List item 1" onto the instances it builds. What separates a
+ * typed sentence from boilerplate is that it DIFFERS from what the node
+ * would show without its own override -- boilerplate repeats the inherited
+ * value, authorship changes it.
+ */
+export function nodeAuthoredContent(
+  workspace: Workspace,
+  nodeId: string,
+): string | undefined {
+  try {
+    const status = getPropertyStatus(nodeId, workspace)
+    const contentIsOverridden = status.content === "override"
+    if (!contentIsOverridden) return undefined
+    const effective = getEffectiveProperties(nodeId, workspace) as Record<
+      string,
+      unknown
+    >
+    const contentStrings: NodeString[] = []
+    walkValue(effective.content, "content", contentStrings)
+    const overriddenContent = contentStrings[0]?.text
+    if (overriddenContent === undefined) return undefined
+
+    const inherited = getInheritedNodeProperties(nodeId, workspace) as Record<
+      string,
+      unknown
+    >
+    const inheritedStrings: NodeString[] = []
+    walkValue(inherited.content, "content", inheritedStrings)
+    const overrideRepeatsTheInheritedText =
+      inheritedStrings[0]?.text === overriddenContent
+    return overrideRepeatsTheInheritedText ? undefined : overriddenContent
+  } catch {
+    return undefined
+  }
 }
 
 /**

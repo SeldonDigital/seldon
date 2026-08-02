@@ -89,12 +89,22 @@ export async function narrowClassTarget(
     return { kind: "resolved-many", nodeIds: poolNodeIds }
   }
 
+  const narrowedHow =
+    direction !== undefined
+      ? `Narrowed ${poolNodeIds.length} matches to the ${direction === "ascending" ? "first" : "last"} ${count} by tree order (deterministic, no model call).`
+      : `Narrowed ${poolNodeIds.length} matches to the top ${count} by embedding similarity to "${query}" (no model call).`
+  // The winners, by name: "did it pick the right ones?" must be answerable
+  // from the transcript -- a wrong-node pick with the right count read as
+  // success until someone diffed the canvas by eye.
+  const pickedLines = narrowedNodeIds
+    .map((nodeId) => {
+      const picked = describeCandidate(workspace, nodeId, undefined)
+      return `- ${picked ? picked.text.slice(0, 120) : nodeId} [${nodeId}]`
+    })
+    .join("\n")
   recordStep(context, "narrow_target", {
     ok: true,
-    output:
-      direction !== undefined
-        ? `Narrowed ${poolNodeIds.length} matches to the ${direction === "ascending" ? "first" : "last"} ${count} by tree order (deterministic, no model call).`
-        : `Narrowed ${poolNodeIds.length} matches to the top ${count} by embedding similarity to "${query}" (no model call).`,
+    output: `${narrowedHow}\nPicked:\n${pickedLines}`,
   })
 
   return { kind: "resolved-many", nodeIds: narrowedNodeIds }

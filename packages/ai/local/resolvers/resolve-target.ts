@@ -9,7 +9,10 @@ import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 import type { MessageReason } from "../../types"
 
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
-import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
+import {
+  matchNodeStrings,
+  nodeAuthoredContent,
+} from "../../prompt/context-sections/node-strings"
 import type { SelectionScope } from "../../types"
 
 /** How the model names a node to edit: the current selection or an explicit id. */
@@ -214,6 +217,31 @@ export function resolveClassTarget(
   for (const variant of needleVariants(phrase)) {
     for (const match of searchWorkspace(workspace, variant, activeKey)) {
       if (match.inActiveBoard) matchedIds.add(match.id)
+    }
+  }
+  // "Text" is a user word before it is a catalog kind: a list item whose
+  // sentence the user typed IS "a text" to the user, but its kind is
+  // listItem, so kind matching alone bolds the chip labels instead of the
+  // sentences (observed live). Authored content is the discriminator, and
+  // the catalog's shipped template column never counts: the default
+  // variant's numbered "List item N" overrides are authored by the catalog,
+  // not by anyone the user means.
+  const phraseNamesTexts = needleVariants(phrase).includes("text")
+  if (phraseNamesTexts) {
+    const activeBoard = workspace.boards[activeKey]
+    const boardHasVariants =
+      activeBoard &&
+      (isComponentBoard(activeBoard) || isAuthoredBoard(activeBoard))
+    if (boardHasVariants) {
+      for (const variantRef of activeBoard.variants) {
+        const variantRoot = workspace.nodes[variantRef.id]
+        const variantIsTheCatalogTemplate = variantRoot?.type === "default"
+        if (variantIsTheCatalogTemplate) continue
+        walkBoardTreeRefs([variantRef], (ref) => {
+          const authoredContent = nodeAuthoredContent(workspace, ref.id)
+          if (authoredContent !== undefined) matchedIds.add(ref.id)
+        })
+      }
     }
   }
   if (matchedIds.size === 0) {

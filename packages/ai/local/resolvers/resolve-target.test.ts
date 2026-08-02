@@ -4,7 +4,7 @@ import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 
-import { resolveNodeTarget } from "./resolve-target"
+import { resolveClassTarget, resolveNodeTarget } from "./resolve-target"
 
 const BUTTON_DEFAULT_NODE_ID = "component-button-default"
 
@@ -82,5 +82,50 @@ describe("resolveNodeTarget", () => {
     if (resolution.kind === "message") {
       expect(resolution.text).toContain("No node matches")
     }
+  })
+})
+
+describe("resolveClassTarget: texts include authored content", () => {
+  it("counts a typed sentence on a list item as a text, but never catalog boilerplate", async () => {
+    const { seedChipRowWorkspace, CHIP_ROW_BOARD } = await import("../../eval/seed")
+    const { applyActions } = await import(
+      "@seldon/core/workspace/reducers/apply-actions"
+    )
+    const { isComponentBoard } = await import(
+      "@seldon/core/workspace/model/components"
+    )
+    let { workspace } = seedChipRowWorkspace()
+    const board = workspace.boards[CHIP_ROW_BOARD]
+    if (!board || !isComponentBoard(board)) throw new Error("no board")
+    // The ordered variant (index 1) is catalog-made but NOT the template
+    // column; typing a sentence onto one of its items is authorship.
+    const orderedItemId = board.variants[1]!.children![0]!.id
+    workspace = applyActions(workspace, [
+      {
+        type: "set_node_properties",
+        payload: {
+          nodeId: orderedItemId,
+          properties: {
+            content: { type: "exact", value: "A sentence someone typed" },
+          },
+        },
+      } as never,
+    ])
+
+    const resolution = resolveClassTarget(
+      workspace,
+      CHIP_ROW_BOARD as never,
+      "texts",
+    )
+    expect(resolution.kind).toBe("resolved-many")
+    if (resolution.kind !== "resolved-many") return
+    // The typed sentence counts...
+    expect(resolution.nodeIds).toContain(orderedItemId)
+    // ...its untouched sibling (boilerplate repeating the inherited text)
+    // does not, and nothing from the catalog's template column does.
+    const otherOrderedItemId = board.variants[1]!.children![1]!.id
+    expect(resolution.nodeIds).not.toContain(otherOrderedItemId)
+    const templateItemId = board.variants[0]!.children![0]!.id
+    expect(resolution.nodeIds).not.toContain(templateItemId)
   })
 })
