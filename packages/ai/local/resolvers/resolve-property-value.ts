@@ -10,6 +10,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
 
 import { themeRefTag } from "../../prompt/property-taxonomy"
 import { buildResolvePropertyValueStage } from "../../prompt/stages/resolve-property-value"
+import { buildResolveUnitWordStage } from "../../prompt/stages/resolve-unit-word"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
 import { isSwatchColorProperty, resolveColorValue } from "./resolve-color-value"
@@ -31,6 +32,12 @@ interface ValuePick {
   value: string | number
 }
 
+/** The unit-word stage's answer: a canonical suffix, or a refusal. */
+interface UnitWordPick {
+  pick: "unit" | "unsupported"
+  value?: string
+}
+
 /** The workspace's first computed theme, or undefined when computing throws. */
 function workspaceTheme(workspace: Workspace): Theme | undefined {
   try {
@@ -40,53 +47,142 @@ function workspaceTheme(workspace: Workspace): Theme | undefined {
   }
 }
 
-/** Prose unit words to the Unit suffixes core's exact validators store. */
-const UNIT_BY_WORD: Record<string, string> = {
-  px: "px",
-  pixel: "px",
-  pixels: "px",
-  rem: "rem",
-  "%": "%",
-  percent: "%",
-  deg: "deg",
-  degree: "deg",
-  degrees: "deg",
-}
+/**
+ * What the deterministic pass made of the model's exact answer. `unknownUnit`
+ * carries the amount forward so the repair call only has to name the unit and
+ * never has to re-read the number.
+ */
+export type ExactLengthParse =
+  | { kind: "parsed"; measure: { value: number; unit: string } }
+  | { kind: "unknownUnit"; amount: number; spokenUnit: string }
+  | { kind: "notALength" }
 
 /**
- * Parses a prose length ("100 pixels", "2rem", "50%", "100") into the
- * `{value, unit}` object a unit-bearing exact validator accepts. Core
- * rejects the prose form outright ("width doesn't accept an exact value of
- * 100 pixels"), and asking the model for the structured form is asking it
- * to author the committed value -- the same mistake the color pipeline
- * removed. A missing unit falls to the schema's default; an unparseable or
- * disallowed answer returns undefined and passes through untouched, so the
- * reducer's validation stays the final honest gate.
+ * Reads a prose length ("100px", "2rem", "50%", "100") into the `{value, unit}`
+ * object a unit-bearing exact validator accepts, using only core's own
+ * `units.allowed` as the vocabulary. This package deliberately holds no table
+ * of unit words: a synonym it cannot derive is escalated as `unknownUnit`
+ * rather than guessed, so adding a unit to core cannot leave a stale copy here.
  */
 export function parseExactLength(
   rawValue: string | number,
   allowedUnits: readonly string[],
   defaultUnit: string | undefined,
-): { value: number; unit: string } | undefined {
+): ExactLengthParse {
+  const unitWhenNoneIsSpoken = defaultUnit ?? allowedUnits[0]
+
   if (typeof rawValue === "number") {
-    const unitForBareNumber = defaultUnit ?? allowedUnits[0]
-    if (unitForBareNumber === undefined) return undefined
-    return { value: rawValue, unit: unitForBareNumber }
+    if (unitWhenNoneIsSpoken === undefined) return { kind: "notALength" }
+    return {
+      kind: "parsed",
+      measure: { value: rawValue, unit: unitWhenNoneIsSpoken },
+    }
   }
-  const lengthMatch = rawValue
-    .trim()
-    .match(/^(-?\d+(?:\.\d+)?)\s*([a-z%]+)?$/i)
-  if (lengthMatch === null) return undefined
-  const numericValue = Number(lengthMatch[1])
+
+  const lengthMatch = rawValue.trim().match(/^(-?\d+(?:\.\d+)?)\s*([a-z%]+)?$/i)
+  if (lengthMatch === null) return { kind: "notALength" }
+  const amount = Number(lengthMatch[1])
   const spokenUnit = lengthMatch[2]?.toLowerCase()
-  const resolvedUnit =
-    spokenUnit !== undefined
-      ? UNIT_BY_WORD[spokenUnit]
-      : (defaultUnit ?? allowedUnits[0])
+
+  const noUnitWasSpoken = spokenUnit === undefined
+  if (noUnitWasSpoken) {
+    if (unitWhenNoneIsSpoken === undefined) return { kind: "notALength" }
+    return {
+      kind: "parsed",
+      measure: { value: amount, unit: unitWhenNoneIsSpoken },
+    }
+  }
+
+  const unitIsAlreadyCanonical = allowedUnits.includes(spokenUnit)
+  if (unitIsAlreadyCanonical) {
+    return { kind: "parsed", measure: { value: amount, unit: spokenUnit } }
+  }
+
+  // "degrees" -> "deg" is the one synonym a rule can derive, because the
+  // canonical suffix is a prefix of the spoken word. "pixels" -> "px" and
+  // "percent" -> "%" are not derivable by any rule, so they escalate.
+  const suffixedUnit = allowedUnits.find((allowedUnit) =>
+    spokenUnit.startsWith(allowedUnit),
+  )
+  if (suffixedUnit !== undefined) {
+    return { kind: "parsed", measure: { value: amount, unit: suffixedUnit } }
+  }
+
+  return { kind: "unknownUnit", amount, spokenUnit }
+}
+
+/**
+ * Turns the model's exact answer into the `{value, unit}` object core stores,
+ * escalating only as far as it has to. The deterministic parse settles a
+ * canonical or suffixed unit for free; a spoken synonym costs one
+ * enum-constrained call whose choices are core's `units.allowed`; a unit the
+ * property cannot measure in stops the turn with a clarification instead of
+ * being coerced into a plausible-looking wrong value.
+ *
+ * Returned pre-tagged: the repair pass walks INTO untagged objects and would
+ * wrap the value and unit leaves separately.
+ */
+async function resolveExactMeasure(
+  context: TurnContext,
+  inputs: {
+    propertyKey: string
+    rawValue: string | number
+    allowedUnits: string[]
+    defaultUnit: string | undefined
+  },
+): Promise<PropertyValueResolution> {
+  const lengthParse = parseExactLength(
+    inputs.rawValue,
+    inputs.allowedUnits,
+    inputs.defaultUnit,
+  )
+  if (lengthParse.kind === "parsed") {
+    return {
+      kind: "resolved",
+      value: { type: "exact", value: lengthParse.measure },
+    }
+  }
+  // An answer that is not a measurement at all ("auto") passes through
+  // untouched, keeping the reducer's validation as the final honest gate.
+  if (lengthParse.kind === "notALength") {
+    return { kind: "resolved", value: inputs.rawValue }
+  }
+
+  const unitStage = buildResolveUnitWordStage({
+    propertyKey: inputs.propertyKey,
+    spokenUnit: lengthParse.spokenUnit,
+    allowedUnits: inputs.allowedUnits,
+  })
+  const { value: unitPick, metrics } = await callOllamaFormat<UnitWordPick>({
+    model: context.model,
+    host: context.host,
+    prompt: unitStage.prompt,
+    schema: unitStage.schema,
+  })
+  context.calls.push(metrics)
+  recordStep(context, "resolve_unit_word", {
+    ok: true,
+    prompt: unitStage.prompt,
+    output: JSON.stringify(unitPick, null, 2),
+  })
+
+  const namedUnit = unitPick.pick === "unit" ? unitPick.value : undefined
   const unitIsUsable =
-    resolvedUnit !== undefined && allowedUnits.includes(resolvedUnit)
-  if (!unitIsUsable) return undefined
-  return { value: numericValue, unit: resolvedUnit }
+    namedUnit !== undefined && inputs.allowedUnits.includes(namedUnit)
+  if (unitIsUsable) {
+    return {
+      kind: "resolved",
+      value: {
+        type: "exact",
+        value: { value: lengthParse.amount, unit: namedUnit },
+      },
+    }
+  }
+
+  return {
+    kind: "message",
+    text: `"${lengthParse.spokenUnit}" isn't a unit ${inputs.propertyKey} accepts. Use ${inputs.allowedUnits.join(", ")}, then ask again.`,
+  }
 }
 
 /**
@@ -159,22 +255,15 @@ export async function resolvePropertyValue(
       value: { type: themeReferenceTag, value: valuePick.value },
     }
   }
-  // A unit-bearing exact answer arrives as prose ("100 pixels") and the
-  // schema wants {value, unit} -- the parse is arithmetic over words that
-  // are sitting right there, so it happens here, not in the model. Returned
-  // pre-tagged: the repair pass walks INTO untagged objects and would wrap
-  // the value and unit leaves separately.
   const pickIsUnitBearingExact =
     valuePick.pick === "exact" && allowedUnits.length > 0
   if (pickIsUnitBearingExact) {
-    const parsedLength = parseExactLength(
-      valuePick.value,
-      [...allowedUnits],
-      getPropertySchema(schemaKey)?.units?.default,
-    )
-    if (parsedLength !== undefined) {
-      return { kind: "resolved", value: { type: "exact", value: parsedLength } }
-    }
+    return resolveExactMeasure(context, {
+      propertyKey,
+      rawValue: valuePick.value,
+      allowedUnits: [...allowedUnits],
+      defaultUnit: getPropertySchema(schemaKey)?.units?.default,
+    })
   }
   return { kind: "resolved", value: valuePick.value }
 }
