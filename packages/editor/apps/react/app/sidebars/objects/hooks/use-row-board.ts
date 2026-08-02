@@ -14,7 +14,7 @@ import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useState } from "react"
 
-import { getNodeKindIcon } from "@seldon/core/icon-registry"
+import { getBoardRowIcon } from "@seldon/core/icon-registry"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isAuthoredBoard,
@@ -408,24 +408,9 @@ export function useRowBoard(board: BoardType) {
   const icon = createToggleIcon()
   const buttonIconic = createToggleButton()
 
-  // Component icon (second icon): shows component type
-  const getBoardIcon = () => {
-    if (isIconSetBoard(board)) {
-      return getNodeKindIcon("iconSet")
-    }
-
-    if (isThemeBoard(board)) {
-      return getNodeKindIcon("theme")
-    }
-
-    if (isFontCollectionBoard(board)) {
-      return getNodeKindIcon("fontCollection")
-    }
-
-    return getNodeKindIcon("component")
-  }
-
-  const icon2 = createIcon2(getBoardIcon() as IconProps["icon"])
+  // Board icon (second icon): resolved from the board type in the shared
+  // registry. Cast bridges the core IconId to the generated Icon prop union.
+  const icon2 = createIcon2(getBoardRowIcon(board) as IconProps["icon"])
 
   // Trailing "..." actions menu. Shown when the board is active (selected or
   // contains the selected node or resource entry).

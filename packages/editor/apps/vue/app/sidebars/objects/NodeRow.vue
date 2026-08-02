@@ -37,12 +37,13 @@ import {
   VariantId,
   resolveNodeRepeat,
 } from "@seldon/core"
+import { getNodeRowIcon } from "@seldon/core/icon-registry"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
-import { getComponentTypeIcon, getNodeLabel, getNodeTypeColor } from "./hooks/row-node-label"
+import { getNodeLabel, getNodeTypeColor } from "./hooks/row-node-label"
 import { useEditState } from "./hooks/use-edit-state"
 import { useRowNodeActions } from "./hooks/use-row-node-actions"
 import { useRowNodeDisplay } from "./hooks/use-row-node-display"
@@ -123,7 +124,7 @@ const labelText = computed(() =>
     properties: properties.value,
   }),
 )
-const typeIcon = computed(() => getComponentTypeIcon(node.value as EntryNode))
+const typeIcon = computed(() => getNodeRowIcon(node.value as EntryNode, props.workspace))
 const nodeTypeColor = computed(() => getNodeTypeColor(node.value as EntryNode, showNodeTypes.value))
 const isDuplicateLabel = computed(
   () => nodeExists.value && isDuplicateVariantLabel(props.workspace, props.nodeId),

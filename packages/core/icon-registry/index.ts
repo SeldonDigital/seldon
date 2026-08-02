@@ -13,6 +13,7 @@
  * existing red "missing" symbol at the render layer.
  */
 import { getComponentSchema } from "../components/catalog"
+import { ComponentId } from "../components/types"
 import {
   GLOBAL_OPTION_ICONS,
   PROPERTY_ICONS,
@@ -20,9 +21,13 @@ import {
 } from "../properties/schemas/data/property-icons"
 import { getCatalogKeyForPropertyPath } from "../properties/schemas/helpers/property-path"
 import { getThemeTokenSchema } from "../themes/schemas/helpers/get-theme-token-schema"
+import { getNodeCatalogId } from "../workspace/helpers/nodes/get-node-catalog-id"
+import { isSandboxNode } from "../workspace/helpers/nodes/sandbox"
+import { isAuthoredBoard, isPlaygroundBoard } from "../workspace/model/components"
+import { typeCheckingService } from "../workspace/services"
 
-import type { ComponentId } from "../components/types"
 import type { IconId } from "../icon-sets"
+import type { Board, EntryNode, Workspace } from "../workspace/types"
 
 /** Generic fallback when a component schema declares no icon. */
 const COMPONENT_ICON_FALLBACK: IconId = "seldon-component"
@@ -70,29 +75,74 @@ export function getThemeTokenIcon(key: string): string | undefined {
   return getThemeTokenSchema(key)?.icon
 }
 
-/** Node kinds the objects sidebar renders with a distinct icon. */
-export type NodeIconKind =
-  | "iconSet"
-  | "theme"
-  | "fontCollection"
-  | "component"
-  | "defaultVariant"
-  | "variant"
+/**
+ * Semantic icon for a node whose resolved catalog component is a known
+ * primitive or frame type. Keyed by catalog {@link ComponentId}. These win over
+ * the generic node-type icons so a Text always reads as text and a Container as
+ * stacked rows, at every node level.
+ */
+const COMPONENT_TYPE_ICONS: Partial<Record<ComponentId, IconId>> = {
+  [ComponentId.TEXT]: "seldon-text",
+  [ComponentId.BLOCKQUOTE]: "seldon-text",
+  [ComponentId.CITE]: "seldon-text",
+  [ComponentId.LEGEND]: "seldon-text",
+  [ComponentId.ICON]: "seldon-icon",
+  [ComponentId.HR]: "seldon-minus",
+  [ComponentId.IMAGE]: "seldon-image",
+  [ComponentId.INPUT]: "seldon-input",
+  [ComponentId.TEXTAREA]: "seldon-input",
+  [ComponentId.SELECT]: "seldon-input",
+  [ComponentId.TOGGLE_SWITCH]: "seldon-input",
+  [ComponentId.FRAME]: "seldon-frame",
+  [ComponentId.CONTAINER]: "seldon-frameRows",
+}
 
-/** Icon for a board, variant, or resource node by its kind. */
-export function getNodeKindIcon(kind: NodeIconKind): IconId {
+/** Resource entry kinds the objects sidebar lists under a resource board. */
+export type ResourceEntryIconKind = "theme" | "fontCollection" | "iconSet" | "media"
+
+/**
+ * Icon for a board row. Authored, sandbox, and playground boards read as custom
+ * work, so they share the stub glyph. Every other board (component, theme, font
+ * collection, icon set, media) shares the device glyph.
+ */
+export function getBoardRowIcon(board: Board): IconId {
+  if (isAuthoredBoard(board) || isPlaygroundBoard(board)) return "seldon-stub"
+
+  return "seldon-deviceCustom"
+}
+
+/**
+ * Icon for a variant or instance row. A sandbox root reads as custom work. A
+ * recognized component type wins next, then the node type: default variant,
+ * custom variant, or instance.
+ */
+export function getNodeRowIcon(node: EntryNode, workspace: Workspace): IconId {
+  if (isSandboxNode(node)) return "seldon-stub"
+
+  const catalogId = getNodeCatalogId(node, workspace)
+  const typeIcon = catalogId ? COMPONENT_TYPE_ICONS[catalogId as ComponentId] : undefined
+
+  if (typeIcon) return typeIcon
+
+  if (typeCheckingService.isVariant(node)) {
+    return typeCheckingService.isDefaultVariant(node)
+      ? "seldon-component"
+      : "seldon-componentDefault"
+  }
+
+  return "seldon-componentVariant"
+}
+
+/** Icon for a resource entry row by its resource kind. */
+export function getResourceEntryIcon(kind: ResourceEntryIconKind): IconId {
   switch (kind) {
-    case "iconSet":
-      return "seldon-icon"
     case "theme":
       return "seldon-theme"
     case "fontCollection":
       return "seldon-text"
-    case "defaultVariant":
-      return "seldon-componentDefault"
-    case "variant":
-      return "seldon-componentVariant"
-    case "component":
+    case "iconSet":
+      return "seldon-icon"
+    case "media":
     default:
       return "seldon-component"
   }

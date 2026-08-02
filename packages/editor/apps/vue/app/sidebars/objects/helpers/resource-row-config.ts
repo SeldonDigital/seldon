@@ -1,3 +1,4 @@
+import { getResourceEntryIcon } from "@seldon/core/icon-registry"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -39,7 +40,7 @@ export interface ResourceRowConfig {
 const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   theme: {
     kind: "theme",
-    icon: "seldon-theme",
+    icon: getResourceEntryIcon("theme"),
     testId: "objects-sidebar-theme-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace.themes[entryId]
@@ -71,7 +72,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   },
   fontCollection: {
     kind: "fontCollection",
-    icon: "seldon-text",
+    icon: getResourceEntryIcon("fontCollection"),
     testId: "objects-sidebar-font-collection-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace["font-collections"][entryId]
@@ -102,7 +103,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   },
   iconSet: {
     kind: "iconSet",
-    icon: "seldon-icon",
+    icon: getResourceEntryIcon("iconSet"),
     testId: "objects-sidebar-icon-set-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace["icon-sets"][entryId]
@@ -132,7 +133,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   // read-only (no rename) and falls back to the id.
   media: {
     kind: "media",
-    icon: "seldon-component",
+    icon: getResourceEntryIcon("media"),
     testId: "objects-sidebar-media-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace.media[entryId]

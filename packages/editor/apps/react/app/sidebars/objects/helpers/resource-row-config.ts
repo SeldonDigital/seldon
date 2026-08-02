@@ -1,3 +1,4 @@
+import { getResourceEntryIcon } from "@seldon/core/icon-registry"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -10,8 +11,8 @@ import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 
 import type { ResourceEntryKind } from "@app/workspace/hooks/use-selection"
 import type { SelectionKind } from "@app/workspace/selection-target"
-import type { IconProps } from "@seldon/components/primitives/Icon"
 import type { Board as BoardType } from "@seldon/core"
+import type { IconId } from "@seldon/core/icon-sets"
 import type { Action } from "@seldon/core/index"
 import type { Workspace } from "@seldon/core/workspace/types"
 
@@ -30,7 +31,7 @@ type ResolvedEntry = {
 export interface ResourceRowConfig {
   kind: ResourceEntryKind
   selectionKind: SelectionKind
-  icon: IconProps["icon"]
+  icon: IconId
   testId: string
   getEntry: (workspace: Workspace, entryId: string) => ResolvedEntry | undefined
   buildLabelAction?: (entryId: string, label: string) => Action
@@ -51,7 +52,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   theme: {
     kind: "theme",
     selectionKind: "theme",
-    icon: "seldon-theme",
+    icon: getResourceEntryIcon("theme"),
     testId: "objects-sidebar-theme-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace.themes[entryId]
@@ -84,7 +85,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   fontCollection: {
     kind: "fontCollection",
     selectionKind: "fontCollection",
-    icon: "seldon-text",
+    icon: getResourceEntryIcon("fontCollection"),
     testId: "objects-sidebar-font-collection-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace["font-collections"][entryId]
@@ -116,7 +117,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   iconSet: {
     kind: "iconSet",
     selectionKind: "iconSet",
-    icon: "seldon-icon",
+    icon: getResourceEntryIcon("iconSet"),
     testId: "objects-sidebar-icon-set-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace["icon-sets"][entryId]
@@ -147,7 +148,7 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
   media: {
     kind: "media",
     selectionKind: "media",
-    icon: "seldon-component",
+    icon: getResourceEntryIcon("media"),
     testId: "objects-sidebar-media-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace.media[entryId]

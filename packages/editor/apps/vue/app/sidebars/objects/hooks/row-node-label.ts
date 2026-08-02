@@ -57,21 +57,6 @@ export function getNodeLabel(
   return node.label
 }
 
-/** Icon id for the node's entity type shown left of the row label. */
-export function getComponentTypeIcon(node: EntryNode): string {
-  if (typeCheckingService.isVariant(node)) {
-    if (typeCheckingService.isDefaultVariant(node)) {
-      return "seldon-componentDefault"
-    }
-
-    if (typeCheckingService.isUserVariant(node)) {
-      return "seldon-componentVariant"
-    }
-  }
-
-  return "seldon-stub"
-}
-
 /**
  * Debug "Show Node Types" tint for the row icon and label. User variants use the
  * Punch swatch, instances a lighter tint. Boards and default variants keep the
