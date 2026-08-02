@@ -37,6 +37,7 @@ export function buildDecomposeStage(inputs: {
     // see -- the resolver counts against the real board, so the number must
     // survive as spoken.
     '- A counted group is still ONE edit: "make the top two cards blue" stays ONE instruction, never one per card. Keep the count words exactly as spoken.',
+    '- The same holds inside a "<property> of" phrase: "reset the <property> of the two <things>" stays ONE instruction -- never rewrite a count into "first"/"second" members.',
     "- Each instruction must be a complete, self-contained imperative sentence, phrased as a command.",
     // The pronoun rule is deliberately schematic (<part>, <thing>): an earlier
     // version used a concrete phrase ("the title of the new card") and the

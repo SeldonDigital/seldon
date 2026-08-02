@@ -71,8 +71,13 @@ export const V1_INTENTS: readonly V1Intent[] = [
   {
     intent: "reset_node_property",
     family: "properties",
+    // "one node or several" on purpose: set_node_properties says it, and the
+    // sibling staying singular read as disqualifying it for plural messages
+    // -- "reset the color of the two texts" routed to set. Nothing more:
+    // a longer clause anchoring the verb ("the message says reset...")
+    // flipped an unrelated add_component case on qwen3:4b.
     description:
-      "Reset or clear a property override on a node, returning it to its inherited value.",
+      "Reset or clear a property override on one node or several, returning it to its inherited value.",
     actionTypes: ["reset_node_property"],
   },
   {
@@ -159,8 +164,11 @@ export const V1_INTENTS: readonly V1Intent[] = [
   {
     intent: "set_theme_override",
     family: "theme",
+    // The contrast with set_node_theme has to be spelled out: without it,
+    // every "apply the dark theme to X" classified here, editing the theme's
+    // tokens instead of theming the named elements.
     description:
-      "Change a theme token value: a swatch color, font size scale, spacing scale, and so on.",
+      "Edit the theme itself by changing one of its token values: a swatch color, font size scale, spacing scale, and so on. NOT for applying a theme to elements.",
     actionTypes: ["set_theme_override"],
   },
   {
@@ -172,7 +180,8 @@ export const V1_INTENTS: readonly V1Intent[] = [
   {
     intent: "set_node_theme",
     family: "theme",
-    description: "Apply a theme to one node.",
+    description:
+      'Apply an existing theme to one node or several ("apply the dark theme to the title").',
     actionTypes: ["set_node_theme"],
   },
   {
