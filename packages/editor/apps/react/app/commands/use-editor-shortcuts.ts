@@ -54,6 +54,12 @@ export function useEditorShortcuts() {
     toggleShowUnusedFonts,
     toggleShowUnusedIcons,
     toggleDirectSelect,
+    toggleLayoutBadges,
+    toggleSpaceBadges,
+    toggleDimensionBadges,
+    toggleAppearanceBadges,
+    toggleTypographyBadges,
+    toggleEffectsBadges,
   } = useEditorConfig()
   const { toggleRefBadges } = useRefBadges()
   const { toggleIsolation } = useToggleIsolation()
@@ -200,6 +206,14 @@ export function useEditorShortcuts() {
   // Ref connector overlay. Turning it on reads the linked folder, which needs this
   // keypress to count as the gesture.
   useHotkeys("r", () => toggleRefBadges(), { preventDefault: true })
+
+  // Token badge groups, Shift-1 through Shift-6 in View menu order.
+  useHotkeys("shift+1", () => toggleLayoutBadges(), { preventDefault: true })
+  useHotkeys("shift+2", () => toggleSpaceBadges(), { preventDefault: true })
+  useHotkeys("shift+3", () => toggleDimensionBadges(), { preventDefault: true })
+  useHotkeys("shift+4", () => toggleAppearanceBadges(), { preventDefault: true })
+  useHotkeys("shift+5", () => toggleTypographyBadges(), { preventDefault: true })
+  useHotkeys("shift+6", () => toggleEffectsBadges(), { preventDefault: true })
 
   // Show unused properties / fonts / icons in the properties sidebar.
   useHotkeys("p", () => toggleShowUnusedProperties(), { preventDefault: true })

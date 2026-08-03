@@ -3,6 +3,7 @@
 import { MIN_WINDOW_SIZE } from "@app/windows/hooks/use-draggable-window"
 import { getRefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
+import { isInsideMenuSurface } from "@seldon/editor/lib/menus/floating-menu"
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import { getRefCardMetrics } from "../../ref-badges/hooks/use-ref-card"
@@ -20,6 +21,25 @@ interface TokenCardState {
   position: RefCardPosition | null
   toggle: () => void
   close: () => void
+}
+
+/**
+ * The width the next token card opens at, or `null` to hug its control.
+ *
+ * A token card hugs its control until the reader drags it wider to read a compound's
+ * values, then that width carries to the next card, the way the reference card remembers
+ * its dragged size. Only the width is remembered: the height always follows the control,
+ * so a compound still grows the card as it expands. Kept as a module value rather than a
+ * store, since it is read only when a card opens and a live drag re-renders nothing.
+ */
+let tokenCardWidth: number | null = null
+
+export function setTokenCardWidth(width: number): void {
+  tokenCardWidth = width
+}
+
+export function getTokenCardWidth(): number | null {
+  return tokenCardWidth
 }
 
 /**
@@ -120,7 +140,9 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
 
   // Closing on `pointerdown` rather than `click` keeps a press on the canvas from starting
   // a drag under an open card. The badge is excluded so its own click is the toggle, and
-  // the card so reading or scrolling it does not close it.
+  // the card so reading or scrolling it does not close it. A floating menu or list the card
+  // opened portals out of the card, so a press on it is treated as the card's own; otherwise
+  // picking an option would close the card and unmount the option before its press lands.
   useEffect(() => {
     if (!position) return
 
@@ -128,7 +150,9 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
       const target = event.target as Node | null
 
       const pressedOwnParts =
-        badgeRef.current?.contains(target) || cardRef.current?.contains(target)
+        badgeRef.current?.contains(target) ||
+        cardRef.current?.contains(target) ||
+        isInsideMenuSurface(target)
 
       if (target && pressedOwnParts) return
 

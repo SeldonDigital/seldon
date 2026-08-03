@@ -39,6 +39,7 @@ import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { useRenameInput } from "../../hooks/use-rename-input"
 import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
+import { usePropertyCardScope } from "./use-property-card-scope"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
@@ -275,7 +276,13 @@ export function useRowProperty({
   }, [allProperties, property.key, property.isCompound, property.isShorthand])
 
   const hasChildren = children.length > 0
-  const isExpanded = useIsPropertyExpanded(property.key)
+
+  // A token card carries its own disclosure state, so opening a compound in the card
+  // leaves the sidebar's copy of that compound alone. Inspector rows keep the shared
+  // store. Both reads run so the hook order is stable; the scope picks which one wins.
+  const cardScope = usePropertyCardScope()
+  const globalExpanded = useIsPropertyExpanded(property.key)
+  const isExpanded = cardScope ? (cardScope.expanded[property.key] ?? false) : globalExpanded
   const labelText = property.label
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
@@ -400,9 +407,15 @@ export function useRowProperty({
   const supportsUpload = uploadTarget !== null
 
   const handleToggle = () => {
-    if (hasChildren) {
-      toggleProperty(property.key)
+    if (!hasChildren) return
+
+    if (cardScope) {
+      cardScope.toggle(property.key)
+
+      return
     }
+
+    toggleProperty(property.key)
   }
 
   const handleReset = () => {

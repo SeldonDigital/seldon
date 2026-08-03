@@ -6,6 +6,7 @@ import {
   getRefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
+import { isInsideMenuSurface } from "@seldon/editor/lib/menus/floating-menu"
 import { getTokenPixels } from "@seldon/editor/lib/themes/token-pixels"
 import { useCallback, useEffect, useRef, useState } from "react"
 
@@ -120,7 +121,9 @@ export function useRefCard(badge: BadgeBox): RefCardState {
 
   // Closing on `pointerdown` rather than `click` keeps a press on the canvas from
   // starting a drag under an open card. The badge is excluded so its own click is
-  // the toggle, and the card so reading or scrolling it does not close it.
+  // the toggle, and the card so reading or scrolling it does not close it. A floating
+  // menu the card opened portals out of the card, so a press on it is treated as the
+  // card's own; otherwise picking an option would close the card and drop the action.
   useEffect(() => {
     if (!position) return
 
@@ -128,7 +131,9 @@ export function useRefCard(badge: BadgeBox): RefCardState {
       const target = event.target as Node | null
 
       const pressedOwnParts =
-        badgeRef.current?.contains(target) || cardRef.current?.contains(target)
+        badgeRef.current?.contains(target) ||
+        cardRef.current?.contains(target) ||
+        isInsideMenuSurface(target)
 
       if (target && pressedOwnParts) return
 

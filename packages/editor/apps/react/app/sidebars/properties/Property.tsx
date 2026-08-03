@@ -9,11 +9,27 @@ import { IndentationLevel } from "../hooks/use-indentation"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyComboboxOptions } from "./PropertyComboboxOptions"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
+import { usePropertyCardScope } from "./hooks/use-property-card-scope"
 import { useRowProperty } from "./hooks/use-row-property"
 
 import type { RowPropertyProps } from "./hooks/use-row-property"
 import type { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
-import type { ChangeEvent } from "react"
+import type { ChangeEvent, CSSProperties } from "react"
+
+/**
+ * How a property row is chromed. `sidebar` is the full inspector row. `token`
+ * is the canvas token card: it hides the row's name, and its disclosure on a
+ * leaf, so only the value control and its options menu remain. A row that owns a
+ * toggle keeps the disclosure so a compound can still expand inside the card.
+ */
+export type PropertyPresentation = "sidebar" | "token"
+
+interface PropertyProps extends RowPropertyProps {
+  presentation?: PropertyPresentation
+}
+
+/** Kept in the DOM but out of layout, so a hidden name never shifts the value. */
+const HIDDEN_SLOT_STYLE: CSSProperties = { display: "none" }
 
 /**
  * View-model for a property row. Value rows bind the generated `ItemProperty`.
@@ -25,11 +41,21 @@ import type { ChangeEvent } from "react"
  * nodes. The shared row slots pair up by role instead: `propertyLabel` against
  * `propertyToggleLabel`, `propertyDisclosure` against `propertyToggleDisclosure`.
  */
-function PropertyInner(props: RowPropertyProps) {
+function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
   const view = useRowProperty(props)
+  const cardScope = usePropertyCardScope()
   const optionsMenu = useRowActionsMenu(view.resetActions, {
     focusTargetRef: view.focusTargetRef,
   })
+
+  // Token-card chrome. The top row drops its name, since the card names the token. Every
+  // leaf in the card drops its disclosure, so a facet sits flush at the card's left edge
+  // instead of behind the empty toggle the tree reserves. A row that owns a toggle keeps
+  // its disclosure so a compound can still expand.
+  const isToken = presentation === "token"
+  const inCard = cardScope !== null
+  const labelHideProps = isToken ? { style: HIDDEN_SLOT_STYLE } : undefined
+  const hideDisclosure = inCard && !view.hasChildren
 
   const { listItemProps, control } = view
   const switchControl = control.kind === "switch" ? control : null
@@ -60,17 +86,19 @@ function PropertyInner(props: RowPropertyProps) {
 
   const toggleAriaChecked = switchControl?.mixed ? "mixed" : (switchControl?.checked ?? false)
 
-  // Sub-property rows for a compound or shorthand parent. Wrapped in
-  // `IndentationLevel` so each nesting depth adds one indent step and shifts the
-  // whole row, matching the objects-sidebar tree.
+  // Sub-property rows for a compound or shorthand parent.
+  const childList = view.hasChildren
+    ? view.childItems.map((childProps) => (
+        <Property key={childProps.property.key} {...childProps} />
+      ))
+    : null
+
+  // The tree indents each nesting depth to match the objects sidebar; a card keeps its
+  // facets flush at the left edge instead.
+  const indentedChildren = cardScope ? childList : <IndentationLevel>{childList}</IndentationLevel>
+
   const childRows = view.hasChildren ? (
-    <FramerExpandable isExpanded={view.isExpanded}>
-      <IndentationLevel>
-        {view.childItems.map((childProps) => (
-          <Property key={childProps.property.key} {...childProps} />
-        ))}
-      </IndentationLevel>
-    </FramerExpandable>
+    <FramerExpandable isExpanded={view.isExpanded}>{indentedChildren}</FramerExpandable>
   ) : null
 
   // Boolean rows render the dedicated `ItemPropertyToggle` View. The toggle slot
@@ -151,7 +179,7 @@ function PropertyInner(props: RowPropertyProps) {
   const seldonRefs: Record<string, Record<string, unknown>> = {
     propertyDisclosure: { ...listItemProps.buttonIconic },
     propertyDisclosureIcon: { ...listItemProps.icon },
-    propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
+    propertyLabel: mergeStateProps(view.nameLabelProps, stateRef, labelHideProps),
     propertyValueField: { ...comboboxField },
     // Look-parent group rows own no value. The generated value input still
     // renders (kept for row-height alignment), so clear its "Value" placeholder
@@ -186,6 +214,7 @@ function PropertyInner(props: RowPropertyProps) {
         <ItemProperty
           input={{}}
           icon2={valueIconSlot}
+          buttonIconic={hideDisclosure ? null : undefined}
           seldonRefs={seldonRefs}
           onClick={view.onRowClick}
           onDoubleClick={view.onRowDoubleClick}
