@@ -36,6 +36,8 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *     ButtonMenu           buttonMenu           -> boardState
  *       TextLabel          textLabel            -> boardStateLabel
  *       Icon               icon3                -> boardStateMenuIcon
+ *     ButtonToggle         buttonToggle         -> propertyTogglePanel
+ *       Icon               icon4                -> propertyTogglePanelIcon
  *   Frame                  frame2               -> propertiesTree
  *
  * @example
@@ -53,6 +55,7 @@ export default {}
 import { computed } from "vue"
 
 import ButtonMenu from "../elements/ButtonMenu.vue"
+import ButtonToggle from "../elements/ButtonToggle.vue"
 import ComboboxFieldFilter from "../elements/ComboboxFieldFilter.vue"
 import Frame from "../frames/Frame.vue"
 import Icon from "../primitives/Icon.vue"
@@ -70,6 +73,8 @@ const props = defineProps<{
   buttonMenu?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
+  buttonToggle?: Record<string, unknown> | null
+  icon4?: Record<string, unknown> | null
   frame2?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
@@ -128,6 +133,16 @@ const sdn: Record<string, any> = {
     className: "sdn-icon sdn-icon--y2ct",
     "data-seldon-ref": "boardStateMenuIcon",
   },
+  buttonToggle: {
+    className: "sdn-button-toggle sdn-button-toggle--btlv",
+    "data-seldon-ref": "propertyTogglePanel",
+  },
+  icon4: {
+    icon: "seldon-panels",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "propertyTogglePanelIcon",
+  },
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -155,6 +170,10 @@ const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
 )
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const buttonToggleProps = computed(() =>
+  mergeOptionalSlot(sdn.buttonToggle, props.buttonToggle, props.seldonRefs),
+)
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
 const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
 </script>
 
@@ -174,6 +193,11 @@ const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.sel
           <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
           <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
         </ButtonMenu>
+        <ButtonToggle
+          v-if="buttonToggleProps !== null"
+          v-bind="buttonToggleProps"
+          :icon="icon4Props"
+        />
       </Frame>
       <Frame v-bind="frame2Props" v-if="frame2Props !== null">
         <slot name="propertiesTree" />
