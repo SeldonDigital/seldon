@@ -188,6 +188,11 @@ export type SeldonRef =
   | "sectionDisclosureIcon"
   | "sectionLabel"
   | "sectionRow"
+  | "tokenCard"
+  | "tokenChip"
+  | "tokenChipIcon"
+  | "tokenChipName"
+  | "tokenChipValue"
   | "workspaceField"
   | "workspaceIcon"
   | "workspaceName"
@@ -2670,6 +2675,76 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/ItemSection.tsx",
         slot: "formControlCombobox",
         type: "FormControlComboboxProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  tokenCard: {
+    component: "Frame",
+    nodeId: "component-panel-TNNIal1w",
+    className: "sdn-frame sdn-frame--tnni",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  tokenChip: {
+    component: "ChipAssist",
+    nodeId: "component-panel-5mMZfLmQ",
+    className: "sdn-chip sdn-chip-assist--5mmz",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "chipAssist",
+        type: "ChipAssistProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  tokenChipIcon: {
+    component: "Icon",
+    nodeId: "component-panel-dYILy1dR",
+    className: "sdn-icon sdn-icon--gh8m",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  tokenChipName: {
+    component: "TextLabel",
+    nodeId: "component-panel-Ee5hPeGV",
+    className: "sdn-text-label sdn-text-label--ee5h",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  tokenChipValue: {
+    component: "TextLabel",
+    nodeId: "component-panel-6yPrRPh3",
+    className: "sdn-text-label sdn-text-label--6ypr",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "textLabel2",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
