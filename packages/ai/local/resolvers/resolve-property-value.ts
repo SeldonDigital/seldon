@@ -221,7 +221,9 @@ export async function resolvePropertyValue(
         firstWorkspaceTheme,
       ).map(String)
     : []
-  const allowedUnits = getPropertySchema(schemaKey)?.units?.allowed ?? []
+  const propertySchema = getPropertySchema(schemaKey)
+  const allowedUnits = propertySchema?.units?.allowed ?? []
+  const supportsExact = propertySchema?.supports.includes("exact") ?? false
 
   const { prompt, schema } = buildResolvePropertyValueStage({
     propertyKey,
@@ -229,6 +231,7 @@ export async function resolvePropertyValue(
     options: presetOptions,
     themeTokens,
     units: [...allowedUnits],
+    supportsExact,
   })
 
   const { value: valuePick, metrics } = await callOllamaFormat<ValuePick>({
@@ -262,7 +265,7 @@ export async function resolvePropertyValue(
       propertyKey,
       rawValue: valuePick.value,
       allowedUnits: [...allowedUnits],
-      defaultUnit: getPropertySchema(schemaKey)?.units?.default,
+      defaultUnit: propertySchema?.units?.default,
     })
   }
   return { kind: "resolved", value: valuePick.value }

@@ -16,6 +16,7 @@ describe("buildResolvePropertyValueStage", () => {
       options: ["red", "blue"],
       themeTokens: ["swatch.primary", "swatch.secondary"],
       units: [],
+      supportsExact: true,
     })
     const oneOf = branches(schema)
     expect(oneOf.map((branch) => branch.properties.pick.const)).toEqual([
@@ -46,6 +47,7 @@ describe("buildResolvePropertyValueStage", () => {
       options: [],
       themeTokens: ["gap.compact"],
       units: [],
+      supportsExact: true,
     })
     expect(
       branches(schema).map((branch) => branch.properties.pick.const),
@@ -60,6 +62,7 @@ describe("buildResolvePropertyValueStage", () => {
       options: ["a", "b"],
       themeTokens: [],
       units: [],
+      supportsExact: true,
     })
     expect(
       branches(schema).map((branch) => branch.properties.pick.const),
@@ -74,6 +77,7 @@ describe("buildResolvePropertyValueStage", () => {
       options: [],
       themeTokens: [],
       units: ["px", "rem"],
+      supportsExact: true,
     })
     expect(
       branches(bare.schema).map((branch) => branch.properties.pick.const),
@@ -86,7 +90,23 @@ describe("buildResolvePropertyValueStage", () => {
       options: [],
       themeTokens: [],
       units: [],
+      supportsExact: true,
     })
     expect(unitless.prompt).toContain("a string or number")
+  })
+
+  it("drops the exact branch when the schema does not support it", () => {
+    const { prompt, schema } = buildResolvePropertyValueStage({
+      propertyKey: "display",
+      message: "hide it",
+      options: ["show", "hide", "stub", "mock", "exclude"],
+      themeTokens: [],
+      units: [],
+      supportsExact: false,
+    })
+    expect(
+      branches(schema).map((branch) => branch.properties.pick.const),
+    ).toEqual(["option"])
+    expect(prompt).not.toContain("an exact value")
   })
 })

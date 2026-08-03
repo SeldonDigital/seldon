@@ -9,13 +9,17 @@ export interface ResolvePropertyValueInputs {
   themeTokens: string[]
   /** Allowed units for exact numeric values (caller-derived). */
   units: string[]
+  /** Whether the property schema's own `supports` list allows an exact value. */
+  supportsExact: boolean
 }
 
 /**
  * Guidance lines and schema oneOf branches are built in lockstep: a branch
  * exists iff its guidance line does, so the model is only ever offered picks
  * the prompt described. Branch tagging (pick "theme" -> the property's
- * themeRefTag) must stay consistent with repair/normalize-actions.ts.
+ * themeRefTag) must stay consistent with repair/normalize-actions.ts. The
+ * exact branch is gated on `supportsExact` (the schema's own `supports` list)
+ * so the model is never offered a shape the reducer will refuse.
  */
 export function buildResolvePropertyValueStage(
   inputs: ResolvePropertyValueInputs,
@@ -45,18 +49,20 @@ export function buildResolvePropertyValueStage(
     })
     guidance.push(`- theme tokens: ${inputs.themeTokens.join(", ")}`)
   }
-  branches.push({
-    properties: {
-      pick: { const: "exact" },
-      value: { type: ["string", "number"] },
-    },
-    required: ["pick", "value"],
-  })
-  guidance.push(
-    propertyHasAllowedUnits
-      ? `- an exact value: a number (${inputs.units.join("|")}) or a string`
-      : "- an exact value: a string or number",
-  )
+  if (inputs.supportsExact) {
+    branches.push({
+      properties: {
+        pick: { const: "exact" },
+        value: { type: ["string", "number"] },
+      },
+      required: ["pick", "value"],
+    })
+    guidance.push(
+      propertyHasAllowedUnits
+        ? `- an exact value: a number (${inputs.units.join("|")}) or a string`
+        : "- an exact value: a string or number",
+    )
+  }
 
   const prompt = [
     `A user wants to set the "${inputs.propertyKey}" property of a design element.`,

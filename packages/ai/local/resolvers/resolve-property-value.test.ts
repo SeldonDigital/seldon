@@ -158,4 +158,20 @@ describe("resolvePropertyValue", () => {
     expect(resolution.text).toContain("degrees")
     expect(resolution.text).toContain("px, rem, %")
   })
+
+  it("never offers an exact branch for a property whose schema forbids it", async () => {
+    // display supports only empty/inherit/option -- an exact pick is a
+    // guaranteed Core rejection, so the stage must not offer that branch.
+    modelAnswers({ pick: "option", value: "hide" })
+    const context = turnContext("hide it")
+
+    const resolution = await resolvePropertyValue(context, "display")
+
+    expect(resolution).toEqual({ kind: "resolved", value: "hide" })
+    const [{ schema }] = vi.mocked(callOllamaFormat).mock.calls[0]!
+    const branchPicks = (
+      schema as { oneOf: Array<{ properties: { pick: { const: string } } }> }
+    ).oneOf.map((branch) => branch.properties.pick.const)
+    expect(branchPicks).not.toContain("exact")
+  })
 })
