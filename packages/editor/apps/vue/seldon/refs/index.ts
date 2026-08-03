@@ -94,7 +94,6 @@ export type SeldonRef =
   | "hariToolsLabel"
   | "hariToolsToggle"
   | "hariToolText"
-  | "hariTurns"
   | "hariUserText"
   | "logo"
   | "logoMark"
@@ -1356,20 +1355,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "textDescription",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  hariTurns: {
-    component: "Frame",
-    nodeId: "component-panel-jV0477wG",
-    className: "sdn-frame sdn-frame--jv04",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.vue",
-        slot: "frame2",
-        type: "FrameProps",
-        rendersWhen: "unless-null",
       },
     ],
   },

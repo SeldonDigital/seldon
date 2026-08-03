@@ -1150,20 +1150,6 @@
         }
       ]
     },
-    "hariTurns": {
-      "component": "Frame",
-      "nodeId": "component-panel-jV0477wG",
-      "className": "sdn-frame sdn-frame--jv04",
-      "views": [
-        {
-          "component": "PanelHari",
-          "file": "modules/PanelHari.vue",
-          "slot": "frame2",
-          "type": "FrameProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
     "hariUserText": {
       "component": "TextDescription",
       "nodeId": "component-text-5X8uWVHu",
