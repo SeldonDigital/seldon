@@ -86,7 +86,7 @@ const sdn: PanelPaletteProps = {
   frame4: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--jbzn",
+    className: "sdn-frame sdn-frame--rc9x",
     "data-seldon-ref": "paletteBottomBar",
   },
   frame5: {

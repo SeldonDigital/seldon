@@ -1851,7 +1851,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   paletteBottomBar: {
     component: "Frame",
     nodeId: "component-panel-Rc9xXtDo",
-    className: "sdn-frame sdn-frame--jbzn",
+    className: "sdn-frame sdn-frame--rc9x",
     views: [
       {
         component: "PanelPalette",
@@ -2579,7 +2579,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionActionsIcon: {
     component: "Icon",
     nodeId: "component-item-X0ybtMzs",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "ItemSection",
@@ -2607,7 +2607,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionAddIcon: {
     component: "Icon",
     nodeId: "component-item-CMEf5HDL",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "ItemSection",
@@ -2635,7 +2635,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionDisclosureIcon: {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
-    className: "sdn-icon sdn-icon--rezm",
+    className: "sdn-icon sdn-icon--vsau",
     views: [
       {
         component: "ItemSection",

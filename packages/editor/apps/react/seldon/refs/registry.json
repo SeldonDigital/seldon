@@ -1643,7 +1643,7 @@
     "paletteBottomBar": {
       "component": "Frame",
       "nodeId": "component-panel-Rc9xXtDo",
-      "className": "sdn-frame sdn-frame--jbzn",
+      "className": "sdn-frame sdn-frame--rc9x",
       "views": [
         {
           "component": "PanelPalette",
@@ -2371,7 +2371,7 @@
     "sectionActionsIcon": {
       "component": "Icon",
       "nodeId": "component-item-X0ybtMzs",
-      "className": "sdn-icon sdn-icon--ucf5",
+      "className": "sdn-icon sdn-icon--xi68",
       "views": [
         {
           "component": "ItemSection",
@@ -2399,7 +2399,7 @@
     "sectionAddIcon": {
       "component": "Icon",
       "nodeId": "component-item-CMEf5HDL",
-      "className": "sdn-icon sdn-icon--ucf5",
+      "className": "sdn-icon sdn-icon--xi68",
       "views": [
         {
           "component": "ItemSection",
@@ -2427,7 +2427,7 @@
     "sectionDisclosureIcon": {
       "component": "Icon",
       "nodeId": "component-item-7MKLAjub",
-      "className": "sdn-icon sdn-icon--rezm",
+      "className": "sdn-icon sdn-icon--vsau",
       "views": [
         {
           "component": "ItemSection",
