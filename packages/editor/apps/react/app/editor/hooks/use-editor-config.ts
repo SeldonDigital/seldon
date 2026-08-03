@@ -43,6 +43,21 @@ interface EditorConfigState {
   showRefBadges: boolean
   setShowRefBadges: (enabled: boolean) => void
 
+  // Token badge overlay, one group per toggle, drawing the selection's property
+  // tokens out to a gutter column opposite the reference badges.
+  showLayoutBadges: boolean
+  setShowLayoutBadges: (enabled: boolean) => void
+  showSpaceBadges: boolean
+  setShowSpaceBadges: (enabled: boolean) => void
+  showDimensionBadges: boolean
+  setShowDimensionBadges: (enabled: boolean) => void
+  showAppearanceBadges: boolean
+  setShowAppearanceBadges: (enabled: boolean) => void
+  showTypographyBadges: boolean
+  setShowTypographyBadges: (enabled: boolean) => void
+  showEffectsBadges: boolean
+  setShowEffectsBadges: (enabled: boolean) => void
+
   // Panel settings
   showPanels: boolean
   setShowPanels: (showPanels: boolean) => void
@@ -156,6 +171,24 @@ const useStore = create<EditorConfigState>()(
       showRefBadges: false,
       setShowRefBadges: (enabled) => set((state) => ({ ...state, showRefBadges: enabled })),
 
+      // Token badge overlay groups (off by default; persisted since tokens read
+      // from the workspace, not a linked folder)
+      showLayoutBadges: false,
+      setShowLayoutBadges: (enabled) => set((state) => ({ ...state, showLayoutBadges: enabled })),
+      showSpaceBadges: false,
+      setShowSpaceBadges: (enabled) => set((state) => ({ ...state, showSpaceBadges: enabled })),
+      showDimensionBadges: false,
+      setShowDimensionBadges: (enabled) =>
+        set((state) => ({ ...state, showDimensionBadges: enabled })),
+      showAppearanceBadges: false,
+      setShowAppearanceBadges: (enabled) =>
+        set((state) => ({ ...state, showAppearanceBadges: enabled })),
+      showTypographyBadges: false,
+      setShowTypographyBadges: (enabled) =>
+        set((state) => ({ ...state, showTypographyBadges: enabled })),
+      showEffectsBadges: false,
+      setShowEffectsBadges: (enabled) => set((state) => ({ ...state, showEffectsBadges: enabled })),
+
       // Panel settings
       showPanels: true,
       setShowPanels: (showPanels) => set((state) => ({ ...state, showPanels })),
@@ -262,6 +295,12 @@ const useStore = create<EditorConfigState>()(
         hariPanelRect: state.hariPanelRect,
         autoScrollToSelection: state.autoScrollToSelection,
         autoExpandOnSelection: state.autoExpandOnSelection,
+        showLayoutBadges: state.showLayoutBadges,
+        showSpaceBadges: state.showSpaceBadges,
+        showDimensionBadges: state.showDimensionBadges,
+        showAppearanceBadges: state.showAppearanceBadges,
+        showTypographyBadges: state.showTypographyBadges,
+        showEffectsBadges: state.showEffectsBadges,
         showUnusedProperties: state.showUnusedProperties,
         showUnusedFonts: state.showUnusedFonts,
         showUnusedIcons: state.showUnusedIcons,
@@ -292,6 +331,18 @@ export function useEditorConfig() {
     setShowConnectors,
     showRefBadges,
     setShowRefBadges,
+    showLayoutBadges,
+    setShowLayoutBadges,
+    showSpaceBadges,
+    setShowSpaceBadges,
+    showDimensionBadges,
+    setShowDimensionBadges,
+    showAppearanceBadges,
+    setShowAppearanceBadges,
+    showTypographyBadges,
+    setShowTypographyBadges,
+    showEffectsBadges,
+    setShowEffectsBadges,
     showPanels,
     setShowPanels,
     propertiesFloating,
@@ -343,6 +394,18 @@ export function useEditorConfig() {
       setShowConnectors: state.setShowConnectors,
       showRefBadges: state.showRefBadges,
       setShowRefBadges: state.setShowRefBadges,
+      showLayoutBadges: state.showLayoutBadges,
+      setShowLayoutBadges: state.setShowLayoutBadges,
+      showSpaceBadges: state.showSpaceBadges,
+      setShowSpaceBadges: state.setShowSpaceBadges,
+      showDimensionBadges: state.showDimensionBadges,
+      setShowDimensionBadges: state.setShowDimensionBadges,
+      showAppearanceBadges: state.showAppearanceBadges,
+      setShowAppearanceBadges: state.setShowAppearanceBadges,
+      showTypographyBadges: state.showTypographyBadges,
+      setShowTypographyBadges: state.setShowTypographyBadges,
+      showEffectsBadges: state.showEffectsBadges,
+      setShowEffectsBadges: state.setShowEffectsBadges,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
       propertiesFloating: state.propertiesFloating,
@@ -420,6 +483,30 @@ export function useEditorConfig() {
     setShowConnectors(!showConnectors)
   }, [setShowConnectors, showConnectors])
 
+  const toggleLayoutBadges = useCallback(() => {
+    setShowLayoutBadges(!showLayoutBadges)
+  }, [setShowLayoutBadges, showLayoutBadges])
+
+  const toggleSpaceBadges = useCallback(() => {
+    setShowSpaceBadges(!showSpaceBadges)
+  }, [setShowSpaceBadges, showSpaceBadges])
+
+  const toggleDimensionBadges = useCallback(() => {
+    setShowDimensionBadges(!showDimensionBadges)
+  }, [setShowDimensionBadges, showDimensionBadges])
+
+  const toggleAppearanceBadges = useCallback(() => {
+    setShowAppearanceBadges(!showAppearanceBadges)
+  }, [setShowAppearanceBadges, showAppearanceBadges])
+
+  const toggleTypographyBadges = useCallback(() => {
+    setShowTypographyBadges(!showTypographyBadges)
+  }, [setShowTypographyBadges, showTypographyBadges])
+
+  const toggleEffectsBadges = useCallback(() => {
+    setShowEffectsBadges(!showEffectsBadges)
+  }, [setShowEffectsBadges, showEffectsBadges])
+
   const toggleAutoScrollToSelection = useCallback(() => {
     setAutoScrollToSelection(!autoScrollToSelection)
   }, [setAutoScrollToSelection, autoScrollToSelection])
@@ -479,6 +566,26 @@ export function useEditorConfig() {
     // linked folder on the same gesture that turns it on.
     showRefBadges,
     setShowRefBadges,
+
+    // Token badge overlay groups
+    showLayoutBadges,
+    setShowLayoutBadges,
+    toggleLayoutBadges,
+    showSpaceBadges,
+    setShowSpaceBadges,
+    toggleSpaceBadges,
+    showDimensionBadges,
+    setShowDimensionBadges,
+    toggleDimensionBadges,
+    showAppearanceBadges,
+    setShowAppearanceBadges,
+    toggleAppearanceBadges,
+    showTypographyBadges,
+    setShowTypographyBadges,
+    toggleTypographyBadges,
+    showEffectsBadges,
+    setShowEffectsBadges,
+    toggleEffectsBadges,
 
     // Panel methods
     showPanels,

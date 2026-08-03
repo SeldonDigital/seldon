@@ -37,15 +37,19 @@ interface ConnectorMetricsState {
  * so a column never draws at one size and then jumps. `null` until the first read lands,
  * which is when the overlay has nothing to place badges by.
  */
-export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
+export function useConnectorMetrics(
+  labels: string[],
+  chipRef: string = "refChip",
+): ConnectorMetricsState {
   const measureRef = useRef<HTMLElement>(null)
   const [metrics, setMetrics] = useState<ConnectorMetrics | null>(null)
   const signature = labels.join("\n")
 
   useLayoutEffect(() => {
     const scope = measureRef.current
-    // `refChip` is the schema's name for the badge, until the workspace renames it.
-    const badges = scope?.querySelectorAll<HTMLElement>('[data-seldon-ref="refChip"]')
+    // The chip's ref names the badge, `refChip` for references and `tokenChip` for
+    // tokens, so the column measures the set it is drawing.
+    const badges = scope?.querySelectorAll<HTMLElement>(`[data-seldon-ref="${chipRef}"]`)
 
     if (!scope || !badges || badges.length === 0) return
 
@@ -68,7 +72,7 @@ export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
       gutter,
       anchorRadius,
     })
-  }, [signature])
+  }, [signature, chipRef])
 
   return { metrics, measureRef }
 }

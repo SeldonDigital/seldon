@@ -6,6 +6,7 @@ import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { setAnchoredNodes } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
+import { badgeGutterStore } from "@seldon/editor/lib/canvas/connectors/badge-gutter-store"
 import {
   getGutterSide,
   layoutConnectors,
@@ -67,6 +68,10 @@ export function useRefConnector(): RefConnectorState {
   const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
   const canvasSize = useCanvasSize()
   const gutterSide = useRef<GutterSide>("right")
+  // The token overlay publishes the edge its column hangs off. When it draws, the
+  // reference column starts from the opposite edge, so the two favor opposite sides
+  // rather than stacking together.
+  const tokenSide = useSharedStore(badgeGutterStore, (state) => state.tokenSide)
 
   const scopedNodeIds = useMemo(
     () => collectScopedNodeIds(activeBoard, selectedNodeId),
@@ -105,10 +110,19 @@ export function useRefConnector(): RefConnectorState {
   const layout = useMemo(() => {
     if (!metrics) return NOTHING_PLACED
 
+    // Bias off the token column's opposite edge when it is drawn, and off the last
+    // edge otherwise. `getGutterSide` still moves to the crowded edge when it must,
+    // so this favors the opposite side without pinning it.
+    const preferred: GutterSide = tokenSide
+      ? tokenSide === "right"
+        ? "left"
+        : "right"
+      : gutterSide.current
+
     const side = getGutterSide(
       sources,
       { canvasWidth: canvasSize.width, gutter: metrics.gutter },
-      gutterSide.current,
+      preferred,
     )
 
     gutterSide.current = side
@@ -123,7 +137,7 @@ export function useRefConnector(): RefConnectorState {
       gutter: metrics.gutter,
       side,
     })
-  }, [sources, canvasSize.width, canvasSize.height, metrics])
+  }, [sources, canvasSize.width, canvasSize.height, metrics, tokenSide])
 
   const entries = useMemo(
     () => buildPlacedConnectors(layout.placements, refBindings),

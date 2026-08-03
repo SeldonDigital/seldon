@@ -20,6 +20,7 @@ import { useVisibleNodes } from "../hooks/use-visible-nodes"
 import { HighlightConnectors } from "./highlight/HighlightConnectors"
 import { InsertOverlay } from "./insert/InsertOverlay"
 import { RefConnector } from "./ref-badges/RefConnector"
+import { TokenConnector } from "./token-badges/TokenConnector"
 import { CanvasDragLayer } from "./select/CanvasDragLayer"
 import { HoverOverlay } from "./select/HoverOverlay"
 import { NodeWireframe } from "./select/NodeWireframe"
@@ -37,7 +38,18 @@ export function CanvasOverlays() {
   // visible-node list without changing the set of ids.
   const rawNodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
   const nodeIds = useStableIds(rawNodeIds)
-  const { showSelection, wireframeMode, showRefBadges, isolatedView } = useEditorConfig()
+  const {
+    showSelection,
+    wireframeMode,
+    showRefBadges,
+    isolatedView,
+    showLayoutBadges,
+    showSpaceBadges,
+    showDimensionBadges,
+    showAppearanceBadges,
+    showTypographyBadges,
+    showEffectsBadges,
+  } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
@@ -61,6 +73,17 @@ export function CanvasOverlays() {
   // Theme boards have no node tree to reference.
   const drawRefBadges = showRefBadges && !activeBoardIsTheme
   const refBadges = drawRefBadges ? <RefConnector /> : null
+
+  // Token badges draw when any group is enabled. Like reference badges they show in
+  // both isolation and normal modes, and never on a theme board's preview.
+  const anyTokenGroupEnabled =
+    showLayoutBadges ||
+    showSpaceBadges ||
+    showDimensionBadges ||
+    showAppearanceBadges ||
+    showTypographyBadges ||
+    showEffectsBadges
+  const tokenBadges = anyTokenGroupEnabled && !activeBoardIsTheme ? <TokenConnector /> : null
 
   // Isolation draws the whole gallery at once, which is what makes a line from
   // the selection to the boards it reaches worth drawing. The connectors draw
@@ -92,6 +115,7 @@ export function CanvasOverlays() {
       {activeTool === "component" && hasHoverState && <InsertOverlay />}
       {highlightConnectors}
       {refBadges}
+      {tokenBadges}
       {dragLayer}
     </>
   )
