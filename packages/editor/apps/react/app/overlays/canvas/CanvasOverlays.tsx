@@ -14,6 +14,7 @@ import { useMemo } from "react"
 
 import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure-store"
 import { useNodeBelongsToActiveBoard } from "../hooks/use-belongs-to-active-board"
+import { useStableIds } from "../hooks/use-stable-ids"
 import { useTrackNodeRects } from "../hooks/use-track-node-rects"
 import { useVisibleNodes } from "../hooks/use-visible-nodes"
 import { HighlightConnectors } from "./highlight/HighlightConnectors"
@@ -32,7 +33,10 @@ export function CanvasOverlays() {
   // Held stable, because the tracker re-tracks whenever this list is a new one: a fresh
   // array on every render would mean tearing down and rebuilding an observer per node
   // each time anything here changes, several times over during a single pan.
-  const nodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
+  // `useStableIds` also holds the array across board-level edits that rebuild the
+  // visible-node list without changing the set of ids.
+  const rawNodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
+  const nodeIds = useStableIds(rawNodeIds)
   const { showSelection, wireframeMode, showRefBadges, isolatedView } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
