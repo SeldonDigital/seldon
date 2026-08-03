@@ -994,6 +994,35 @@
           ]
         },
         {
+          "id": "component-bar-tabs",
+          "children": [
+            {
+              "id": "component-button-zNxuKZDU",
+              "children": [
+                {
+                  "id": "component-text-vgybzk6t"
+                }
+              ]
+            },
+            {
+              "id": "component-button-0VfkUyzt",
+              "children": [
+                {
+                  "id": "component-text-0oUC920F"
+                }
+              ]
+            },
+            {
+              "id": "component-button-adGhVoka",
+              "children": [
+                {
+                  "id": "component-text-MrYegPQK"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "component-bar-menubar",
           "children": [
             {
@@ -1283,35 +1312,6 @@
                       "id": "component-icon-jUquBhpr"
                     }
                   ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "component-bar-tabs",
-          "children": [
-            {
-              "id": "component-button-zNxuKZDU",
-              "children": [
-                {
-                  "id": "component-text-vgybzk6t"
-                }
-              ]
-            },
-            {
-              "id": "component-button-0VfkUyzt",
-              "children": [
-                {
-                  "id": "component-text-0oUC920F"
-                }
-              ]
-            },
-            {
-              "id": "component-button-adGhVoka",
-              "children": [
-                {
-                  "id": "component-text-MrYegPQK"
                 }
               ]
             }
@@ -9670,21 +9670,6 @@
         },
         "background": [
           {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 35
-              }
-            },
             "opacity": {
               "type": "empty",
               "value": null
@@ -9715,7 +9700,7 @@
         },
         "display": {
           "type": "option",
-          "value": "exclude"
+          "value": "show"
         }
       }
     },
@@ -39240,6 +39225,10 @@
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.compact"
+        },
+        "display": {
+          "type": "option",
+          "value": "mock"
         }
       }
     },
@@ -39902,7 +39891,7 @@
         },
         "display": {
           "type": "option",
-          "value": "show"
+          "value": "mock"
         },
         "width": {
           "type": "option",

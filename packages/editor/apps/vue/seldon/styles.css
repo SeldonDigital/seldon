@@ -426,9 +426,9 @@ body {
 }
 
 .sdn-bar-tabs-bar {
-  display: flex;
-  background-color: var(--sdn-swatch-primary-b35);
+  background-color: var(--sdn-swatch-primary-bn30);
   flex-wrap: nowrap;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
@@ -2055,10 +2055,6 @@ body {
   flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
-}
-
-.sdn-bar-tabs-bar--qtpt {
-  background-color: var(--sdn-swatch-primary-bn30);
 }
 
 .sdn-button--euxa {
