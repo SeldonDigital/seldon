@@ -41,10 +41,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
-    | "material-expandMore"
-    | "material-email"
-    | "material-menu"
-    | "material-phone"
     | "seldon-plus"
     | "seldon-minus"
     | "material-checkCircle"
@@ -322,8 +318,10 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-zoomIn"
     | "material-zoomOut"
     | "material-comment"
+    | "material-email"
     | "material-helpOutline"
     | "material-localLaundryService"
+    | "material-phone"
     | "material-smartphone"
     | "material-adsClick"
     | "material-audiotrack"
@@ -377,6 +375,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-keyboardArrowRight"
     | "material-keyboardArrowUp"
     | "material-link"
+    | "material-menu"
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
@@ -406,6 +405,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-doneAll"
     | "material-dryCleaning"
     | "material-expandLess"
+    | "material-expandMore"
     | "material-height"
     | "material-info"
     | "material-invertColors"
@@ -562,10 +562,6 @@ const iconMap = {
   "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
-  "material-expandMore": Icons.IconMaterialExpandMore,
-  "material-email": Icons.IconMaterialEmail,
-  "material-menu": Icons.IconMaterialMenu,
-  "material-phone": Icons.IconMaterialPhone,
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
@@ -843,8 +839,10 @@ const iconMap = {
   "material-zoomIn": Icons.IconMaterialZoomIn,
   "material-zoomOut": Icons.IconMaterialZoomOut,
   "material-comment": Icons.IconMaterialComment,
+  "material-email": Icons.IconMaterialEmail,
   "material-helpOutline": Icons.IconMaterialHelpOutline,
   "material-localLaundryService": Icons.IconMaterialLocalLaundryService,
+  "material-phone": Icons.IconMaterialPhone,
   "material-smartphone": Icons.IconMaterialSmartphone,
   "material-adsClick": Icons.IconMaterialAdsClick,
   "material-audiotrack": Icons.IconMaterialAudiotrack,
@@ -898,6 +896,7 @@ const iconMap = {
   "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
   "material-keyboardArrowUp": Icons.IconMaterialKeyboardArrowUp,
   "material-link": Icons.IconMaterialLink,
+  "material-menu": Icons.IconMaterialMenu,
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
@@ -927,6 +926,7 @@ const iconMap = {
   "material-doneAll": Icons.IconMaterialDoneAll,
   "material-dryCleaning": Icons.IconMaterialDryCleaning,
   "material-expandLess": Icons.IconMaterialExpandLess,
+  "material-expandMore": Icons.IconMaterialExpandMore,
   "material-height": Icons.IconMaterialHeight,
   "material-info": Icons.IconMaterialInfo,
   "material-invertColors": Icons.IconMaterialInvertColors,
