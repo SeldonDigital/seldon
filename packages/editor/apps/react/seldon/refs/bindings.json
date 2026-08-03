@@ -2,30 +2,30 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 281,
+  "scannedFiles": 282,
   "refs": {
     "boardState": [
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 128,
+        "line": 182,
         "conditional": false,
-        "expression": "{ onClick: openStateMenu, disabled: stateMenu.disabled, \"data-testid\": \"board-state-trigger\", }",
+        "expression": "{ onClick: openStateMenu, disabled: stateDisabled, \"data-testid\": \"board-state-trigger\", }",
         "inputs": [
           {
             "name": "openStateMenu",
             "declaredAt": {
-              "line": 103,
+              "line": 125,
               "kind": "const",
               "via": "useCallback"
             }
           },
           {
-            "name": "stateMenu",
+            "name": "stateDisabled",
             "declaredAt": {
-              "line": 100,
+              "line": 169,
               "kind": "const",
-              "via": "useBoardStateMenu"
+              "via": "usePropertiesPanel"
             }
           }
         ],
@@ -37,7 +37,7 @@
               {
                 "name": "openStateMenu",
                 "declaredAt": {
-                  "line": 103,
+                  "line": 125,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -46,14 +46,14 @@
           },
           {
             "key": "disabled",
-            "expression": "stateMenu.disabled",
+            "expression": "stateDisabled",
             "inputs": [
               {
-                "name": "stateMenu",
+                "name": "stateDisabled",
                 "declaredAt": {
-                  "line": 100,
+                  "line": 169,
                   "kind": "const",
-                  "via": "useBoardStateMenu"
+                  "via": "usePropertiesPanel"
                 }
               }
             ]
@@ -68,24 +68,24 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 128,
+        "line": 182,
         "conditional": false,
-        "expression": "{ onClick: openStateMenu, disabled: stateMenu.disabled, \"data-testid\": \"board-state-trigger\", }",
+        "expression": "{ onClick: openStateMenu, disabled: stateDisabled, \"data-testid\": \"board-state-trigger\", }",
         "inputs": [
           {
             "name": "openStateMenu",
             "declaredAt": {
-              "line": 103,
+              "line": 125,
               "kind": "const",
               "via": "useCallback"
             }
           },
           {
-            "name": "stateMenu",
+            "name": "stateDisabled",
             "declaredAt": {
-              "line": 100,
+              "line": 169,
               "kind": "const",
-              "via": "useBoardStateMenu"
+              "via": "usePropertiesPanel"
             }
           }
         ],
@@ -97,7 +97,7 @@
               {
                 "name": "openStateMenu",
                 "declaredAt": {
-                  "line": 103,
+                  "line": 125,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -106,14 +106,14 @@
           },
           {
             "key": "disabled",
-            "expression": "stateMenu.disabled",
+            "expression": "stateDisabled",
             "inputs": [
               {
-                "name": "stateMenu",
+                "name": "stateDisabled",
                 "declaredAt": {
-                  "line": 100,
+                  "line": 169,
                   "kind": "const",
-                  "via": "useBoardStateMenu"
+                  "via": "usePropertiesPanel"
                 }
               }
             ]
@@ -130,30 +130,30 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 133,
+        "line": 187,
         "conditional": false,
-        "expression": "{ children: stateMenu.label }",
+        "expression": "{ children: stateLabel }",
         "inputs": [
           {
-            "name": "stateMenu",
+            "name": "stateLabel",
             "declaredAt": {
-              "line": 100,
+              "line": 169,
               "kind": "const",
-              "via": "useBoardStateMenu"
+              "via": "usePropertiesPanel"
             }
           }
         ],
         "props": [
           {
             "key": "children",
-            "expression": "stateMenu.label",
+            "expression": "stateLabel",
             "inputs": [
               {
-                "name": "stateMenu",
+                "name": "stateLabel",
                 "declaredAt": {
-                  "line": 100,
+                  "line": 169,
                   "kind": "const",
-                  "via": "useBoardStateMenu"
+                  "via": "usePropertiesPanel"
                 }
               }
             ]
@@ -163,30 +163,30 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 133,
+        "line": 187,
         "conditional": false,
-        "expression": "{ children: stateMenu.label }",
+        "expression": "{ children: stateLabel }",
         "inputs": [
           {
-            "name": "stateMenu",
+            "name": "stateLabel",
             "declaredAt": {
-              "line": 100,
+              "line": 169,
               "kind": "const",
-              "via": "useBoardStateMenu"
+              "via": "usePropertiesPanel"
             }
           }
         ],
         "props": [
           {
             "key": "children",
-            "expression": "stateMenu.label",
+            "expression": "stateLabel",
             "inputs": [
               {
-                "name": "stateMenu",
+                "name": "stateLabel",
                 "declaredAt": {
-                  "line": 100,
+                  "line": 169,
                   "kind": "const",
-                  "via": "useBoardStateMenu"
+                  "via": "usePropertiesPanel"
                 }
               }
             ]
@@ -1996,189 +1996,60 @@
         ]
       }
     ],
-    "hariBar": [
+    "filterField": [
       {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 315,
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 70,
         "conditional": false,
-        "expression": "{ onPointerDown: startDrag, style: styles.dragHandle }",
+        "expression": "{ ...panel.filter.comboboxField }",
         "inputs": [
           {
-            "name": "startDrag",
+            "name": "panel",
             "declaredAt": {
-              "line": 242,
+              "line": 44,
               "kind": "const",
-              "via": "useCallback"
-            }
-          },
-          {
-            "name": "styles",
-            "declaredAt": {
-              "line": 460,
-              "kind": "const"
+              "via": "usePropertiesPanel"
             }
           }
         ],
-        "props": [
-          {
-            "key": "onPointerDown",
-            "expression": "startDrag",
-            "inputs": [
-              {
-                "name": "startDrag",
-                "declaredAt": {
-                  "line": 242,
-                  "kind": "const",
-                  "via": "useCallback"
-                }
-              }
-            ]
-          },
-          {
-            "key": "style",
-            "expression": "styles.dragHandle",
-            "inputs": [
-              {
-                "name": "styles",
-                "declaredAt": {
-                  "line": 460,
-                  "kind": "const"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "hariClamp": [
+        "props": []
+      },
       {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 330,
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 70,
         "conditional": false,
-        "expression": "{ onClick: toggleNoThink, className: noThink ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": noThink, title: \"Clamp Thinking\", \"data-testid\": \"ai-chat-clamp\"...",
+        "expression": "{ ...panel.filter.comboboxField }",
         "inputs": [
           {
-            "name": "toggleNoThink",
+            "name": "panel",
             "declaredAt": {
-              "line": 149,
+              "line": 44,
               "kind": "const",
-              "via": "useDebugMode"
-            }
-          },
-          {
-            "name": "noThink",
-            "declaredAt": {
-              "line": 149,
-              "kind": "const",
-              "via": "useDebugMode"
-            }
-          },
-          {
-            "name": "ACTIVE_TOGGLE_CLASS",
-            "declaredAt": {
-              "line": 36,
-              "kind": "const"
+              "via": "usePropertiesPanel"
             }
           }
         ],
-        "props": [
-          {
-            "key": "onClick",
-            "expression": "toggleNoThink",
-            "inputs": [
-              {
-                "name": "toggleNoThink",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              }
-            ]
-          },
-          {
-            "key": "className",
-            "expression": "noThink ? ACTIVE_TOGGLE_CLASS : undefined",
-            "inputs": [
-              {
-                "name": "noThink",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              },
-              {
-                "name": "ACTIVE_TOGGLE_CLASS",
-                "declaredAt": {
-                  "line": 36,
-                  "kind": "const"
-                }
-              }
-            ]
-          },
-          {
-            "key": "aria-pressed",
-            "expression": "noThink",
-            "inputs": [
-              {
-                "name": "noThink",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              }
-            ]
-          },
-          {
-            "key": "title",
-            "expression": "\"Clamp Thinking\"",
-            "inputs": []
-          },
-          {
-            "key": "data-testid",
-            "expression": "\"ai-chat-clamp\"",
-            "inputs": []
-          }
-        ]
-      }
-    ],
-    "hariClose": [
+        "props": []
+      },
       {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 342,
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 70,
         "conditional": false,
-        "expression": "{ onClick: close }",
+        "expression": "{ ...panel.filter.comboboxField }",
         "inputs": [
           {
-            "name": "close",
+            "name": "panel",
             "declaredAt": {
-              "line": 71,
+              "line": 44,
               "kind": "const",
-              "via": "useHari"
+              "via": "usePropertiesPanel"
             }
           }
         ],
-        "props": [
-          {
-            "key": "onClick",
-            "expression": "close",
-            "inputs": [
-              {
-                "name": "close",
-                "declaredAt": {
-                  "line": 71,
-                  "kind": "const",
-                  "via": "useHari"
-                }
-              }
-            ]
-          }
-        ]
+        "props": []
       }
     ],
     "hariErrorRetry": [
@@ -2236,15 +2107,15 @@
     "hariInput": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 350,
+        "component": "renderPalette",
+        "line": 329,
         "conditional": false,
         "expression": "{ value: draft, onChange: onDraftChange, onKeyDown: handleKeyDown, placeholder: COMPOSER_PLACEHOLDER, autoFocus: true, }",
         "inputs": [
           {
             "name": "draft",
             "declaredAt": {
-              "line": 173,
+              "line": 157,
               "kind": "const",
               "via": "useState"
             }
@@ -2252,7 +2123,7 @@
           {
             "name": "onDraftChange",
             "declaredAt": {
-              "line": 228,
+              "line": 212,
               "kind": "const",
               "via": "useCallback"
             }
@@ -2260,7 +2131,7 @@
           {
             "name": "handleKeyDown",
             "declaredAt": {
-              "line": 233,
+              "line": 217,
               "kind": "const",
               "via": "useCallback"
             }
@@ -2281,7 +2152,7 @@
               {
                 "name": "draft",
                 "declaredAt": {
-                  "line": 173,
+                  "line": 157,
                   "kind": "const",
                   "via": "useState"
                 }
@@ -2295,7 +2166,7 @@
               {
                 "name": "onDraftChange",
                 "declaredAt": {
-                  "line": 228,
+                  "line": 212,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -2309,7 +2180,211 @@
               {
                 "name": "handleKeyDown",
                 "declaredAt": {
-                  "line": 233,
+                  "line": 217,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "COMPOSER_PLACEHOLDER",
+            "inputs": [
+              {
+                "name": "COMPOSER_PLACEHOLDER",
+                "declaredAt": {
+                  "line": 38,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "autoFocus",
+            "expression": "true",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 329,
+        "conditional": false,
+        "expression": "{ value: draft, onChange: onDraftChange, onKeyDown: handleKeyDown, placeholder: COMPOSER_PLACEHOLDER, autoFocus: true, }",
+        "inputs": [
+          {
+            "name": "draft",
+            "declaredAt": {
+              "line": 157,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "onDraftChange",
+            "declaredAt": {
+              "line": 212,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "handleKeyDown",
+            "declaredAt": {
+              "line": 217,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "COMPOSER_PLACEHOLDER",
+            "declaredAt": {
+              "line": 38,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "draft",
+            "inputs": [
+              {
+                "name": "draft",
+                "declaredAt": {
+                  "line": 157,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onChange",
+            "expression": "onDraftChange",
+            "inputs": [
+              {
+                "name": "onDraftChange",
+                "declaredAt": {
+                  "line": 212,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onKeyDown",
+            "expression": "handleKeyDown",
+            "inputs": [
+              {
+                "name": "handleKeyDown",
+                "declaredAt": {
+                  "line": 217,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "COMPOSER_PLACEHOLDER",
+            "inputs": [
+              {
+                "name": "COMPOSER_PLACEHOLDER",
+                "declaredAt": {
+                  "line": 38,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "autoFocus",
+            "expression": "true",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 329,
+        "conditional": false,
+        "expression": "{ value: draft, onChange: onDraftChange, onKeyDown: handleKeyDown, placeholder: COMPOSER_PLACEHOLDER, autoFocus: true, }",
+        "inputs": [
+          {
+            "name": "draft",
+            "declaredAt": {
+              "line": 157,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "onDraftChange",
+            "declaredAt": {
+              "line": 212,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "handleKeyDown",
+            "declaredAt": {
+              "line": 217,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "COMPOSER_PLACEHOLDER",
+            "declaredAt": {
+              "line": 38,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "draft",
+            "inputs": [
+              {
+                "name": "draft",
+                "declaredAt": {
+                  "line": 157,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onChange",
+            "expression": "onDraftChange",
+            "inputs": [
+              {
+                "name": "onDraftChange",
+                "declaredAt": {
+                  "line": 212,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onKeyDown",
+            "expression": "handleKeyDown",
+            "inputs": [
+              {
+                "name": "handleKeyDown",
+                "declaredAt": {
+                  "line": 217,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -2340,15 +2415,15 @@
     "hariModel": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 358,
+        "component": "renderPalette",
+        "line": 337,
         "conditional": false,
         "expression": "{ onClick: openModelMenu, disabled: controlsDisabled, \"data-testid\": \"ai-chat-model\", }",
         "inputs": [
           {
             "name": "openModelMenu",
             "declaredAt": {
-              "line": 244,
+              "line": 226,
               "kind": "const",
               "via": "useCallback"
             }
@@ -2356,7 +2431,7 @@
           {
             "name": "controlsDisabled",
             "declaredAt": {
-              "line": 182,
+              "line": 166,
               "kind": "const"
             }
           }
@@ -2369,7 +2444,7 @@
               {
                 "name": "openModelMenu",
                 "declaredAt": {
-                  "line": 244,
+                  "line": 226,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -2383,7 +2458,123 @@
               {
                 "name": "controlsDisabled",
                 "declaredAt": {
-                  "line": 182,
+                  "line": 166,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-model\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 337,
+        "conditional": false,
+        "expression": "{ onClick: openModelMenu, disabled: controlsDisabled, \"data-testid\": \"ai-chat-model\", }",
+        "inputs": [
+          {
+            "name": "openModelMenu",
+            "declaredAt": {
+              "line": 226,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "controlsDisabled",
+            "declaredAt": {
+              "line": 166,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openModelMenu",
+            "inputs": [
+              {
+                "name": "openModelMenu",
+                "declaredAt": {
+                  "line": 226,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "controlsDisabled",
+            "inputs": [
+              {
+                "name": "controlsDisabled",
+                "declaredAt": {
+                  "line": 166,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-model\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 337,
+        "conditional": false,
+        "expression": "{ onClick: openModelMenu, disabled: controlsDisabled, \"data-testid\": \"ai-chat-model\", }",
+        "inputs": [
+          {
+            "name": "openModelMenu",
+            "declaredAt": {
+              "line": 226,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "controlsDisabled",
+            "declaredAt": {
+              "line": 166,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openModelMenu",
+            "inputs": [
+              {
+                "name": "openModelMenu",
+                "declaredAt": {
+                  "line": 226,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "controlsDisabled",
+            "inputs": [
+              {
+                "name": "controlsDisabled",
+                "declaredAt": {
+                  "line": 166,
                   "kind": "const"
                 }
               }
@@ -2400,15 +2591,15 @@
     "hariModelLabel": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 363,
+        "component": "renderPalette",
+        "line": 342,
         "conditional": false,
         "expression": "{ children: modelButtonLabel }",
         "inputs": [
           {
             "name": "modelButtonLabel",
             "declaredAt": {
-              "line": 185,
+              "line": 169,
               "kind": "const"
             }
           }
@@ -2421,106 +2612,73 @@
               {
                 "name": "modelButtonLabel",
                 "declaredAt": {
-                  "line": 185,
+                  "line": 169,
                   "kind": "const"
                 }
               }
             ]
           }
         ]
-      }
-    ],
-    "hariOutcome": [
+      },
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 316,
+        "component": "renderPalette",
+        "line": 342,
         "conditional": false,
-        "expression": "{ onClick: toggleShowOutcome, className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showOutcome, title: \"Show Outcome\", \"data-testid\": \"ai-c...",
+        "expression": "{ children: modelButtonLabel }",
         "inputs": [
           {
-            "name": "toggleShowOutcome",
+            "name": "modelButtonLabel",
             "declaredAt": {
-              "line": 149,
-              "kind": "const",
-              "via": "useDebugMode"
-            }
-          },
-          {
-            "name": "showOutcome",
-            "declaredAt": {
-              "line": 149,
-              "kind": "const",
-              "via": "useDebugMode"
-            }
-          },
-          {
-            "name": "ACTIVE_TOGGLE_CLASS",
-            "declaredAt": {
-              "line": 36,
+              "line": 169,
               "kind": "const"
             }
           }
         ],
         "props": [
           {
-            "key": "onClick",
-            "expression": "toggleShowOutcome",
+            "key": "children",
+            "expression": "modelButtonLabel",
             "inputs": [
               {
-                "name": "toggleShowOutcome",
+                "name": "modelButtonLabel",
                 "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              }
-            ]
-          },
-          {
-            "key": "className",
-            "expression": "showOutcome ? ACTIVE_TOGGLE_CLASS : undefined",
-            "inputs": [
-              {
-                "name": "showOutcome",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              },
-              {
-                "name": "ACTIVE_TOGGLE_CLASS",
-                "declaredAt": {
-                  "line": 36,
+                  "line": 169,
                   "kind": "const"
                 }
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 342,
+        "conditional": false,
+        "expression": "{ children: modelButtonLabel }",
+        "inputs": [
           {
-            "key": "aria-pressed",
-            "expression": "showOutcome",
+            "name": "modelButtonLabel",
+            "declaredAt": {
+              "line": 169,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "modelButtonLabel",
             "inputs": [
               {
-                "name": "showOutcome",
+                "name": "modelButtonLabel",
                 "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
+                  "line": 169,
+                  "kind": "const"
                 }
               }
             ]
-          },
-          {
-            "key": "title",
-            "expression": "\"Show Outcome\"",
-            "inputs": []
-          },
-          {
-            "key": "data-testid",
-            "expression": "\"ai-chat-outcome\"",
-            "inputs": []
           }
         ]
       }
@@ -2872,70 +3030,25 @@
         ]
       }
     ],
-    "hariReset": [
-      {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 337,
-        "conditional": false,
-        "expression": "{ onClick: onReset, title: \"Clear\", \"data-testid\": \"ai-chat-reset\", }",
-        "inputs": [
-          {
-            "name": "onReset",
-            "declaredAt": {
-              "line": 257,
-              "kind": "const",
-              "via": "useCallback"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "onClick",
-            "expression": "onReset",
-            "inputs": [
-              {
-                "name": "onReset",
-                "declaredAt": {
-                  "line": 257,
-                  "kind": "const",
-                  "via": "useCallback"
-                }
-              }
-            ]
-          },
-          {
-            "key": "title",
-            "expression": "\"Clear\"",
-            "inputs": []
-          },
-          {
-            "key": "data-testid",
-            "expression": "\"ai-chat-reset\"",
-            "inputs": []
-          }
-        ]
-      }
-    ],
     "hariSelectionLabel": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 370,
+        "component": "renderPalette",
+        "line": 349,
         "conditional": false,
         "expression": "{ children: SCOPE_LABELS[scope] }",
         "inputs": [
           {
             "name": "SCOPE_LABELS",
             "declaredAt": {
-              "line": 54,
+              "line": 57,
               "kind": "const"
             }
           },
           {
             "name": "scope",
             "declaredAt": {
-              "line": 147,
+              "line": 152,
               "kind": "const",
               "via": "useSelectionScope"
             }
@@ -2949,14 +3062,108 @@
               {
                 "name": "SCOPE_LABELS",
                 "declaredAt": {
-                  "line": 54,
+                  "line": 57,
                   "kind": "const"
                 }
               },
               {
                 "name": "scope",
                 "declaredAt": {
-                  "line": 147,
+                  "line": 152,
+                  "kind": "const",
+                  "via": "useSelectionScope"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 349,
+        "conditional": false,
+        "expression": "{ children: SCOPE_LABELS[scope] }",
+        "inputs": [
+          {
+            "name": "SCOPE_LABELS",
+            "declaredAt": {
+              "line": 57,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "scope",
+            "declaredAt": {
+              "line": 152,
+              "kind": "const",
+              "via": "useSelectionScope"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "SCOPE_LABELS[scope]",
+            "inputs": [
+              {
+                "name": "SCOPE_LABELS",
+                "declaredAt": {
+                  "line": 57,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "scope",
+                "declaredAt": {
+                  "line": 152,
+                  "kind": "const",
+                  "via": "useSelectionScope"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 349,
+        "conditional": false,
+        "expression": "{ children: SCOPE_LABELS[scope] }",
+        "inputs": [
+          {
+            "name": "SCOPE_LABELS",
+            "declaredAt": {
+              "line": 57,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "scope",
+            "declaredAt": {
+              "line": 152,
+              "kind": "const",
+              "via": "useSelectionScope"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "SCOPE_LABELS[scope]",
+            "inputs": [
+              {
+                "name": "SCOPE_LABELS",
+                "declaredAt": {
+                  "line": 57,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "scope",
+                "declaredAt": {
+                  "line": 152,
                   "kind": "const",
                   "via": "useSelectionScope"
                 }
@@ -2969,22 +3176,22 @@
     "hariSend": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 371,
+        "component": "renderPalette",
+        "line": 350,
         "conditional": false,
         "expression": "{ onClick: isPending ? stop : submit }",
         "inputs": [
           {
             "name": "isPending",
             "declaredAt": {
-              "line": 181,
+              "line": 165,
               "kind": "const"
             }
           },
           {
             "name": "stop",
             "declaredAt": {
-              "line": 71,
+              "line": 74,
               "kind": "const",
               "via": "useHari"
             }
@@ -2992,7 +3199,7 @@
           {
             "name": "submit",
             "declaredAt": {
-              "line": 198,
+              "line": 182,
               "kind": "const",
               "via": "useCallback"
             }
@@ -3006,14 +3213,14 @@
               {
                 "name": "isPending",
                 "declaredAt": {
-                  "line": 181,
+                  "line": 165,
                   "kind": "const"
                 }
               },
               {
                 "name": "stop",
                 "declaredAt": {
-                  "line": 71,
+                  "line": 74,
                   "kind": "const",
                   "via": "useHari"
                 }
@@ -3021,7 +3228,133 @@
               {
                 "name": "submit",
                 "declaredAt": {
-                  "line": 198,
+                  "line": 182,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 350,
+        "conditional": false,
+        "expression": "{ onClick: isPending ? stop : submit }",
+        "inputs": [
+          {
+            "name": "isPending",
+            "declaredAt": {
+              "line": 165,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "stop",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useHari"
+            }
+          },
+          {
+            "name": "submit",
+            "declaredAt": {
+              "line": 182,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "isPending ? stop : submit",
+            "inputs": [
+              {
+                "name": "isPending",
+                "declaredAt": {
+                  "line": 165,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "stop",
+                "declaredAt": {
+                  "line": 74,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              },
+              {
+                "name": "submit",
+                "declaredAt": {
+                  "line": 182,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 350,
+        "conditional": false,
+        "expression": "{ onClick: isPending ? stop : submit }",
+        "inputs": [
+          {
+            "name": "isPending",
+            "declaredAt": {
+              "line": 165,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "stop",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useHari"
+            }
+          },
+          {
+            "name": "submit",
+            "declaredAt": {
+              "line": 182,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "isPending ? stop : submit",
+            "inputs": [
+              {
+                "name": "isPending",
+                "declaredAt": {
+                  "line": 165,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "stop",
+                "declaredAt": {
+                  "line": 74,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              },
+              {
+                "name": "submit",
+                "declaredAt": {
+                  "line": 182,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -3034,15 +3367,49 @@
     "hariSendIcon": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 373,
+        "component": "renderPalette",
+        "line": 352,
         "conditional": false,
         "expression": "isPending ? { icon: \"material-stop\" } : {}",
         "inputs": [
           {
             "name": "isPending",
             "declaredAt": {
-              "line": 181,
+              "line": 165,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 352,
+        "conditional": false,
+        "expression": "isPending ? { icon: \"material-stop\" } : {}",
+        "inputs": [
+          {
+            "name": "isPending",
+            "declaredAt": {
+              "line": 165,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 352,
+        "conditional": false,
+        "expression": "isPending ? { icon: \"material-stop\" } : {}",
+        "inputs": [
+          {
+            "name": "isPending",
+            "declaredAt": {
+              "line": 165,
               "kind": "const"
             }
           }
@@ -3085,15 +3452,15 @@
     "hariThinking": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 364,
+        "component": "renderPalette",
+        "line": 343,
         "conditional": false,
         "expression": "{ onClick: openThinkingMenu, disabled: thinkingDisabled, \"data-testid\": \"ai-chat-thinking\", }",
         "inputs": [
           {
             "name": "openThinkingMenu",
             "declaredAt": {
-              "line": 249,
+              "line": 231,
               "kind": "const",
               "via": "useCallback"
             }
@@ -3101,7 +3468,7 @@
           {
             "name": "thinkingDisabled",
             "declaredAt": {
-              "line": 189,
+              "line": 173,
               "kind": "const"
             }
           }
@@ -3114,7 +3481,7 @@
               {
                 "name": "openThinkingMenu",
                 "declaredAt": {
-                  "line": 249,
+                  "line": 231,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -3128,7 +3495,123 @@
               {
                 "name": "thinkingDisabled",
                 "declaredAt": {
-                  "line": 189,
+                  "line": 173,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-thinking\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 343,
+        "conditional": false,
+        "expression": "{ onClick: openThinkingMenu, disabled: thinkingDisabled, \"data-testid\": \"ai-chat-thinking\", }",
+        "inputs": [
+          {
+            "name": "openThinkingMenu",
+            "declaredAt": {
+              "line": 231,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "thinkingDisabled",
+            "declaredAt": {
+              "line": 173,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openThinkingMenu",
+            "inputs": [
+              {
+                "name": "openThinkingMenu",
+                "declaredAt": {
+                  "line": 231,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "thinkingDisabled",
+            "inputs": [
+              {
+                "name": "thinkingDisabled",
+                "declaredAt": {
+                  "line": 173,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-thinking\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 343,
+        "conditional": false,
+        "expression": "{ onClick: openThinkingMenu, disabled: thinkingDisabled, \"data-testid\": \"ai-chat-thinking\", }",
+        "inputs": [
+          {
+            "name": "openThinkingMenu",
+            "declaredAt": {
+              "line": 231,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "thinkingDisabled",
+            "declaredAt": {
+              "line": 173,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openThinkingMenu",
+            "inputs": [
+              {
+                "name": "openThinkingMenu",
+                "declaredAt": {
+                  "line": 231,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "thinkingDisabled",
+            "inputs": [
+              {
+                "name": "thinkingDisabled",
+                "declaredAt": {
+                  "line": 173,
                   "kind": "const"
                 }
               }
@@ -3145,15 +3628,15 @@
     "hariThinkingLabel": [
       {
         "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 369,
+        "component": "renderPalette",
+        "line": 348,
         "conditional": false,
         "expression": "{ children: thinkingButtonLabel }",
         "inputs": [
           {
             "name": "thinkingButtonLabel",
             "declaredAt": {
-              "line": 194,
+              "line": 178,
               "kind": "const"
             }
           }
@@ -3166,11 +3649,916 @@
               {
                 "name": "thinkingButtonLabel",
                 "declaredAt": {
-                  "line": 194,
+                  "line": 178,
                   "kind": "const"
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 348,
+        "conditional": false,
+        "expression": "{ children: thinkingButtonLabel }",
+        "inputs": [
+          {
+            "name": "thinkingButtonLabel",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "thinkingButtonLabel",
+            "inputs": [
+              {
+                "name": "thinkingButtonLabel",
+                "declaredAt": {
+                  "line": 178,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 348,
+        "conditional": false,
+        "expression": "{ children: thinkingButtonLabel }",
+        "inputs": [
+          {
+            "name": "thinkingButtonLabel",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "thinkingButtonLabel",
+            "inputs": [
+              {
+                "name": "thinkingButtonLabel",
+                "declaredAt": {
+                  "line": 178,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariToggleClamp": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 321,
+        "conditional": false,
+        "expression": "{ onClick: toggleNoThink, className: noThink ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": noThink, title: \"Clamp Thinking\", \"data-testid\": \"ai-chat-clamp\"...",
+        "inputs": [
+          {
+            "name": "toggleNoThink",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "noThink",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleNoThink",
+            "inputs": [
+              {
+                "name": "toggleNoThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "noThink ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "noThink",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clamp Thinking\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-clamp\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 321,
+        "conditional": false,
+        "expression": "{ onClick: toggleNoThink, className: noThink ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": noThink, title: \"Clamp Thinking\", \"data-testid\": \"ai-chat-clamp\"...",
+        "inputs": [
+          {
+            "name": "toggleNoThink",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "noThink",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleNoThink",
+            "inputs": [
+              {
+                "name": "toggleNoThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "noThink ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "noThink",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clamp Thinking\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-clamp\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 321,
+        "conditional": false,
+        "expression": "{ onClick: toggleNoThink, className: noThink ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": noThink, title: \"Clamp Thinking\", \"data-testid\": \"ai-chat-clamp\"...",
+        "inputs": [
+          {
+            "name": "toggleNoThink",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "noThink",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleNoThink",
+            "inputs": [
+              {
+                "name": "toggleNoThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "noThink ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "noThink",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clamp Thinking\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-clamp\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariToggleOutcome": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 307,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowOutcome, className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showOutcome, title: \"Show Outcome\", \"data-testid\": \"ai-c...",
+        "inputs": [
+          {
+            "name": "toggleShowOutcome",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showOutcome",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowOutcome",
+            "inputs": [
+              {
+                "name": "toggleShowOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showOutcome ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showOutcome",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Outcome\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-outcome\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 307,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowOutcome, className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showOutcome, title: \"Show Outcome\", \"data-testid\": \"ai-c...",
+        "inputs": [
+          {
+            "name": "toggleShowOutcome",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showOutcome",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowOutcome",
+            "inputs": [
+              {
+                "name": "toggleShowOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showOutcome ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showOutcome",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Outcome\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-outcome\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 307,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowOutcome, className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showOutcome, title: \"Show Outcome\", \"data-testid\": \"ai-c...",
+        "inputs": [
+          {
+            "name": "toggleShowOutcome",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showOutcome",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowOutcome",
+            "inputs": [
+              {
+                "name": "toggleShowOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showOutcome ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showOutcome",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Outcome\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-outcome\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariToggleTools": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 314,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowTools, className: showTools ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showTools, title: \"Show Tools\", \"data-testid\": \"ai-chat-tool...",
+        "inputs": [
+          {
+            "name": "toggleShowTools",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showTools",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowTools",
+            "inputs": [
+              {
+                "name": "toggleShowTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showTools ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showTools",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Tools\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-tools\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 314,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowTools, className: showTools ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showTools, title: \"Show Tools\", \"data-testid\": \"ai-chat-tool...",
+        "inputs": [
+          {
+            "name": "toggleShowTools",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showTools",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowTools",
+            "inputs": [
+              {
+                "name": "toggleShowTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showTools ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showTools",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Tools\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-tools\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 314,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowTools, className: showTools ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showTools, title: \"Show Tools\", \"data-testid\": \"ai-chat-tool...",
+        "inputs": [
+          {
+            "name": "toggleShowTools",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showTools",
+            "declaredAt": {
+              "line": 154,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowTools",
+            "inputs": [
+              {
+                "name": "toggleShowTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showTools ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showTools",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 154,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Tools\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-tools\"",
+            "inputs": []
           }
         ]
       }
@@ -3237,101 +4625,6 @@
                 }
               }
             ]
-          }
-        ]
-      }
-    ],
-    "hariTools": [
-      {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 323,
-        "conditional": false,
-        "expression": "{ onClick: toggleShowTools, className: showTools ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showTools, title: \"Show Tools\", \"data-testid\": \"ai-chat-tool...",
-        "inputs": [
-          {
-            "name": "toggleShowTools",
-            "declaredAt": {
-              "line": 149,
-              "kind": "const",
-              "via": "useDebugMode"
-            }
-          },
-          {
-            "name": "showTools",
-            "declaredAt": {
-              "line": 149,
-              "kind": "const",
-              "via": "useDebugMode"
-            }
-          },
-          {
-            "name": "ACTIVE_TOGGLE_CLASS",
-            "declaredAt": {
-              "line": 36,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "onClick",
-            "expression": "toggleShowTools",
-            "inputs": [
-              {
-                "name": "toggleShowTools",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              }
-            ]
-          },
-          {
-            "key": "className",
-            "expression": "showTools ? ACTIVE_TOGGLE_CLASS : undefined",
-            "inputs": [
-              {
-                "name": "showTools",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              },
-              {
-                "name": "ACTIVE_TOGGLE_CLASS",
-                "declaredAt": {
-                  "line": 36,
-                  "kind": "const"
-                }
-              }
-            ]
-          },
-          {
-            "key": "aria-pressed",
-            "expression": "showTools",
-            "inputs": [
-              {
-                "name": "showTools",
-                "declaredAt": {
-                  "line": 149,
-                  "kind": "const",
-                  "via": "useDebugMode"
-                }
-              }
-            ]
-          },
-          {
-            "key": "title",
-            "expression": "\"Show Tools\"",
-            "inputs": []
-          },
-          {
-            "key": "data-testid",
-            "expression": "\"ai-chat-tools\"",
-            "inputs": []
           }
         ]
       }
@@ -3441,85 +4734,6 @@
                   "line": 27,
                   "kind": "const",
                   "via": "useState"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "hariTurns": [
-      {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 344,
-        "conditional": false,
-        "expression": "{ children: transcript, ref: transcriptRef, onScroll: onTranscriptScroll, }",
-        "inputs": [
-          {
-            "name": "transcript",
-            "declaredAt": {
-              "line": 305,
-              "kind": "const",
-              "via": "useMemo"
-            }
-          },
-          {
-            "name": "transcriptRef",
-            "declaredAt": {
-              "line": 178,
-              "kind": "const",
-              "via": "useRef"
-            }
-          },
-          {
-            "name": "onTranscriptScroll",
-            "declaredAt": {
-              "line": 210,
-              "kind": "const",
-              "via": "useCallback"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "children",
-            "expression": "transcript",
-            "inputs": [
-              {
-                "name": "transcript",
-                "declaredAt": {
-                  "line": 305,
-                  "kind": "const",
-                  "via": "useMemo"
-                }
-              }
-            ]
-          },
-          {
-            "key": "ref",
-            "expression": "transcriptRef",
-            "inputs": [
-              {
-                "name": "transcriptRef",
-                "declaredAt": {
-                  "line": 178,
-                  "kind": "const",
-                  "via": "useRef"
-                }
-              }
-            ]
-          },
-          {
-            "key": "onScroll",
-            "expression": "onTranscriptScroll",
-            "inputs": [
-              {
-                "name": "onTranscriptScroll",
-                "declaredAt": {
-                  "line": 210,
-                  "kind": "const",
-                  "via": "useCallback"
                 }
               }
             ]
@@ -4671,42 +5885,871 @@
         ]
       }
     ],
+    "paletteClose": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 305,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"ai-chat-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useHari"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 74,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-close\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 305,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"ai-chat-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useHari"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 74,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-close\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 305,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"ai-chat-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useHari"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 74,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-close\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 63,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"properties-palette-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 48,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 48,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-palette-close\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 63,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"properties-palette-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 48,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 48,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-palette-close\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 63,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"properties-palette-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 48,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 48,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-palette-close\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "paletteOption": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 300,
+        "conditional": false,
+        "expression": "{ onClick: onReset, title: \"Clear\", \"data-testid\": \"ai-chat-reset\", }",
+        "inputs": [
+          {
+            "name": "onReset",
+            "declaredAt": {
+              "line": 239,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "onReset",
+            "inputs": [
+              {
+                "name": "onReset",
+                "declaredAt": {
+                  "line": 239,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clear\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-reset\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 300,
+        "conditional": false,
+        "expression": "{ onClick: onReset, title: \"Clear\", \"data-testid\": \"ai-chat-reset\", }",
+        "inputs": [
+          {
+            "name": "onReset",
+            "declaredAt": {
+              "line": 239,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "onReset",
+            "inputs": [
+              {
+                "name": "onReset",
+                "declaredAt": {
+                  "line": 239,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clear\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-reset\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 300,
+        "conditional": false,
+        "expression": "{ onClick: onReset, title: \"Clear\", \"data-testid\": \"ai-chat-reset\", }",
+        "inputs": [
+          {
+            "name": "onReset",
+            "declaredAt": {
+              "line": 239,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "onReset",
+            "inputs": [
+              {
+                "name": "onReset",
+                "declaredAt": {
+                  "line": 239,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clear\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-reset\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 57,
+        "conditional": false,
+        "expression": "{ onClick: dock, title: \"Dock panel\", \"data-testid\": \"properties-dock-toggle\", }",
+        "inputs": [
+          {
+            "name": "dock",
+            "declaredAt": {
+              "line": 47,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "dock",
+            "inputs": [
+              {
+                "name": "dock",
+                "declaredAt": {
+                  "line": 47,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Dock panel\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-dock-toggle\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 57,
+        "conditional": false,
+        "expression": "{ onClick: dock, title: \"Dock panel\", \"data-testid\": \"properties-dock-toggle\", }",
+        "inputs": [
+          {
+            "name": "dock",
+            "declaredAt": {
+              "line": 47,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "dock",
+            "inputs": [
+              {
+                "name": "dock",
+                "declaredAt": {
+                  "line": 47,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Dock panel\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-dock-toggle\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 57,
+        "conditional": false,
+        "expression": "{ onClick: dock, title: \"Dock panel\", \"data-testid\": \"properties-dock-toggle\", }",
+        "inputs": [
+          {
+            "name": "dock",
+            "declaredAt": {
+              "line": 47,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "dock",
+            "inputs": [
+              {
+                "name": "dock",
+                "declaredAt": {
+                  "line": 47,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Dock panel\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-dock-toggle\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "paletteOptionIcon": [
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 62,
+        "conditional": false,
+        "expression": "{ icon: \"seldon-panels\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "\"seldon-panels\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 62,
+        "conditional": false,
+        "expression": "{ icon: \"seldon-panels\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "\"seldon-panels\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 62,
+        "conditional": false,
+        "expression": "{ icon: \"seldon-panels\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "\"seldon-panels\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "paletteTopBar": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 299,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 297,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 426,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 297,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 426,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 299,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 297,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 426,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 297,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 426,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "renderPalette",
+        "line": 299,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 297,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 426,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 297,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 426,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 56,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 54,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 115,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 54,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 115,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 56,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 54,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 115,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 54,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 115,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 56,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 54,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 115,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 54,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 115,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "propertiesTree": [
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 152,
+        "line": 213,
         "conditional": false,
-        "expression": "{ style: styles.frame, children: <PropertiesTree {...deferredState.treeProps} sections={sections} />, }",
+        "expression": "{ style: styles.frame, children: tree, }",
         "inputs": [
           {
             "name": "styles",
             "declaredAt": {
-              "line": 509,
+              "line": 583,
               "kind": "const"
             }
           },
           {
-            "name": "PropertiesTree",
+            "name": "tree",
             "declaredAt": {
-              "line": 176,
-              "kind": "function"
-            }
-          },
-          {
-            "name": "deferredState",
-            "declaredAt": {
-              "line": 84,
-              "kind": "const",
-              "via": "useDeferredValue"
-            }
-          },
-          {
-            "name": "sections",
-            "declaredAt": {
-              "line": 89,
-              "kind": "const",
-              "via": "useMemo"
+              "line": 142,
+              "kind": "const"
             }
           }
         ],
@@ -4718,7 +6761,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 509,
+                  "line": 583,
                   "kind": "const"
                 }
               }
@@ -4726,29 +6769,13 @@
           },
           {
             "key": "children",
-            "expression": "<PropertiesTree {...deferredState.treeProps} sections={sections} />",
+            "expression": "tree",
             "inputs": [
               {
-                "name": "PropertiesTree",
+                "name": "tree",
                 "declaredAt": {
-                  "line": 176,
-                  "kind": "function"
-                }
-              },
-              {
-                "name": "deferredState",
-                "declaredAt": {
-                  "line": 84,
-                  "kind": "const",
-                  "via": "useDeferredValue"
-                }
-              },
-              {
-                "name": "sections",
-                "declaredAt": {
-                  "line": 89,
-                  "kind": "const",
-                  "via": "useMemo"
+                  "line": 142,
+                  "kind": "const"
                 }
               }
             ]
@@ -4758,38 +6785,22 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 152,
+        "line": 213,
         "conditional": false,
-        "expression": "{ style: styles.frame, children: <PropertiesTree {...deferredState.treeProps} sections={sections} />, }",
+        "expression": "{ style: styles.frame, children: tree, }",
         "inputs": [
           {
             "name": "styles",
             "declaredAt": {
-              "line": 509,
+              "line": 583,
               "kind": "const"
             }
           },
           {
-            "name": "PropertiesTree",
+            "name": "tree",
             "declaredAt": {
-              "line": 176,
-              "kind": "function"
-            }
-          },
-          {
-            "name": "deferredState",
-            "declaredAt": {
-              "line": 84,
-              "kind": "const",
-              "via": "useDeferredValue"
-            }
-          },
-          {
-            "name": "sections",
-            "declaredAt": {
-              "line": 89,
-              "kind": "const",
-              "via": "useMemo"
+              "line": 142,
+              "kind": "const"
             }
           }
         ],
@@ -4801,7 +6812,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 509,
+                  "line": 583,
                   "kind": "const"
                 }
               }
@@ -4809,29 +6820,13 @@
           },
           {
             "key": "children",
-            "expression": "<PropertiesTree {...deferredState.treeProps} sections={sections} />",
+            "expression": "tree",
             "inputs": [
               {
-                "name": "PropertiesTree",
+                "name": "tree",
                 "declaredAt": {
-                  "line": 176,
-                  "kind": "function"
-                }
-              },
-              {
-                "name": "deferredState",
-                "declaredAt": {
-                  "line": 84,
-                  "kind": "const",
-                  "via": "useDeferredValue"
-                }
-              },
-              {
-                "name": "sections",
-                "declaredAt": {
-                  "line": 89,
-                  "kind": "const",
-                  "via": "useMemo"
+                  "line": 142,
+                  "kind": "const"
                 }
               }
             ]
@@ -4901,14 +6896,14 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 126,
+        "line": 180,
         "conditional": false,
         "expression": "{ ...filter.input }",
         "inputs": [
           {
             "name": "filter",
             "declaredAt": {
-              "line": 75,
+              "line": 97,
               "kind": "const",
               "via": "useFilterInput"
             }
@@ -4919,14 +6914,14 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 126,
+        "line": 180,
         "conditional": false,
         "expression": "{ ...filter.input }",
         "inputs": [
           {
             "name": "filter",
             "declaredAt": {
-              "line": 75,
+              "line": 97,
               "kind": "const",
               "via": "useFilterInput"
             }
@@ -4939,14 +6934,14 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 127,
+        "line": 181,
         "conditional": false,
         "expression": "{ ...filter.buttonIconic }",
         "inputs": [
           {
             "name": "filter",
             "declaredAt": {
-              "line": 75,
+              "line": 97,
               "kind": "const",
               "via": "useFilterInput"
             }
@@ -4957,14 +6952,14 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 127,
+        "line": 181,
         "conditional": false,
         "expression": "{ ...filter.buttonIconic }",
         "inputs": [
           {
             "name": "filter",
             "declaredAt": {
-              "line": 75,
+              "line": 97,
               "kind": "const",
               "via": "useFilterInput"
             }
@@ -4977,14 +6972,14 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 125,
+        "line": 179,
         "conditional": false,
         "expression": "{ ...filter.comboboxField }",
         "inputs": [
           {
             "name": "filter",
             "declaredAt": {
-              "line": 75,
+              "line": 97,
               "kind": "const",
               "via": "useFilterInput"
             }
@@ -4995,14 +6990,14 @@
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 125,
+        "line": 179,
         "conditional": false,
         "expression": "{ ...filter.comboboxField }",
         "inputs": [
           {
             "name": "filter",
             "declaredAt": {
-              "line": 75,
+              "line": 97,
               "kind": "const",
               "via": "useFilterInput"
             }
@@ -5044,6 +7039,265 @@
           }
         ],
         "props": []
+      }
+    ],
+    "propertyState": [
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 64,
+        "conditional": false,
+        "expression": "{ onClick: panel.openStateMenu, disabled: panel.stateDisabled, \"data-testid\": \"board-state-trigger\", }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "panel.openStateMenu",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "panel.stateDisabled",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"board-state-trigger\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 64,
+        "conditional": false,
+        "expression": "{ onClick: panel.openStateMenu, disabled: panel.stateDisabled, \"data-testid\": \"board-state-trigger\", }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "panel.openStateMenu",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "panel.stateDisabled",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"board-state-trigger\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 64,
+        "conditional": false,
+        "expression": "{ onClick: panel.openStateMenu, disabled: panel.stateDisabled, \"data-testid\": \"board-state-trigger\", }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "panel.openStateMenu",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "panel.stateDisabled",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"board-state-trigger\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "propertyStateLabel": [
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 69,
+        "conditional": false,
+        "expression": "{ children: panel.stateLabel }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "panel.stateLabel",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 69,
+        "conditional": false,
+        "expression": "{ children: panel.stateLabel }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "panel.stateLabel",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 69,
+        "conditional": false,
+        "expression": "{ children: panel.stateLabel }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "panel.stateLabel",
+            "inputs": [
+              {
+                "name": "panel",
+                "declaredAt": {
+                  "line": 44,
+                  "kind": "const",
+                  "via": "usePropertiesPanel"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "propertyToggleActions": [
@@ -5171,6 +7425,138 @@
           }
         ],
         "props": []
+      }
+    ],
+    "propertyTogglePanel": [
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 188,
+        "conditional": false,
+        "expression": "{ onClick: floatProperties, \"aria-pressed\": propertiesFloating, title: \"Detach panel\", \"data-testid\": \"properties-dock-toggle\", }",
+        "inputs": [
+          {
+            "name": "floatProperties",
+            "declaredAt": {
+              "line": 171,
+              "kind": "const",
+              "via": "useEditorConfig"
+            }
+          },
+          {
+            "name": "propertiesFloating",
+            "declaredAt": {
+              "line": 171,
+              "kind": "const",
+              "via": "useEditorConfig"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "floatProperties",
+            "inputs": [
+              {
+                "name": "floatProperties",
+                "declaredAt": {
+                  "line": 171,
+                  "kind": "const",
+                  "via": "useEditorConfig"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "propertiesFloating",
+            "inputs": [
+              {
+                "name": "propertiesFloating",
+                "declaredAt": {
+                  "line": 171,
+                  "kind": "const",
+                  "via": "useEditorConfig"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Detach panel\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-dock-toggle\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 188,
+        "conditional": false,
+        "expression": "{ onClick: floatProperties, \"aria-pressed\": propertiesFloating, title: \"Detach panel\", \"data-testid\": \"properties-dock-toggle\", }",
+        "inputs": [
+          {
+            "name": "floatProperties",
+            "declaredAt": {
+              "line": 171,
+              "kind": "const",
+              "via": "useEditorConfig"
+            }
+          },
+          {
+            "name": "propertiesFloating",
+            "declaredAt": {
+              "line": 171,
+              "kind": "const",
+              "via": "useEditorConfig"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "floatProperties",
+            "inputs": [
+              {
+                "name": "floatProperties",
+                "declaredAt": {
+                  "line": 171,
+                  "kind": "const",
+                  "via": "useEditorConfig"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "propertiesFloating",
+            "inputs": [
+              {
+                "name": "propertiesFloating",
+                "declaredAt": {
+                  "line": 171,
+                  "kind": "const",
+                  "via": "useEditorConfig"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Detach panel\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"properties-dock-toggle\"",
+            "inputs": []
+          }
+        ]
       }
     ],
     "propertyToggleSwitch": [
@@ -6461,6 +8847,304 @@
     ]
   },
   "slots": {
+    "BarFilter": {
+      "buttonIconic": [
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 78,
+          "expression": "panel.filter.buttonIconic",
+          "inputs": [
+            {
+              "name": "panel",
+              "declaredAt": {
+                "line": 44,
+                "kind": "const",
+                "via": "usePropertiesPanel"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "comboboxField": [
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 76,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 20,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "input": [
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 77,
+          "expression": "panel.filter.input",
+          "inputs": [
+            {
+              "name": "panel",
+              "declaredAt": {
+                "line": 44,
+                "kind": "const",
+                "via": "usePropertiesPanel"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ]
+    },
+    "BarHari": {
+      "buttonToggle2": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 358,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "buttonToggle3": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 359,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textTitle": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 357,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ]
+    },
+    "BarHariModels": {
+      "buttonIconic": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 373,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "buttonMenu": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 367,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "buttonMenu2": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 369,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "chip": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 371,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textLabel": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 368,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 370,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textLabel3": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 372,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textarea": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 366,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ]
+    },
+    "BarState": {
+      "buttonMenu": [
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 73,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 20,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textLabel": [
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 73,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 20,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ]
+    },
     "BarTopbar": {
       "buttonMenu": [
         {
@@ -8839,7 +11523,7 @@
         {
           "file": "app/editor/Editor.tsx",
           "component": "Editor",
-          "line": 31,
+          "line": 33,
           "expression": "\"main\"",
           "inputs": [],
           "spread": false
@@ -11330,150 +14014,68 @@
         }
       ]
     },
-    "PanelHari": {
+    "PanelPalette": {
+      "buttonIconic": [
+        {
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 392,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 92,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 20,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
       "buttonIconic2": [
         {
           "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 411,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "buttonIconic3": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 421,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "buttonMenu": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 415,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "buttonMenu2": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 417,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "buttonToggle": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 408,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "buttonToggle2": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 409,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "buttonToggle3": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 410,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "chip": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 419,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "textLabel": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 416,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "textLabel2": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 418,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "textLabel3": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 420,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "textTitle": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 407,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ],
-      "textarea": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 413,
-          "expression": "{}",
-          "inputs": [],
-          "spread": true
-        }
-      ]
-    },
-    "PanelPalette": {
-      "bar": [
-        {
-          "file": "app/palettes/PanelPaletteController.tsx",
-          "component": "PanelPaletteController",
-          "line": 83,
-          "expression": "barHandle",
+          "component": "renderPalette",
+          "line": 393,
+          "expression": "EMPTY_SLOT",
           "inputs": [
             {
-              "name": "barHandle",
+              "name": "EMPTY_SLOT",
               "declaredAt": {
-                "line": 60,
+                "line": 41,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 93,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 20,
                 "kind": "const"
               }
             }
@@ -11481,17 +14083,33 @@
           "spread": false
         }
       ],
-      "buttonIconic": [
+      "frame2": [
         {
-          "file": "app/palettes/PanelPaletteController.tsx",
-          "component": "PanelPaletteController",
-          "line": 85,
-          "expression": "closeButton",
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 394,
+          "expression": "topBarSlot",
           "inputs": [
             {
-              "name": "closeButton",
+              "name": "topBarSlot",
               "declaredAt": {
-                "line": 62,
+                "line": 378,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 94,
+          "expression": "topBarSlot",
+          "inputs": [
+            {
+              "name": "topBarSlot",
+              "declaredAt": {
+                "line": 83,
                 "kind": "const"
               }
             }
@@ -11499,17 +14117,33 @@
           "spread": false
         }
       ],
-      "frame": [
+      "frame3": [
         {
-          "file": "app/palettes/PanelPaletteController.tsx",
-          "component": "PanelPaletteController",
-          "line": 86,
-          "expression": "contentFrame",
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 395,
+          "expression": "contentsSlot",
           "inputs": [
             {
-              "name": "contentFrame",
+              "name": "contentsSlot",
               "declaredAt": {
-                "line": 63,
+                "line": 379,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 95,
+          "expression": "contentsSlot",
+          "inputs": [
+            {
+              "name": "contentsSlot",
+              "declaredAt": {
+                "line": 84,
                 "kind": "const"
               }
             }
@@ -11517,17 +14151,33 @@
           "spread": false
         }
       ],
-      "textTitle": [
+      "frame5": [
         {
-          "file": "app/palettes/PanelPaletteController.tsx",
-          "component": "PanelPaletteController",
-          "line": 84,
-          "expression": "dialogTitle",
+          "file": "app/palettes/hari/HariController.tsx",
+          "component": "renderPalette",
+          "line": 396,
+          "expression": "bottomBarSlot",
           "inputs": [
             {
-              "name": "dialogTitle",
+              "name": "bottomBarSlot",
               "declaredAt": {
-                "line": 61,
+                "line": 385,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/properties/PanelPropertyController.tsx",
+          "component": "renderPalette",
+          "line": 96,
+          "expression": "bottomBarSlot",
+          "inputs": [
+            {
+              "name": "bottomBarSlot",
+              "declaredAt": {
+                "line": 85,
                 "kind": "const"
               }
             }
@@ -11775,7 +14425,7 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 142,
+          "line": 202,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11783,7 +14433,25 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 162,
+          "line": 223,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "buttonToggle": [
+        {
+          "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+          "component": "PropertiesSidebar",
+          "line": 204,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+          "component": "PropertiesSidebar",
+          "line": 225,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11793,7 +14461,7 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 141,
+          "line": 201,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11801,7 +14469,7 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 161,
+          "line": 222,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11811,7 +14479,7 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 143,
+          "line": 203,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11819,7 +14487,7 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 163,
+          "line": 224,
           "expression": "{}",
           "inputs": [],
           "spread": false

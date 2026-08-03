@@ -18,14 +18,16 @@ import { ThemesDialog } from "../dialogs/themes/ThemesDialog"
 import { FocusRingOverlay } from "../overlays/FocusRingOverlay"
 import { HariController } from "../palettes/hari/HariController"
 import { ObjectsSidebar } from "../sidebars/objects/ObjectsSidebar"
+import { PanelPropertyController } from "../sidebars/properties/PanelPropertyController"
 import { PropertiesSidebar } from "../sidebars/properties/PropertiesSidebar"
 import { EditorCrossfade } from "./EditorCrossfade.bespoke"
 
 import type { CSSProperties } from "react"
 
 export default function Editor() {
-  const { showPanels } = useEditorConfig()
+  const { showPanels, propertiesFloating } = useEditorConfig()
   const showSidePanels = showPanels
+  const showDockedProperties = showSidePanels && !propertiesFloating
 
   return (
     <Frame wrapperElement="main" style={styles.main}>
@@ -49,7 +51,7 @@ export default function Editor() {
             minSize={280}
             maxSize={600}
             preferredSize={SIDEBAR_INITIAL_WIDTH}
-            visible={showSidePanels}
+            visible={showDockedProperties}
             priority={LayoutPriority.Low}
           >
             <PropertiesSidebar />
@@ -66,6 +68,7 @@ export default function Editor() {
       <FontCollectionsDialog />
       <IconSetsDialog />
       <HariController />
+      <PanelPropertyController />
       <FocusRingOverlay />
       <EditorShortcuts />
     </Frame>

@@ -52,6 +52,9 @@ export function useMenuConfig(): MenuConfig {
   const {
     showPanels,
     togglePanels,
+    propertiesFloating,
+    propertiesFloatingOpen,
+    showProperties,
     showSelection,
     toggleShowSelection,
     showFocus,
@@ -725,6 +728,12 @@ export function useMenuConfig(): MenuConfig {
             active: !showPanels,
             shortcut: "\\",
           },
+          {
+            id: "show-properties",
+            label: "Show Properties",
+            action: showProperties,
+            active: propertiesFloating && propertiesFloatingOpen,
+          },
           "separator",
           {
             id: "auto-expand-selection",
@@ -838,6 +847,9 @@ export function useMenuConfig(): MenuConfig {
       devMenuItems,
       togglePanels,
       showPanels,
+      showProperties,
+      propertiesFloating,
+      propertiesFloatingOpen,
       toggleShowSelection,
       showSelection,
       toggleShowFocus,

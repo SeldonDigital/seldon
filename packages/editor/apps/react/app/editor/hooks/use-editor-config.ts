@@ -3,6 +3,8 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
+import type { Rect } from "@seldon/components/utils/resize"
+
 /**
  * Editor interface light/dark mode. `"system"` follows the OS appearance,
  * resolving to light or dark at runtime. Applies to the editor chrome only; it
@@ -44,6 +46,22 @@ interface EditorConfigState {
   // Panel settings
   showPanels: boolean
   setShowPanels: (showPanels: boolean) => void
+
+  // Properties panel: floating (detached palette) vs docked (right-edge pane),
+  // and whether the floating palette is currently shown. Docked stays visible
+  // with the sidebars; only the floating palette can be hidden and reopened.
+  propertiesFloating: boolean
+  setPropertiesFloating: (enabled: boolean) => void
+  propertiesFloatingOpen: boolean
+  setPropertiesFloatingOpen: (enabled: boolean) => void
+
+  // Persisted position and size of the floating palettes, so each reopens where
+  // the user last left it, session to session. Null until the user moves or
+  // resizes the palette, where it falls back to its default opening rect.
+  propertiesPanelRect: Rect | null
+  setPropertiesPanelRect: (rect: Rect) => void
+  hariPanelRect: Rect | null
+  setHariPanelRect: (rect: Rect) => void
 
   // Auto-scroll settings
   autoScrollToSelection: boolean
@@ -142,6 +160,22 @@ const useStore = create<EditorConfigState>()(
       showPanels: true,
       setShowPanels: (showPanels) => set((state) => ({ ...state, showPanels })),
 
+      // Properties panel float settings (docked by default; palette shown once
+      // it is detached, until the user closes it)
+      propertiesFloating: false,
+      setPropertiesFloating: (enabled) =>
+        set((state) => ({ ...state, propertiesFloating: enabled })),
+      propertiesFloatingOpen: true,
+      setPropertiesFloatingOpen: (enabled) =>
+        set((state) => ({ ...state, propertiesFloatingOpen: enabled })),
+
+      // Persisted floating palette geometry (null until first moved/resized)
+      propertiesPanelRect: null,
+      setPropertiesPanelRect: (rect) =>
+        set((state) => ({ ...state, propertiesPanelRect: rect })),
+      hariPanelRect: null,
+      setHariPanelRect: (rect) => set((state) => ({ ...state, hariPanelRect: rect })),
+
       // Auto-scroll settings
       autoScrollToSelection: true,
       setAutoScrollToSelection: (enabled) =>
@@ -222,6 +256,10 @@ const useStore = create<EditorConfigState>()(
         wireframeMode: state.wireframeMode,
         showConnectors: state.showConnectors,
         showPanels: state.showPanels,
+        propertiesFloating: state.propertiesFloating,
+        propertiesFloatingOpen: state.propertiesFloatingOpen,
+        propertiesPanelRect: state.propertiesPanelRect,
+        hariPanelRect: state.hariPanelRect,
         autoScrollToSelection: state.autoScrollToSelection,
         autoExpandOnSelection: state.autoExpandOnSelection,
         showUnusedProperties: state.showUnusedProperties,
@@ -256,6 +294,14 @@ export function useEditorConfig() {
     setShowRefBadges,
     showPanels,
     setShowPanels,
+    propertiesFloating,
+    setPropertiesFloating,
+    propertiesFloatingOpen,
+    setPropertiesFloatingOpen,
+    propertiesPanelRect,
+    setPropertiesPanelRect,
+    hariPanelRect,
+    setHariPanelRect,
     autoScrollToSelection,
     setAutoScrollToSelection,
     autoExpandOnSelection,
@@ -299,6 +345,14 @@ export function useEditorConfig() {
       setShowRefBadges: state.setShowRefBadges,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
+      propertiesFloating: state.propertiesFloating,
+      setPropertiesFloating: state.setPropertiesFloating,
+      propertiesFloatingOpen: state.propertiesFloatingOpen,
+      setPropertiesFloatingOpen: state.setPropertiesFloatingOpen,
+      propertiesPanelRect: state.propertiesPanelRect,
+      setPropertiesPanelRect: state.setPropertiesPanelRect,
+      hariPanelRect: state.hariPanelRect,
+      setHariPanelRect: state.setHariPanelRect,
       autoScrollToSelection: state.autoScrollToSelection,
       setAutoScrollToSelection: state.setAutoScrollToSelection,
       autoExpandOnSelection: state.autoExpandOnSelection,
@@ -334,6 +388,25 @@ export function useEditorConfig() {
   const togglePanels = useCallback(() => {
     setShowPanels(!showPanels)
   }, [setShowPanels, showPanels])
+
+  // Detach the Properties panel into a floating palette and show it. Docking is
+  // the plain setter with `false`.
+  const floatProperties = useCallback(() => {
+    setPropertiesFloating(true)
+    setPropertiesFloatingOpen(true)
+  }, [setPropertiesFloating, setPropertiesFloatingOpen])
+
+  // Menu action mirroring "Show Chat": while docked, detach and show; while
+  // floating, toggle the palette's visibility.
+  const showProperties = useCallback(() => {
+    if (!propertiesFloating) {
+      floatProperties()
+
+      return
+    }
+
+    setPropertiesFloatingOpen(!propertiesFloatingOpen)
+  }, [propertiesFloating, propertiesFloatingOpen, floatProperties, setPropertiesFloatingOpen])
 
   const toggleShowSelection = useCallback(() => {
     setShowSelection(!showSelection)
@@ -411,6 +484,18 @@ export function useEditorConfig() {
     showPanels,
     setShowPanels,
     togglePanels,
+
+    // Properties panel float methods
+    propertiesFloating,
+    setPropertiesFloating,
+    propertiesFloatingOpen,
+    setPropertiesFloatingOpen,
+    propertiesPanelRect,
+    setPropertiesPanelRect,
+    hariPanelRect,
+    setHariPanelRect,
+    floatProperties,
+    showProperties,
 
     // Auto-scroll methods
     autoScrollToSelection,
