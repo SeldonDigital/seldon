@@ -17,6 +17,7 @@ function collectBoardDuplicateLabelIds(
   board: Board,
   workspace: Workspace,
   into: Set<string>,
+  includeNode?: (nodeId: EntryNodeId) => boolean,
 ): void {
   const firstIdByLabel = new Map<string, string>()
 
@@ -24,6 +25,7 @@ function collectBoardDuplicateLabelIds(
     const node = workspace.nodes[ref.id]
 
     if (!node || !isUserVariant(node)) continue
+    if (includeNode && !includeNode(ref.id)) continue
 
     if (firstIdByLabel.has(node.label)) {
       into.add(ref.id)
@@ -35,13 +37,18 @@ function collectBoardDuplicateLabelIds(
 
 /**
  * Returns every user-variant node id whose label duplicates an earlier sibling
- * on the same board, across all composition boards.
+ * on the same board, across all composition boards. Pass `includeNode` to scope
+ * the check to a subset, such as the variants an export actually emits, so a
+ * pruned variant cannot collide with a kept one.
  */
-export function getDuplicateVariantLabelNodeIds(workspace: Workspace): Set<string> {
+export function getDuplicateVariantLabelNodeIds(
+  workspace: Workspace,
+  includeNode?: (nodeId: EntryNodeId) => boolean,
+): Set<string> {
   const duplicates = new Set<string>()
 
   for (const board of getCompositionContainers(workspace)) {
-    collectBoardDuplicateLabelIds(board, workspace, duplicates)
+    collectBoardDuplicateLabelIds(board, workspace, duplicates, includeNode)
   }
 
   return duplicates

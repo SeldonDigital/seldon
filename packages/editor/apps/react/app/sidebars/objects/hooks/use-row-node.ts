@@ -15,6 +15,10 @@ import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getNodeRowIcon } from "@seldon/core/icon-registry"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
+import {
+  isDisplayExportConflictNode,
+  isDisplayExportConflictSource,
+} from "@seldon/core/workspace/helpers/general/get-display-export-conflicts"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
@@ -81,6 +85,14 @@ export function useRowNode(
   // A user variant that repeats a sibling's label reads as an error: it exports
   // under a colliding component name and blocks factory export.
   const isDuplicateLabel = nodeExistsInWorkspace && isDuplicateVariantLabel(workspace, node.id)
+
+  // Display export conflict: a shown node still copies a mock or exclude
+  // variant, so the source is kept in the export. The downstream node reads as
+  // an error (negative) and the source variant reads as its origin (punch).
+  const isDisplayExportConflict =
+    nodeExistsInWorkspace && isDisplayExportConflictNode(node.id, workspace)
+  const isDisplayExportConflictSourceNode =
+    nodeExistsInWorkspace && isDisplayExportConflictSource(node.id, workspace)
   const expandedId = node.id
   const isExpandedState = useIsExpanded(expandedId)
 
@@ -253,6 +265,8 @@ export function useRowNode(
     dimStyle,
     labelDecorationStyle,
     isDuplicateLabel,
+    isDisplayExportConflict,
+    isDisplayExportConflictSource: isDisplayExportConflictSourceNode,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,

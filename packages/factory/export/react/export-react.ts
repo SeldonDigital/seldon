@@ -35,10 +35,6 @@ export async function exportReact(
   const filesToExport: FileToExport[] = []
   let workspace = input
 
-  // Block export when any board has duplicate variant names, which would emit
-  // colliding component files. The editor catches this and alerts the user.
-  assertUniqueVariantNames(workspace)
-
   const { parentIndex } = buildExportContext(workspace)
 
   const {
@@ -51,6 +47,11 @@ export async function exportReact(
   } = buildStyleRegistry(workspace, options.publishAll, parentIndex)
 
   let componentsToExport = getComponentsToExport(workspace, options, nodeIdToClass)
+
+  // Block export when two emitted variants share a name, which would collide on
+  // one output path. Scoped to the emitted set so a pruned mock or exclude
+  // variant never blocks. The editor catches this and alerts the user.
+  assertUniqueVariantNames(workspace, new Set(componentsToExport.map((item) => item.variantId)))
 
   const levelOrder = ORDERED_COMPONENT_LEVELS.slice().reverse()
 

@@ -35,8 +35,6 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
   const filesToExport: FileToExport[] = []
   let workspace = input
 
-  assertUniqueVariantNames(workspace)
-
   const { parentIndex } = buildExportContext(workspace)
 
   const {
@@ -49,6 +47,11 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
   } = buildStyleRegistry(workspace, options.publishAll, parentIndex)
 
   let componentsToExport = getComponentsToExport(workspace, options, nodeIdToClass)
+
+  // Block export when two emitted variants share a name, which would collide on
+  // one output path. Scoped to the emitted set so a pruned mock or exclude
+  // variant never blocks.
+  assertUniqueVariantNames(workspace, new Set(componentsToExport.map((item) => item.variantId)))
 
   const levelOrder = ORDERED_COMPONENT_LEVELS.slice().reverse()
 
