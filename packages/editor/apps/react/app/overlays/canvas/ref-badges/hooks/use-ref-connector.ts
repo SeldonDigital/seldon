@@ -1,12 +1,16 @@
 "use client"
 
 import { useSharedStore } from "@app/canvas/hooks/use-shared-store"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { setAnchoredNodes } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
-import { layoutConnectors } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import {
+  BOARD_EDGE_GUTTER,
+  layoutConnectors,
+} from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import {
   buildConnectorSources,
   buildPlacedConnectors,
@@ -63,6 +67,7 @@ export function useRefConnector(): RefConnectorState {
   const selectedNodeId = useSelectedNodeId()
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace()
+  const { propertiesFloating } = useEditorConfig()
   // The rect map is written in place, so its version is what says a node has moved.
   const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
   const canvasSize = useCanvasSize()
@@ -98,8 +103,18 @@ export function useRefConnector(): RefConnectorState {
 
   // The badge's own gap spaces the column as well, both between badges and off the canvas
   // top and bottom, so the spacing follows the badge rather than a number kept here.
+  //
+  // A floating properties palette leaves the canvas edge far from the design, so the column
+  // then hangs off the selection's own left edge instead. Docked, it hangs off the canvas
+  // edge beside the sidebar as before.
   const layout = useMemo(() => {
     if (!metrics) return NOTHING_PLACED
+
+    const boardRect =
+      propertiesFloating && selectedNodeId
+        ? (nodeRectsStore.getState().rects.get(selectedNodeId) ?? null)
+        : null
+    const onBoardEdge = boardRect !== null
 
     return layoutConnectors(sources, {
       canvasWidth: canvasSize.width,
@@ -108,10 +123,11 @@ export function useRefConnector(): RefConnectorState {
       badgeHeight: metrics.badgeHeight,
       badgeGap: metrics.badgeGap,
       margin: metrics.badgeGap,
-      gutter: metrics.gutter,
+      gutter: onBoardEdge ? BOARD_EDGE_GUTTER : metrics.gutter,
       side: REF_GUTTER_SIDE,
+      boardEdgeX: onBoardEdge ? boardRect.left : undefined,
     })
-  }, [sources, canvasSize.width, canvasSize.height, metrics])
+  }, [sources, canvasSize.width, canvasSize.height, metrics, propertiesFloating, selectedNodeId, rectsVersion])
 
   const entries = useMemo(
     () => buildPlacedConnectors(layout.placements, refBindings),

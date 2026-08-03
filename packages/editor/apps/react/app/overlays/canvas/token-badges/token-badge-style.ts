@@ -1,4 +1,4 @@
-import { CONNECTOR_Z_INDEX, MUTED_OPACITY } from "../ref-badges/connector-style"
+import { CONNECTOR_Z_INDEX, MUTED_BADGE_FILTER } from "../ref-badges/connector-style"
 
 import type { BadgeBox } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { CSSProperties } from "react"
@@ -80,7 +80,7 @@ export function tokenBadgeMutedStyle(badge: BadgeBox): CSSProperties {
     left: `${badge.left}px`,
     transform: "translateY(-50%)",
     zIndex: CONNECTOR_Z_INDEX,
-    opacity: MUTED_OPACITY,
+    filter: MUTED_BADGE_FILTER,
     pointerEvents: "auto",
     cursor: "pointer",
   }

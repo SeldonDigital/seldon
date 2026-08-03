@@ -7,6 +7,7 @@ import {
   buildTokenConnectorGeometry,
   layoutTokenColumn,
 } from "@seldon/editor/lib/canvas/connectors/token-connectors"
+import { BOARD_EDGE_GUTTER } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { buildTokenSources } from "@seldon/editor/lib/canvas/connectors/token-sources"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import { useMemo } from "react"
@@ -66,6 +67,7 @@ export function useTokenConnector(): TokenConnectorState {
     showAppearanceBadges,
     showTypographyBadges,
     showEffectsBadges,
+    propertiesFloating,
   } = useEditorConfig()
 
   const { flatProperties, theme } = useTokenProperties()
@@ -115,6 +117,10 @@ export function useTokenConnector(): TokenConnectorState {
   // Grouped and seated on the selection: badges cluster by group with a wider gap between
   // groups, and the stack is offset so the group nearest its middle reads straight across
   // while the rest spread above and below.
+  //
+  // A floating properties palette leaves the canvas edge far from the design, so the column
+  // then hangs off the selection's own right edge instead. Docked, it hangs off the canvas
+  // edge beside the sidebar as before.
   const placements = useMemo(() => {
     const rect = sources[0]?.rect
 
@@ -127,11 +133,12 @@ export function useTokenConnector(): TokenConnectorState {
       badgeHeight: metrics.badgeHeight,
       badgeGap: metrics.badgeGap,
       margin: metrics.badgeGap,
-      gutter: metrics.gutter,
+      gutter: propertiesFloating ? BOARD_EDGE_GUTTER : metrics.gutter,
       side: TOKEN_GUTTER_SIDE,
       selectionCenterY: rect.top + rect.height / 2,
+      boardEdgeX: propertiesFloating ? rect.left + rect.width : undefined,
     })
-  }, [sources, canvasSize.width, canvasSize.height, metrics])
+  }, [sources, canvasSize.width, canvasSize.height, metrics, propertiesFloating])
 
   const entries = useMemo(() => buildPlacedTokens(placements, sources), [placements, sources])
 

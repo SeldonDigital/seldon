@@ -88,6 +88,14 @@ export interface RefCardPosition extends RefCardRect {
 export type GutterSide = "left" | "right"
 
 /**
+ * The gap a column keeps off the board edge when it hangs off the board rather than the
+ * canvas edge, in canvas pixels. Overlay geometry, not a style value, so it stays a named
+ * number rather than a token. Used when the properties sidebar is a floating palette and
+ * the canvas edge no longer sits beside the design.
+ */
+export const BOARD_EDGE_GUTTER = 50
+
+/**
  * What the column needs to place badges: the canvas it draws in, the badge sizes measured
  * from a drawn badge, the edge it hangs off, and the gap it keeps from that edge.
  *
@@ -104,6 +112,11 @@ export interface ConnectorLayoutOptions {
   margin: number
   gutter: number
   side: GutterSide
+  /**
+   * The board edge x to hang the column off, when the column should sit beside the design
+   * rather than the canvas edge. Left unset the column hangs off the canvas edge as before.
+   */
+  boardEdgeX?: number
 }
 
 /**
@@ -192,9 +205,10 @@ export function layoutConnectors(
     options
 
   // Placed by the edge it hangs off, so every badge ends the same distance from that edge
-  // whatever the labels are. A label too wide for the canvas stops at the far margin
+  // whatever the labels are. A board edge seats the column beside the design; otherwise it
+  // hangs off the canvas edge. A label too wide for the canvas stops at the far margin
   // rather than sliding off it.
-  const wanted = side === "right" ? canvasWidth - gutter - badgeWidth : gutter
+  const wanted = badgeColumnLeft(options.boardEdgeX, canvasWidth, gutter, badgeWidth, side)
   const badgeLeft = clamp(wanted, margin, Math.max(margin, canvasWidth - margin - badgeWidth))
 
   // The badge edge facing the design, which is where a connector meets the column.
@@ -556,6 +570,24 @@ export function simplify(points: ConnectorPoint[]): ConnectorPoint[] {
   }
 
   return kept
+}
+
+/**
+ * The column's left before clamping. Off a board edge it sits a gutter outside that edge on
+ * the column's side; off the canvas edge it sits a gutter in from it, as the column has done.
+ */
+export function badgeColumnLeft(
+  boardEdgeX: number | undefined,
+  canvasWidth: number,
+  gutter: number,
+  badgeWidth: number,
+  side: GutterSide,
+): number {
+  if (boardEdgeX !== undefined) {
+    return side === "right" ? boardEdgeX + gutter : boardEdgeX - gutter - badgeWidth
+  }
+
+  return side === "right" ? canvasWidth - gutter - badgeWidth : gutter
 }
 
 function clamp(value: number, min: number, max: number): number {

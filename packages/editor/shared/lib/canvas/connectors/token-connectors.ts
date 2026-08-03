@@ -1,4 +1,4 @@
-import { simplify } from "./connector-layout"
+import { badgeColumnLeft, simplify } from "./connector-layout"
 
 import type { NodeRect } from "../overlay/geometry"
 import type { BadgeBox, ConnectorPoint, GutterSide } from "./connector-layout"
@@ -72,6 +72,11 @@ export interface TokenColumnOptions {
   gutter: number
   side: GutterSide
   selectionCenterY: number
+  /**
+   * The board edge x to hang the column off, when it should sit beside the design rather
+   * than the canvas edge. Left unset the column hangs off the canvas edge as before.
+   */
+  boardEdgeX?: number
 }
 
 /** Where a group's trunk meets the node, decided by the group's height against its span. */
@@ -100,7 +105,7 @@ export function layoutTokenColumn(
     options
   const interGroupGap = badgeHeight / 2 + badgeHeight
 
-  const wanted = side === "right" ? canvasWidth - gutter - badgeWidth : gutter
+  const wanted = badgeColumnLeft(options.boardEdgeX, canvasWidth, gutter, badgeWidth, side)
   const badgeLeft = clamp(wanted, margin, Math.max(margin, canvasWidth - margin - badgeWidth))
 
   // Tops measured from zero, so the stack's own height is known before it is placed, then
