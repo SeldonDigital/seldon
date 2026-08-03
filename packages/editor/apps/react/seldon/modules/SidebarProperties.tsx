@@ -15,6 +15,7 @@ import { HTMLAttributes } from "react"
 
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
+import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
 import { ComboboxFieldFilter, ComboboxFieldFilterProps } from "../elements/ComboboxFieldFilter"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
@@ -37,6 +38,8 @@ export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
   buttonMenu?: ButtonMenuProps | null
   textLabel?: TextLabelProps | null
   icon3?: IconProps | null
+  buttonToggle?: ButtonToggleProps | null
+  icon4?: IconProps | null
 
   frame2?: FrameProps | null
 }
@@ -95,6 +98,16 @@ const sdn: SidebarPropertiesProps = {
     className: "sdn-icon sdn-icon--y2ct",
     "data-seldon-ref": "boardStateMenuIcon",
   },
+  buttonToggle: {
+    className: "sdn-button-toggle sdn-button-toggle--btlv",
+    "data-seldon-ref": "propertyTogglePanel",
+  },
+  icon4: {
+    icon: "seldon-panels",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "propertyTogglePanelIcon",
+  },
 
   frame2: {
     wrapperElement: "div",
@@ -121,6 +134,8 @@ const sdn: SidebarPropertiesProps = {
  *     ButtonMenu           buttonMenu           -> boardState
  *       TextLabel          textLabel            -> boardStateLabel
  *       Icon               icon3                -> boardStateMenuIcon
+ *     ButtonToggle         buttonToggle         -> propertyTogglePanel
+ *       Icon               icon4                -> propertyTogglePanelIcon
  *   Frame                  frame2               -> propertiesTree
  *
  * @example
@@ -142,6 +157,8 @@ export function SidebarProperties({
   buttonMenu,
   textLabel,
   icon3,
+  buttonToggle,
+  icon4,
 
   frame2,
 
@@ -164,6 +181,8 @@ export function SidebarProperties({
   const buttonMenuProps = mergeOptionalSlot(sdn.buttonMenu, buttonMenu, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const buttonToggleProps = mergeOptionalSlot(sdn.buttonToggle, buttonToggle, seldonRefs)
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
 
   const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
 
@@ -193,6 +212,9 @@ export function SidebarProperties({
                 {textLabelProps !== null && <TextLabel {...textLabelProps} />}
                 {icon3Props !== null && <Icon {...icon3Props} />}
               </ButtonMenu>
+            )}
+            {buttonToggleProps !== null && (
+              <ButtonToggle {...buttonToggleProps} icon={icon4Props} />
             )}
           </Frame>
           <Frame {...frame2Props}></Frame>
