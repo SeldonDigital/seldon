@@ -3,36 +3,37 @@
 import { useSharedStore } from "@app/canvas/hooks/use-shared-store"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
-import { setTokenGutterSide } from "@seldon/editor/lib/canvas/connectors/badge-gutter-store"
 import {
-  getGutterSide,
-  layoutConnectors,
-} from "@seldon/editor/lib/canvas/connectors/connector-layout"
+  buildTokenConnectorGeometry,
+  layoutTokenColumn,
+} from "@seldon/editor/lib/canvas/connectors/token-connectors"
 import { buildTokenSources } from "@seldon/editor/lib/canvas/connectors/token-sources"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
-import { useEffect, useMemo, useRef } from "react"
+import { useMemo } from "react"
 
 import { useCanvasSize } from "../../../hooks/use-canvas-size"
 import { useConnectorMetrics } from "../../ref-badges/hooks/use-connector-metrics"
 import { useFollowCanvasTransform } from "../../ref-badges/hooks/use-follow-canvas-transform"
 import { useTokenProperties } from "./use-token-property-row"
 
+import type { GutterSide } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type {
-  ConnectorLayoutResult,
-  ConnectorPlacement,
-  GutterSide,
-} from "@seldon/editor/lib/canvas/connectors/connector-layout"
+  TokenBadgePlacement,
+  TokenConnectorGeometry,
+} from "@seldon/editor/lib/canvas/connectors/token-connectors"
 import type { TokenBadgeGroup } from "@seldon/editor/lib/canvas/connectors/token-groups"
 import type { TokenSource } from "@seldon/editor/lib/canvas/connectors/token-sources"
 import type { RefObject } from "react"
 
 export interface PlacedToken {
-  placement: ConnectorPlacement
+  placement: TokenBadgePlacement
   source: TokenSource
 }
 
 interface TokenConnectorState {
   entries: PlacedToken[]
+  /** The stubs and per-group trunks the connectors draw, grouped off the badges. */
+  geometry: TokenConnectorGeometry
   canvasSize: { width: number; height: number }
   /** The dot where a connector meets its node, `0` until the metrics are read. */
   anchorRadius: number
@@ -41,25 +42,23 @@ interface TokenConnectorState {
   measureRef: RefObject<HTMLElement | null>
 }
 
-/** Stands in until the badges have been measured, which is what the column places by. */
-const NOTHING_PLACED: ConnectorLayoutResult = {
-  placements: [],
-  omitted: 0,
-  omittedBadge: null,
-}
+const NO_GEOMETRY: TokenConnectorGeometry = { stubs: [], trunks: [] }
+
+const NO_PLACEMENTS: TokenBadgePlacement[] = []
+
+/** Tokens hang off the right edge, nearest the properties sidebar, opposite the refs. */
+const TOKEN_GUTTER_SIDE: GutterSide = "right"
 
 /**
  * The token badges to draw for the current selection, already laid out.
  *
  * Scoped to the selected node's own properties, one badge per enabled group's rows.
  * Every badge anchors to that node, so the column reads as a cluster of the tokens the
- * component carries. The edge the column hangs off is published so the reference badges
- * can favor the opposite one.
+ * component carries. The column hangs off the right edge, opposite the reference column.
  */
 export function useTokenConnector(): TokenConnectorState {
   const selectedNodeId = useSelectedNodeId()
   const canvasSize = useCanvasSize()
-  const gutterSide = useRef<GutterSide>("left")
   const {
     showLayoutBadges,
     showSpaceBadges,
@@ -69,7 +68,7 @@ export function useTokenConnector(): TokenConnectorState {
     showEffectsBadges,
   } = useEditorConfig()
 
-  const { flatProperties } = useTokenProperties()
+  const { flatProperties, theme } = useTokenProperties()
 
   // The rect map is written in place, so its version is what says the node has moved.
   const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
@@ -104,27 +103,24 @@ export function useTokenConnector(): TokenConnectorState {
   const sources = useMemo(() => {
     const rect = selectedNodeId ? (nodeRectsStore.getState().rects.get(selectedNodeId) ?? null) : null
 
-    return buildTokenSources(rect, flatProperties, enabledGroups)
+    return buildTokenSources(rect, flatProperties, enabledGroups, theme)
     // rectsVersion is read through the store so a move re-runs this.
-  }, [selectedNodeId, flatProperties, enabledGroups, rectsVersion])
+  }, [selectedNodeId, flatProperties, enabledGroups, theme, rectsVersion])
 
   const labels = useMemo(() => sources.map((source) => `${source.name}\u0000${source.value}`), [
     sources,
   ])
   const { metrics, measureRef } = useConnectorMetrics(labels, "tokenChip")
 
-  const layout = useMemo(() => {
-    if (!metrics) return NOTHING_PLACED
+  // Grouped and seated on the selection: badges cluster by group with a wider gap between
+  // groups, and the stack is offset so the group nearest its middle reads straight across
+  // while the rest spread above and below.
+  const placements = useMemo(() => {
+    const rect = sources[0]?.rect
 
-    const side = getGutterSide(
-      sources,
-      { canvasWidth: canvasSize.width, gutter: metrics.gutter },
-      gutterSide.current,
-    )
+    if (!metrics || !rect || sources.length === 0) return NO_PLACEMENTS
 
-    gutterSide.current = side
-
-    return layoutConnectors(sources, {
+    return layoutTokenColumn(sources, {
       canvasWidth: canvasSize.width,
       canvasHeight: canvasSize.height,
       badgeWidth: metrics.badgeWidth,
@@ -132,27 +128,32 @@ export function useTokenConnector(): TokenConnectorState {
       badgeGap: metrics.badgeGap,
       margin: metrics.badgeGap,
       gutter: metrics.gutter,
-      side,
+      side: TOKEN_GUTTER_SIDE,
+      selectionCenterY: rect.top + rect.height / 2,
     })
   }, [sources, canvasSize.width, canvasSize.height, metrics])
 
-  // The reference column reads this to favor the opposite edge. Cleared when no token
-  // badges draw, so the reference column falls back to picking its own edge.
-  useEffect(() => {
-    setTokenGutterSide(sources.length > 0 ? gutterSide.current : null)
-  }, [sources.length, layout])
+  const entries = useMemo(() => buildPlacedTokens(placements, sources), [placements, sources])
 
-  useEffect(() => {
-    return () => setTokenGutterSide(null)
-  }, [])
+  // One connector per group: short stubs off each badge into a shared bus, then a single
+  // trunk to the node at the corner the seated stack put the group against.
+  const geometry = useMemo(() => {
+    const rect = sources[0]?.rect
 
-  const entries = useMemo(() => buildPlacedTokens(layout.placements, sources), [
-    layout.placements,
-    sources,
-  ])
+    if (!rect || !metrics || placements.length === 0) return NO_GEOMETRY
+
+    return buildTokenConnectorGeometry(placements, {
+      side: TOKEN_GUTTER_SIDE,
+      rect,
+      canvasWidth: canvasSize.width,
+      canvasHeight: canvasSize.height,
+      margin: metrics.badgeGap,
+    })
+  }, [placements, sources, metrics, canvasSize.width, canvasSize.height])
 
   return {
     entries,
+    geometry,
     canvasSize,
     anchorRadius: metrics?.anchorRadius ?? 0,
     sources,
@@ -162,7 +163,7 @@ export function useTokenConnector(): TokenConnectorState {
 
 /** Pairs each placement back to the token source it was built from. */
 function buildPlacedTokens(
-  placements: ConnectorPlacement[],
+  placements: TokenBadgePlacement[],
   sources: TokenSource[],
 ): PlacedToken[] {
   const byKey = new Map(sources.map((source) => [source.key, source]))

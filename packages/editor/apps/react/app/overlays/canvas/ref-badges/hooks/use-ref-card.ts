@@ -54,7 +54,7 @@ export function setRefCardSize(size: RefCardSize): void {
  * current value rather than one captured earlier. The smallest it may be drawn is the
  * window minimum, since a card is a floating window like any other.
  */
-function getRefCardMetrics(badgeEl: HTMLElement): RefCardMetrics {
+export function getRefCardMetrics(badgeEl: HTMLElement): RefCardMetrics {
   const { gap, margin } = getTokenPixels(REF_CARD_TOKENS, badgeEl)
 
   return {

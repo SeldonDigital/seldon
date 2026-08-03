@@ -13,7 +13,10 @@ import {
 import { useTokenConnector } from "./hooks/use-token-connector"
 
 import type { ConnectorShape } from "@app/overlays/primitives/ConnectorPaths.bespoke"
-import type { PlacedToken } from "./hooks/use-token-connector"
+import type {
+  TokenStubGeometry,
+  TokenTrunkGeometry,
+} from "@seldon/editor/lib/canvas/connectors/token-connectors"
 
 /**
  * Draws the selection's property tokens out to named badges in the gutter.
@@ -23,12 +26,14 @@ import type { PlacedToken } from "./hooks/use-token-connector"
  * selection with nothing to measure.
  */
 export function TokenConnector() {
-  const { entries, canvasSize, anchorRadius, sources, measureRef } = useTokenConnector()
+  const { entries, geometry, canvasSize, anchorRadius, sources, measureRef } = useTokenConnector()
 
-  const shapes = useMemo(
-    () => entries.map((entry) => toShape(entry, anchorRadius)),
-    [entries, anchorRadius],
-  )
+  const shapes = useMemo(() => {
+    const stubShapes = geometry.stubs.map(toStubShape)
+    const trunkShapes = geometry.trunks.map((trunk) => toTrunkShape(trunk, anchorRadius))
+
+    return [...stubShapes, ...trunkShapes]
+  }, [geometry, anchorRadius])
 
   const badgeElements = useMemo(
     () => entries.map((entry) => <TokenBadge key={entry.source.key} {...entry} />),
@@ -59,15 +64,29 @@ export function TokenConnector() {
   )
 }
 
-function toShape({ placement }: PlacedToken, anchorRadius: number): ConnectorShape {
-  const strokeStyle = placement.muted ? tokenConnectorMutedStrokeStyle : tokenConnectorStrokeStyle
-  const anchorStyle = placement.muted ? tokenConnectorMutedAnchorStyle : tokenConnectorAnchorStyle
+/** A badge's stub. It carries no dot of its own, so the anchor is drawn at radius 0. */
+function toStubShape(stub: TokenStubGeometry): ConnectorShape {
+  return {
+    key: `token-stub:${stub.key}`,
+    d: toElbowPath(stub.points),
+    anchorX: 0,
+    anchorY: 0,
+    anchorRadius: 0,
+    strokeStyle: stub.muted ? tokenConnectorMutedStrokeStyle : tokenConnectorStrokeStyle,
+    anchorStyle: tokenConnectorAnchorStyle,
+  }
+}
+
+/** A group's single connector to the object: the bus and trunk as one line, one dot. */
+function toTrunkShape(trunk: TokenTrunkGeometry, anchorRadius: number): ConnectorShape {
+  const strokeStyle = trunk.muted ? tokenConnectorMutedStrokeStyle : tokenConnectorStrokeStyle
+  const anchorStyle = trunk.muted ? tokenConnectorMutedAnchorStyle : tokenConnectorAnchorStyle
 
   return {
-    key: placement.key,
-    d: toElbowPath(placement.points),
-    anchorX: placement.anchor.x,
-    anchorY: placement.anchor.y,
+    key: `token-trunk:${trunk.key}`,
+    d: trunk.segments.map(toElbowPath).join(" "),
+    anchorX: trunk.anchor.x,
+    anchorY: trunk.anchor.y,
     anchorRadius,
     strokeStyle,
     anchorStyle,

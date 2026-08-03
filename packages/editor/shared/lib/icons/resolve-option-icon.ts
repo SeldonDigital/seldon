@@ -65,6 +65,23 @@ export function getOptionIcon(
 }
 
 /**
+ * The icon id a closed property row shows for its current value, matching the
+ * inspector. A per-option static icon wins, and glyph, theme token, and swatch
+ * values keep the row's own icon rather than swapping to the token icon.
+ */
+export function resolveRowIconId(
+  propertyKey: string,
+  propertyValue: unknown,
+  propertyIcon: string,
+  theme?: Theme,
+): string {
+  const value = getCurrentOptionValue(propertyKey, propertyValue)
+  const descriptor = getOptionIcon(propertyKey, value, theme, propertyIcon)
+
+  return descriptor.kind === "static" ? descriptor.icon : propertyIcon
+}
+
+/**
  * Reads the currently selected option value for a property row. The board
  * compound reflects its `preset` facet; every other property uses the stored
  * combobox value.

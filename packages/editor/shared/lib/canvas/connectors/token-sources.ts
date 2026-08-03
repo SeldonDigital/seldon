@@ -1,13 +1,15 @@
+import { resolveRowIconId } from "../../icons/resolve-option-icon"
 import { TOKEN_BADGE_GROUPS } from "./token-groups"
 
 import type { NodeRect } from "../overlay/geometry"
 import type { ConnectorSource } from "./connector-layout"
 import type { TokenBadgeGroup } from "./token-groups"
 import type { FlatProperty } from "../../properties/inspector/flat-property"
+import type { Theme } from "@seldon/core"
 
 /**
- * One token badge to draw: a property of the selection, its name and value, and the
- * group it clusters with.
+ * One token badge to draw: a property of the selection, its name and value, the icon the
+ * inspector shows for it, and the group it clusters with.
  *
  * Extends `ConnectorSource` so the shared column layout places it exactly like a
  * reference badge. The extra fields are what the badge and its card read.
@@ -17,6 +19,7 @@ export interface TokenSource extends ConnectorSource {
   propertyKey: string
   name: string
   value: string
+  icon: string
 }
 
 /** The badge key for a property, so a placement maps back to its source. */
@@ -45,6 +48,7 @@ export function buildTokenSources(
   rect: NodeRect | null,
   flatProperties: FlatProperty[],
   enabledGroups: Set<TokenBadgeGroup>,
+  theme?: Theme,
 ): TokenSource[] {
   if (!rect) return []
 
@@ -83,6 +87,7 @@ export function buildTokenSources(
         propertyKey,
         name: property.label,
         value: property.actualValue,
+        icon: resolveRowIconId(propertyKey, property.value, property.icon, theme),
       })
     }
   }

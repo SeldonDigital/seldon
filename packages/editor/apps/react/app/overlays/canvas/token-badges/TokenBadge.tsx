@@ -2,8 +2,8 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { PanelToken } from "@seldon/components/modules/PanelToken"
 import { useMemo } from "react"
 
-import { useRefCard } from "../ref-badges/hooks/use-ref-card"
 import { TokenCardController } from "./TokenCardController"
+import { useTokenCard } from "./hooks/use-token-card"
 import {
   tokenBadgeBoxStyle,
   tokenBadgeHiddenCardStyle,
@@ -15,11 +15,11 @@ import {
 } from "./token-badge-style"
 
 import type { TokenSource } from "@seldon/editor/lib/canvas/connectors/token-sources"
-import type { ConnectorPlacement } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import type { TokenBadgePlacement } from "@seldon/editor/lib/canvas/connectors/token-connectors"
 import type { Ref } from "react"
 
 interface TokenBadgeProps {
-  placement: ConnectorPlacement
+  placement: TokenBadgePlacement
   source: TokenSource
 }
 
@@ -38,7 +38,7 @@ interface TokenBadgeMeasureProps {
  * The wrapper carries the placement and the click, because a module takes no `ref`.
  */
 export function TokenBadge({ placement, source }: TokenBadgeProps) {
-  const { badgeRef, cardRef, position, toggle, close } = useRefCard(placement.badge)
+  const { badgeRef, cardRef, position, toggle, close } = useTokenCard(placement.badge)
 
   const wrapperStyle = useMemo(() => {
     if (placement.muted) return tokenBadgeMutedStyle(placement.badge)
@@ -50,6 +50,7 @@ export function TokenBadge({ placement, source }: TokenBadgeProps) {
     tokenChip: { style: tokenBadgeBoxStyle(placement.badge.width) },
     tokenChipName: { children: source.name },
     tokenChipValue: { children: source.value },
+    tokenChipIcon: { icon: source.icon },
     tokenCard: { style: tokenBadgeHiddenCardStyle },
   }
 
@@ -96,6 +97,7 @@ export function TokenBadgeMeasure({ sources, measureRef }: TokenBadgeMeasureProp
     const measureRefs = {
       tokenChipName: { children: source.name, style: tokenBadgeMeasureLabelStyle },
       tokenChipValue: { children: source.value },
+      tokenChipIcon: { icon: source.icon },
       tokenCard: { style: tokenBadgeHiddenCardStyle },
     }
 

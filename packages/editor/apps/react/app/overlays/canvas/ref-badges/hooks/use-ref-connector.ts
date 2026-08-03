@@ -6,11 +6,7 @@ import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { setAnchoredNodes } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
-import { badgeGutterStore } from "@seldon/editor/lib/canvas/connectors/badge-gutter-store"
-import {
-  getGutterSide,
-  layoutConnectors,
-} from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { layoutConnectors } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import {
   buildConnectorSources,
   buildPlacedConnectors,
@@ -20,7 +16,7 @@ import {
   collectSummaryNodes,
 } from "@seldon/editor/lib/canvas/connectors/ref-connectors"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo } from "react"
 
 import { useCanvasSize } from "../../../hooks/use-canvas-size"
 import { useConnectorMetrics } from "./use-connector-metrics"
@@ -52,6 +48,9 @@ const NOTHING_PLACED: ConnectorLayoutResult = {
   omittedBadge: null,
 }
 
+/** Refs hang off the left edge, nearest the objects sidebar, opposite the tokens. */
+const REF_GUTTER_SIDE: GutterSide = "left"
+
 /**
  * The connectors to draw for the current selection, already laid out.
  *
@@ -67,11 +66,6 @@ export function useRefConnector(): RefConnectorState {
   // The rect map is written in place, so its version is what says a node has moved.
   const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
   const canvasSize = useCanvasSize()
-  const gutterSide = useRef<GutterSide>("right")
-  // The token overlay publishes the edge its column hangs off. When it draws, the
-  // reference column starts from the opposite edge, so the two favor opposite sides
-  // rather than stacking together.
-  const tokenSide = useSharedStore(badgeGutterStore, (state) => state.tokenSide)
 
   const scopedNodeIds = useMemo(
     () => collectScopedNodeIds(activeBoard, selectedNodeId),
@@ -104,28 +98,8 @@ export function useRefConnector(): RefConnectorState {
 
   // The badge's own gap spaces the column as well, both between badges and off the canvas
   // top and bottom, so the spacing follows the badge rather than a number kept here.
-  //
-  // The edge the column hangs off is carried between frames, because moving it takes a
-  // clear win over where it already is. See `getGutterSide`.
   const layout = useMemo(() => {
     if (!metrics) return NOTHING_PLACED
-
-    // Bias off the token column's opposite edge when it is drawn, and off the last
-    // edge otherwise. `getGutterSide` still moves to the crowded edge when it must,
-    // so this favors the opposite side without pinning it.
-    const preferred: GutterSide = tokenSide
-      ? tokenSide === "right"
-        ? "left"
-        : "right"
-      : gutterSide.current
-
-    const side = getGutterSide(
-      sources,
-      { canvasWidth: canvasSize.width, gutter: metrics.gutter },
-      preferred,
-    )
-
-    gutterSide.current = side
 
     return layoutConnectors(sources, {
       canvasWidth: canvasSize.width,
@@ -135,9 +109,9 @@ export function useRefConnector(): RefConnectorState {
       badgeGap: metrics.badgeGap,
       margin: metrics.badgeGap,
       gutter: metrics.gutter,
-      side,
+      side: REF_GUTTER_SIDE,
     })
-  }, [sources, canvasSize.width, canvasSize.height, metrics, tokenSide])
+  }, [sources, canvasSize.width, canvasSize.height, metrics])
 
   const entries = useMemo(
     () => buildPlacedConnectors(layout.placements, refBindings),

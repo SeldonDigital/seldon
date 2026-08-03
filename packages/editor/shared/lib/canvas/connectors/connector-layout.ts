@@ -489,7 +489,7 @@ function getPreferredBadgeY(rect: NodeRect, canvasHeight: number, margin: number
  * Only the side facing the gutter is used, because a line to the far side would cross
  * the node to reach the column.
  */
-function getConnectorRoute(input: {
+export function getConnectorRoute(input: {
   rect: NodeRect
   badgeCenterY: number
   gutterEdge: number
