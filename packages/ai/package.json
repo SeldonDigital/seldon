@@ -20,10 +20,12 @@
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
-    "@seldon/core": "file:../core"
+    "@seldon/core": "file:../core",
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.19.9",
+    "@types/pluralize": "^0.0.33",
     "typescript": "^5.8.3"
   }
 }

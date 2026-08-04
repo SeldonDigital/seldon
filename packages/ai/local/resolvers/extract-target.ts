@@ -1,3 +1,6 @@
+import { isPlural, plural as pluralSpellingOf } from "pluralize"
+
+import { catalog } from "@seldon/core/components/catalog"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import {
@@ -29,7 +32,13 @@ export interface TargetHint {
    * `match`, where the describing words are signal, not noise.
    */
   baseNode?: string
-  /** The edit applies to every element of a kind, not one particular one. */
+  /**
+   * The edit applies to every element of a kind, not one particular one.
+   * Code-derived from `baseNode` (see `nounIsPlural`), not asked of the
+   * model: qwen3 kept answering `plural: true` for singular, position-named
+   * references ("the last chip", "the first list item"), fanning a
+   * single-element edit over every match on the board (issue 10).
+   */
   plural: boolean
   /** A bounded plural's requested size ("the top two"), when named. */
   count?: number
@@ -102,6 +111,12 @@ export function countNamedBeforeNoun(
  * extracts nothing, deterministically -- and the board knows its own kinds,
  * so an exact word-boundary scan recovers the noun without inventing
  * anything: no vocabulary word in the message, no fallback.
+ *
+ * Returns the word as it actually appears in the message, not the
+ * canonicalized catalog name: the catalog name decides WHETHER a kind is
+ * named at all, but "hide all the chips" must hand back "chips", the
+ * inflected form the message used, or `nounIsPlural` would read the
+ * canonicalized singular "chip" and wrongly call this singular (issue 10).
  */
 function boardKindNamedInMessage(
   workspace: Workspace,
@@ -126,19 +141,103 @@ function boardKindNamedInMessage(
     if (label) kindNames.add(label.toLowerCase())
   })
 
-  const namedKinds = [...kindNames].filter((kindName) => {
-    const kindNameAppearsWhole = new RegExp(
+  const namedKinds: { kindName: string; wordInMessage: string }[] = []
+  for (const kindName of kindNames) {
+    const kindNamePattern = new RegExp(
       `\\b${kindName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}s?\\b`,
       "i",
-    ).test(message)
-    return kindNameAppearsWhole
-  })
+    )
+    const kindNameMatch = kindNamePattern.exec(message)
+    if (kindNameMatch) {
+      namedKinds.push({
+        kindName,
+        wordInMessage: kindNameMatch[0].toLowerCase(),
+      })
+    }
+  }
   if (namedKinds.length === 0) return undefined
-  // The longest name is the most specific: a board with "text" and
+  // The longest catalog name is the most specific: a board with "text" and
   // "hero text" resolves "the hero text" to the latter.
   return namedKinds.sort(
-    (kindA, kindB) => kindB.length - kindA.length,
-  )[0]
+    (kindA, kindB) => kindB.kindName.length - kindA.kindName.length,
+  )[0]!.wordInMessage
+}
+
+/**
+ * Every catalog component name, lowercased. A noun that IS one of these names
+ * is singular by definition -- the catalog names each component in the
+ * singular -- even when English misleads `isPlural` about the word itself:
+ * "Table Data" reads as plural because "data" is the plural of "datum", and
+ * the "... Specimen" names because "-men" reads as a plural of "-man". The
+ * catalog is the enumeration, so a new component with such a name is covered
+ * the day it lands, with no word list to maintain.
+ */
+const SINGULAR_CATALOG_NAMES: ReadonlySet<string> = new Set(
+  [
+    ...catalog.frames,
+    ...catalog.primitives,
+    ...catalog.elements,
+    ...catalog.parts,
+    ...catalog.modules,
+    ...catalog.screens,
+    ...catalog.boards,
+  ].map((schema) => schema.name.toLowerCase()),
+)
+
+/**
+ * Quantifier words that state a class over a grammatically singular noun:
+ * "every chip" and "each of the chips" both name every matching element,
+ * even though "chip" alone is singular. Bounded to appear near the noun so
+ * an unrelated "each"/"every" elsewhere in the message cannot flip this.
+ */
+const CLASS_QUANTIFIER_WORDS = ["every", "each"]
+
+/**
+ * Whether the target names a class of elements, not one. Judged in code from
+ * `bareNoun`'s own grammatical number, not asked of the model: qwen3
+ * deterministically answered `plural: true` for singular, position-named
+ * references ("the last chip", "the first list item"), and a prompt fix
+ * (more singular examples) did not generalize to new phrasings -- routing a
+ * single-element edit down the class path silently overwrote every match on
+ * the board (issue 10). `pluralize`'s `isPlural` is the primary signal; a
+ * class quantifier immediately before the noun overrides a singular reading,
+ * since English states the class with a singular noun there ("every chip").
+ *
+ * `bareNoun`'s own spelling is not trustworthy enough to be the ONLY signal,
+ * though: qwen3 inconsistently drops the plural "s" when transcribing the
+ * noun even when the message plainly carries it -- "make the chips red" came
+ * back with `baseNode: "chip"` live, which silently turned a correct class
+ * edit into a wrong single-element one (measured regression while fixing
+ * this same issue). The message is the ground truth for what the user
+ * actually typed, so a literal plural spelling of the noun THERE overrides a
+ * singular-looking `bareNoun` -- the same stance `countNamedBeforeNoun` and
+ * `boardKindNamedInMessage` already take: the model matches wording, it does
+ * not reliably transcribe it.
+ */
+export function nounIsPlural(message: string, bareNoun: string): boolean {
+  if (bareNoun === "") return false
+  const nounWords = bareNoun.split(/\s+/)
+  const nounStem = nounWords[0] ?? ""
+  const headNoun = nounWords[nounWords.length - 1] ?? ""
+  const escapeRegex = (word: string) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  const quantifierNamesTheClass = new RegExp(
+    `\\b(${CLASS_QUANTIFIER_WORDS.join("|")})\\b(?:\\s+\\w+){0,3}?\\s+${escapeRegex(nounStem)}s?\\b`,
+    "i",
+  ).test(message)
+  if (quantifierNamesTheClass) return true
+
+  const pluralHeadNoun = pluralSpellingOf(headNoun)
+  const messageUsesThePluralSpelling =
+    pluralHeadNoun !== headNoun &&
+    new RegExp(`\\b${escapeRegex(pluralHeadNoun)}\\b`, "i").test(message)
+  if (messageUsesThePluralSpelling) return true
+
+  // Checked after the message-spelling override so a real plural still wins
+  // ("all the table datas" stays a class, however unlikely the phrasing).
+  const nounIsACatalogName = SINGULAR_CATALOG_NAMES.has(bareNoun.toLowerCase())
+  if (nounIsACatalogName) return false
+
+  return isPlural(bareNoun)
 }
 
 /**
@@ -158,7 +257,6 @@ export async function extractTargetHint(
     pointsAtSelection: boolean
     baseNode: string
     descriptor: string
-    plural: boolean
     count: number
   }>({
     model: context.model,
@@ -167,11 +265,6 @@ export async function extractTargetHint(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "extract_target", {
-    ok: true,
-    prompt,
-    output: JSON.stringify(rawHint, null, 2),
-  })
 
   const extractedNoun = (rawHint.baseNode ?? "").trim()
   const bareNoun =
@@ -183,12 +276,6 @@ export async function extractTargetHint(
           context.message,
         ) ?? "")
   const modelDroppedANamedKind = extractedNoun === "" && bareNoun !== ""
-  if (modelDroppedANamedKind) {
-    recordStep(context, "extract_target_kind_fallback", {
-      ok: true,
-      output: `The model extracted no element, but the message names "${bareNoun}" -- a kind on the active board. Using it as the search noun (deterministic, no model call).`,
-    })
-  }
   const searchPhrase = composeSearchPhrase(rawHint.descriptor ?? "", bareNoun)
   // 0 is the sentinel for "no number was named", mirroring match's "" -> undefined.
   // A count without a phrase is as meaningless as plural without one -- there
@@ -197,13 +284,34 @@ export async function extractTargetHint(
     rawHint.count > 0 ? rawHint.count : countNamedBeforeNoun(context.message, bareNoun)
   const requestedCount =
     extractedCount !== undefined && searchPhrase !== "" ? extractedCount : undefined
+  // Plural without a phrase is meaningless: there is no class to match.
+  // A named count implies plural even if the noun itself reads singular
+  // ("the top 2 text").
+  const plural =
+    (nounIsPlural(context.message, bareNoun) || requestedCount !== undefined) &&
+    searchPhrase !== ""
+
+  // Logged with the code-derived `plural` folded in, not the bare model
+  // JSON: `plural` is no longer part of what the model answers (issue 10),
+  // and the eval harness's reference-intent scoring reads this step's output
+  // to tell single-vs-class apart, so the transcript has to carry the real
+  // decision, not just the raw fields.
+  recordStep(context, "extract_target", {
+    ok: true,
+    prompt,
+    output: JSON.stringify({ ...rawHint, plural }, null, 2),
+  })
+  if (modelDroppedANamedKind) {
+    recordStep(context, "extract_target_kind_fallback", {
+      ok: true,
+      output: `The model extracted no element, but the message names "${bareNoun}" -- a kind on the active board. Using it as the search noun (deterministic, no model call).`,
+    })
+  }
   return {
     pointsAtSelection: rawHint.pointsAtSelection,
     match: searchPhrase === "" ? undefined : searchPhrase,
     baseNode: bareNoun === "" ? undefined : bareNoun,
-    // Plural without a phrase is meaningless: there is no class to match.
-    // A named count implies plural even if the model's own boolean waffles.
-    plural: (rawHint.plural || requestedCount !== undefined) && searchPhrase !== "",
+    plural,
     count: requestedCount,
   }
 }

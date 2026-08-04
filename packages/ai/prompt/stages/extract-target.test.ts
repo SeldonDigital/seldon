@@ -32,7 +32,6 @@ describe("buildExtractTargetStage", () => {
       "pointsAtSelection",
       "baseNode",
       "descriptor",
-      "plural",
       "count",
     ])
   })

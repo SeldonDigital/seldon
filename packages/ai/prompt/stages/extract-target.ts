@@ -16,9 +16,15 @@ import type { PromptStage } from "./shared"
  * the model's job unambiguous, not because anything downstream reads them
  * apart.
  *
- * `plural` is the cardinality signal: does the edit apply to one element or a
- * class of them? It is judged from grammatical number alone -- the count of
- * actual matches comes from the board, not from here.
+ * There is no `plural` field here. It used to be asked of the model as the
+ * cardinality signal, judged from grammatical number alone -- but qwen3
+ * deterministically answered `plural: true` for singular, position-named
+ * references ("the last chip", "the first list item"), fanning a
+ * single-element edit over every match on the board, and a prompt fix (more
+ * singular examples) did not generalize to new phrasings (issue 10). The
+ * resolver now derives it in code from `baseNode`'s own grammatical number
+ * (see `nounIsPlural` in `local/resolvers/extract-target.ts`), which is
+ * exactly what this split already hands it.
  */
 const EXTRACT_TARGET_SCHEMA = {
   type: "object",
@@ -26,16 +32,9 @@ const EXTRACT_TARGET_SCHEMA = {
     pointsAtSelection: { type: "boolean" },
     baseNode: { type: "string" },
     descriptor: { type: "string" },
-    plural: { type: "boolean" },
     count: { type: "integer" },
   },
-  required: [
-    "pointsAtSelection",
-    "baseNode",
-    "descriptor",
-    "plural",
-    "count",
-  ],
+  required: ["pointsAtSelection", "baseNode", "descriptor", "count"],
 }
 
 /**
@@ -68,14 +67,9 @@ export function buildExtractTargetStage(inputs: {
     'A plural or quantified phrase is still a name: "all the chips" -> baseNode "chips", "every tab" -> baseNode "tabs".',
     "descriptor: the words that say WHICH of several elements is meant -- its position (\"last\", \"second\") or a quality it ALREADY has (\"red\", \"with round corners\"). Use \"\" when the message gives none.",
     'A value being commanded is NEVER a descriptor: "make the last button green" -> baseNode "button", descriptor "last" (green is the new value, not a description of which button).',
-    "plural: true when the edit applies to every element of a kind, judged by the grammatical number of the noun the edit applies to.",
-    'Plural noun -> true: "the chips", "all the chips", "each tab". Singular noun -> false, even with a quantifier: "all of the text" is one element.',
-    // The baseNode examples above are mostly plural, which on its own drags
-    // this boolean toward true; a singular noun has to be named as plainly.
-    'A singular noun stays false however it is described, and whatever property is named: "the text" -> false, "the last chip" -> false, "the width of the chip" -> false.',
     'count: the number named for a BOUNDED plural reference, e.g. "the top two texts" -> 2, "the two chips about cars" -> 2. Set count to 0 when no number is named -- a plain plural like "all the chips" or "the chips" is unbounded -> 0.',
     'A number directly before the noun is the count even when a description trails the noun: "the two cards about pricing" -> count 2, "the three tabs with icons" -> count 3.',
-    'A named count still means plural: true, even if the noun looks singular: "the top 2 text" -> plural true, count 2.',
+    'A named count still counts even when the noun looks singular: "the top 2 text" -> count 2.',
   ].join("\n")
   return { prompt, schema: EXTRACT_TARGET_SCHEMA }
 }

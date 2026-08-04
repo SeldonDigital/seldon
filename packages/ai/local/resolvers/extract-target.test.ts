@@ -34,7 +34,6 @@ describe("extractTargetHint", () => {
         pointsAtSelection: false,
         baseNode: "chips",
         descriptor: "",
-        plural: true,
         count: 0,
       },
       metrics: {} as never,
@@ -44,18 +43,17 @@ describe("extractTargetHint", () => {
     expect(hint.plural).toBe(true)
   })
 
-  it("carries a named count through and implies plural even if the model's own boolean is false", async () => {
+  it("carries a named count through and implies plural even when the noun itself is singular", async () => {
     vi.mocked(callOllamaFormat).mockResolvedValue({
       value: {
         pointsAtSelection: false,
-        baseNode: "texts",
+        baseNode: "text",
         descriptor: "top",
-        plural: false,
         count: 2,
       },
       metrics: {} as never,
     })
-    const hint = await extractTargetHint(contextWithMessage("the top 2 texts"))
+    const hint = await extractTargetHint(contextWithMessage("the top 2 text"))
     expect(hint.count).toBe(2)
     expect(hint.plural).toBe(true)
   })
@@ -66,7 +64,6 @@ describe("extractTargetHint", () => {
         pointsAtSelection: true,
         baseNode: "",
         descriptor: "",
-        plural: false,
         count: 2,
       },
       metrics: {} as never,
@@ -83,7 +80,6 @@ describe("extractTargetHint", () => {
         pointsAtSelection: false,
         baseNode: "button",
         descriptor: "last",
-        plural: false,
         count: 0,
       },
       metrics: {} as never,
@@ -102,7 +98,6 @@ describe("extractTargetHint", () => {
         pointsAtSelection: false,
         baseNode: "text",
         descriptor: "",
-        plural: true,
         count: 0,
       },
       metrics: {} as never,
@@ -122,7 +117,6 @@ describe("extractTargetHint", () => {
         pointsAtSelection: false,
         baseNode: "chip",
         descriptor: "",
-        plural: false,
         count: 0,
       },
       metrics: {} as never,
@@ -142,7 +136,6 @@ describe("extractTargetHint", () => {
         pointsAtSelection: false,
         baseNode: "text",
         descriptor: "top two",
-        plural: true,
         count: 2,
       },
       metrics: {} as never,
@@ -162,12 +155,151 @@ describe("extractTargetHint", () => {
         pointsAtSelection: true,
         baseNode: "",
         descriptor: "last",
-        plural: false,
         count: 0,
       },
       metrics: {} as never,
     })
     const hint = await extractTargetHint(contextWithMessage("make the last one red"))
     expect(hint.match).toBeUndefined()
+  })
+
+  // Issue 10: `plural` used to be a model answer, and qwen3 deterministically
+  // answered `plural: true` for a singular noun carrying a positional
+  // descriptor ("the last chip", "the first list item"), fanning a
+  // single-element edit over every match on the board. It is now derived in
+  // code from the noun the model already extracted -- these cases pin the
+  // exact phrasings that broke live.
+  describe("code-derived plural (issue 10)", () => {
+    it("reads a singular noun with a positional descriptor as one element", async () => {
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          baseNode: "chip",
+          descriptor: "last",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const hint = await extractTargetHint(
+        contextWithMessage("increase the opacity of the last chip"),
+      )
+      expect(hint.plural).toBe(false)
+    })
+
+    it("reads a singular multi-word noun named by position as one element", async () => {
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          baseNode: "list item",
+          descriptor: "first",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const hint = await extractTargetHint(
+        contextWithMessage("change the first list item to 'Buy now'"),
+      )
+      expect(hint.plural).toBe(false)
+    })
+
+    // Live regression measured while fixing issue 10: qwen3 answered
+    // `baseNode: "chip"` (singular) for "make the chips red", silently
+    // dropping the plural edit to a single-element one because the code-only
+    // derivation trusted the model's spelling of the noun.
+    it("overrides a singular-looking baseNode when the message itself spells the noun plural", async () => {
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          baseNode: "chip",
+          descriptor: "",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const hint = await extractTargetHint(contextWithMessage("make the chips red"))
+      expect(hint.plural).toBe(true)
+    })
+
+    it("overrides a singular-looking multi-word baseNode when the message spells the head noun plural", async () => {
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          baseNode: "text",
+          descriptor: "",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const hint = await extractTargetHint(
+        contextWithMessage("apply the dark theme to all the texts"),
+      )
+      expect(hint.plural).toBe(true)
+    })
+
+    it("reads a singular noun quantified by 'every' as a class", async () => {
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          baseNode: "chip",
+          descriptor: "",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const hint = await extractTargetHint(
+        contextWithMessage("give every chip a bigger corner radius"),
+      )
+      expect(hint.plural).toBe(true)
+    })
+
+    it("reads a plural noun quantified by 'each' as a class", async () => {
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          baseNode: "chips",
+          descriptor: "",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const hint = await extractTargetHint(
+        contextWithMessage("hide each of the chips"),
+      )
+      expect(hint.plural).toBe(true)
+    })
+
+    it("recovers the message's own inflection on the board-vocabulary fallback path", async () => {
+      const { seedChipRowWorkspace, CHIP_ROW_BOARD } = await import("../../eval/seed")
+      const { workspace } = seedChipRowWorkspace()
+      vi.mocked(callOllamaFormat).mockResolvedValue({
+        value: {
+          pointsAtSelection: false,
+          // The model drops the noun entirely -- the fallback in
+          // `boardKindNamedInMessage` must recover it from the message.
+          baseNode: "",
+          descriptor: "",
+          count: 0,
+        },
+        metrics: {} as never,
+      })
+      const context: TurnContext = {
+        state: createTurnState(workspace),
+        resolved: resolveContext({
+          workspace,
+          scope: "board",
+          activeBoardKey: CHIP_ROW_BOARD as never,
+        }),
+        message: "hide all the chips",
+        calls: [],
+        steps: [],
+      }
+      const hint = await extractTargetHint(context)
+      // The fallback must hand back "chips" -- the inflected word the
+      // message actually used -- not the catalog's canonical singular
+      // "chip", or the plural judgment above would wrongly read this as one
+      // element (issue 10, step 2).
+      expect(hint.baseNode).toBe("chips")
+      expect(hint.plural).toBe(true)
+    })
   })
 })
