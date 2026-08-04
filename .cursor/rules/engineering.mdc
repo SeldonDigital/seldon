@@ -17,6 +17,7 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 - All comments should be about current behavior, not legacy, deprecated, past behavior, or anything that is not relevant going forward. 
 - Do not add comments that are obvious or referential to markdown files. 
 - Add JSDocs as needed.
+- Declare required members before optional ones in every `interface` and object `type`. Put each `field?:` after the required fields. ESLint `@typescript-eslint/member-ordering` enforces this and has no autofix, so `npm run lint:fix` will not repair it. Author the order by hand. See `.cursor/rules/code-formatting.mdc`.
 - In `*.schema.ts` files, inline every property and `overrides` object literal at its child. Do not hoist shared schema values into a module `const` and reuse it. The only module-level values are the `schema` export and its `exportConfig`. See `.cursor/rules/components.mdc`.
 
 ### Naming
