@@ -387,7 +387,7 @@ export function DialogCreateComponent({
   seldonRefs,
   ...props
 }: DialogCreateComponentProps) {
-  const dialogCreateComponentClassName = combineClassNames("sdn-dialog-create-component", className)
+  const dialogCreateComponentClassName = combineClassNames("sdn-dialog", className)
 
   const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
   const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
