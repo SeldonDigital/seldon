@@ -212,8 +212,8 @@ export function useEditorShortcuts() {
 
   // Token badge groups, Shift-1 through Shift-6 in View menu order.
   useHotkeys("shift+1", () => toggleLayoutBadges(), { preventDefault: true })
-  useHotkeys("shift+2", () => toggleSpaceBadges(), { preventDefault: true })
-  useHotkeys("shift+3", () => toggleDimensionBadges(), { preventDefault: true })
+  useHotkeys("shift+2", () => toggleDimensionBadges(), { preventDefault: true })
+  useHotkeys("shift+3", () => toggleSpaceBadges(), { preventDefault: true })
   useHotkeys("shift+4", () => toggleAppearanceBadges(), { preventDefault: true })
   useHotkeys("shift+5", () => toggleTypographyBadges(), { preventDefault: true })
   useHotkeys("shift+6", () => toggleEffectsBadges(), { preventDefault: true })

@@ -524,17 +524,17 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       shortcut: "⇧ 1",
     },
     {
-      id: "show-space-badges",
-      label: "Show Space",
-      action: config.toggleSpaceBadges,
-      active: config.showSpaceBadges,
-      shortcut: "⇧ 2",
-    },
-    {
       id: "show-dimension-badges",
       label: "Show Dimension",
       action: config.toggleDimensionBadges,
       active: config.showDimensionBadges,
+      shortcut: "⇧ 2",
+    },
+    {
+      id: "show-space-badges",
+      label: "Show Space",
+      action: config.toggleSpaceBadges,
+      active: config.showSpaceBadges,
       shortcut: "⇧ 3",
     },
     {

@@ -27,8 +27,8 @@ export interface TokenGroupDefinition {
  */
 export const TOKEN_BADGE_GROUPS: TokenGroupDefinition[] = [
   { group: "layout", keys: ["direction", "orientation", "align"] },
-  { group: "space", keys: ["margin", "padding", "gap"] },
   { group: "dimension", keys: ["width", "height", "rotation"] },
+  { group: "space", keys: ["margin", "padding", "gap"] },
   { group: "appearance", keys: ["color", "opacity", "background", "border", "corners"] },
   { group: "typography", keys: ["font", "textAlign"] },
   { group: "effects", keys: ["shadow"] },

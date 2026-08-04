@@ -856,17 +856,17 @@ export function useMenuConfig(): MenuConfig {
             shortcut: "⇧ 1",
           },
           {
-            id: "show-space-badges",
-            label: "Show Space",
-            action: toggleSpaceBadges,
-            active: showSpaceBadges,
-            shortcut: "⇧ 2",
-          },
-          {
             id: "show-dimension-badges",
             label: "Show Dimension",
             action: toggleDimensionBadges,
             active: showDimensionBadges,
+            shortcut: "⇧ 2",
+          },
+          {
+            id: "show-space-badges",
+            label: "Show Space",
+            action: toggleSpaceBadges,
+            active: showSpaceBadges,
             shortcut: "⇧ 3",
           },
           {

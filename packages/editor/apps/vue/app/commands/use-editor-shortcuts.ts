@@ -98,12 +98,12 @@ export function useEditorShortcuts(): void {
           return
         case "Digit2":
           event.preventDefault()
-          config.toggleSpaceBadges()
+          config.toggleDimensionBadges()
 
           return
         case "Digit3":
           event.preventDefault()
-          config.toggleDimensionBadges()
+          config.toggleSpaceBadges()
 
           return
         case "Digit4":
