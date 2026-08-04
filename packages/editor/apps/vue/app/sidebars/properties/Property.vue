@@ -9,6 +9,7 @@ import ItemProperty from "@seldon/components/elements/ItemProperty.vue"
 import ItemPropertyToggle from "@seldon/components/elements/ItemPropertyToggle.vue"
 import { computed, nextTick, ref, watch } from "vue"
 
+import { usePropertyCardScope } from "./hooks/use-property-card-scope"
 import { useRowProperty } from "./hooks/use-row-property"
 import { useLayerDragStore } from "./layer-drag-store"
 
@@ -32,8 +33,9 @@ const props = withDefaults(
     fontCollectionEditingContext: FontCollectionEditingContext | null
     iconSetEditingContext: IconSetEditingContext | null
     depth?: number
+    presentation?: "sidebar" | "token"
   }>(),
-  { depth: 0 },
+  { depth: 0, presentation: "sidebar" },
 )
 
 const rowStyle = computed(() =>
@@ -58,12 +60,41 @@ const control = view.control
 const isLookParent = computed(() => Boolean(props.property.isLookParent))
 const isSwitch = computed(() => control.kind.value === "switch")
 
+// Token-card chrome. The top row drops its name, since the card names the token. Every
+// leaf in the card drops its disclosure, so a facet sits flush at the card's left edge
+// instead of behind the empty toggle the tree reserves. A row that owns a toggle keeps
+// its disclosure so a compound can still expand.
+const cardScope = usePropertyCardScope()
+const inCard = cardScope !== null
+const isToken = computed(() => props.presentation === "token")
+const hideDisclosure = computed(() => inCard && !view.showDisclosure.value)
+
+// The tree indents each nesting depth to match the objects sidebar; a card keeps its
+// facets flush at the left edge instead.
+const childDepth = computed(() => (inCard ? props.depth : props.depth + 1))
+
+// Keep the expandable mounted for every compound or shorthand parent, even when
+// the current value drops its facets (a Background set to None reseeds to a bare
+// layer). AnimatePresence then plays the collapse from the last open facets, and
+// the enter when the value adds them back, instead of snapping. `view.isExpanded`
+// already reads false for None, so a mounted-but-empty parent stays collapsed.
+const isCompoundParent = computed(
+  () => Boolean(props.property.isCompound) || Boolean(props.property.isShorthand),
+)
+
 const actionsMenu = useRowActionsMenu(() => view.resetActions.value, {
   ariaLabel: "Property actions",
 })
 
 // ---- Shared slot props ----
 const nameProps = computed(() => mergeStateProps(view.nameLabelProps.value, view.stateRef.value))
+
+// Kept in the DOM but out of layout, so a hidden name never shifts the value.
+const nameLabelSlot = computed(() =>
+  isToken.value
+    ? { ...nameProps.value, style: { ...(nameProps.value.style as object), display: "none" } }
+    : nameProps.value,
+)
 
 // ---- ItemProperty (value rows) ----
 const valueIconProps = computed(() =>
@@ -96,7 +127,7 @@ const valueIconSlot = computed(() => (view.listItemProps.value.icon2 ? undefined
 const seldonRefs = computed(() => ({
   propertyDisclosure: view.listItemProps.value.buttonIconic,
   propertyDisclosureIcon: view.listItemProps.value.icon,
-  propertyLabel: nameProps.value,
+  propertyLabel: nameLabelSlot.value,
   propertyValueField: comboboxFieldProps.value,
   propertyValueIcon: valueIconProps.value ?? {},
   propertyValueLabel: valueLabelProps.value,
@@ -260,6 +291,7 @@ function onDrop(event: DragEvent): void {
     :style="rowStyle"
     :draggable="isDraggable"
     :seldon-refs="seldonRefs"
+    :button-iconic="hideDisclosure ? null : undefined"
     :input="{}"
     :icon2="valueIconSlot"
     @click="view.onRowClick"
@@ -291,20 +323,22 @@ function onDrop(event: DragEvent): void {
     @close="onCloseOptions"
   />
 
-  <FramerExpandable v-if="view.hasChildren.value" :is-expanded="view.isExpanded.value">
-    <Property
-      v-for="child in view.children.value"
-      :key="child.key"
-      :property="child"
-      :workspace="workspace"
-      :node="node"
-      :theme="theme"
-      :all-properties="allProperties"
-      :theme-editing-context="themeEditingContext"
-      :font-collection-editing-context="fontCollectionEditingContext"
-      :icon-set-editing-context="iconSetEditingContext"
-      :depth="depth + 1"
-    />
+  <FramerExpandable v-if="isCompoundParent" :is-expanded="view.isExpanded.value">
+    <template v-if="view.hasChildren.value">
+      <Property
+        v-for="child in view.children.value"
+        :key="child.key"
+        :property="child"
+        :workspace="workspace"
+        :node="node"
+        :theme="theme"
+        :all-properties="allProperties"
+        :theme-editing-context="themeEditingContext"
+        :font-collection-editing-context="fontCollectionEditingContext"
+        :icon-set-editing-context="iconSetEditingContext"
+        :depth="childDepth"
+      />
+    </template>
   </FramerExpandable>
 </template>
 

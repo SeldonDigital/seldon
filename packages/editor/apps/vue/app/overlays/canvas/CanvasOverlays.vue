@@ -17,6 +17,7 @@ import { storeToRefs } from "pinia"
 import { computed } from "vue"
 
 import RefConnector from "./ref-badges/RefConnector.vue"
+import TokenConnector from "./token-badges/TokenConnector.vue"
 import HoverOverlay from "./select/HoverOverlay.vue"
 import NodeWireframe from "./select/NodeWireframe.vue"
 import SelectionOverlay from "./select/SelectionOverlay.vue"
@@ -31,7 +32,17 @@ const { activeBoard } = useActiveBoard()
 const selection = useSelectionStore()
 const hover = useObjectHoverStore()
 
-const { wireframeMode, showSelection, showRefBadges } = storeToRefs(config)
+const {
+  wireframeMode,
+  showSelection,
+  showRefBadges,
+  showLayoutBadges,
+  showSpaceBadges,
+  showDimensionBadges,
+  showAppearanceBadges,
+  showTypographyBadges,
+  showEffectsBadges,
+} = storeToRefs(config)
 const { activeTool } = storeToRefs(tool)
 const { selectedNodeId, selectedNodeRootId } = storeToRefs(selection)
 const { hoveredId, hoveredRootId } = storeToRefs(hover)
@@ -75,6 +86,19 @@ const showInsertHover = computed(() => activeTool.value === "component")
 // connector view-model re-measures its own nodes per frame to keep up. Theme boards
 // have no node tree to reference.
 const drawRefBadges = computed(() => showRefBadges.value && !activeBoardIsTheme.value)
+
+// Token badges draw when any group is enabled. Like the reference badges, they hang in the
+// gutter and stay drawn through a pan, and a theme board has no node tree to anchor to.
+const anyTokenGroupEnabled = computed(
+  () =>
+    showLayoutBadges.value ||
+    showSpaceBadges.value ||
+    showDimensionBadges.value ||
+    showAppearanceBadges.value ||
+    showTypographyBadges.value ||
+    showEffectsBadges.value,
+)
+const drawTokenBadges = computed(() => anyTokenGroupEnabled.value && !activeBoardIsTheme.value)
 </script>
 
 <template>
@@ -100,4 +124,5 @@ const drawRefBadges = computed(() => showRefBadges.value && !activeBoardIsTheme.
   />
   <HoverOverlay v-else-if="showInsertHover" :rect="hoverRect" :colors="hoverColors" />
   <RefConnector v-if="drawRefBadges" />
+  <TokenConnector v-if="drawTokenBadges" />
 </template>

@@ -1,23 +1,23 @@
 <script setup lang="ts">
-// View-model for the Hari panel. Renders the generated `PanelHari` shell inside a
-// non-modal floating window: the title bar drags the window, the close button
-// dismisses it, the transcript fills the `hariTurns` frame, and the composer
-// submits on Enter or the send button. The model and thinking triggers open the
-// shared floating `MenuController` anchored to the clicked button.
+// View-model for the Hari palette body. Renders the shared `PanelPalette` shell:
+// `BarHari` fills the top bar (title and debug toggles), the transcript fills the
+// contents zone, and `BarHariModels` fills the bottom bar (composer, model and
+// thinking menus, scope chip, and send). The palette's option button clears the
+// chat and its close button dismisses the panel. The model and thinking triggers
+// open the shared floating `MenuController` anchored to the clicked button. The
+// enclosing `FloatingPanel` owns the window; it hands down `startDrag` for the
+// title bar. Vue port of the React `Hari` body.
 //
 // Every value and handler reaches its slot by the slot's baked `data-seldon-ref`
 // name, so moving or reordering a node in the design keeps this wiring intact.
-// Vue port of the React `Hari` body.
 import { useAiChatStore } from "@app/ai/ai-chat-store"
 import { useAiChat } from "@app/ai/use-ai-chat"
 import { useDebugStore } from "@app/editor/debug-store"
-import { usePanelStore } from "@app/editor/panel-store"
 import MenuController from "@app/menus/MenuController.vue"
-import WindowSurface from "@app/windows/WindowSurface.vue"
-import { useDraggableWindow } from "@app/windows/use-draggable-window"
 import { useSelectionScope } from "@app/workspace/use-selection-scope"
-import PanelHari from "@seldon/components/modules/PanelHari.vue"
-import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
+import PanelPalette from "@seldon/components/modules/PanelPalette.vue"
+import BarHari from "@seldon/components/parts/BarHari.vue"
+import BarHariModels from "@seldon/components/parts/BarHariModels.vue"
 import { storeToRefs } from "pinia"
 import { computed, nextTick, onMounted, ref, watch } from "vue"
 
@@ -26,12 +26,9 @@ import HariTranscript from "./HariTranscript.vue"
 import type { MenuEntry } from "@app/menus/types"
 import type { SelectionScope } from "@app/workspace/use-selection-scope"
 import type { ThinkingMenuOption } from "@seldon/ai"
-import type { CSSProperties } from "vue"
+import type { ComponentPublicInstance, CSSProperties } from "vue"
 
 import "./hari.css"
-
-const HARI_INITIAL_WIDTH = 420
-const HARI_INITIAL_HEIGHT = 480
 
 /** Distance from the bottom, in pixels, still counted as pinned to the bottom. */
 const PINNED_THRESHOLD = 40
@@ -67,11 +64,16 @@ function levelLabel(options: ThinkingMenuOption[], value: string): string {
 }
 
 const styles: Record<string, CSSProperties> = {
-  dialog: { width: "100%", height: "100%" },
+  dialog: { width: "100%", height: "100%", display: "flex", flexDirection: "column" },
+  transcript: { flex: 1, minHeight: 0, overflowY: "auto" },
   dragHandle: { cursor: "grab", userSelect: "none", touchAction: "none" },
 }
 
-const panel = usePanelStore()
+const props = defineProps<{
+  startDrag: (event: PointerEvent) => void
+  onClose: () => void
+}>()
+
 const store = useAiChatStore()
 const debug = useDebugStore()
 const { send, stop, warm, reset } = useAiChat()
@@ -80,38 +82,12 @@ const { turns, status, model, thinkingLevel, config } = storeToRefs(store)
 const { showTools, showOutcome, noThink } = storeToRefs(debug)
 const scope = useSelectionScope()
 
-function close(): void {
-  panel.closePanel()
-}
-
-const viewport = getWindowInnerSize()
-const {
-  x,
-  y,
-  width,
-  height,
-  onResizeStart,
-  onResize,
-  getRect,
-  moveControls,
-  dragConstraints,
-  minWidth,
-  minHeight,
-} = useDraggableWindow({
-  initialPosition: {
-    x: 0.5 * viewport.width - 0.5 * HARI_INITIAL_WIDTH,
-    y: 0.5 * viewport.height - 0.5 * HARI_INITIAL_HEIGHT,
-  },
-  initialSize: { width: HARI_INITIAL_WIDTH, height: HARI_INITIAL_HEIGHT },
-  handleClose: close,
-})
-
 const draft = ref("")
 const modelOpen = ref(false)
 const thinkingOpen = ref(false)
 const modelAnchor = ref<HTMLElement | null>(null)
 const thinkingAnchor = ref<HTMLElement | null>(null)
-const surface = ref<HTMLElement | null>(null)
+const panelRef = ref<ComponentPublicInstance | null>(null)
 const pinnedToBottom = ref(true)
 
 onMounted(() => {
@@ -142,13 +118,11 @@ const thinkingButtonLabel = computed(() => {
   return levelLabel(thinkingOptions.value, clampedLevel)
 })
 
-function setSurface(element: HTMLElement | null): void {
-  surface.value = element
-}
-
 /** The transcript scroller, found by the ref name the design bakes onto it. */
 function transcriptElement(): HTMLElement | null {
-  return surface.value?.querySelector<HTMLElement>('[data-seldon-ref="hariTurns"]') ?? null
+  const root = panelRef.value?.$el as HTMLElement | undefined
+
+  return root?.querySelector<HTMLElement>('[data-seldon-ref="paletteContents"]') ?? null
 }
 
 function submit(): void {
@@ -180,10 +154,6 @@ function onTranscriptScroll(): void {
   const distanceFromBottom = element.scrollHeight - element.scrollTop - element.clientHeight
 
   pinnedToBottom.value = distanceFromBottom < PINNED_THRESHOLD
-}
-
-function startDrag(event: PointerEvent): void {
-  moveControls.start(event)
 }
 
 function openModelMenu(event: MouseEvent): void {
@@ -267,36 +237,36 @@ watch(
 )
 
 const seldonRefs = computed(() => ({
-  hariBar: { onPointerdown: startDrag, style: styles.dragHandle },
-  hariOutcome: {
+  paletteTopBar: { onPointerdown: props.startDrag, style: styles.dragHandle },
+  paletteOption: {
+    onClick: onReset,
+    title: "Clear",
+    "data-testid": "ai-chat-reset",
+  },
+  paletteOptionIcon: { icon: "seldon-reset" },
+  paletteClose: { onClick: props.onClose, "data-testid": "ai-chat-close" },
+
+  hariToggleOutcome: {
     onClick: debug.toggleShowOutcome,
     className: showOutcome.value ? ACTIVE_TOGGLE_CLASS : undefined,
     "aria-pressed": showOutcome.value,
     title: "Show Outcome",
     "data-testid": "ai-chat-outcome",
   },
-  hariTools: {
+  hariToggleTools: {
     onClick: debug.toggleShowTools,
     className: showTools.value ? ACTIVE_TOGGLE_CLASS : undefined,
     "aria-pressed": showTools.value,
     title: "Show Tools",
     "data-testid": "ai-chat-tools",
   },
-  hariClamp: {
+  hariToggleClamp: {
     onClick: debug.toggleNoThink,
     className: noThink.value ? ACTIVE_TOGGLE_CLASS : undefined,
     "aria-pressed": noThink.value,
     title: "Clamp Thinking",
     "data-testid": "ai-chat-clamp",
   },
-  hariReset: {
-    onClick: onReset,
-    title: "Clear",
-    "data-testid": "ai-chat-reset",
-  },
-  hariClose: { onClick: close },
-
-  hariTurns: { onScroll: onTranscriptScroll },
 
   hariInput: {
     value: draft.value,
@@ -324,63 +294,60 @@ const seldonRefs = computed(() => ({
   hariSendIcon: isPending.value ? { icon: "material-stop" } : {},
 }))
 
-// PanelHari gates its opt-in slots on a prop being present, so each one the refs
-// above drive is turned on here. The design supplies its own copy.
-const slots = {
-  textTitle: {},
-  buttonToggle: {},
-  buttonToggle2: {},
-  buttonToggle3: {},
-  buttonIconic2: {},
-
-  textarea: {},
-
-  buttonMenu: {},
-  textLabel: {},
-  buttonMenu2: {},
-  textLabel2: {},
-  chip: {},
-  textLabel3: {},
-  buttonIconic3: {},
-}
-
+// Enable each opt-in slot the refs above drive. Bare `{}` enablers turn a slot on
+// without setting props; the design supplies its own copy.
+const emptySlot = {}
+const contentsSlot = { style: styles.transcript, onScroll: onTranscriptScroll }
 const dialogStyle = styles.dialog
 </script>
 
 <template>
-  <WindowSurface
-    :on-close="close"
-    :surface-ref="setSurface"
-    test-id="ai-chat-dialog"
-    :x="x"
-    :y="y"
-    :width="width"
-    :height="height"
-    :move-controls="moveControls"
-    :drag-constraints="dragConstraints"
-    :on-resize-start="onResizeStart"
-    :on-resize="onResize"
-    :get-rect="getRect"
-    :min-width="minWidth"
-    :min-height="minHeight"
+  <PanelPalette
+    ref="panelRef"
+    :style="dialogStyle"
+    :seldon-refs="seldonRefs"
+    :button-iconic="emptySlot"
+    :button-iconic2="emptySlot"
+    :frame3="contentsSlot"
   >
-    <PanelHari v-bind="slots" :style="dialogStyle" :seldon-refs="seldonRefs">
-      <template #hariTurns>
-        <HariTranscript :turns="turns" :on-retry="send" />
-      </template>
-    </PanelHari>
+    <template #paletteTopBarSlot>
+      <BarHari
+        :text-title="emptySlot"
+        :button-toggle2="emptySlot"
+        :button-toggle3="emptySlot"
+        :seldon-refs="seldonRefs"
+      />
+    </template>
 
-    <MenuController
-      :open="modelOpen"
-      :anchor="modelAnchor"
-      :items="modelItems"
-      @close="closeModelMenu"
-    />
-    <MenuController
-      :open="thinkingOpen"
-      :anchor="thinkingAnchor"
-      :items="thinkingItems"
-      @close="closeThinkingMenu"
-    />
-  </WindowSurface>
+    <template #paletteContents>
+      <HariTranscript :turns="turns" :on-retry="send" />
+    </template>
+
+    <template #paletteBottomBarSlot>
+      <BarHariModels
+        :textarea="emptySlot"
+        :button-menu="emptySlot"
+        :text-label="emptySlot"
+        :button-menu2="emptySlot"
+        :text-label2="emptySlot"
+        :chip="emptySlot"
+        :text-label3="emptySlot"
+        :button-iconic="emptySlot"
+        :seldon-refs="seldonRefs"
+      />
+    </template>
+  </PanelPalette>
+
+  <MenuController
+    :open="modelOpen"
+    :anchor="modelAnchor"
+    :items="modelItems"
+    @close="closeModelMenu"
+  />
+  <MenuController
+    :open="thinkingOpen"
+    :anchor="thinkingAnchor"
+    :items="thinkingItems"
+    @close="closeThinkingMenu"
+  />
 </template>

@@ -1,12 +1,13 @@
 import { useActiveBoard } from "@app/canvas/use-active-board"
 import { useSharedStore } from "@app/canvas/use-shared-store"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useCanvasSize } from "@app/overlays/hooks/use-canvas-size"
 import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { setAnchoredNodes } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
 import {
-  getGutterSide,
+  BOARD_EDGE_GUTTER,
   layoutConnectors,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import {
@@ -18,7 +19,8 @@ import {
   collectSummaryNodes,
 } from "@seldon/editor/lib/canvas/connectors/ref-connectors"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
-import { computed, onScopeDispose, ref, watch } from "vue"
+import { storeToRefs } from "pinia"
+import { computed, onScopeDispose, watch } from "vue"
 
 import { useConnectorMetrics } from "./use-connector-metrics"
 import { useFollowCanvasTransform } from "./use-follow-canvas-transform"
@@ -50,6 +52,9 @@ const NOTHING_PLACED: ConnectorLayoutResult = {
   omittedBadge: null,
 }
 
+/** Refs hang off the left edge, nearest the objects sidebar, opposite the tokens. */
+const REF_GUTTER_SIDE: GutterSide = "left"
+
 /**
  * The connectors to draw for the current selection, already laid out.
  *
@@ -64,10 +69,10 @@ export function useRefConnector(): RefConnectorState {
   const { selectedNodeId } = useSelection()
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace()
+  const { propertiesFloating } = storeToRefs(useEditorConfigStore())
   // The rect map is written in place, so its version is what says a node has moved.
   const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
   const canvasSize = useCanvasSize()
-  const gutterSide = ref<GutterSide>("right")
 
   const scopedNodeIds = computed(() =>
     collectScopedNodeIds(activeBoard.value, selectedNodeId.value),
@@ -103,20 +108,22 @@ export function useRefConnector(): RefConnectorState {
   // The badge's own gap spaces the column as well, both between badges and off the canvas
   // top and bottom, so the spacing follows the badge rather than a number kept here.
   //
-  // The edge the column hangs off is carried between frames, because moving it takes a
-  // clear win over where it already is. See `getGutterSide`.
+  // A floating properties palette leaves the canvas edge far from the design, so the column
+  // then hangs off the selection's own left edge instead. Docked, it hangs off the canvas
+  // edge beside the sidebar as before.
   const layout = computed<ConnectorLayoutResult>(() => {
     const measured = metrics.value
 
     if (!measured) return NOTHING_PLACED
 
-    const side = getGutterSide(
-      sources.value,
-      { canvasWidth: canvasSize.value.width, gutter: measured.gutter },
-      gutterSide.value,
-    )
+    // Read so a move re-runs this.
+    void rectsVersion.value
 
-    gutterSide.value = side
+    const boardRect =
+      propertiesFloating.value && selectedNodeId.value
+        ? (nodeRectsStore.getState().rects.get(selectedNodeId.value) ?? null)
+        : null
+    const onBoardEdge = boardRect !== null
 
     return layoutConnectors(sources.value, {
       canvasWidth: canvasSize.value.width,
@@ -125,8 +132,9 @@ export function useRefConnector(): RefConnectorState {
       badgeHeight: measured.badgeHeight,
       badgeGap: measured.badgeGap,
       margin: measured.badgeGap,
-      gutter: measured.gutter,
-      side,
+      gutter: onBoardEdge ? BOARD_EDGE_GUTTER : measured.gutter,
+      side: REF_GUTTER_SIDE,
+      boardEdgeX: onBoardEdge ? boardRect.left : undefined,
     })
   })
 

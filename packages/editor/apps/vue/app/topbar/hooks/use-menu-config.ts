@@ -14,6 +14,7 @@ import { useWorkspaceId } from "@app/project/use-workspace-id"
 import { useRefBindingsStore } from "@app/refs/ref-bindings-store"
 import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useToastStore } from "@app/toaster/toast-store"
+import { getChromeThemes } from "@app/topbar/chrome-themes"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { useNodeClipboardActions } from "@app/workspace/use-node-clipboard-actions"
 import { useSelection } from "@app/workspace/use-selection"
@@ -42,11 +43,13 @@ import type { MenuConfig, MenuDropdown, MenuItem } from "../menus/types"
 import type { ComputedRef } from "vue"
 
 /**
- * Builds the topbar menu configuration: the six dropdown menus (File, Edit,
- * Component, Hari, View, Dev) with their items, shortcuts, active/enabled state,
- * and app-state visibility, wired to the Vue stores and command composables.
- * Returns a reactive `MenuConfig` so highlight and enabled state stay live.
- * Mirrors the React `useMenuConfig`.
+ * Builds the topbar menu configuration: the dropdown menus (File, Edit, View,
+ * Component, Hari, Window, Dev) with their items, shortcuts, active/enabled
+ * state, and app-state visibility, wired to the Vue stores and command
+ * composables. The Window menu holds the interface toggle, properties toggle,
+ * selection-follow options, interface mode, chrome themes, and zoom. Returns a
+ * reactive `MenuConfig` so highlight and enabled state stay live. Mirrors the
+ * React `useMenuConfig`.
  */
 export function useMenuConfig(): ComputedRef<MenuConfig> {
   const router = useRouter()
@@ -267,19 +270,19 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
 
   const selectionMenuItems = computed<(MenuItem | "separator")[]>(() => [
     {
+      id: "insert-component",
+      label: "Insert Component",
+      action: () => tool.setActiveTool("component"),
+      shortcut: "C",
+    },
+    "separator",
+    {
       id: "create-component",
       label: "Create Component",
       action: () => {
         panel.openPanel("create-component")
         tool.setActiveTool("select")
       },
-      shortcut: "C",
-    },
-    "separator",
-    {
-      id: "insert-component",
-      label: "Insert Component",
-      action: () => tool.setActiveTool("component"),
       shortcut: "⇧ C",
     },
     {
@@ -374,13 +377,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   ])
 
   const hariMenuItems = computed<(MenuItem | "separator")[]>(() => {
-    const isChatOpen = panel.activePanel === "ai-chat"
+    const isChatOpen = panel.aiChatOpen
 
     return [
       {
         id: "show-chat",
         label: "Show Chat",
-        action: () => (isChatOpen ? panel.closePanel() : panel.openPanel("ai-chat")),
+        action: () => (isChatOpen ? panel.closeAiChat() : panel.openAiChat()),
         active: isChatOpen,
         shortcut: "~",
       },
@@ -514,24 +517,46 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
 
   const viewMenuItems = computed<(MenuItem | "separator")[]>(() => [
     {
-      id: "toggle-ui",
-      label: config.showPanels ? "Hide Interface" : "Show Interface",
-      action: config.togglePanels,
-      active: !config.showPanels,
-      shortcut: "\\",
-    },
-    "separator",
-    {
-      id: "auto-expand-selection",
-      label: "Expand Tree to Selection",
-      action: config.toggleAutoExpandOnSelection,
-      active: config.autoExpandOnSelection,
+      id: "show-layout-badges",
+      label: "Show Layout",
+      action: config.toggleLayoutBadges,
+      active: config.showLayoutBadges,
+      shortcut: "⇧ 1",
     },
     {
-      id: "auto-scroll-selection",
-      label: "Scroll to Selection",
-      action: config.toggleAutoScrollToSelection,
-      active: config.autoScrollToSelection,
+      id: "show-space-badges",
+      label: "Show Space",
+      action: config.toggleSpaceBadges,
+      active: config.showSpaceBadges,
+      shortcut: "⇧ 2",
+    },
+    {
+      id: "show-dimension-badges",
+      label: "Show Dimension",
+      action: config.toggleDimensionBadges,
+      active: config.showDimensionBadges,
+      shortcut: "⇧ 3",
+    },
+    {
+      id: "show-appearance-badges",
+      label: "Show Appearance",
+      action: config.toggleAppearanceBadges,
+      active: config.showAppearanceBadges,
+      shortcut: "⇧ 4",
+    },
+    {
+      id: "show-typography-badges",
+      label: "Show Typography",
+      action: config.toggleTypographyBadges,
+      active: config.showTypographyBadges,
+      shortcut: "⇧ 5",
+    },
+    {
+      id: "show-effects-badges",
+      label: "Show Effects",
+      action: config.toggleEffectsBadges,
+      active: config.showEffectsBadges,
+      shortcut: "⇧ 6",
     },
     "separator",
     {
@@ -558,7 +583,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     },
     {
       id: "show-reference-badges",
-      label: "Show Reference Badges",
+      label: "Show Reference",
       action: toggleRefBadges,
       active: config.showRefBadges,
       shortcut: "R",
@@ -582,7 +607,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Show Unused Properties",
       action: config.toggleShowUnusedProperties,
       active: config.showUnusedProperties,
-      shortcut: "P",
+      shortcut: "U",
     },
     {
       id: "show-unused-fonts",
@@ -598,21 +623,93 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       active: config.showUnusedIcons,
       shortcut: "N",
     },
-    "separator",
-    {
-      id: "actual-size",
-      label: "Actual Size",
-      action: zoom.resetZoom,
-      shortcut: "⌘ 0",
-    },
-    { id: "zoom-in", label: "Zoom In", action: zoom.zoomIn, shortcut: "⌘ +" },
-    {
-      id: "zoom-out",
-      label: "Zoom Out",
-      action: zoom.zoomOut,
-      shortcut: "⌘ -",
-    },
   ])
+
+  const chromeThemes = getChromeThemes()
+
+  const windowMenuItems = computed<(MenuItem | "separator")[]>(() => {
+    const modeItems: MenuItem[] = [
+      {
+        id: "mode-system",
+        label: "Use System",
+        action: () => config.setInterfaceMode("system"),
+        active: config.interfaceMode === "system",
+        activeMarker: "bullet",
+      },
+      {
+        id: "mode-light",
+        label: "Light Mode",
+        action: () => config.setInterfaceMode("light"),
+        active: config.interfaceMode === "light",
+        activeMarker: "bullet",
+      },
+      {
+        id: "mode-dark",
+        label: "Dark Mode",
+        action: () => config.setInterfaceMode("dark"),
+        active: config.interfaceMode === "dark",
+        activeMarker: "bullet",
+      },
+    ]
+
+    const themeItems: MenuItem[] = chromeThemes.map((theme) => ({
+      id: `chrome-theme-${theme.slug}`,
+      label: theme.label,
+      action: () => config.setChromeTheme(theme.slug),
+      active: config.chromeTheme === theme.slug,
+      activeMarker: "bullet",
+    }))
+
+    return [
+      {
+        id: "toggle-ui",
+        label: config.showPanels ? "Hide Interface" : "Show Interface",
+        action: config.togglePanels,
+        active: !config.showPanels,
+        shortcut: "\\",
+      },
+      {
+        id: "show-properties",
+        label: "Show Properties",
+        action: config.showProperties,
+        active: config.propertiesFloating
+          ? config.propertiesFloatingOpen
+          : config.propertiesDockedOpen,
+        shortcut: "P",
+      },
+      "separator",
+      {
+        id: "auto-expand-selection",
+        label: "Expand Tree to Selection",
+        action: config.toggleAutoExpandOnSelection,
+        active: config.autoExpandOnSelection,
+      },
+      {
+        id: "auto-scroll-selection",
+        label: "Scroll to Selection",
+        action: config.toggleAutoScrollToSelection,
+        active: config.autoScrollToSelection,
+      },
+      "separator",
+      ...modeItems,
+      "separator",
+      ...themeItems,
+      "separator",
+      {
+        id: "actual-size",
+        label: "Actual Size",
+        action: zoom.resetZoom,
+        shortcut: "⌘ 0",
+      },
+      { id: "zoom-in", label: "Zoom In", action: zoom.zoomIn, shortcut: "⌘ +" },
+      {
+        id: "zoom-out",
+        label: "Zoom Out",
+        action: zoom.zoomOut,
+        shortcut: "⌘ -",
+      },
+    ]
+  })
 
   return computed<MenuConfig>(() => [
     { id: "file", label: "File", items: fileMenuItems.value },
@@ -639,6 +736,12 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "View",
       visibleIn: ["edit"],
       items: viewMenuItems.value,
+    },
+    {
+      id: "window",
+      label: "Window",
+      visibleIn: ["edit"],
+      items: windowMenuItems.value,
     },
     {
       id: "dev",

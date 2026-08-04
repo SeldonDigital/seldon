@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExportOptionsStore } from "@app/dialogs/export-options-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { useImportExport } from "@app/io/use-import-export"
@@ -17,7 +18,7 @@ import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 
 import type { MenuEntry } from "@app/menus/types"
-import type { ExportOptions, PlatformId } from "@seldon/factory/export/types"
+import type { ExportOptions } from "@seldon/factory/export/types"
 import type { CSSProperties } from "vue"
 
 /** Upper bound on a workspace name, matching the inline project rename. */
@@ -41,14 +42,19 @@ const workspaceId = useWorkspaceId()
 
 const isOpen = computed(() => activePanel.value === "export-components")
 
-const platform = ref<PlatformId>("vue")
-const includeHidden = ref(false)
-const allThemes = ref(false)
-const allFonts = ref(false)
-const fontLinks = ref(false)
-const allIcons = ref(true)
-const savedWorkspace = ref(true)
-const includeScripts = ref(true)
+// Platform and the scope toggles come from a persisted store, so reopening the
+// dialog restores the last-used selections instead of the defaults.
+const options = useExportOptionsStore()
+const {
+  platform,
+  includeHidden,
+  allThemes,
+  allFonts,
+  fontLinks,
+  allIcons,
+  savedWorkspace,
+  includeScripts,
+} = storeToRefs(options)
 const directory = ref<FileSystemDirectoryHandle | null>(null)
 
 // Holds what the user typed, including an empty string, so clearing the field
@@ -179,15 +185,10 @@ function closeUnlessExporting(): void {
   close()
 }
 
+// Clears only the per-open local state. Platform and the scope toggles persist in
+// their own store, so a close keeps them for the next open. The folder refills
+// from storage on open, and the name re-derives from the label.
 function reset(): void {
-  platform.value = "vue"
-  includeHidden.value = false
-  allThemes.value = false
-  allFonts.value = false
-  fontLinks.value = false
-  allIcons.value = true
-  savedWorkspace.value = true
-  includeScripts.value = true
   directory.value = null
   nameDraft.value = null
 }
@@ -218,9 +219,10 @@ const styles: Record<string, CSSProperties> = {
   dragHandle: { cursor: "grab", userSelect: "none", touchAction: "none" },
   pointer: { cursor: "pointer" },
 
-  // Only Export dims, so Cancel and the title bar stay usable during a run. Its
-  // pointer events go with it, which is what stops a second export from landing.
-  busy: { opacity: 0.5, pointerEvents: "none" },
+  // Only Export takes its disabled look during a run, so Cancel and the title bar
+  // stay usable. Its pointer events go with it, which stops a second export from
+  // landing; the muted appearance comes from the button's own aria-disabled styling.
+  busy: { pointerEvents: "none" },
 
   // Every control here holds one resting appearance. The generated hover and
   // press rules dim a control to 0.8 and 0.6 opacity, which on a hairline

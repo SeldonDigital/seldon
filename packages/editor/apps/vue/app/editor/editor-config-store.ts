@@ -9,6 +9,14 @@ export type ObjectsView = "components" | "resources"
 
 export type WireframeMode = "auto" | "on" | "off"
 
+/** Absolute rect of a floating palette in viewport coordinates. */
+export interface PanelRect {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 const STORAGE_KEY = "editor-config"
 
 /** Sidebar width bounds, matching the React Allotment panes. */
@@ -43,6 +51,17 @@ type PersistedConfig = {
   useRefactoredSidebars: boolean
   chromeTheme: string
   interfaceMode: InterfaceMode
+  showLayoutBadges: boolean
+  showSpaceBadges: boolean
+  showDimensionBadges: boolean
+  showAppearanceBadges: boolean
+  showTypographyBadges: boolean
+  showEffectsBadges: boolean
+  propertiesFloating: boolean
+  propertiesFloatingOpen: boolean
+  propertiesDockedOpen: boolean
+  propertiesPanelRect: PanelRect | null
+  hariPanelRect: PanelRect | null
 }
 
 function loadPersisted(): Partial<PersistedConfig> {
@@ -93,6 +112,28 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const useRefactoredSidebars = ref(persisted.useRefactoredSidebars ?? false)
   const chromeTheme = ref(persisted.chromeTheme ?? "seldon")
   const interfaceMode = ref<InterfaceMode>(persisted.interfaceMode ?? "light")
+
+  // Token badge overlay groups, one per toggle, drawing the selection's property
+  // tokens out to a gutter column opposite the reference badges. Off by default;
+  // persisted since tokens read from the workspace, not a linked folder.
+  const showLayoutBadges = ref(persisted.showLayoutBadges ?? false)
+  const showSpaceBadges = ref(persisted.showSpaceBadges ?? false)
+  const showDimensionBadges = ref(persisted.showDimensionBadges ?? false)
+  const showAppearanceBadges = ref(persisted.showAppearanceBadges ?? false)
+  const showTypographyBadges = ref(persisted.showTypographyBadges ?? false)
+  const showEffectsBadges = ref(persisted.showEffectsBadges ?? false)
+
+  // Properties panel: floating (detached palette) vs docked (right-edge pane).
+  // Each mode has its own shown flag, so "Show Properties" hides and reopens the
+  // properties in whichever mode they are in without detaching or re-docking.
+  const propertiesFloating = ref(persisted.propertiesFloating ?? false)
+  const propertiesFloatingOpen = ref(persisted.propertiesFloatingOpen ?? true)
+  const propertiesDockedOpen = ref(persisted.propertiesDockedOpen ?? true)
+
+  // Persisted position and size of the floating palettes, so each reopens where
+  // the user last left it. Null until the user moves or resizes the palette.
+  const propertiesPanelRect = ref<PanelRect | null>(persisted.propertiesPanelRect ?? null)
+  const hariPanelRect = ref<PanelRect | null>(persisted.hariPanelRect ?? null)
 
   function toggleWireframeMode(mode?: "on" | "off"): void {
     wireframeMode.value =
@@ -183,6 +224,69 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     interfaceMode.value = mode
   }
 
+  function toggleLayoutBadges(): void {
+    showLayoutBadges.value = !showLayoutBadges.value
+  }
+
+  function toggleSpaceBadges(): void {
+    showSpaceBadges.value = !showSpaceBadges.value
+  }
+
+  function toggleDimensionBadges(): void {
+    showDimensionBadges.value = !showDimensionBadges.value
+  }
+
+  function toggleAppearanceBadges(): void {
+    showAppearanceBadges.value = !showAppearanceBadges.value
+  }
+
+  function toggleTypographyBadges(): void {
+    showTypographyBadges.value = !showTypographyBadges.value
+  }
+
+  function toggleEffectsBadges(): void {
+    showEffectsBadges.value = !showEffectsBadges.value
+  }
+
+  function setPropertiesFloating(enabled: boolean): void {
+    propertiesFloating.value = enabled
+  }
+
+  function setPropertiesFloatingOpen(enabled: boolean): void {
+    propertiesFloatingOpen.value = enabled
+  }
+
+  function setPropertiesDockedOpen(enabled: boolean): void {
+    propertiesDockedOpen.value = enabled
+  }
+
+  // Detach the Properties panel into a floating palette and show it. Docking is
+  // the plain setter with false.
+  function floatProperties(): void {
+    propertiesFloating.value = true
+    propertiesFloatingOpen.value = true
+  }
+
+  // Hide or reveal the properties in whichever mode they are in. It never
+  // detaches or re-docks: floating toggles the palette, docked toggles the pane.
+  function showProperties(): void {
+    if (propertiesFloating.value) {
+      propertiesFloatingOpen.value = !propertiesFloatingOpen.value
+
+      return
+    }
+
+    propertiesDockedOpen.value = !propertiesDockedOpen.value
+  }
+
+  function setPropertiesPanelRect(rect: PanelRect): void {
+    propertiesPanelRect.value = rect
+  }
+
+  function setHariPanelRect(rect: PanelRect): void {
+    hariPanelRect.value = rect
+  }
+
   watch(
     [
       showSelection,
@@ -207,6 +311,17 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       useRefactoredSidebars,
       chromeTheme,
       interfaceMode,
+      showLayoutBadges,
+      showSpaceBadges,
+      showDimensionBadges,
+      showAppearanceBadges,
+      showTypographyBadges,
+      showEffectsBadges,
+      propertiesFloating,
+      propertiesFloatingOpen,
+      propertiesDockedOpen,
+      propertiesPanelRect,
+      hariPanelRect,
     ],
     () => {
       if (typeof localStorage === "undefined") return
@@ -233,6 +348,17 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         useRefactoredSidebars: useRefactoredSidebars.value,
         chromeTheme: chromeTheme.value,
         interfaceMode: interfaceMode.value,
+        showLayoutBadges: showLayoutBadges.value,
+        showSpaceBadges: showSpaceBadges.value,
+        showDimensionBadges: showDimensionBadges.value,
+        showAppearanceBadges: showAppearanceBadges.value,
+        showTypographyBadges: showTypographyBadges.value,
+        showEffectsBadges: showEffectsBadges.value,
+        propertiesFloating: propertiesFloating.value,
+        propertiesFloatingOpen: propertiesFloatingOpen.value,
+        propertiesDockedOpen: propertiesDockedOpen.value,
+        propertiesPanelRect: propertiesPanelRect.value,
+        hariPanelRect: hariPanelRect.value,
       }
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
@@ -264,6 +390,30 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     useRefactoredSidebars,
     chromeTheme,
     interfaceMode,
+    showLayoutBadges,
+    showSpaceBadges,
+    showDimensionBadges,
+    showAppearanceBadges,
+    showTypographyBadges,
+    showEffectsBadges,
+    propertiesFloating,
+    propertiesFloatingOpen,
+    propertiesDockedOpen,
+    propertiesPanelRect,
+    hariPanelRect,
+    toggleLayoutBadges,
+    toggleSpaceBadges,
+    toggleDimensionBadges,
+    toggleAppearanceBadges,
+    toggleTypographyBadges,
+    toggleEffectsBadges,
+    setPropertiesFloating,
+    setPropertiesFloatingOpen,
+    setPropertiesDockedOpen,
+    floatProperties,
+    showProperties,
+    setPropertiesPanelRect,
+    setHariPanelRect,
     toggleWireframeMode,
     togglePanels,
     toggleShowSelection,

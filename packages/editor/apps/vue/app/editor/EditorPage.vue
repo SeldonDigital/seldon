@@ -17,6 +17,7 @@ import HariController from "@app/palettes/hari/HariController.vue"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
+import PanelPropertyController from "@app/sidebars/properties/PanelPropertyController.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
 import TopbarController from "@app/topbar/TopbarController.vue"
 import { useHistoryStore } from "@app/workspace/history-store"
@@ -32,11 +33,19 @@ const save = useWorkspaceSaveStore()
 const config = useEditorConfigStore()
 const { workspace } = useWorkspace()
 
-const { showPanels, chromeTheme, objectsWidth, propertiesWidth } = storeToRefs(config)
+const { showPanels, chromeTheme, objectsWidth, propertiesWidth, propertiesFloating, propertiesDockedOpen } =
+  storeToRefs(config)
 const resolvedMode = useResolvedInterfaceMode()
 
 // Panels hide when the user collapses chrome (`\`).
 const showSidebars = computed(() => showPanels.value)
+
+// The properties pane docks on the right only while it is not detached into the
+// floating palette and its docked view is shown. Floating or hidden, the pane and
+// its resizer drop out so the canvas takes the width.
+const showDockedProperties = computed(
+  () => showPanels.value && !propertiesFloating.value && propertiesDockedOpen.value,
+)
 
 // Resizable sidebars, matching the React Allotment panes. Each handle drags its
 // panel width, which the config store clamps and persists. The objects pane
@@ -132,7 +141,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
         <div class="editor-canvas">
           <Canvas :workspace="workspace" />
         </div>
-        <template v-if="showSidebars">
+        <template v-if="showDockedProperties">
           <div
             class="editor-resizer"
             :class="{ 'editor-resizer--active': isResizingProperties }"
@@ -155,6 +164,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
     <ExportDialog />
     <ImageUploadController />
     <HariController />
+    <PanelPropertyController />
     <FocusRingOverlay />
   </div>
 </template>
@@ -175,10 +185,12 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
 }
 .editor-objects,
 .editor-properties {
+  position: relative;
+  z-index: 1;
   flex: none;
   height: 100%;
   min-height: 0;
-  background-color: var(--sdn-swatch-offBlack);
+  background-color: var(--sdn-swatch-offWhite);
 }
 /*
  * Pane separator/resize handle. The visible line is a 1px flex item so panes

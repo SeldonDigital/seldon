@@ -4,6 +4,8 @@ import WindowSurface from "@app/windows/WindowSurface.vue"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/use-draggable-window"
 import MessageRefController from "@seldon/components/elements/MessageRefController.vue"
 import PanelRefs from "@seldon/components/modules/PanelRefs.vue"
+import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { describeBinding } from "@seldon/editor/lib/refs/describe-binding"
 import { computed, watch } from "vue"
 
@@ -33,6 +35,9 @@ const RESIZE_SIDES: Record<
   },
 }
 
+/** The widest a drag may take a ref card, capped at 2.5x the minimum width. */
+const REF_CARD_MAX_WIDTH = MIN_WINDOW_SIZE.width * 2.5
+
 /**
  * Binds one ref binding to the card half of `PanelRefs`.
  *
@@ -51,6 +56,10 @@ const props = defineProps<{
 
 const status = useRefBindingsStatus()
 const description = computed(() => describeBinding(props.binding, status.value))
+
+// The card renders in the canvas layer so the sidebar clips it like the badges, rather
+// than floating over the chrome. Its position already arrives in that layer's space.
+const canvas = getCanvasElement()
 
 const { x, y, width, height, onResizeStart, onResize, getRect, moveControls, dragConstraints } =
   useDraggableWindow({
@@ -75,8 +84,10 @@ watch(
 
 // The drag drives this card, and the size it lands on is what the next card opens at.
 function handleResize(rect: Rect): void {
-  onResize(rect)
-  setRefCardSize({ width: rect.width, height: rect.height })
+  const capped = clampCardWidth(rect, props.position.grows, REF_CARD_MAX_WIDTH)
+
+  onResize(capped)
+  setRefCardSize({ width: capped.width, height: capped.height })
 }
 
 /**
@@ -188,6 +199,8 @@ const styles: Record<string, CSSProperties> = {
     :resize-sides="resizeSides"
     :min-width="MIN_WINDOW_SIZE.width"
     :min-height="MIN_WINDOW_SIZE.height"
+    :portal-target="canvas"
+    :anchored="canvas !== null"
   >
     <PanelRefs
       role="presentation"

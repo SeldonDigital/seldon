@@ -57,15 +57,15 @@ body {
 /*
  * The topbar wordmark ships as an <img> with a hardcoded fill, so it cannot
  * follow the interface mode on its own. Repaint it through a mask filled with
- * the offWhite swatch: the neutral swatches invert per mode, so the letters
- * render off-white on the dark logo pill in light mode and off-black on the
- * light pill in dark mode. object-position pushes the img's own pixels out of
- * the content box so only the painted mask shows.
+ * the offBlack swatch: the neutral swatches invert per mode, so the letters
+ * render off-black in light mode and off-white in dark mode. object-position
+ * pushes the img's own pixels out of the content box so only the painted mask
+ * shows.
  */
 [data-seldon-ref="logo"] img[src="/wordmark-light.svg"] {
   -webkit-mask: url("/wordmark-light.svg") no-repeat left center / contain;
   mask: url("/wordmark-light.svg") no-repeat left center / contain;
-  background-color: var(--sdn-swatch-offWhite);
+  background-color: var(--sdn-swatch-offBlack);
   object-position: -10000px 0;
 }
 
