@@ -416,6 +416,49 @@ export const buildStyleRegistry = (
     }
   }
 
+  // Cascade the owned states of an embedded component instance too. A button used
+  // inside a dialog renders in a different context (size, auto-fit font) than the
+  // button board, so its label and icon fork into new classes. Its source variant
+  // owns the state, but the parent export root (the dialog) does not, so the loop
+  // above never reaches these forked classes. Root each such instance's cascade at
+  // the component family class, keyed by the instance's own descendant classes, so
+  // `.sdn-button[aria-disabled="true"] .sdn-text-label--wxqf` is emitted alongside
+  // the board's default-context rule. Rules dedupe by descendant class, so a
+  // same-context instance re-adds nothing.
+  for (const node of getWorkspaceNodeList(workspace)) {
+    if (!typeCheckingService.isInstance(node)) continue
+
+    const sourceVariantId = resolveSourceVariantId(node, workspace)
+
+    if (!sourceVariantId) continue
+
+    const ownedStates = variantOwnedStates[sourceVariantId]
+
+    if (!ownedStates || ownedStates.size === 0) continue
+
+    const familyRoot = getFamilyBaseClass(node, workspace)
+
+    for (const descendantId of collectSubtreeIds(node.id)) {
+      const descendantNode = workspace.nodes[descendantId]
+
+      if (!descendantNode) continue
+      if (getFamilyBaseClass(descendantNode, workspace) === familyRoot) continue
+
+      const descendantClass =
+        nodeIdToClass[descendantId] ?? getClassNameForNode(descendantNode, workspace)
+      const normalCss = computeNodeCss(descendantId)
+
+      for (const stateName of ownedStates) {
+        const stateCss = computeNodeCss(descendantId, stateName)
+        const delta = calculateCssDifferences(normalCss, stateCss)
+
+        if (Object.keys(delta).length > 0) {
+          addRootScopedRule(familyRoot, stateName, descendantClass, delta)
+        }
+      }
+    }
+  }
+
   if (forceRegeneration) {
     getWorkspaceNodeList(workspace).forEach((node) => {
       const hasTemplateSource = isInstanceWithTemplateSource(node)
