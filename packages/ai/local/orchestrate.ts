@@ -265,7 +265,7 @@ export async function chatToActions(
       hasSelectedNode: input.selectedNodeId !== undefined,
       model: modelId,
     })
-    context.calls.push(classification.metrics)
+    context.calls.push(...classification.metrics)
 
     const stepIsNotAnEdit = isClarification(classification)
     if (stepIsNotAnEdit) {
@@ -291,7 +291,10 @@ export async function chatToActions(
     recordStep(context, stepLabel, {
       ok: true,
       prompt: classification.prompt,
-      output: intentKey,
+      // Both picks, so a family chosen right with the member chosen wrong (or
+      // the reverse) is readable in the transcript instead of looking like one
+      // opaque answer.
+      output: `${classification.family} -> ${intentKey}`,
     })
 
     const familyHandler = FAMILY_HANDLERS_BY_INTENT[intentKey]

@@ -22,6 +22,35 @@ export type V1Family =
   | "composition"
   | "none"
 
+/**
+ * What each family covers, for the first of the two classification picks.
+ *
+ * Every description is written around the VERB, never around the kind of thing
+ * the message mentions. That is the whole point of picking a family first: four
+ * sibling-steals in a row happened because a structural noun outweighed the
+ * verb in a single 24-way choice ("add a chip to the new variant" -> add_variant
+ * off the word "variant", "rename the second variant to Compact" -> add_variant
+ * off the same word). No family here is defined by a noun, so a noun has
+ * nothing to steal, and the member pick that follows only ever sees the two to
+ * five siblings inside one family.
+ */
+export const V1_FAMILY_DESCRIPTIONS: Readonly<Record<V1Family, string>> = {
+  properties:
+    "Change, clear, or rename something about elements that already exist: a colour, size, spacing, text content, font, alignment, visibility, or an element's own name.",
+  mutations: "Delete or duplicate elements that already exist.",
+  add: "Bring something new into being: a component, a variant, a board, or an instance inserted under a parent.",
+  ordering:
+    "Move an element that already exists: under a different parent, or to a different position among its siblings.",
+  theme:
+    "Create a theme, edit a theme's own token values, add a custom token, or apply a theme to a board or to elements.",
+  "fonts-icons":
+    "Toggle fonts or icons on or off inside a font collection or an icon set.",
+  content: "Rewrite the text content of elements into another language.",
+  composition:
+    "Assemble a new component out of existing ones, or restructure how a component is composed.",
+  none: "Not a design edit at all: a greeting, a question, small talk, or a request outside the supported edits.",
+}
+
 export interface V1Intent {
   /** The key the classifier's enum offers. */
   intent: string
@@ -125,8 +154,15 @@ export const V1_INTENTS: readonly V1Intent[] = [
     // Third sibling-steal fixed by description contrast (after reset/set and
     // the theme pair in 34876982): "add a chip to the new variant" classified
     // here off the destination noun and CREATED a variant instead of
-    // inserting the chip. If a fourth appears, stop tuning descriptions and
-    // split classification into family-then-member picks.
+    // inserting the chip.
+    //
+    // The tripwire this comment used to carry -- "if a fourth appears, stop
+    // tuning descriptions and split classification into family-then-member
+    // picks" -- was hit and acted on: "rename the second variant to Compact"
+    // classified here and created a variant (issue 17). Classification is two
+    // picks now, so this description no longer competes with set_node_label
+    // for a rename; it only competes inside the `add` family. Keep the
+    // contrast anyway, since add_component is still a sibling here.
     description:
       "Add a new, empty variant to a component's board. NOT for inserting an element into a variant -- adding something INTO a variant is add_component.",
     actionTypes: ["add_variant"],
@@ -260,6 +296,34 @@ export const V1_INTENT_KEYS: readonly string[] = V1_INTENTS.map(
   (entry) => entry.intent,
 )
 
+/** Every family key, in vocabulary order -- the family pick's enum. */
+export const V1_FAMILY_KEYS: readonly V1Family[] = [
+  ...new Set(V1_INTENTS.map((entry) => entry.family)),
+]
+
+/**
+ * The intents inside each family -- the member pick's enum, keyed so a family
+ * with no members is a load-time error rather than an empty enum the model
+ * cannot answer.
+ */
+export const V1_INTENTS_BY_FAMILY: ReadonlyMap<V1Family, readonly V1Intent[]> =
+  new Map(
+    V1_FAMILY_KEYS.map((family) => [
+      family,
+      V1_INTENTS.filter((entry) => entry.family === family),
+    ]),
+  )
+
+/**
+ * A family with exactly one intent needs no member call: the family pick has
+ * already named the intent, so asking again spends a call on a one-item enum.
+ */
+export function soleIntentOfFamily(family: V1Family): V1Intent | undefined {
+  const members = V1_INTENTS_BY_FAMILY.get(family) ?? []
+  const familyHasOneMember = members.length === 1
+  return familyHasOneMember ? members[0] : undefined
+}
+
 /** Lookup of a vocabulary entry by its intent key. */
 export const V1_INTENT_BY_KEY: ReadonlyMap<string, V1Intent> = new Map(
   V1_INTENTS.map((entry) => [entry.intent, entry]),
@@ -275,6 +339,25 @@ export const V1_EXPOSED_ACTION_TYPES: readonly string[] = [
 // of silently producing actions the reducer has never heard of. (The JSON
 // schema can't drive a compile-time `satisfies` check, so this is the
 // runtime analog of the compiler gate.)
+// Load-time gate: the two-pick classifier can only reach an intent through its
+// family, so a family the descriptions don't cover, or one whose member list is
+// empty, would silently make its intents unreachable.
+{
+  const familiesMissingADescription = V1_FAMILY_KEYS.filter(
+    (family) => !V1_FAMILY_DESCRIPTIONS[family],
+  )
+  const familiesWithNoMembers = V1_FAMILY_KEYS.filter(
+    (family) => (V1_INTENTS_BY_FAMILY.get(family) ?? []).length === 0,
+  )
+  const someFamilyIsUnusable =
+    familiesMissingADescription.length > 0 || familiesWithNoMembers.length > 0
+  if (someFamilyIsUnusable) {
+    throw new Error(
+      `v1 vocabulary families are unusable for classification. Missing descriptions: ${familiesMissingADescription.join(", ") || "none"}. Empty families: ${familiesWithNoMembers.join(", ") || "none"}.`,
+    )
+  }
+}
+
 {
   const knownActionTypes = new Set(ALL_ACTION_TYPES)
   const missingActionTypes = V1_EXPOSED_ACTION_TYPES.filter(
