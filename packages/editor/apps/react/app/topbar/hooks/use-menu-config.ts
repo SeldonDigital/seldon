@@ -25,6 +25,8 @@ import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-acce
 import { useCallback, useMemo } from "react"
 import { useNavigate } from "react-router"
 
+import { getChromeThemes } from "../chrome-themes"
+
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-theme-board"
@@ -93,6 +95,10 @@ export function useMenuConfig(): MenuConfig {
     isolatedView,
     directSelect,
     toggleDirectSelect,
+    chromeTheme,
+    setChromeTheme,
+    interfaceMode,
+    setInterfaceMode,
   } = useEditorConfig()
   const { showRefBadges, toggleRefBadges } = useRefBadges()
   const { workspace } = useWorkspace()
@@ -703,6 +709,114 @@ export function useMenuConfig(): MenuConfig {
     toggleNoThink,
   ])
 
+  const chromeThemes = useMemo(() => getChromeThemes(), [])
+
+  const windowMenuItems = useMemo<(MenuItem | "separator")[]>(() => {
+    const modeItems: MenuItem[] = [
+      {
+        id: "mode-system",
+        label: "Use System",
+        action: () => setInterfaceMode("system"),
+        active: interfaceMode === "system",
+        activeMarker: "bullet",
+      },
+      {
+        id: "mode-light",
+        label: "Light Mode",
+        action: () => setInterfaceMode("light"),
+        active: interfaceMode === "light",
+        activeMarker: "bullet",
+      },
+      {
+        id: "mode-dark",
+        label: "Dark Mode",
+        action: () => setInterfaceMode("dark"),
+        active: interfaceMode === "dark",
+        activeMarker: "bullet",
+      },
+    ]
+
+    const themeItems: MenuItem[] = chromeThemes.map((theme) => ({
+      id: `chrome-theme-${theme.slug}`,
+      label: theme.label,
+      action: () => setChromeTheme(theme.slug),
+      active: chromeTheme === theme.slug,
+      activeMarker: "bullet",
+    }))
+
+    return [
+      {
+        id: "toggle-ui",
+        label: showPanels ? "Hide Interface" : "Show Interface",
+        action: togglePanels,
+        active: !showPanels,
+        shortcut: "\\",
+      },
+      {
+        id: "show-properties",
+        label: "Show Properties",
+        action: showProperties,
+        active: propertiesFloating ? propertiesFloatingOpen : propertiesDockedOpen,
+        shortcut: "P",
+      },
+      "separator",
+      {
+        id: "auto-expand-selection",
+        label: "Expand Tree to Selection",
+        action: toggleAutoExpandOnSelection,
+        active: autoExpandOnSelection,
+      },
+      {
+        id: "auto-scroll-selection",
+        label: "Scroll to Selection",
+        action: toggleAutoScrollToSelection,
+        active: autoScrollToSelection,
+      },
+      "separator",
+      ...modeItems,
+      "separator",
+      ...themeItems,
+      "separator",
+      {
+        id: "actual-size",
+        label: "Actual Size",
+        action: resetZoom,
+        shortcut: "⌘ 0",
+      },
+      {
+        id: "zoom-in",
+        label: "Zoom In",
+        action: zoomIn,
+        shortcut: "⌘ +",
+      },
+      {
+        id: "zoom-out",
+        label: "Zoom Out",
+        action: zoomOut,
+        shortcut: "⌘ -",
+      },
+    ]
+  }, [
+    showPanels,
+    togglePanels,
+    showProperties,
+    propertiesFloating,
+    propertiesFloatingOpen,
+    propertiesDockedOpen,
+    toggleAutoExpandOnSelection,
+    autoExpandOnSelection,
+    toggleAutoScrollToSelection,
+    autoScrollToSelection,
+    interfaceMode,
+    setInterfaceMode,
+    chromeThemes,
+    chromeTheme,
+    setChromeTheme,
+    resetZoom,
+    zoomIn,
+    zoomOut,
+  ])
+
   // Build menu configuration
   const menuConfig: MenuConfig = useMemo(
     () => [
@@ -734,21 +848,6 @@ export function useMenuConfig(): MenuConfig {
         label: "View",
         visibleIn: ["edit"], // Not visible in project view
         items: [
-          {
-            id: "toggle-ui",
-            label: showPanels ? "Hide Interface" : "Show Interface",
-            action: togglePanels,
-            active: !showPanels,
-            shortcut: "\\",
-          },
-          {
-            id: "show-properties",
-            label: "Show Properties",
-            action: showProperties,
-            active: propertiesFloating ? propertiesFloatingOpen : propertiesDockedOpen,
-            shortcut: "P",
-          },
-          "separator",
           {
             id: "show-layout-badges",
             label: "Show Layout",
@@ -790,19 +889,6 @@ export function useMenuConfig(): MenuConfig {
             action: toggleEffectsBadges,
             active: showEffectsBadges,
             shortcut: "⇧ 6",
-          },
-          "separator",
-          {
-            id: "auto-expand-selection",
-            label: "Expand Tree to Selection",
-            action: toggleAutoExpandOnSelection,
-            active: autoExpandOnSelection,
-          },
-          {
-            id: "auto-scroll-selection",
-            label: "Scroll to Selection",
-            action: toggleAutoScrollToSelection,
-            active: autoScrollToSelection,
           },
           "separator",
           {
@@ -869,26 +955,13 @@ export function useMenuConfig(): MenuConfig {
             active: showUnusedIcons,
             shortcut: "N",
           },
-          "separator",
-          {
-            id: "actual-size",
-            label: "Actual Size",
-            action: resetZoom,
-            shortcut: "⌘ 0",
-          },
-          {
-            id: "zoom-in",
-            label: "Zoom In",
-            action: zoomIn,
-            shortcut: "⌘ +",
-          },
-          {
-            id: "zoom-out",
-            label: "Zoom Out",
-            action: zoomOut,
-            shortcut: "⌘ -",
-          },
         ],
+      },
+      {
+        id: "window",
+        label: "Window",
+        visibleIn: ["edit"], // Not visible in project view
+        items: windowMenuItems,
       },
       {
         id: "dev",
@@ -901,13 +974,8 @@ export function useMenuConfig(): MenuConfig {
       editMenuItems,
       selectionMenuItems,
       hariMenuItems,
+      windowMenuItems,
       devMenuItems,
-      togglePanels,
-      showPanels,
-      showProperties,
-      propertiesFloating,
-      propertiesFloatingOpen,
-      propertiesDockedOpen,
       toggleShowSelection,
       showSelection,
       toggleShowFocus,
@@ -931,13 +999,6 @@ export function useMenuConfig(): MenuConfig {
       toggleTypographyBadges,
       showEffectsBadges,
       toggleEffectsBadges,
-      autoExpandOnSelection,
-      toggleAutoExpandOnSelection,
-      autoScrollToSelection,
-      toggleAutoScrollToSelection,
-      resetZoom,
-      zoomIn,
-      zoomOut,
       showUnusedProperties,
       toggleShowUnusedProperties,
       showUnusedFonts,
