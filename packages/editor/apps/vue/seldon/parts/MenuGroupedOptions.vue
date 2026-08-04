@@ -98,7 +98,7 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-menu-options", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-menu", props.className))
 const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
 const textLabelProps = computed(() =>

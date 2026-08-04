@@ -28352,7 +28352,18 @@
       "label": "Button",
       "theme": null,
       "template": "node:component-panel-FPioxoxo",
-      "overrides": {},
+      "overrides": {
+        "border": {
+          "width": {
+            "type": "option",
+            "value": "hairline"
+          },
+          "color": {
+            "type": "computed",
+            "value": "matchColor"
+          }
+        }
+      },
       "origin": "schema"
     },
     "component-panel-SfGX2ph2": {

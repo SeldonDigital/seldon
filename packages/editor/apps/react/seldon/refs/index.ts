@@ -638,7 +638,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportConfirm: {
     component: "Button",
     nodeId: "component-panel-Zd52I5RB",
-    className: "sdn-button sdn-button--upjl",
+    className: "sdn-button sdn-button--wjtm",
     views: [
       {
         component: "DialogExportComponent",

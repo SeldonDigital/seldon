@@ -153,7 +153,7 @@ const sdn: Record<string, any> = {
   icon3: {
     icon: "material-arrowUpward",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--gh8m",
+    className: "sdn-icon sdn-icon--yhts",
     "data-seldon-ref": "hariSendIcon",
   },
 }

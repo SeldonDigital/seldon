@@ -97,7 +97,7 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-bar-state", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-bar-filter", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const comboboxFieldProps = computed(() =>
   mergeOptionalSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs),
