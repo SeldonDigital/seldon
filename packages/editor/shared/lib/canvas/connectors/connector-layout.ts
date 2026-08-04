@@ -125,7 +125,7 @@ export type GutterSide = "left" | "right"
  * number rather than a token. Used when the properties sidebar is a floating palette and
  * the canvas edge no longer sits beside the design.
  */
-export const BOARD_EDGE_GUTTER = 50
+export const BOARD_EDGE_GUTTER = 76
 
 /**
  * What the column needs to place badges: the canvas it draws in, the badge sizes measured
