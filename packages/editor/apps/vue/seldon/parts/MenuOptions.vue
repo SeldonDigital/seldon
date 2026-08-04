@@ -71,7 +71,7 @@ const sdn: Record<string, any> = {
   },
   icon: {
     icon: "material-check",
-    className: "sdn-icon sdn-icon--rdh1",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     children: "Option",

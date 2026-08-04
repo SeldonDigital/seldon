@@ -41,7 +41,7 @@ const sdn: MenuProps = {
   },
   icon: {
     icon: "seldon-component",
-    className: "sdn-icon sdn-icon--rdh1",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     children: "Menu Item",

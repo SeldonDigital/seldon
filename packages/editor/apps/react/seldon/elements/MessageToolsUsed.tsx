@@ -40,7 +40,7 @@ const sdn: MessageToolsUsedProps = {
   },
   icon: {
     icon: "material-build",
-    className: "sdn-icon sdn-icon--rdh1",
+    className: "sdn-icon sdn-icon--gl7b",
     "data-seldon-ref": "hariToolIcon",
   },
   textDescription: {

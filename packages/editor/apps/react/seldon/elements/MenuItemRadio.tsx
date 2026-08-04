@@ -36,7 +36,7 @@ const sdn: MenuItemRadioProps = {
   "aria-hidden": "false",
   icon: {
     icon: "material-radioButtonChecked",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
 
   textLabel: {

@@ -3182,6 +3182,12 @@ body {
   font-size: var(--sdn-sizes-small);
 }
 
+.sdn-icon--3qou {
+  background-color: var(--sdn-swatch-primary);
+  font-size: var(--sdn-sizes-small);
+  color: var(--sdn-hc-on-primary);
+}
+
 .sdn-icon--7mzg {
   transform: rotate(90deg);
   font-size: var(--sdn-sizes-small);
@@ -3225,6 +3231,11 @@ body {
 .sdn-icon--gh8m {
   font-size: var(--sdn-cmp-auto-fit-font-size-small);
   color: var(--sdn-hc-on-primary);
+}
+
+.sdn-icon--gl7b {
+  font-size: var(--sdn-sizes-small);
+  color: var(--sdn-hc-on-white);
 }
 
 .sdn-icon--gm8j {
@@ -3287,11 +3298,6 @@ body {
 
 .sdn-icon--qwbk {
   font-size: var(--sdn-cmp-auto-fit-font-size-medium);
-  color: var(--sdn-hc-on-white);
-}
-
-.sdn-icon--rdh1 {
-  font-size: var(--sdn-sizes-small);
   color: var(--sdn-hc-on-white);
 }
 
@@ -3761,7 +3767,7 @@ body {
   opacity: 0.7;
   width: fit-content;
   min-width: 0;
-  font-size: var(--sdn-font-size-xxsmall);
+  font-size: var(--sdn-cmp-auto-fit-font-size-small);
   margin: 0;
 }
 
@@ -4790,7 +4796,7 @@ body {
   color: var(--sdn-swatch-active);
 }
 
-.sdn-combobox-field[aria-selected="true"] .sdn-icon--rdh1 {
+.sdn-combobox-field[aria-selected="true"] .sdn-icon--gl7b {
   color: var(--sdn-swatch-active);
 }
 
@@ -4850,7 +4856,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-combobox-field:hover .sdn-icon--rdh1 {
+.sdn-combobox-field:hover .sdn-icon--gl7b {
   opacity: 0.8;
 }
 
@@ -4910,7 +4916,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-combobox-field:active .sdn-icon--rdh1 {
+.sdn-combobox-field:active .sdn-icon--gl7b {
   opacity: 0.8;
 }
 
@@ -5658,7 +5664,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item:hover .sdn-icon--xi68 {
+.sdn-menu-item:hover .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -5667,10 +5673,6 @@ body {
 }
 
 .sdn-menu-item:hover .sdn-text-label--y8ur {
-  opacity: 0.8;
-}
-
-.sdn-menu-item:hover .sdn-icon--rdh1 {
   opacity: 0.8;
 }
 
@@ -5690,7 +5692,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item:active .sdn-icon--xi68 {
+.sdn-menu-item:active .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -5699,10 +5701,6 @@ body {
 }
 
 .sdn-menu-item:active .sdn-text-label--y8ur {
-  opacity: 0.8;
-}
-
-.sdn-menu-item:active .sdn-icon--rdh1 {
   opacity: 0.8;
 }
 
@@ -5720,8 +5718,8 @@ body {
   color: var(--sdn-swatch-punch);
 }
 
-.sdn-menu:focus-visible .sdn-icon--rdh1,
-.sdn-menu:has(:focus-visible) .sdn-icon--rdh1 {
+.sdn-menu:focus-visible .sdn-icon--3qou,
+.sdn-menu:has(:focus-visible) .sdn-icon--3qou {
   color: var(--sdn-swatch-punch);
 }
 
@@ -5750,8 +5748,8 @@ body {
   color: var(--sdn-swatch-gray);
 }
 
-.sdn-menu:disabled .sdn-icon--rdh1,
-.sdn-menu[aria-disabled="true"] .sdn-icon--rdh1 {
+.sdn-menu:disabled .sdn-icon--3qou,
+.sdn-menu[aria-disabled="true"] .sdn-icon--3qou {
   color: var(--sdn-swatch-gray);
 }
 
@@ -5778,7 +5776,7 @@ body {
   color: var(--sdn-swatch-negative);
 }
 
-.sdn-menu[aria-invalid="true"] .sdn-icon--rdh1 {
+.sdn-menu[aria-invalid="true"] .sdn-icon--3qou {
   color: var(--sdn-swatch-negative);
 }
 
@@ -5802,7 +5800,7 @@ body {
   color: var(--sdn-swatch-active);
 }
 
-.sdn-menu.sdn-state-activated .sdn-icon--rdh1 {
+.sdn-menu.sdn-state-activated .sdn-icon--3qou {
   color: var(--sdn-swatch-active);
 }
 
@@ -6965,7 +6963,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item-option:hover .sdn-icon--xi68 {
+.sdn-menu-item-option:hover .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -6981,7 +6979,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item-option:active .sdn-icon--xi68 {
+.sdn-menu-item-option:active .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -7000,8 +6998,8 @@ body {
   color: var(--sdn-swatch-punch);
 }
 
-.sdn-menu-options:focus-visible .sdn-icon--rdh1,
-.sdn-menu-options:has(:focus-visible) .sdn-icon--rdh1 {
+.sdn-menu-options:focus-visible .sdn-icon--3qou,
+.sdn-menu-options:has(:focus-visible) .sdn-icon--3qou {
   color: var(--sdn-swatch-punch);
 }
 
@@ -7020,8 +7018,8 @@ body {
   color: var(--sdn-swatch-gray);
 }
 
-.sdn-menu-options:disabled .sdn-icon--rdh1,
-.sdn-menu-options[aria-disabled="true"] .sdn-icon--rdh1 {
+.sdn-menu-options:disabled .sdn-icon--3qou,
+.sdn-menu-options[aria-disabled="true"] .sdn-icon--3qou {
   color: var(--sdn-swatch-gray);
 }
 
@@ -7037,7 +7035,7 @@ body {
   color: var(--sdn-swatch-negative);
 }
 
-.sdn-menu-options[aria-invalid="true"] .sdn-icon--rdh1 {
+.sdn-menu-options[aria-invalid="true"] .sdn-icon--3qou {
   color: var(--sdn-swatch-negative);
 }
 
@@ -7053,7 +7051,7 @@ body {
   color: var(--sdn-swatch-active);
 }
 
-.sdn-menu-options.sdn-state-activated .sdn-icon--rdh1 {
+.sdn-menu-options.sdn-state-activated .sdn-icon--3qou {
   color: var(--sdn-swatch-active);
 }
 
@@ -7088,8 +7086,8 @@ body {
   color: var(--sdn-swatch-punch);
 }
 
-.sdn-menu-grouped-options:focus-visible .sdn-icon--rdh1,
-.sdn-menu-grouped-options:has(:focus-visible) .sdn-icon--rdh1 {
+.sdn-menu-grouped-options:focus-visible .sdn-icon--3qou,
+.sdn-menu-grouped-options:has(:focus-visible) .sdn-icon--3qou {
   color: var(--sdn-swatch-punch);
 }
 
@@ -7113,8 +7111,8 @@ body {
   color: var(--sdn-swatch-gray);
 }
 
-.sdn-menu-grouped-options:disabled .sdn-icon--rdh1,
-.sdn-menu-grouped-options[aria-disabled="true"] .sdn-icon--rdh1 {
+.sdn-menu-grouped-options:disabled .sdn-icon--3qou,
+.sdn-menu-grouped-options[aria-disabled="true"] .sdn-icon--3qou {
   color: var(--sdn-swatch-gray);
 }
 
@@ -7135,7 +7133,7 @@ body {
   color: var(--sdn-swatch-negative);
 }
 
-.sdn-menu-grouped-options[aria-invalid="true"] .sdn-icon--rdh1 {
+.sdn-menu-grouped-options[aria-invalid="true"] .sdn-icon--3qou {
   color: var(--sdn-swatch-negative);
 }
 
@@ -7155,7 +7153,7 @@ body {
   color: var(--sdn-swatch-active);
 }
 
-.sdn-menu-grouped-options.sdn-state-activated .sdn-icon--rdh1 {
+.sdn-menu-grouped-options.sdn-state-activated .sdn-icon--3qou {
   color: var(--sdn-swatch-active);
 }
 
@@ -7191,7 +7189,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item-checkbox:hover .sdn-icon--xi68 {
+.sdn-menu-item-checkbox:hover .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -7203,7 +7201,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item-checkbox:active .sdn-icon--xi68 {
+.sdn-menu-item-checkbox:active .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -7215,7 +7213,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item-radio:hover .sdn-icon--xi68 {
+.sdn-menu-item-radio:hover .sdn-icon--3qou {
   opacity: 0.8;
 }
 
@@ -7227,7 +7225,7 @@ body {
   opacity: 0.8;
 }
 
-.sdn-menu-item-radio:active .sdn-icon--xi68 {
+.sdn-menu-item-radio:active .sdn-icon--3qou {
   opacity: 0.8;
 }
 

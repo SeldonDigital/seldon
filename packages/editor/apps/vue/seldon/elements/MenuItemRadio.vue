@@ -63,7 +63,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   icon: {
     icon: "material-radioButtonChecked",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     children: "Radio Item",

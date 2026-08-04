@@ -15580,7 +15580,19 @@
         "color": {
           "type": "computed",
           "value": "highContrastColor"
-        }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.primary"
+            }
+          }
+        ]
       },
       "origin": "schema"
     },
@@ -17153,12 +17165,7 @@
       "label": "Sidebar",
       "theme": null,
       "template": "catalog:sidebar",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        }
-      }
+      "overrides": {}
     },
     "component-bar-qTPtm9qR": {
       "type": "instance",
@@ -43763,12 +43770,6 @@
           "left": {
             "type": "option",
             "value": "none"
-          }
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xxsmall"
           }
         },
         "opacity": {
