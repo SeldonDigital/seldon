@@ -28,12 +28,13 @@ function tokenSourceKey(propertyKey: string): string {
 }
 
 /**
- * The values core renders for an unset or inherited property. A badge showing one of
- * these reads faint, since the property carries no value of its own. This matches the
- * resolved display rather than the raw value type, which stays `EMPTY` on a shorthand
- * or compound like `padding` even when its facets resolve to a real value.
+ * The values a badge shows faint: an unset (`Default`), inherited (`Inherit`), or
+ * explicitly cleared (`None`) property reads as carrying no value of its own. This
+ * matches the resolved display rather than the raw value type, which stays `EMPTY`
+ * on a shorthand or compound like `padding` even when its facets resolve to a real
+ * value.
  */
-const DEFAULT_VALUE_LABELS = new Set(["Default", "Inherit"])
+const MUTED_VALUE_LABELS = new Set(["Default", "Inherit", "None"])
 
 /**
  * The token badges worth drawing for the selection, in group then key order.
@@ -74,9 +75,9 @@ export function buildTokenSources(
 
       if (!property) continue
 
-      // A default or inherited value is not set on this node, so its badge reads faint,
-      // like a reference no code drives.
-      const muted = DEFAULT_VALUE_LABELS.has(property.actualValue)
+      // A default, inherited, or cleared (None) value carries nothing of its own on
+      // this node, so its badge reads faint, like a reference no code drives.
+      const muted = MUTED_VALUE_LABELS.has(property.actualValue)
 
       sources.push({
         key: tokenSourceKey(propertyKey),

@@ -4,8 +4,10 @@ import {
 } from "@seldon/editor/lib/icons/icons-registry"
 import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
 import { getThemeTokenIconColor } from "@seldon/editor/lib/themes/theme-token-icon-color"
+import { getCompoundSelectorFacet, isCompoundCatalogProperty } from "@seldon/core"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
+import { parseThemeLookRef } from "@seldon/core/themes/looks"
 
 import type { Theme } from "@seldon/core"
 
@@ -35,6 +37,13 @@ export function getOptionIcon(
   theme?: Theme,
   fallbackIcon: string = THEME_TOKEN_ICON,
 ): OptionIconDescriptor {
+  // A cleared "none" look (@border.none, @shadow.none) reads as an absence. Core
+  // maps it to the shared block glyph, so delegate here rather than falling into
+  // the theme-token branch below that every other look ref takes.
+  if (parseThemeLookRef(value)?.id === "none") {
+    return { kind: "static", icon: coreGetOptionIcon(propertyKey, value) ?? fallbackIcon }
+  }
+
   if (isThemeValueKey(value)) {
     const swatchColor = getThemeTokenIconColor(value, theme)
 
@@ -82,29 +91,37 @@ export function resolveRowIconId(
 }
 
 /**
- * Reads the currently selected option value for a property row. The board
- * compound reflects its `preset` facet; every other property uses the stored
- * combobox value.
+ * Reads the currently selected option value for a property row. A compound
+ * parent reflects its selector facet (`kind` for background, `preset` for board,
+ * border, shadow, and font), so the row icon follows the selected shape or look
+ * (a cleared @border.none look reads as the block glyph, a None background reads
+ * as "none") instead of collapsing to empty when other facets are still set.
+ * Every other property uses the stored combobox value.
  */
 export function getCurrentOptionValue(propertyKey: string, propertyValue: unknown): string {
-  if (propertyKey === "board") {
-    return getBoardPresetValue(propertyValue)
+  if (isCompoundCatalogProperty(propertyKey)) {
+    const selectorValue = getSelectorFacetValue(
+      propertyValue,
+      getCompoundSelectorFacet(propertyKey),
+    )
+
+    if (selectorValue) return selectorValue
   }
 
   return getComboboxStoredValue(propertyValue)
 }
 
-/** Reads the board compound's preset facet value, or "" when unset (Default). */
-function getBoardPresetValue(value: unknown): string {
-  if (value && typeof value === "object" && "preset" in value) {
-    const preset = (value as { preset?: unknown }).preset
+/**
+ * Reads a compound's selector facet as its wire value, or "" when unset. Layered
+ * compounds (background, shadow) store their layers in an array, so this reads
+ * the top layer before reaching for the facet.
+ */
+function getSelectorFacetValue(value: unknown, facet: string): string {
+  const layer = Array.isArray(value) ? value[0] : value
 
-    if (preset && typeof preset === "object" && "value" in preset) {
-      const presetValue = (preset as { value?: unknown }).value
-
-      return typeof presetValue === "string" ? presetValue : ""
-    }
+  if (!layer || typeof layer !== "object") {
+    return ""
   }
 
-  return ""
+  return getComboboxStoredValue((layer as Record<string, unknown>)[facet])
 }

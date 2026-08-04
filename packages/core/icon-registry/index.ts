@@ -20,6 +20,7 @@ import {
   PROPERTY_OPTION_ICONS,
 } from "../properties/schemas/data/property-icons"
 import { getCatalogKeyForPropertyPath } from "../properties/schemas/helpers/property-path"
+import { parseThemeLookRef } from "../themes/looks"
 import { getThemeTokenSchema } from "../themes/schemas/helpers/get-theme-token-schema"
 import { getNodeCatalogId } from "../workspace/helpers/nodes/get-node-catalog-id"
 import { isSandboxNode } from "../workspace/helpers/nodes/sandbox"
@@ -52,6 +53,13 @@ export function getPropertyIcon(path: string): string | undefined {
  */
 export function getOptionIcon(path: string, value: string): string | undefined {
   const catalogKey = getCatalogKeyForPropertyPath(path) ?? path
+
+  // A cleared "none" look (@border.none, @shadow.none) reads as an absence, so
+  // it shares the block glyph the plain "none" option uses. Font's cleared look
+  // ("normal") keeps a different id and its own icon.
+  if (parseThemeLookRef(value)?.id === "none") {
+    return GLOBAL_OPTION_ICONS.none
+  }
 
   return (
     PROPERTY_OPTION_ICONS[path]?.[value] ??
