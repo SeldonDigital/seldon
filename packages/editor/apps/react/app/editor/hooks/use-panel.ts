@@ -34,8 +34,6 @@ type PanelState = {
   activePanel: PanelType
   openPanel: (...args: OpenPanelArgs) => void
   closePanel: () => void
-  target?: Target
-  dialogLevel?: ComponentLevel
 
   // Palette visibility, each independent of `activePanel` and of one another, so a
   // palette coexists with a dialog and with the other palettes. The Hari chat is the
@@ -43,6 +41,11 @@ type PanelState = {
   aiChatOpen: boolean
   openAiChat: () => void
   closeAiChat: () => void
+
+  // The active dialog's target node and level, optional so a dialog without either
+  // omits them. Optional members come last to keep required members first.
+  target?: Target
+  dialogLevel?: ComponentLevel
 }
 
 const useStore = create<PanelState>()(
