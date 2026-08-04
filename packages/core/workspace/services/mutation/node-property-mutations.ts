@@ -10,12 +10,12 @@ import { DEFAULT_THEME_ID } from "../../constants"
 import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { getComponentPropertyDefaults } from "../../helpers/components/get-component-property-defaults"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
-import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
-import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import {
   cleanupRedundantOverrides,
   stripPatchFacets,
 } from "../../helpers/nodes/cleanup-redundant-overrides"
+import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
+import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import {
   getBaselineLayerCount,
   resolveNodePropertyResetPatch,
@@ -98,7 +98,11 @@ export function pasteNodeProperties(
       node.overrides = mergeProperties(node.overrides, rest, {
         mergeSubProperties: false,
       })
-      cleanupRedundantOverrides(node.overrides, rest, getInheritedNodeProperties(node.id, workspace))
+      cleanupRedundantOverrides(
+        node.overrides,
+        rest,
+        getInheritedNodeProperties(node.id, workspace),
+      )
     }
 
     for (const [key, value] of Object.entries(layered)) {
