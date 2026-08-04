@@ -13,7 +13,7 @@
     "build:release:vue": "npm run build:release --workspace @seldon/editor-vue",
     "start": "npm run start --workspace @seldon/editor-react",
     "start:vue": "npm run start --workspace @seldon/editor-vue",
-    "check": "npm run format:check && npm run lint:all && npm run typecheck:all && npm test && npm run bindings:check",
+    "check": "node scripts/check.mjs",
     "format": "node scripts/format.mjs",
     "format:check": "prettier --check \"**/*.{ts,tsx,vue,json,css,js,mjs}\"",
     "lint": "npm run lint --workspace @seldon/editor-react",
