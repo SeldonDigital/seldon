@@ -89,7 +89,7 @@ const sdn: DialogCreateComponentProps = {
     children: "Create Component",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
   },
 
   frame: {
@@ -255,7 +255,7 @@ const sdn: DialogCreateComponentProps = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button--upjl",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon5: {
     icon: "material-check",
@@ -263,7 +263,7 @@ const sdn: DialogCreateComponentProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel6: {
-    children: "OK",
+    children: "Create",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",

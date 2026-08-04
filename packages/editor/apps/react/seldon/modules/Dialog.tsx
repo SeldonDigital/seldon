@@ -74,7 +74,7 @@ const sdn: DialogProps = {
     children: "Dialog",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
   },
   comboboxFieldSearch: {
     "aria-hidden": "false",

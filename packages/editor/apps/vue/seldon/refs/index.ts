@@ -526,7 +526,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   dialogTitle: {
     component: "TextTitle",
     nodeId: "component-panel-j8D9mUx4",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
     views: [
       {
         component: "PanelDialog",

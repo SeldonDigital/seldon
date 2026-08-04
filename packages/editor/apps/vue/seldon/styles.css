@@ -1472,22 +1472,6 @@ body {
   border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent);
 }
 
-.sdn-panel-modal {
-  display: flex;
-  background-color: var(--sdn-swatch-white);
-  overflow: hidden;
-  flex-wrap: nowrap;
-  flex-direction: column;
-  gap: auto;
-  justify-content: space-between;
-  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
-  align-self: stretch;
-  height: 500px;
-  flex-shrink: 0;
-  border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid var(--sdn-swatch-offBlack);
-}
-
 .sdn-panel-palette {
   background-color: var(--sdn-swatch-offWhite);
   overflow: hidden;
@@ -1967,29 +1951,6 @@ body {
   border-radius: 0px;
 }
 
-.sdn-bar--zhvk {
-  border-radius: unset;
-  border-bottom-width: var(--hairline);
-  border-bottom-style: solid;
-  border-bottom-color: var(--sdn-swatch-primary);
-  border-top-right-radius: var(--sdn-corners-tight);
-  border-top-left-radius: var(--sdn-corners-tight);
-}
-
-.sdn-bar-buttons--0pge {
-  padding-top: unset;
-  padding-inline-end: unset;
-  padding-bottom: unset;
-  padding-inline-start: unset;
-  border-radius: unset;
-  border-top-width: var(--hairline);
-  border-top-style: solid;
-  border-top-color: var(--sdn-swatch-primary);
-  border-top-right-radius: 0px;
-  border-top-left-radius: 0px;
-  padding: var(--sdn-paddings-compact);
-}
-
 .sdn-bar-buttons--36qz {
   border-radius: unset;
   background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 8%, transparent);
@@ -2347,15 +2308,6 @@ body {
   flex: 1 0 0;
   min-width: 0;
   border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 50%, transparent);
-}
-
-.sdn-combobox-field-search--jaw4 {
-  align-self: unset;
-  flex-shrink: unset;
-  color: var(--sdn-hc-on-primary-bn30);
-  flex: 1 0 0;
-  min-width: 0;
-  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-primary-bn30) 50%, transparent);
 }
 
 .sdn-combobox-field-search--vbyg {
@@ -3180,14 +3132,6 @@ body {
   padding: var(--sdn-paddings-compact);
   border-radius: var(--sdn-corners-tight);
   border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 30%, transparent);
-}
-
-.sdn-frame--zjuk {
-  overflow-x: hidden;
-  overflow-y: auto;
-  gap: var(--sdn-gaps-compact);
-  min-height: 0;
-  padding: var(--sdn-paddings-compact);
 }
 
 .sdn-frame--zlbo {
@@ -4181,7 +4125,7 @@ body {
   color: var(--sdn-hc-on-white);
 }
 
-.sdn-text-title--eodu {
+.sdn-text-title--j8d9 {
   align-self: unset;
   max-height: unset;
   color: var(--sdn-hc-on-primary-bn30);
