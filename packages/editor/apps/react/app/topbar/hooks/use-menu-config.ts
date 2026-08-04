@@ -25,8 +25,6 @@ import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-acce
 import { useCallback, useMemo } from "react"
 import { useNavigate } from "react-router"
 
-import { getChromeThemes } from "../chrome-themes"
-
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-theme-board"
@@ -41,6 +39,8 @@ import {
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
+
+import { getChromeThemes } from "../chrome-themes"
 
 import type { MenuConfig, MenuItem } from "../menus/types"
 

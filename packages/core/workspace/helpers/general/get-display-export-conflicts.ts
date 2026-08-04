@@ -1,5 +1,5 @@
 import { Display } from "../../../properties"
-import { isComponentBoard, isAuthoredBoard } from "../../model/components"
+import { isAuthoredBoard, isComponentBoard } from "../../model/components"
 import { isEntryNodeInstance } from "../../model/entry-node"
 import { parseNodeTemplate } from "../../model/template-ref"
 import { getNodeProperties } from "../nodes/get-node-properties"

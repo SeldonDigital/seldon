@@ -14,7 +14,7 @@ import { useRowProperty } from "./hooks/use-row-property"
 
 import type { RowPropertyProps } from "./hooks/use-row-property"
 import type { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
-import type { ChangeEvent, CSSProperties } from "react"
+import type { CSSProperties, ChangeEvent } from "react"
 
 /**
  * How a property row is chromed. `sidebar` is the full inspector row. `token`

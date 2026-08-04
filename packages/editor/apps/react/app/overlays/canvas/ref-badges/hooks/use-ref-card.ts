@@ -88,6 +88,7 @@ export function useRefCard(badge: BadgeBox): RefCardState {
   // The badge box in the canvas layer's own space, read by the opener without a dep on it so
   // opening does not rebuild each pan frame. The card is placed and moved in that same space.
   const badgeBoxRef = useRef({ left: badge.left, top: badge.top })
+
   badgeBoxRef.current = { left: badge.left, top: badge.top }
   // The badge box and card point captured when the card opened, so a pan re-places it by the
   // badge's delta alone.

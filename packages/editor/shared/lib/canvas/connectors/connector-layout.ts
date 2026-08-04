@@ -291,7 +291,9 @@ export function layoutConnectors(
 
   for (let index = 0; index < placed; index++) {
     const { source, preferredY } = anchored[index]
-    const ceiling = boardAnchored ? Infinity : badgeFloor - badgeHeight - (placed - 1 - index) * pitch
+    const ceiling = boardAnchored
+      ? Infinity
+      : badgeFloor - badgeHeight - (placed - 1 - index) * pitch
     const top = clamp(preferredY - badgeHeight / 2, cursor, ceiling)
 
     stacked.push({ source, top })

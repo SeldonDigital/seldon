@@ -23,6 +23,7 @@ export function CanvasResizeAnchor() {
   // catch.
   const setTransformRef = useRef(setTransform)
   const contextRef = useRef(context)
+
   setTransformRef.current = setTransform
   contextRef.current = context
 

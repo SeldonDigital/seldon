@@ -19,8 +19,8 @@ import type { BoundingBox, DragControls, MotionValue } from "framer-motion"
 import type {
   CSSProperties,
   MouseEvent,
-  PointerEvent as ReactPointerEvent,
   ReactNode,
+  PointerEvent as ReactPointerEvent,
   Ref,
 } from "react"
 

@@ -215,6 +215,7 @@ function nearestGroupCenter(
       currentGroup = item.group
       groupTop = center
       groupBottom = center
+
       return
     }
 

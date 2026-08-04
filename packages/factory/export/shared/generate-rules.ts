@@ -35,7 +35,10 @@ export function generateRules(options: ExportOptions): FileToExport[] {
   return [
     { path: `${folder}/README.md`, content: rulesReadme(context) },
     { path: `${folder}/using-seldon-components.md`, content: usingSeldonComponents(context) },
-    { path: `${folder}/editing-exported-components.md`, content: editingExportedComponents(context) },
+    {
+      path: `${folder}/editing-exported-components.md`,
+      content: editingExportedComponents(context),
+    },
     { path: `${folder}/framework-target.md`, content: frameworkTarget(context) },
     { path: `${folder}/controllers-and-refs.md`, content: controllersAndRefs(context) },
     { path: `${folder}/css-variables-and-tokens.md`, content: cssVariablesAndTokens(context) },

@@ -20,11 +20,11 @@ import { useVisibleNodes } from "../hooks/use-visible-nodes"
 import { HighlightConnectors } from "./highlight/HighlightConnectors"
 import { InsertOverlay } from "./insert/InsertOverlay"
 import { RefConnector } from "./ref-badges/RefConnector"
-import { TokenConnector } from "./token-badges/TokenConnector"
 import { CanvasDragLayer } from "./select/CanvasDragLayer"
 import { HoverOverlay } from "./select/HoverOverlay"
 import { NodeWireframe } from "./select/NodeWireframe"
 import { SelectionOverlay } from "./select/SelectionOverlay"
+import { TokenConnector } from "./token-badges/TokenConnector"
 
 export function CanvasOverlays() {
   const selectedNodeId = useSelectedNodeId()

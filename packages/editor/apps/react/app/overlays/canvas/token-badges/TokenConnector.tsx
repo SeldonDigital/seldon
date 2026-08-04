@@ -3,6 +3,7 @@ import { toElbowPath } from "@seldon/editor/lib/canvas/connectors/connector-layo
 import { useMemo } from "react"
 
 import { TokenBadge, TokenBadgeMeasure } from "./TokenBadge"
+import { useTokenConnector } from "./hooks/use-token-connector"
 import {
   tokenConnectorAnchorStyle,
   tokenConnectorMutedAnchorStyle,
@@ -10,7 +11,6 @@ import {
   tokenConnectorStrokeStyle,
   tokenConnectorSvgStyle,
 } from "./token-connector-style"
-import { useTokenConnector } from "./hooks/use-token-connector"
 
 import type { ConnectorShape } from "@app/overlays/primitives/ConnectorPaths.bespoke"
 import type {

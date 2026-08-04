@@ -80,7 +80,9 @@ function PropertyPalette() {
       filterField: { ...panel.filter.comboboxField },
     }
 
-    const topBar = <BarState buttonMenu={EMPTY_SLOT} textLabel={EMPTY_SLOT} seldonRefs={seldonRefs} />
+    const topBar = (
+      <BarState buttonMenu={EMPTY_SLOT} textLabel={EMPTY_SLOT} seldonRefs={seldonRefs} />
+    )
     const bottomBar = (
       <BarFilter
         comboboxField={EMPTY_SLOT}

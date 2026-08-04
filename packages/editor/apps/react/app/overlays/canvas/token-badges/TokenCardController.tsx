@@ -4,13 +4,12 @@ import { PropertyEditNavigationProvider } from "@app/sidebars/properties/hooks/u
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { PanelToken } from "@seldon/components/modules/PanelToken"
+import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
-
-import { buildTokenRowProps, useTokenProperties } from "./hooks/use-token-property-row"
 import { getTokenCardWidth, setTokenCardWidth } from "./hooks/use-token-card"
+import { buildTokenRowProps, useTokenProperties } from "./hooks/use-token-property-row"
 
 import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
 import type { RefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
@@ -120,7 +119,12 @@ export function TokenCardController({
     }
 
     return (
-      <PanelToken role="presentation" style={styles.panel} seldonRefs={cardRefs} chipAssist={null} />
+      <PanelToken
+        role="presentation"
+        style={styles.panel}
+        seldonRefs={cardRefs}
+        chipAssist={null}
+      />
     )
   }, [rowProps])
 

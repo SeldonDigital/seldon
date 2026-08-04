@@ -1,9 +1,8 @@
+import { SIDEBAR_INITIAL_WIDTH } from "@app/constants"
 import { useCallback } from "react"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
-
-import { SIDEBAR_INITIAL_WIDTH } from "@app/constants"
 
 import type { Rect } from "@seldon/components/utils/resize"
 
@@ -206,8 +205,7 @@ const useStore = create<EditorConfigState>()(
 
       // Docked sidebar widths (default to the shared opening width until dragged)
       objectsSidebarWidth: SIDEBAR_INITIAL_WIDTH,
-      setObjectsSidebarWidth: (width) =>
-        set((state) => ({ ...state, objectsSidebarWidth: width })),
+      setObjectsSidebarWidth: (width) => set((state) => ({ ...state, objectsSidebarWidth: width })),
       propertiesSidebarWidth: SIDEBAR_INITIAL_WIDTH,
       setPropertiesSidebarWidth: (width) =>
         set((state) => ({ ...state, propertiesSidebarWidth: width })),
@@ -226,8 +224,7 @@ const useStore = create<EditorConfigState>()(
 
       // Persisted floating palette geometry (null until first moved/resized)
       propertiesPanelRect: null,
-      setPropertiesPanelRect: (rect) =>
-        set((state) => ({ ...state, propertiesPanelRect: rect })),
+      setPropertiesPanelRect: (rect) => set((state) => ({ ...state, propertiesPanelRect: rect })),
       hariPanelRect: null,
       setHariPanelRect: (rect) => set((state) => ({ ...state, hariPanelRect: rect })),
 

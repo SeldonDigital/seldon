@@ -1,10 +1,10 @@
 import { resolveRowIconId } from "../../icons/resolve-option-icon"
 import { TOKEN_BADGE_GROUPS } from "./token-groups"
 
+import type { FlatProperty } from "../../properties/inspector/flat-property"
 import type { NodeRect } from "../overlay/geometry"
 import type { ConnectorSource } from "./connector-layout"
 import type { TokenBadgeGroup } from "./token-groups"
-import type { FlatProperty } from "../../properties/inspector/flat-property"
 import type { Theme } from "@seldon/core"
 
 /**
@@ -57,6 +57,7 @@ export function buildTokenSources(
   for (const property of flatProperties) {
     if (property.isSubProperty) continue
     if (property.status === "not used") continue
+
     if (!byKey.has(property.key)) {
       byKey.set(property.key, property)
     }

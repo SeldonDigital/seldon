@@ -150,6 +150,7 @@ export function useDraggableWindow({
   // The latest close, held in a ref so the window registers once on open and keeps its place
   // in the stack, rather than re-registering to the top whenever `handleClose` changes.
   const handleCloseRef = useRef(handleClose)
+
   handleCloseRef.current = handleClose
 
   // Join the shared Escape stack while open, so only the top window closes on Escape.

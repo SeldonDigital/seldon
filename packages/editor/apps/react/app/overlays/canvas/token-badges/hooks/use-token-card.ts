@@ -67,6 +67,7 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
   // The badge box in the canvas layer's own space, read without a dep on it so a full place
   // does not rebuild each pan frame. The card is placed and moved in that same space.
   const badgeBoxRef = useRef({ left: badge.left, top: badge.top })
+
   badgeBoxRef.current = { left: badge.left, top: badge.top }
   // The badge box and card point captured on the last full place, so a pan re-places the card
   // by the badge's delta alone. The sides are decided once and kept, so a pan never flips the
@@ -134,6 +135,7 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
   const toggle = useCallback(() => {
     if (openRef.current) {
       close()
+
       return
     }
 
@@ -153,6 +155,7 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
     place()
 
     const observer = new ResizeObserver(() => place())
+
     observer.observe(cardEl)
 
     return () => observer.disconnect()

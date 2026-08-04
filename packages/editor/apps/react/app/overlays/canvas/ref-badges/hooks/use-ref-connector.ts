@@ -127,7 +127,15 @@ export function useRefConnector(): RefConnectorState {
       side: REF_GUTTER_SIDE,
       boardEdgeX: onBoardEdge ? boardRect.left : undefined,
     })
-  }, [sources, canvasSize.width, canvasSize.height, metrics, propertiesFloating, selectedNodeId, rectsVersion])
+  }, [
+    sources,
+    canvasSize.width,
+    canvasSize.height,
+    metrics,
+    propertiesFloating,
+    selectedNodeId,
+    rectsVersion,
+  ])
 
   const entries = useMemo(
     () => buildPlacedConnectors(layout.placements, refBindings),

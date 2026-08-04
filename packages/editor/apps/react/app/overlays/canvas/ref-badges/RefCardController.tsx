@@ -3,11 +3,10 @@ import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { MessageRefController } from "@seldon/components/elements/MessageRefController"
 import { PanelRefs } from "@seldon/components/modules/PanelRefs"
+import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { describeBinding } from "@seldon/editor/lib/refs/describe-binding"
 import { useCallback, useEffect, useMemo } from "react"
-
-import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 
 import { setRefCardSize } from "./hooks/use-ref-card"
 

@@ -3,11 +3,11 @@
 import { useSharedStore } from "@app/canvas/hooks/use-shared-store"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
+import { BOARD_EDGE_GUTTER } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import {
   buildTokenConnectorGeometry,
   layoutTokenColumn,
 } from "@seldon/editor/lib/canvas/connectors/token-connectors"
-import { BOARD_EDGE_GUTTER } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { buildTokenSources } from "@seldon/editor/lib/canvas/connectors/token-sources"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import { useMemo } from "react"
@@ -103,15 +103,18 @@ export function useTokenConnector(): TokenConnectorState {
   useFollowCanvasTransform(scopedNodeIds)
 
   const sources = useMemo(() => {
-    const rect = selectedNodeId ? (nodeRectsStore.getState().rects.get(selectedNodeId) ?? null) : null
+    const rect = selectedNodeId
+      ? (nodeRectsStore.getState().rects.get(selectedNodeId) ?? null)
+      : null
 
     return buildTokenSources(rect, flatProperties, enabledGroups, theme)
     // rectsVersion is read through the store so a move re-runs this.
   }, [selectedNodeId, flatProperties, enabledGroups, theme, rectsVersion])
 
-  const labels = useMemo(() => sources.map((source) => `${source.name}\u0000${source.value}`), [
-    sources,
-  ])
+  const labels = useMemo(
+    () => sources.map((source) => `${source.name}\u0000${source.value}`),
+    [sources],
+  )
   const { metrics, measureRef } = useConnectorMetrics(labels, "tokenChip")
 
   // Grouped and seated on the selection: badges cluster by group with a wider gap between

@@ -14,8 +14,8 @@ import {
   tokenBadgeStyle,
 } from "./token-badge-style"
 
-import type { TokenSource } from "@seldon/editor/lib/canvas/connectors/token-sources"
 import type { TokenBadgePlacement } from "@seldon/editor/lib/canvas/connectors/token-connectors"
+import type { TokenSource } from "@seldon/editor/lib/canvas/connectors/token-sources"
 import type { Ref } from "react"
 
 interface TokenBadgeProps {
