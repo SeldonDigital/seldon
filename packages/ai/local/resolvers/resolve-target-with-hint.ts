@@ -11,6 +11,7 @@ import {
   pickDirectionalEndpoint,
 } from "./find-node/geometry-labels"
 import { narrowClassTarget } from "./find-node/narrow-pool"
+import { pickTarget, pickTargetIsEnabled } from "./pick-target"
 import {
   type TargetResolution,
   resolveClassTarget,
@@ -204,6 +205,15 @@ export function resolveVariantReference(
 export async function resolveTargetWithHint(
   context: TurnContext,
 ): Promise<TargetResolution> {
+  // The pick path answers the whole question in two constrained calls over a
+  // board that marks the selection, instead of extracting a phrase and then
+  // defending against it. Flagged off until the eval says it beats the ladder.
+  if (pickTargetIsEnabled()) {
+    const pickedTarget = await pickTarget(context)
+    const boardWasPickable = pickedTarget !== undefined
+    if (boardWasPickable) return pickedTarget
+  }
+
   // The phrase survives whether or not the message also points at the
   // selection. Priority between the two lives in resolveNodeTarget's ladder
   // (selection subtree -> selection -> widen -> ask), so a hint that leans the

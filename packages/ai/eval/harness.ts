@@ -90,15 +90,42 @@ export interface CaseResult {
   elapsedMs: number
 }
 
-/** The single/class reading the real extract_target stage produced, if it ran. */
+/**
+ * The single/class reading the turn actually produced, from whichever
+ * reference stage ran.
+ *
+ * `extract_target` states it as `plural`, code-derived from the noun (issue
+ * 10) and folded into that step's logged output precisely so this read stays
+ * accurate without reimplementing the derivation. `pick_target` never answers
+ * the question in the abstract: the ids it picked ARE the reading, so one id
+ * is single and several are a class. Scoring both means the column measures
+ * whichever path is enabled instead of reading 0/36 for the one that does not
+ * emit the step it was written against.
+ */
 function readReferenceIntent(context: TurnContext): "single" | "class" | undefined {
+  const pickTargetStep = context.steps.find(
+    (step) => step.name === "pick_target",
+  )
+  if (pickTargetStep?.output !== undefined) {
+    try {
+      const loggedPick = JSON.parse(pickTargetStep.output) as {
+        pickedIds: string[]
+      }
+      const pickNamedNothing = loggedPick.pickedIds.length === 0
+      if (pickNamedNothing) return undefined
+      return loggedPick.pickedIds.length > 1 ? "class" : "single"
+    } catch {
+      return undefined
+    }
+  }
+
   const extractTargetStep = context.steps.find(
     (step) => step.name === "extract_target",
   )
   if (extractTargetStep?.output === undefined) return undefined
   try {
-    const rawHint = JSON.parse(extractTargetStep.output) as { plural: boolean }
-    return rawHint.plural ? "class" : "single"
+    const loggedHint = JSON.parse(extractTargetStep.output) as { plural: boolean }
+    return loggedHint.plural ? "class" : "single"
   } catch {
     return undefined
   }
