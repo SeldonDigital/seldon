@@ -130,10 +130,24 @@ export function usePropertyCombobox({
   useEffect(() => {
     if (!comboboxOpen && !isEditing) {
       const option = flatOptions.find((o) => o.value === comboboxControlValue)
+      const optionName = option ? option.name : ""
 
-      setInputValue(option ? option.name : displayValue || "")
+      // Compound parents (background, border, shadow) summarize every facet in
+      // one field. Their stored value collapses to empty when facets are mixed,
+      // which would match the empty "Default" option and wipe the summary the
+      // closed row shows. Keep the display summary so opening the menu keeps the
+      // current value instead of switching to Default.
+      setInputValue(property.isCompound ? displayValue || optionName : optionName || displayValue)
     }
-  }, [comboboxControlValue, displayValue, flatOptions, setInputValue, comboboxOpen, isEditing])
+  }, [
+    comboboxControlValue,
+    displayValue,
+    flatOptions,
+    setInputValue,
+    comboboxOpen,
+    isEditing,
+    property.isCompound,
+  ])
 
   const hasSections = filteredOptions.length > 0 && Array.isArray(filteredOptions[0])
 
