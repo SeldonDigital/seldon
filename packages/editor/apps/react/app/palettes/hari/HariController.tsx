@@ -304,6 +304,7 @@ function Hari({
         title: "Clear",
         "data-testid": "ai-chat-reset",
       },
+      paletteOptionIcon: { icon: "seldon-reset" },
       paletteClose: { onClick: close, "data-testid": "ai-chat-close" },
 
       hariToggleOutcome: {
