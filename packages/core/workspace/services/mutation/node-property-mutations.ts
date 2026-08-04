@@ -13,9 +13,9 @@ import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import {
-  pruneRedundantOverrides,
+  cleanupRedundantOverrides,
   stripPatchFacets,
-} from "../../helpers/nodes/prune-redundant-overrides"
+} from "../../helpers/nodes/cleanup-redundant-overrides"
 import {
   getBaselineLayerCount,
   resolveNodePropertyResetPatch,
@@ -51,7 +51,7 @@ export function setNodeProperties(
     // Drop any written facet that equals the value the node inherits, so setting
     // a property to its catalog or upstream value stays a no-op rather than a
     // stored override that would shadow later changes to that value.
-    pruneRedundantOverrides(
+    cleanupRedundantOverrides(
       node.overrides,
       properties,
       getInheritedNodeProperties(node.id, workspace),
@@ -65,7 +65,7 @@ export function setNodeProperties(
  * then drop facets equal to the node's inherited baseline. Layered paint keys
  * (`background`, `shadow`) adopt the pasted concrete stack exactly: the array
  * is written straight into overrides so the count, order, and per-layer kind
- * match the source and extra target layers drop. Prune is skipped for layered
+ * match the source and extra target layers drop. Cleanup is skipped for layered
  * keys so a shorter adopted stack is not re-expanded back to the baseline.
  */
 export function pasteNodeProperties(
@@ -98,7 +98,7 @@ export function pasteNodeProperties(
       node.overrides = mergeProperties(node.overrides, rest, {
         mergeSubProperties: false,
       })
-      pruneRedundantOverrides(node.overrides, rest, getInheritedNodeProperties(node.id, workspace))
+      cleanupRedundantOverrides(node.overrides, rest, getInheritedNodeProperties(node.id, workspace))
     }
 
     for (const [key, value] of Object.entries(layered)) {
@@ -134,14 +134,14 @@ export function setNodeStateProperties(
     // A state override facet carries no delta when it equals the value the state
     // resolves to without that facet, so drop it. The baseline strips only the
     // written facets from the state bag, leaving sibling facets such as a preset
-    // in play, so a facet the preset would re-derive is not pruned just because
-    // it equals the Normal value. The state bag itself stays registered even when
+    // in play, so a facet the preset would re-derive is not cleaned up just
+    // because it equals the Normal value. The state bag stays registered even when
     // empty, matching a bare state write.
     states[state] = stripPatchFacets(mergedBag, properties)
     const baseline = getEffectiveNodeProperties(node.id, draft, { state })
 
     states[state] = mergedBag
-    pruneRedundantOverrides(states[state], properties, baseline)
+    cleanupRedundantOverrides(states[state], properties, baseline)
   })
 }
 
@@ -381,9 +381,11 @@ function resetObjectProperty(
     }
 
     if (patch.action === "set") {
-      // A whole-property layered reset replaces the stack outright so no owned
-      // facet lingers under the shorter baseline. Other resets merge by facet.
-      if (!subpropertyKey && isLayeredPaintProperty(propertyKey)) {
+      // A whole-property reset replaces the property outright so no owned facet
+      // lingers under the restored baseline. This covers layered paint stacks
+      // and compound or shorthand bags alike. A single-facet reset merges by
+      // facet so sibling facets stay in place.
+      if (!subpropertyKey) {
         ;(node.overrides as Record<string, unknown>)[propertyKey] = patch.properties[propertyKey]
 
         return

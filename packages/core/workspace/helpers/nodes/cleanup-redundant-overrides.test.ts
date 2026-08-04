@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest"
 
-import { pruneRedundantOverrides } from "./prune-redundant-overrides"
+import { cleanupRedundantOverrides } from "./cleanup-redundant-overrides"
 
 import type { Properties } from "../../../properties/types/properties"
 
 const props = (value: Record<string, unknown>): Properties => value as unknown as Properties
 
-describe("pruneRedundantOverrides", () => {
+describe("cleanupRedundantOverrides", () => {
   it("drops an atomic override equal to the baseline", () => {
     const overrides = props({ opacity: { type: "exact", value: 50 } })
     const patch = props({ opacity: { type: "exact", value: 50 } })
     const baseline = props({ opacity: { type: "exact", value: 50 } })
 
-    pruneRedundantOverrides(overrides, patch, baseline)
+    cleanupRedundantOverrides(overrides, patch, baseline)
     expect(overrides).toEqual({})
   })
 
@@ -21,7 +21,7 @@ describe("pruneRedundantOverrides", () => {
     const patch = props({ opacity: { type: "exact", value: 50 } })
     const baseline = props({ opacity: { type: "exact", value: 75 } })
 
-    pruneRedundantOverrides(overrides, patch, baseline)
+    cleanupRedundantOverrides(overrides, patch, baseline)
     expect(overrides).toEqual({ opacity: { type: "exact", value: 50 } })
   })
 
@@ -33,11 +33,11 @@ describe("pruneRedundantOverrides", () => {
     const patch = props({ opacity: { type: "exact", value: 50 } })
     const baseline = props({ opacity: { type: "exact", value: 50 } })
 
-    pruneRedundantOverrides(overrides, patch, baseline)
+    cleanupRedundantOverrides(overrides, patch, baseline)
     expect(overrides).toEqual({ color: { type: "exact", value: "#fff" } })
   })
 
-  it("prunes one compound sub-facet and keeps its siblings", () => {
+  it("cleans up one compound sub-facet and keeps its siblings", () => {
     const overrides = props({
       border: {
         color: { type: "exact", value: "#000" },
@@ -49,7 +49,7 @@ describe("pruneRedundantOverrides", () => {
       border: { color: { type: "exact", value: "#000" } },
     })
 
-    pruneRedundantOverrides(overrides, patch, baseline)
+    cleanupRedundantOverrides(overrides, patch, baseline)
     expect(overrides).toEqual({
       border: { width: { type: "exact", value: 2 } },
     })

@@ -1,3 +1,4 @@
+import { stableStringify } from "../../../helpers/utils/stable-stringify"
 import { ValueType } from "../../../properties/constants"
 import { getAnchoredFacetDefault } from "../../../properties/helpers/anchored-facet-default"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
@@ -75,25 +76,6 @@ function enumeratePatchFacets(patch: Properties): TouchedFacet[] {
   }
 
   return facets
-}
-
-/** Serializes with sorted object keys so key order never affects equality. */
-function stableStringify(value: unknown): string {
-  return JSON.stringify(value, (_key, val) => {
-    if (val && typeof val === "object" && !Array.isArray(val)) {
-      const record = val as Record<string, unknown>
-
-      return Object.keys(record)
-        .sort()
-        .reduce<Record<string, unknown>>((sorted, key) => {
-          sorted[key] = record[key]
-
-          return sorted
-        }, {})
-    }
-
-    return val
-  })
 }
 
 /**
@@ -209,7 +191,7 @@ export function stripPatchFacets(bag: Properties, patch: Properties): Properties
  * of a stored override. Only facets present in `patch` are considered, leaving
  * untouched overrides in place. Mutates `overrides` directly.
  */
-export function pruneRedundantOverrides(
+export function cleanupRedundantOverrides(
   overrides: Properties,
   patch: Properties,
   baseline: Properties,

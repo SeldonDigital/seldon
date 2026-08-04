@@ -44,6 +44,19 @@ describe("mergeProperties", () => {
     expect(result.border).toEqual({ color: exact("#000"), width: exact(2) })
   })
 
+  it("keeps a compound facet set to EMPTY while dropping an atomic EMPTY", () => {
+    const result = mergeProperties(
+      props({ border: { color: exact("#000"), width: exact(2) }, opacity: exact(1) }),
+      props({ border: { width: empty() }, opacity: empty() }),
+    )
+
+    // Compound-facet EMPTY is load-bearing: applying a preset clears undefined
+    // facets by setting them to EMPTY, so the facet stays stored.
+    expect(result.border).toEqual({ color: exact("#000"), width: empty() })
+    // Atomic EMPTY means "no override, fall through", so the base value stays.
+    expect(result.opacity).toEqual(exact(1))
+  })
+
   it("merges layered paint stacks by slot", () => {
     const result = mergeProperties(
       props({ background: [{ color: exact("A") }, { color: exact("B") }] }),
