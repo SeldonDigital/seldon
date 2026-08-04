@@ -78,10 +78,10 @@ export const COMPOUND_FACET_DISPLAY_ORDER: Record<string, readonly string[]> = {
   ],
   shadow: [
     "preset",
-    "style",
     "color",
     "brightness",
     "opacity",
+    "style",
     "offsetX",
     "offsetY",
     "blur",

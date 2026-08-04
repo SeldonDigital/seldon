@@ -20,7 +20,10 @@ import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { dispatchPropertyReset } from "@seldon/editor/lib/properties/commit-helpers"
 import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
 import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
-import { getCompoundChildRows } from "@seldon/editor/lib/properties/inspector/properties-data"
+import {
+  getCompoundChildRows,
+  getPropertiesSubjectId,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { getPropertyDebugColor } from "@seldon/editor/lib/properties/property-styling"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
@@ -284,6 +287,44 @@ export function useRowProperty({
   const globalExpanded = useIsPropertyExpanded(property.key)
   const isExpanded = cardScope ? (cardScope.expanded[property.key] ?? false) : globalExpanded
   const labelText = property.label
+
+  // A compound whose summary reads "None" (a Background with kind None, a Border
+  // with no line) exposes nothing worth opening, so treat it as a leaf: hide the
+  // disclosure and render no facet rows. Background already drops its facets for
+  // None; this also covers Border, whose schema keeps its facets. `showFacets`
+  // then stands in for `hasChildren` everywhere the row gates the disclosure and
+  // its children.
+  const isNoneCompound = property.isCompound && property.actualValue === "None"
+  const showFacets = hasChildren && !isNoneCompound
+
+  // Open the compound when its selector adds facets (None -> Color, None ->
+  // Solid) and close it when they go away (-> None). Track the subject so this
+  // fires only on a user selector change on the same node, never on mount or
+  // when a different selection reuses this row, keeping the persisted open/closed
+  // state stable across selections.
+  const subjectId = getPropertiesSubjectId(node)
+  const autoExpandBaselineRef = useRef({ subjectId, showFacets })
+
+  useEffect(() => {
+    const baseline = autoExpandBaselineRef.current
+
+    if (baseline.subjectId !== subjectId) {
+      autoExpandBaselineRef.current = { subjectId, showFacets }
+
+      return
+    }
+
+    if (baseline.showFacets === showFacets) return
+    autoExpandBaselineRef.current = { subjectId, showFacets }
+
+    if (cardScope) {
+      cardScope.toggle(property.key, showFacets)
+
+      return
+    }
+
+    toggleProperty(property.key, showFacets)
+  }, [subjectId, showFacets, cardScope, property.key, toggleProperty])
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
   // Property icons are real icon ids resolved by the custom Icon wrapper. The
@@ -407,7 +448,7 @@ export function useRowProperty({
   const supportsUpload = uploadTarget !== null
 
   const handleToggle = () => {
-    if (!hasChildren) return
+    if (!showFacets) return
 
     if (cardScope) {
       cardScope.toggle(property.key)
@@ -469,7 +510,7 @@ export function useRowProperty({
       target.closest(ICONIC_BUTTON_SELECTOR) ||
       isEditingProperty ||
       property.isDimmed ||
-      !hasChildren
+      !showFacets
     ) {
       return
     }
@@ -624,7 +665,7 @@ export function useRowProperty({
   const listItemProps = buildPropertyRowProps({
     property,
     isExpanded,
-    hasChildren,
+    hasChildren: showFacets,
     labelText,
     labelColor,
     iconId,
@@ -685,7 +726,7 @@ export function useRowProperty({
     resetActions,
     focusTargetRef: frameRef,
     isExpanded,
-    hasChildren,
+    hasChildren: showFacets,
     childItems,
     layerDrag,
   }

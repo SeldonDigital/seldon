@@ -159,7 +159,7 @@ export const PROPERTY_ICONS: Record<string, string> = {
   // Effects
   shadow: "seldon-shadow",
   shadowPreset: "seldon-shadow",
-  shadowStyle: "material-style",
+  shadowStyle: "seldon-shadow",
   shadowOffsetX: "material-width",
   shadowOffsetY: "material-height",
   shadowBlur: "material-blurOn",
