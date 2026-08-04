@@ -121,7 +121,12 @@ const cardRefs = computed(() => ({ tokenCard: { style: styles.card } }))
     :portal-target="canvas"
     :anchored="canvas !== null"
   >
-    <PanelToken role="presentation" :style="styles.panel" :seldon-refs="cardRefs" :chip-assist="null">
+    <PanelToken
+      role="presentation"
+      :style="styles.panel"
+      :seldon-refs="cardRefs"
+      :chip-assist="null"
+    >
       <template #tokenCard>
         <Property v-if="rowProps" v-bind="rowProps" presentation="token" />
       </template>

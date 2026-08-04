@@ -10,6 +10,7 @@ import { computed } from "vue"
 
 import TokenBadge from "./TokenBadge.vue"
 import TokenBadgeMeasure from "./TokenBadgeMeasure.vue"
+import { useTokenConnector } from "./hooks/use-token-connector"
 import {
   tokenConnectorAnchorStyle,
   tokenConnectorMutedAnchorStyle,
@@ -17,7 +18,6 @@ import {
   tokenConnectorStrokeStyle,
   tokenConnectorSvgStyle,
 } from "./token-connector-style"
-import { useTokenConnector } from "./hooks/use-token-connector"
 
 import type { ConnectorShape } from "@app/overlays/primitives/ConnectorPaths.vue"
 import type {

@@ -17,10 +17,10 @@ import { storeToRefs } from "pinia"
 import { computed } from "vue"
 
 import RefConnector from "./ref-badges/RefConnector.vue"
-import TokenConnector from "./token-badges/TokenConnector.vue"
 import HoverOverlay from "./select/HoverOverlay.vue"
 import NodeWireframe from "./select/NodeWireframe.vue"
 import SelectionOverlay from "./select/SelectionOverlay.vue"
+import TokenConnector from "./token-badges/TokenConnector.vue"
 
 const props = defineProps<{
   subscribeTransform: (listener: () => void) => () => void

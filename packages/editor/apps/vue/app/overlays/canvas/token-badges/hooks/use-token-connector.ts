@@ -108,7 +108,9 @@ export function useTokenConnector(): TokenConnectorState {
     return buildTokenSources(rect, flatProperties.value, enabledGroups.value, theme.value)
   })
 
-  const labels = computed(() => sources.value.map((source) => `${source.name}\u0000${source.value}`))
+  const labels = computed(() =>
+    sources.value.map((source) => `${source.name}\u0000${source.value}`),
+  )
   const { metrics, measureRef } = useConnectorMetrics(labels, "tokenChip")
 
   // Grouped and seated on the selection: badges cluster by group with a wider gap between

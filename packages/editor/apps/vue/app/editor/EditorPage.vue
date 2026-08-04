@@ -33,8 +33,14 @@ const save = useWorkspaceSaveStore()
 const config = useEditorConfigStore()
 const { workspace } = useWorkspace()
 
-const { showPanels, chromeTheme, objectsWidth, propertiesWidth, propertiesFloating, propertiesDockedOpen } =
-  storeToRefs(config)
+const {
+  showPanels,
+  chromeTheme,
+  objectsWidth,
+  propertiesWidth,
+  propertiesFloating,
+  propertiesDockedOpen,
+} = storeToRefs(config)
 const resolvedMode = useResolvedInterfaceMode()
 
 // Panels hide when the user collapses chrome (`\`).

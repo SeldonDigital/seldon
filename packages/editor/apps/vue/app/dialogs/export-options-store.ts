@@ -47,7 +47,16 @@ export const useExportOptionsStore = defineStore("export-options", () => {
   const includeScripts = ref(persisted.includeScripts ?? true)
 
   watch(
-    [platform, includeHidden, allThemes, allFonts, fontLinks, allIcons, savedWorkspace, includeScripts],
+    [
+      platform,
+      includeHidden,
+      allThemes,
+      allFonts,
+      fontLinks,
+      allIcons,
+      savedWorkspace,
+      includeScripts,
+    ],
     () => {
       if (typeof localStorage === "undefined") return
       const snapshot: PersistedExportOptions = {

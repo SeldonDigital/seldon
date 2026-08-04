@@ -26,7 +26,7 @@ import HariTranscript from "./HariTranscript.vue"
 import type { MenuEntry } from "@app/menus/types"
 import type { SelectionScope } from "@app/workspace/use-selection-scope"
 import type { ThinkingMenuOption } from "@seldon/ai"
-import type { ComponentPublicInstance, CSSProperties } from "vue"
+import type { CSSProperties, ComponentPublicInstance } from "vue"
 
 import "./hari.css"
 

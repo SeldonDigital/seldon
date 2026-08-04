@@ -3,6 +3,7 @@
 // floating `PanelPropertyController`. It groups the current selection's rows into
 // category sections and renders each section's header plus its expandable body,
 // so both shells frame the exact same tree. Vue port of the React `PropertiesTree`.
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import Frame from "@seldon/components/frames/Frame.vue"
@@ -14,14 +15,13 @@ import { isThemeCustomTokenSection } from "@seldon/core"
 import Category from "./Category.vue"
 import CssBlock from "./CssBlock.vue"
 import Property from "./Property.vue"
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import { buildSectionActions } from "./helpers/build-section-actions"
 import { useBorderSideVisibilityStore } from "./hooks/use-border-side-visibility"
 import { usePropertyExpansionStore } from "./property-expansion-store"
 import { providePropertyEditNavigation } from "./use-property-edit-navigation"
 
-import type { PropertySection } from "./types"
 import type { PropertiesSidebarTree } from "./hooks/use-properties-sidebar"
+import type { PropertySection } from "./types"
 import type { MenuEntry } from "@app/menus/types"
 import type {
   FontCollectionEditingContext,
@@ -50,7 +50,9 @@ function isFamiliesSection(section: PropertySection): boolean {
 }
 
 function isIconCategorySection(section: PropertySection): boolean {
-  return Boolean(props.tree.iconProperties) && getIconRowCategory(`icon.${section.category}`) !== null
+  return (
+    Boolean(props.tree.iconProperties) && getIconRowCategory(`icon.${section.category}`) !== null
+  )
 }
 
 function rowAllProperties(section: PropertySection): FlatProperty[] {
