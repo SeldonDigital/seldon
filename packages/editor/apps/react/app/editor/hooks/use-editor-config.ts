@@ -319,6 +319,34 @@ const useStore = create<EditorConfigState>()(
   ),
 )
 
+/**
+ * Subscribes to just the properties-floating flag.
+ *
+ * `useEditorConfig` reads the whole config and rebuilds every action, so calling it in a
+ * per-item hook that re-renders each frame, such as a badge tracking its node during a pan,
+ * costs far more than the one boolean needs. This reads that field alone and re-renders only
+ * when it flips.
+ */
+export function usePropertiesFloating(): boolean {
+  return useStore((state) => state.propertiesFloating)
+}
+
+/**
+ * Subscribes to just the chrome theme slug.
+ *
+ * For the same reason as `usePropertiesFloating`: a surface that re-renders each frame, such
+ * as a badge card following its badge through a pan, needs this one field and not the whole
+ * config with every action rebuilt.
+ */
+export function useChromeTheme(): string {
+  return useStore((state) => state.chromeTheme)
+}
+
+/** Subscribes to just the stored interface mode, for the same per-frame reason. */
+export function useInterfaceMode(): InterfaceMode {
+  return useStore((state) => state.interfaceMode)
+}
+
 export function useEditorConfig() {
   const {
     showSelection,

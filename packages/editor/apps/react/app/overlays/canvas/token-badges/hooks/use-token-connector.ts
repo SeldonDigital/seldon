@@ -155,8 +155,9 @@ export function useTokenConnector(): TokenConnectorState {
       canvasWidth: canvasSize.width,
       canvasHeight: canvasSize.height,
       margin: metrics.badgeGap,
+      boardAnchored: propertiesFloating,
     })
-  }, [placements, sources, metrics, canvasSize.width, canvasSize.height])
+  }, [placements, sources, metrics, canvasSize.width, canvasSize.height, propertiesFloating])
 
   return {
     entries,

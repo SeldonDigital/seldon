@@ -3,7 +3,7 @@
 // modal. No generated component covers this chrome. framer-motion has no 1:1
 // equivalent on other platforms, so this shell is reimplemented per platform
 // rather than ported like the class-free overlay primitives.
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useChromeTheme } from "@app/editor/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import {
   RESIZE_SIDES,
@@ -43,6 +43,18 @@ interface WindowSurfaceProps {
   // drag offset from center, the viewport bounds the drag, and no resize handles
   // are rendered.
   contentSized?: boolean
+  /**
+   * Where the surface portals. Defaults to `document.body`, which floats it over the
+   * whole editor. A canvas badge card passes the canvas layer instead, with `anchored`,
+   * so it sits in that layer and the sidebar clips it like the badges.
+   */
+  portalTarget?: HTMLElement | null
+  /**
+   * Position the surface absolutely inside its portal target rather than fixed to the
+   * viewport. `x`/`y` are then read in the target's own space. Used with `portalTarget`
+   * so a badge card is clipped by the canvas layer instead of drawing over the chrome.
+   */
+  anchored?: boolean
   /**
    * The surface itself, including its resize handles. A non-modal caller that
    * dismisses on an outside press needs it to tell its own surface from elsewhere,
@@ -84,11 +96,13 @@ export function WindowSurface({
   minWidth,
   minHeight,
   contentSized = false,
+  portalTarget,
+  anchored = false,
   surfaceRef,
 }: WindowSurfaceProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
-  const { chromeTheme } = useEditorConfig()
+  const chromeTheme = useChromeTheme()
   const resolvedMode = useResolvedInterfaceMode()
   const overlayRef = useRef<HTMLDivElement>(null)
 
@@ -125,8 +139,15 @@ export function WindowSurface({
     )
   }
 
-  const surfaceMotionStyle = { x, y, width, height, ...styles.surface }
+  const surfaceStyle = anchored ? styles.anchoredSurface : styles.surface
+  const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
   const backdrop = showBackdrop ? <div onClick={backdropClick} style={styles.backdrop} /> : null
+
+  // Anchored inside the canvas layer, a press bubbles to the canvas click handler; stop it
+  // so interacting with the card never reads as a canvas click. A body-portaled surface has
+  // no such parent to reach, so it keeps the default.
+  const surfaceClick = anchored ? stopPropagation : undefined
+  const target = portalTarget ?? document.body
 
   const resizeHandles =
     onResize && getRect
@@ -155,6 +176,7 @@ export function WindowSurface({
         dragMomentum={false}
         dragElastic={false}
         dragConstraints={dragConstraints}
+        onClick={surfaceClick}
         style={surfaceMotionStyle}
         data-testid={testId}
       >
@@ -162,7 +184,7 @@ export function WindowSurface({
         {resizeHandles}
       </motion.div>
     </div>,
-    document.body,
+    target,
   )
 }
 
@@ -179,6 +201,14 @@ const styles: Record<string, CSSProperties> = {
   },
   surface: {
     position: "fixed",
+    left: 0,
+    top: 0,
+    zIndex: 40,
+  },
+  // Absolute inside the canvas layer, so `x`/`y` read in that layer's space and the sidebar
+  // clips the surface as it does the badges, rather than the surface floating over the chrome.
+  anchoredSurface: {
+    position: "absolute",
     left: 0,
     top: 0,
     zIndex: 40,

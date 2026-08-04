@@ -1,7 +1,9 @@
 "use client"
 
+import { usePropertiesFloating } from "@app/editor/hooks/use-editor-config"
 import { MIN_WINDOW_SIZE } from "@app/windows/hooks/use-draggable-window"
 import { getRefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { toCanvasLocalPoint } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { isInsideMenuSurface } from "@seldon/editor/lib/menus/floating-menu"
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -10,9 +12,12 @@ import { getRefCardMetrics } from "../../ref-badges/hooks/use-ref-card"
 
 import type {
   BadgeBox,
+  CardAnchor,
   RefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefObject } from "react"
+
+type CardSides = Pick<RefCardPosition, "opens" | "grows">
 
 interface TokenCardState {
   badgeRef: RefObject<HTMLElement | null>
@@ -59,9 +64,22 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
   const cardRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<RefCardPosition | null>(null)
   const openRef = useRef(false)
+  // The badge box in the canvas layer's own space, read without a dep on it so a full place
+  // does not rebuild each pan frame. The card is placed and moved in that same space.
+  const badgeBoxRef = useRef({ left: badge.left, top: badge.top })
+  badgeBoxRef.current = { left: badge.left, top: badge.top }
+  // The badge box and card point captured on the last full place, so a pan re-places the card
+  // by the badge's delta alone. The sides are decided once and kept, so a pan never flips the
+  // card across its badge as the room trades sides.
+  const anchorRef = useRef<CardAnchor | null>(null)
+  const sidesRef = useRef<CardSides | null>(null)
+  // A floating palette lets a badge scroll off with its board, so its card follows past the
+  // window edge and the canvas layer clips it, rather than being held to the window.
+  const propertiesFloating = usePropertiesFloating()
 
-  // Place off the live badge rect and the card's real size, falling back to the window
-  // minimum before the card has been drawn to measure.
+  // A full place measures the card and the theme spacing and asks the window which side to
+  // clear the badge on, so it reads layout and style. It runs when the card opens and when its
+  // own content resizes, not on a pan; the pan follow below moves it with no reads at all.
   const place = useCallback(() => {
     const badgeEl = badgeRef.current
 
@@ -86,20 +104,30 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
       minHeight: measured.height,
     }
 
-    const next = getRefCardPosition(
+    const viewport = getRefCardPosition(
       badgeEl.getBoundingClientRect(),
       getWindowInnerSize(),
       measured,
       metrics,
+      propertiesFloating,
+      sidesRef.current,
     )
+    const point = toCanvasLocalPoint(viewport)
+    const next = { ...viewport, x: point.x, y: point.y }
+    const box = badgeBoxRef.current
+
+    anchorRef.current = { left: box.left, top: box.top, x: next.x, y: next.y }
+    sidesRef.current = { opens: next.opens, grows: next.grows }
 
     setPosition((current) => (current && samePosition(current, next) ? current : next))
-  }, [])
+  }, [propertiesFloating])
 
   const isOpen = position !== null
 
   const close = useCallback(() => {
     openRef.current = false
+    anchorRef.current = null
+    sidesRef.current = null
     setPosition(null)
   }, [])
 
@@ -131,12 +159,23 @@ export function useTokenCard(badge: BadgeBox): TokenCardState {
     // Set up once per open, keyed on whether a card is drawn rather than its moving rect.
   }, [isOpen, place])
 
-  // Scrolling the canvas moves the badge, and the open card follows it. The rect is
-  // re-measured from the badge rather than offset by the scroll, because a badge held at
-  // the edge of the gutter stops tracking its node.
+  // Scrolling the canvas moves the badge, and the card is locked to it, so it moves by the
+  // badge's own delta. This runs every pan frame, so it reads no layout or style and does the
+  // arithmetic alone; the card's size and sides were fixed by the last full place.
   useLayoutEffect(() => {
-    place()
-  }, [badge.top, badge.left, place])
+    const anchor = anchorRef.current
+
+    if (!anchor) return
+
+    setPosition((current) => {
+      if (!current) return current
+
+      const x = anchor.x + (badge.left - anchor.left)
+      const y = anchor.y + (badge.top - anchor.top)
+
+      return x === current.x && y === current.y ? current : { ...current, x, y }
+    })
+  }, [badge.top, badge.left])
 
   // Closing on `pointerdown` rather than `click` keeps a press on the canvas from starting
   // a drag under an open card. The badge is excluded so its own click is the toggle, and

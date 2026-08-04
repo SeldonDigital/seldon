@@ -3,6 +3,7 @@ import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { MessageRefController } from "@seldon/components/elements/MessageRefController"
 import { PanelRefs } from "@seldon/components/modules/PanelRefs"
+import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { describeBinding } from "@seldon/editor/lib/refs/describe-binding"
 import { useCallback, useEffect, useMemo } from "react"
 
@@ -57,6 +58,10 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
     [binding, status],
   )
 
+  // The card renders in the canvas layer so the sidebar clips it like the badges, rather
+  // than floating over the chrome. Its position already arrives in that layer's space.
+  const canvas = getCanvasElement()
+
   const { x, y, width, height, onResizeStart, onResize, getRect, moveControls, dragConstraints } =
     useDraggableWindow({
       initialPosition: { x: position.x, y: position.y },
@@ -97,17 +102,34 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
     views.length === 0 ? viewNote : views.map((view) => toViewLine(binding.ref, view)).join("\n")
   const pathLines = views.map((view) => view.file).join("\n")
   const conditionLines = views.map((view) => view.condition).join("\n")
-  const viewSlot = viewLines === null ? null : {}
-  const viewFieldSlot = views.length === 0 ? null : {}
+  const hasViews = views.length > 0
 
-  const cardRefs = {
-    refCardView: { children: viewLines, style: styles.multiline },
-    refCardPath: { children: pathLines, style: styles.multiline },
-    refCardCondition: { children: conditionLines, style: styles.multiline },
-    refCardControllers: { children: rows },
-  }
+  // The card body reads from the binding, not the position, so it is held stable and a pan
+  // moving the card does not reconcile it. Only the surface's transform changes per frame.
+  const panel = useMemo(() => {
+    const viewSlot = viewLines === null ? null : {}
+    const viewFieldSlot = hasViews ? {} : null
+    const cardRefs = {
+      refCardView: { children: viewLines, style: styles.multiline },
+      refCardPath: { children: pathLines, style: styles.multiline },
+      refCardCondition: { children: conditionLines, style: styles.multiline },
+      refCardControllers: { children: rows },
+    }
+    const sectionLabelSlot = { style: styles.sectionLabel }
 
-  const sectionLabelSlot = { style: styles.sectionLabel }
+    return (
+      <PanelRefs
+        role="presentation"
+        style={styles.panel}
+        seldonRefs={cardRefs}
+        textLabel2={sectionLabelSlot}
+        text={viewSlot}
+        text2={viewFieldSlot}
+        text3={viewFieldSlot}
+        textLabel3={sectionLabelSlot}
+      />
+    )
+  }, [viewLines, pathLines, conditionLines, hasViews, rows])
 
   return (
     <WindowSurface
@@ -125,17 +147,10 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
       resizeSides={resizeSides}
       minWidth={MIN_WINDOW_SIZE.width}
       minHeight={MIN_WINDOW_SIZE.height}
+      portalTarget={canvas}
+      anchored={canvas !== null}
     >
-      <PanelRefs
-        role="presentation"
-        style={styles.panel}
-        seldonRefs={cardRefs}
-        textLabel2={sectionLabelSlot}
-        text={viewSlot}
-        text2={viewFieldSlot}
-        text3={viewFieldSlot}
-        textLabel3={sectionLabelSlot}
-      />
+      {panel}
     </WindowSurface>
   )
 }

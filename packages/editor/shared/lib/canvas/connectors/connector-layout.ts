@@ -70,6 +70,20 @@ export interface RefCardRect {
 }
 
 /**
+ * A card's link to its badge: the badge box it opened against and the point it opened at.
+ *
+ * A card is locked to its badge, so once it has opened it moves by the badge's own delta.
+ * Holding the badge box and card point it opened at lets a pan re-place it with arithmetic
+ * alone, reading no layout or style, which is what keeps a pan smooth while a card is open.
+ */
+export interface CardAnchor {
+  left: number
+  top: number
+  x: number
+  y: number
+}
+
+/**
  * Where the ref card opens, in viewport pixels for a fixed element.
  *
  * All four edges are given, so a resize drag moves the edge under the pointer and
@@ -204,12 +218,19 @@ export function layoutConnectors(
   const { canvasWidth, canvasHeight, badgeWidth, badgeHeight, badgeGap, margin, gutter, side } =
     options
 
+  // A board-anchored column travels with the design: it is not held to the viewport, so it
+  // scrolls off with the board rather than pinning to the canvas edge and floor. A
+  // canvas-anchored column stays clear of the chrome the viewport edges keep clear.
+  const boardAnchored = options.boardEdgeX !== undefined
+
   // Placed by the edge it hangs off, so every badge ends the same distance from that edge
   // whatever the labels are. A board edge seats the column beside the design; otherwise it
-  // hangs off the canvas edge. A label too wide for the canvas stops at the far margin
-  // rather than sliding off it.
+  // hangs off the canvas edge. Canvas-anchored, a label too wide for the canvas stops at
+  // the far margin rather than sliding off it.
   const wanted = badgeColumnLeft(options.boardEdgeX, canvasWidth, gutter, badgeWidth, side)
-  const badgeLeft = clamp(wanted, margin, Math.max(margin, canvasWidth - margin - badgeWidth))
+  const badgeLeft = boardAnchored
+    ? wanted
+    : clamp(wanted, margin, Math.max(margin, canvasWidth - margin - badgeWidth))
 
   // The badge edge facing the design, which is where a connector meets the column.
   const gutterEdge = side === "right" ? badgeLeft : badgeLeft + badgeWidth
@@ -218,7 +239,9 @@ export function layoutConnectors(
   const anchored = orderColumn(
     sources.map((source) => ({
       source,
-      preferredY: getPreferredBadgeY(source.rect, canvasHeight, margin),
+      preferredY: boardAnchored
+        ? source.rect.top + source.rect.height / 2
+        : getPreferredBadgeY(source.rect, canvasHeight, margin),
       centerX: source.rect.left + source.rect.width / 2,
     })),
     badgeGap,
@@ -226,26 +249,31 @@ export function layoutConnectors(
   )
 
   const pitch = badgeHeight + badgeGap
-  const capacity = Math.max(Math.floor((floor - margin + badgeGap) / pitch), 0)
 
-  // Badges only ever leave the column when it cannot hold them all. The count then takes
-  // the bottom slot for itself, unless that would leave nothing, since showing one
-  // connector beats showing none.
+  // Board-anchored, every badge is placed and the column runs on past the viewport with the
+  // board. Canvas-anchored, badges only ever leave the column when it cannot hold them all,
+  // and the count then takes the bottom slot for itself, unless that would leave nothing,
+  // since showing one connector beats showing none.
+  const capacity = boardAnchored
+    ? anchored.length
+    : Math.max(Math.floor((floor - margin + badgeGap) / pitch), 0)
   const fitting = Math.min(anchored.length, capacity)
-  const countTakesSlot = fitting < anchored.length && fitting > 1
+  const countTakesSlot = !boardAnchored && fitting < anchored.length && fitting > 1
   const placed = countTakesSlot ? fitting - 1 : fitting
   const badgeFloor = countTakesSlot ? floor - pitch : floor
 
   // Walk top to bottom, letting each badge take its node's center unless the one above
-  // already claimed that space, or the badges still below need the room. Reserving that
-  // room keeps a node scrolled past the floor from crowding its neighbors out: its badge
-  // holds at the bottom of the column with the connector pointing off the edge at it.
+  // already claimed that space, or the badges still below need the room. Board-anchored,
+  // there is no floor to reserve room against, so a badge only gives way to the one above.
+  // Canvas-anchored, reserving that room keeps a node scrolled past the floor from crowding
+  // its neighbors out: its badge holds at the bottom of the column with the connector
+  // pointing off the edge at it.
   const stacked: Array<{ source: ConnectorSource; top: number }> = []
-  let cursor = margin
+  let cursor = boardAnchored ? -Infinity : margin
 
   for (let index = 0; index < placed; index++) {
     const { source, preferredY } = anchored[index]
-    const ceiling = badgeFloor - badgeHeight - (placed - 1 - index) * pitch
+    const ceiling = boardAnchored ? Infinity : badgeFloor - badgeHeight - (placed - 1 - index) * pitch
     const top = clamp(preferredY - badgeHeight / 2, cursor, ceiling)
 
     stacked.push({ source, top })
@@ -271,6 +299,7 @@ export function layoutConnectors(
       canvasWidth,
       canvasHeight,
       margin,
+      boardAnchored,
     })
 
     return {
@@ -434,21 +463,33 @@ export function getRefCardPosition(
   viewport: { width: number; height: number },
   size: { width: number; height: number },
   metrics: RefCardMetrics,
+  boardAnchored = false,
+  lockedSides?: Pick<RefCardPosition, "opens" | "grows"> | null,
 ): RefCardPosition {
   const { gap, margin } = metrics
+
   const below = viewport.height - badgeRect.bottom - gap - margin
   const above = badgeRect.top - gap - margin
-  const opens = below >= above ? "below" : "above"
+
+  // A card decides its sides once, when it opens, then keeps them so it stays locked to its
+  // badge. Re-deciding on each re-place would flip the card across the badge as a pan carries
+  // the badge over the middle of the window and the room on each side trades places.
+  const opens = lockedSides?.opens ?? (below >= above ? "below" : "above")
   const room = Math.max(opens === "below" ? below : above, metrics.minHeight)
 
   const leftward = badgeRect.right - margin
   const rightward = viewport.width - badgeRect.left - margin
-  const grows = leftward >= rightward ? "left" : "right"
+  const grows = lockedSides?.grows ?? (leftward >= rightward ? "left" : "right")
 
+  // A board-anchored badge scrolls off with its board, so its card follows past the window
+  // edge and the canvas layer clips it, the same as the badge. It keeps its full height and
+  // is not held to the window; the window only picks which side it clears the badge on.
   const width = size.width
-  const height = Math.min(size.height, room)
+  const height = boardAnchored ? size.height : Math.min(size.height, room)
   const x = grows === "left" ? badgeRect.right - width : badgeRect.left
   const y = opens === "below" ? badgeRect.bottom + gap : badgeRect.top - gap - height
+
+  if (boardAnchored) return { opens, grows, x, y, width, height }
 
   return { opens, grows, ...clampRefCardRect({ x, y, width, height }, viewport, metrics) }
 }
@@ -511,19 +552,25 @@ export function getConnectorRoute(input: {
   canvasWidth: number
   canvasHeight: number
   margin: number
+  boardAnchored?: boolean
 }): { anchor: ConnectorPoint; points: ConnectorPoint[] } {
   const { rect, badgeCenterY, gutterEdge, side, canvasWidth, canvasHeight, margin } = input
+  const boardAnchored = input.boardAnchored ?? false
 
   // Held between the column and the far margin, so a node panned past either edge is
-  // still pointed at from inside the canvas.
+  // still pointed at from inside the canvas. Board-anchored, the node is met at its own
+  // edge so the connector scrolls off with it rather than bending to stay in view.
   const nearestX = side === "right" ? margin : gutterEdge
   const furthestX = side === "right" ? gutterEdge : canvasWidth - margin
 
-  const top = clamp(rect.top, margin, canvasHeight - margin)
-  const bottom = clamp(rect.top + rect.height, margin, canvasHeight - margin)
+  const rectBottom = rect.top + rect.height
   const facing = side === "right" ? rect.left + rect.width : rect.left
-  const nodeSide = clamp(facing, nearestX, furthestX)
-  const centerX = clamp(rect.left + rect.width / 2, nearestX, furthestX)
+  const centerRaw = rect.left + rect.width / 2
+
+  const top = boardAnchored ? rect.top : clamp(rect.top, margin, canvasHeight - margin)
+  const bottom = boardAnchored ? rectBottom : clamp(rectBottom, margin, canvasHeight - margin)
+  const nodeSide = boardAnchored ? facing : clamp(facing, nearestX, furthestX)
+  const centerX = boardAnchored ? centerRaw : clamp(centerRaw, nearestX, furthestX)
   const gutterEnd = { x: gutterEdge, y: badgeCenterY }
 
   if (badgeCenterY < top) {

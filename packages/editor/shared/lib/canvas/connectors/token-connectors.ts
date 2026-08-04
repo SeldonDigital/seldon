@@ -48,6 +48,11 @@ export interface TokenConnectorOptions {
   canvasHeight: number
   margin: number
   stubLength?: number
+  /**
+   * When set, the trunks meet the node at its own edges rather than at the viewport, so the
+   * connectors scroll off with the board. Left unset they are held inside the canvas.
+   */
+  boardAnchored?: boolean
 }
 
 /** An item the column places: its key, the group that clusters it, and its muted state. */
@@ -105,8 +110,15 @@ export function layoutTokenColumn(
     options
   const interGroupGap = badgeHeight / 2 + badgeHeight
 
+  // A board-anchored column travels with the design: it is not held to the viewport, so the
+  // stack tracks the selection and scrolls off with it. Canvas-anchored, it stays clear of
+  // the chrome the viewport edges keep clear.
+  const boardAnchored = options.boardEdgeX !== undefined
+
   const wanted = badgeColumnLeft(options.boardEdgeX, canvasWidth, gutter, badgeWidth, side)
-  const badgeLeft = clamp(wanted, margin, Math.max(margin, canvasWidth - margin - badgeWidth))
+  const badgeLeft = boardAnchored
+    ? wanted
+    : clamp(wanted, margin, Math.max(margin, canvasWidth - margin - badgeWidth))
 
   // Tops measured from zero, so the stack's own height is known before it is placed, then
   // the whole run is offset once to seat it against the selection.
@@ -133,7 +145,11 @@ export function layoutTokenColumn(
   const anchorCenter = nearestGroupCenter(items, tops, badgeHeight, totalHeight / 2)
   const fits = totalHeight <= canvasHeight - margin * 2
   const alignedTop = options.selectionCenterY - anchorCenter
-  const stackTop = fits ? clamp(alignedTop, margin, canvasHeight - margin - totalHeight) : margin
+  const stackTop = boardAnchored
+    ? alignedTop
+    : fits
+      ? clamp(alignedTop, margin, canvasHeight - margin - totalHeight)
+      : margin
 
   return items.map((item, index) => {
     const top = stackTop + tops[index]
@@ -222,6 +238,7 @@ export function buildTokenConnectorGeometry(
 
   const { side, rect, canvasWidth, canvasHeight, margin } = options
   const stubLength = options.stubLength ?? TOKEN_STUB_LENGTH
+  const boardAnchored = options.boardAnchored ?? false
 
   // Every badge shares a width and a left, so the gutter edge and the bus sit at one x.
   const first = placements[0].badge
@@ -239,14 +256,17 @@ export function buildTokenConnectorGeometry(
   }))
 
   // The node's span, clamped like the route clamps it, so a group is banded by the same
-  // top and bottom the trunk will actually reach.
-  const spanTop = clamp(rect.top, margin, canvasHeight - margin)
-  const spanBottom = clamp(rect.top + rect.height, margin, canvasHeight - margin)
+  // top and bottom the trunk will actually reach. Board-anchored, the span is the node's own
+  // edges so the trunk scrolls off with it rather than bending to stay in view.
+  const rectBottom = rect.top + rect.height
+  const spanTop = boardAnchored ? rect.top : clamp(rect.top, margin, canvasHeight - margin)
+  const spanBottom = boardAnchored ? rectBottom : clamp(rectBottom, margin, canvasHeight - margin)
 
-  // The node edge facing the gutter, which every group's trunk meets. Held inside the
-  // canvas so a node panned past the edge is still pointed at from a visible corner.
+  // The node edge facing the gutter, which every group's trunk meets. Canvas-anchored it is
+  // held inside the canvas so a node panned past the edge is still pointed at from a visible
+  // corner; board-anchored it meets the node's own edge.
   const facing = side === "left" ? rect.left : rect.left + rect.width
-  const nearSide = clamp(facing, margin, canvasWidth - margin)
+  const nearSide = boardAnchored ? facing : clamp(facing, margin, canvasWidth - margin)
 
   const groups = groupInOrder(placements)
   const trunks: TokenTrunkGeometry[] = []

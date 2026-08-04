@@ -4,6 +4,7 @@ import { PropertyEditNavigationProvider } from "@app/sidebars/properties/hooks/u
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { PanelToken } from "@seldon/components/modules/PanelToken"
+import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { buildTokenRowProps, useTokenProperties } from "./hooks/use-token-property-row"
@@ -48,6 +49,10 @@ export function TokenCardController({
   // selection, seeded to the card's set width the first time.
   const [cardWidth, setCardWidth] = useState<number>(() => getTokenCardWidth() ?? TOKEN_CARD_WIDTH)
 
+  // The card renders in the canvas layer so the sidebar clips it like the badges, rather
+  // than floating over the chrome. Its position already arrives in that layer's space.
+  const canvas = getCanvasElement()
+
   const { x, y, width, moveControls, dragConstraints, onResizeStart, onResize, getRect } =
     useDraggableWindow({
       initialPosition: { x: position.x, y: position.y },
@@ -91,17 +96,26 @@ export function TokenCardController({
     [propertyKey, tokenProperties],
   )
 
-  const control = rowProps ? (
-    <PropertyCardScopeProvider>
-      <PropertyEditNavigationProvider>
-        <Property {...rowProps} presentation="token" />
-      </PropertyEditNavigationProvider>
-    </PropertyCardScopeProvider>
-  ) : null
+  // The control reads from the property, not the position, so it is held stable and a pan
+  // moving the card does not reconcile the whole control. Only the surface's transform
+  // changes per frame.
+  const panel = useMemo(() => {
+    const control = rowProps ? (
+      <PropertyCardScopeProvider>
+        <PropertyEditNavigationProvider>
+          <Property {...rowProps} presentation="token" />
+        </PropertyEditNavigationProvider>
+      </PropertyCardScopeProvider>
+    ) : null
 
-  const cardRefs = {
-    tokenCard: { children: control, style: styles.card },
-  }
+    const cardRefs = {
+      tokenCard: { children: control, style: styles.card },
+    }
+
+    return (
+      <PanelToken role="presentation" style={styles.panel} seldonRefs={cardRefs} chipAssist={null} />
+    )
+  }, [rowProps])
 
   return (
     <WindowSurface
@@ -118,8 +132,10 @@ export function TokenCardController({
       resizeSides={resizeSides}
       minWidth={TOKEN_CARD_WIDTH}
       minHeight={MIN_WINDOW_SIZE.height}
+      portalTarget={canvas}
+      anchored={canvas !== null}
     >
-      <PanelToken role="presentation" style={styles.panel} seldonRefs={cardRefs} chipAssist={null} />
+      {panel}
     </WindowSurface>
   )
 }
