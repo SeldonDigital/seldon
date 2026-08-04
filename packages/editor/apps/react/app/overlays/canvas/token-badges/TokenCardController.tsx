@@ -7,6 +7,8 @@ import { PanelToken } from "@seldon/components/modules/PanelToken"
 import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
+import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+
 import { buildTokenRowProps, useTokenProperties } from "./hooks/use-token-property-row"
 import { getTokenCardWidth, setTokenCardWidth } from "./hooks/use-token-card"
 
@@ -16,6 +18,9 @@ import type { CSSProperties, Ref } from "react"
 
 /** The width a token card opens at, and the narrowest a drag may take it to. */
 const TOKEN_CARD_WIDTH = 250
+
+/** The widest a drag may take a token card, so a compound's values read without sprawling. */
+const TOKEN_CARD_MAX_WIDTH = TOKEN_CARD_WIDTH * 2.5
 
 interface TokenCardControllerProps {
   propertyKey: string
@@ -77,11 +82,13 @@ export function TokenCardController({
   // A drag on the width edge sets the card's width and remembers it for the next card.
   const handleResize = useCallback(
     (rect: Rect) => {
-      onResize(rect)
-      setCardWidth(rect.width)
-      setTokenCardWidth(rect.width)
+      const capped = clampCardWidth(rect, position.grows, TOKEN_CARD_MAX_WIDTH)
+
+      onResize(capped)
+      setCardWidth(capped.width)
+      setTokenCardWidth(capped.width)
     },
-    [onResize],
+    [onResize, position.grows],
   )
 
   // Only the edge away from the badge is offered, so a drag cannot pull the card over the

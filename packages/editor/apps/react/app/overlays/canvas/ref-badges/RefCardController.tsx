@@ -7,6 +7,8 @@ import { getCanvasElement } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { describeBinding } from "@seldon/editor/lib/refs/describe-binding"
 import { useCallback, useEffect, useMemo } from "react"
 
+import { clampCardWidth } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+
 import { setRefCardSize } from "./hooks/use-ref-card"
 
 import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
@@ -35,6 +37,9 @@ const RESIZE_SIDES: Record<
     above: ["right", "top", "top-right"],
   },
 }
+
+/** The widest a drag may take a ref card, capped at 2.5x the minimum width. */
+const REF_CARD_MAX_WIDTH = MIN_WINDOW_SIZE.width * 2.5
 
 interface RefCardControllerProps {
   binding: RefBinding
@@ -83,10 +88,12 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
   // The drag drives this card, and the size it lands on is what the next card opens at.
   const handleResize = useCallback(
     (rect: Rect) => {
-      onResize(rect)
-      setRefCardSize({ width: rect.width, height: rect.height })
+      const capped = clampCardWidth(rect, position.grows, REF_CARD_MAX_WIDTH)
+
+      onResize(capped)
+      setRefCardSize({ width: capped.width, height: capped.height })
     },
-    [onResize],
+    [onResize, position.grows],
   )
 
   const rows = useMemo(() => buildControllerRows(note, controllers), [note, controllers])

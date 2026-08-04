@@ -98,6 +98,24 @@ export interface RefCardPosition extends RefCardRect {
   grows: "left" | "right"
 }
 
+/**
+ * Cap a resized card's width, holding the edge it is anchored to in place. A card that
+ * grows left keeps its right edge fixed, so the cap shifts x; one that grows right keeps
+ * its left edge, so x is left alone. The horizontal handle a card offers is always its
+ * `grows` side, so this reads the side from `grows` rather than the drag.
+ */
+export function clampCardWidth<T extends RefCardRect>(
+  rect: T,
+  grows: RefCardPosition["grows"],
+  maxWidth: number,
+): T {
+  if (rect.width <= maxWidth) return rect
+
+  const x = grows === "left" ? rect.x + (rect.width - maxWidth) : rect.x
+
+  return { ...rect, x, width: maxWidth }
+}
+
 /** The canvas edge the badge column hangs off. */
 export type GutterSide = "left" | "right"
 
