@@ -27,10 +27,10 @@ export interface TokenRowProps {
   workspace: Workspace
   node: Variant | Instance | Board
   allProperties: FlatProperty[]
-  theme?: Theme
   themeEditingContext: null
   fontCollectionEditingContext: null
   iconSetEditingContext: null
+  theme?: Theme
 }
 
 /**

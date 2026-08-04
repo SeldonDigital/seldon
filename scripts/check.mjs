@@ -16,7 +16,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
 // fixes it when there is one.
 const STEPS = [
   { script: "format:check", label: "Format", fix: "npm run format" },
-  { script: "lint:all", label: "Lint", fix: "npm run format" },
+  { script: "lint:all", label: "Lint", fix: "npm run lint:fix:all" },
   { script: "typecheck:all", label: "Typecheck" },
   { script: "test", label: "Tests" },
   { script: "bindings:check", label: "Bindings", fix: "npm run bindings" },

@@ -14,6 +14,7 @@
     "build:release": "npm run notices:thirdparty && npm run build",
     "start": "vite preview",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "node ../../../../scripts/format.mjs",
     "typecheck": "tsc -p tsconfig.json"
   },
