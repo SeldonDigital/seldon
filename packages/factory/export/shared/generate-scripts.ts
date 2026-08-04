@@ -26,6 +26,14 @@ const FRAMEWORK_ONLY_SOURCES: Record<string, BindingsFramework> = {
 }
 
 /**
+ * Each generated script lives in its own folder under `scripts/`, holding its
+ * entry and the `lib/` it imports, so the tree reads as one folder per script and
+ * a second script drops in beside this one without disturbing it. The shared
+ * `README.md` and `INTEGRITY.json` stay at the `scripts/` root and cover them all.
+ */
+const BINDINGS_SCRIPT_DIR = "bindings"
+
+/**
  * Emits the bindings scanner into `<components>/scripts/` as source the user can
  * read before running.
  *
@@ -55,6 +63,7 @@ export async function generateScripts(options: ExportOptions): Promise<FileToExp
   }
 
   const scriptsFolder = `${options.output.componentsFolder}/scripts`
+  const bindingsFolder = `${scriptsFolder}/${BINDINGS_SCRIPT_DIR}`
   const framework = getFramework(options)
   const files: FileToExport[] = []
 
@@ -76,13 +85,13 @@ export async function generateScripts(options: ExportOptions): Promise<FileToExp
     if (!hasRuntimeCode(code)) continue
 
     files.push({
-      path: `${scriptsFolder}/lib/${source.replace(/\.ts$/, ".mjs")}`,
+      path: `${bindingsFolder}/lib/${source.replace(/\.ts$/, ".mjs")}`,
       content: code,
     })
   }
 
   files.push({
-    path: `${scriptsFolder}/generate-bindings.mjs`,
+    path: `${bindingsFolder}/generate-bindings.mjs`,
     content: getEntryScript(options),
   })
 
@@ -221,7 +230,7 @@ function getEntryScript(options: ExportOptions): string {
  *   hand. See \`${componentsFolder}/scripts/README.md\` for how to check it.
  *
  * Usage
- *   node ${componentsFolder}/scripts/generate-bindings.mjs [options]
+ *   node ${componentsFolder}/scripts/bindings/generate-bindings.mjs [options]
  *
  *   --root <path>        Project root to scan. Defaults to the folder holding
  *                        \`${componentsFolder}\`.
@@ -356,7 +365,9 @@ async function findMissingParsers() {
 /** The folder holding the generated components folder. */
 function getDefaultRoot() {
   const scriptsDirectory = path.dirname(fileURLToPath(import.meta.url))
-  const steps = COMPONENTS_FOLDER.split("/").length + 1
+  // This entry sits at \`<components>/scripts/bindings/\`, so the root is the
+  // components folder's own depth plus the \`scripts\` and \`bindings\` folders.
+  const steps = COMPONENTS_FOLDER.split("/").length + 2
 
   return path.resolve(scriptsDirectory, ...Array(steps).fill(".."))
 }
@@ -441,13 +452,16 @@ function getScriptsReadme(options: ExportOptions): string {
 The Seldon factory generated these scripts alongside the components in
 \`${componentsFolder}\`. They are for you to run in your own project. Seldon never runs them.
 
-## generate-bindings.mjs
+Each script lives in its own folder, holding its entry and the \`lib/\` it imports.
+The shared \`README.md\` and \`INTEGRITY.json\` at the \`scripts/\` root cover them all.
+
+## bindings/generate-bindings.mjs
 
 Records which code in this project drives which ref and slot on the generated
 components, and writes \`${componentsFolder}/refs/bindings.json\`.
 
 \`\`\`sh
-node ${componentsFolder}/scripts/generate-bindings.mjs
+node ${componentsFolder}/scripts/bindings/generate-bindings.mjs
 \`\`\`
 
 The script reads source files under the project root and writes that one file. It
@@ -457,7 +471,7 @@ its own refs. It makes no network requests.
 Run \`--check\` in continuous integration to fail on a stale manifest:
 
 \`\`\`sh
-node ${componentsFolder}/scripts/generate-bindings.mjs --check
+node ${componentsFolder}/scripts/bindings/generate-bindings.mjs --check
 \`\`\`
 
 Use \`--root\`, \`--components\`, and \`--out\` when your project moved any of those.
@@ -486,7 +500,8 @@ in its output.
 
 ## Integrity
 
-\`INTEGRITY.json\` lists a sha256 for each file in this folder.
+\`INTEGRITY.json\` lists a sha256 for each file under \`scripts/\`, keyed by its path
+relative to that folder.
 
 A check the script runs on itself proves nothing, because a modified script can
 report whatever hash it likes. Treat the check as external:
@@ -497,7 +512,7 @@ report whatever hash it likes. Treat the check as external:
 - Or hash the files yourself and compare against \`INTEGRITY.json\`:
 
 \`\`\`sh
-shasum -a 256 ${componentsFolder}/scripts/generate-bindings.mjs
+shasum -a 256 ${componentsFolder}/scripts/bindings/generate-bindings.mjs
 \`\`\`
 
 Do not run a script that was edited by hand. Change the factory and re-export

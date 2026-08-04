@@ -3,13 +3,16 @@
 The Seldon factory generated these scripts alongside the components in
 `seldon`. They are for you to run in your own project. Seldon never runs them.
 
-## generate-bindings.mjs
+Each script lives in its own folder, holding its entry and the `lib/` it imports.
+The shared `README.md` and `INTEGRITY.json` at the `scripts/` root cover them all.
+
+## bindings/generate-bindings.mjs
 
 Records which code in this project drives which ref and slot on the generated
 components, and writes `seldon/refs/bindings.json`.
 
 ```sh
-node seldon/scripts/generate-bindings.mjs
+node seldon/scripts/bindings/generate-bindings.mjs
 ```
 
 The script reads source files under the project root and writes that one file. It
@@ -19,7 +22,7 @@ its own refs. It makes no network requests.
 Run `--check` in continuous integration to fail on a stale manifest:
 
 ```sh
-node seldon/scripts/generate-bindings.mjs --check
+node seldon/scripts/bindings/generate-bindings.mjs --check
 ```
 
 Use `--root`, `--components`, and `--out` when your project moved any of those.
@@ -48,7 +51,8 @@ in its output.
 
 ## Integrity
 
-`INTEGRITY.json` lists a sha256 for each file in this folder.
+`INTEGRITY.json` lists a sha256 for each file under `scripts/`, keyed by its path
+relative to that folder.
 
 A check the script runs on itself proves nothing, because a modified script can
 report whatever hash it likes. Treat the check as external:
@@ -59,7 +63,7 @@ report whatever hash it likes. Treat the check as external:
 - Or hash the files yourself and compare against `INTEGRITY.json`:
 
 ```sh
-shasum -a 256 seldon/scripts/generate-bindings.mjs
+shasum -a 256 seldon/scripts/bindings/generate-bindings.mjs
 ```
 
 Do not run a script that was edited by hand. Change the factory and re-export

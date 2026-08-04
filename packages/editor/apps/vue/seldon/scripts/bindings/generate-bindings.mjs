@@ -41,7 +41,7 @@
  *   hand. See `seldon/scripts/README.md` for how to check it.
  *
  * Usage
- *   node seldon/scripts/generate-bindings.mjs [options]
+ *   node seldon/scripts/bindings/generate-bindings.mjs [options]
  *
  *   --root <path>        Project root to scan. Defaults to the folder holding
  *                        `seldon`.
@@ -178,7 +178,9 @@ async function findMissingParsers() {
 /** The folder holding the generated components folder. */
 function getDefaultRoot() {
   const scriptsDirectory = path.dirname(fileURLToPath(import.meta.url))
-  const steps = COMPONENTS_FOLDER.split("/").length + 1
+  // This entry sits at `<components>/scripts/bindings/`, so the root is the
+  // components folder's own depth plus the `scripts` and `bindings` folders.
+  const steps = COMPONENTS_FOLDER.split("/").length + 2
 
   return path.resolve(scriptsDirectory, ...Array(steps).fill(".."))
 }
