@@ -3,6 +3,8 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
+import { SIDEBAR_INITIAL_WIDTH } from "@app/constants"
+
 import type { Rect } from "@seldon/components/utils/resize"
 
 /**
@@ -61,6 +63,13 @@ interface EditorConfigState {
   // Panel settings
   showPanels: boolean
   setShowPanels: (showPanels: boolean) => void
+
+  // Docked sidebar widths in pixels, persisted so each opens at the width the
+  // user last dragged it to. Clamped by the pane's own min and max.
+  objectsSidebarWidth: number
+  setObjectsSidebarWidth: (width: number) => void
+  propertiesSidebarWidth: number
+  setPropertiesSidebarWidth: (width: number) => void
 
   // Properties panel: floating (detached palette) vs docked (right-edge pane),
   // and whether the floating palette is currently shown. Docked stays visible
@@ -193,6 +202,14 @@ const useStore = create<EditorConfigState>()(
       showPanels: true,
       setShowPanels: (showPanels) => set((state) => ({ ...state, showPanels })),
 
+      // Docked sidebar widths (default to the shared opening width until dragged)
+      objectsSidebarWidth: SIDEBAR_INITIAL_WIDTH,
+      setObjectsSidebarWidth: (width) =>
+        set((state) => ({ ...state, objectsSidebarWidth: width })),
+      propertiesSidebarWidth: SIDEBAR_INITIAL_WIDTH,
+      setPropertiesSidebarWidth: (width) =>
+        set((state) => ({ ...state, propertiesSidebarWidth: width })),
+
       // Properties panel float settings (docked by default; palette shown once
       // it is detached, until the user closes it)
       propertiesFloating: false,
@@ -289,6 +306,8 @@ const useStore = create<EditorConfigState>()(
         wireframeMode: state.wireframeMode,
         showConnectors: state.showConnectors,
         showPanels: state.showPanels,
+        objectsSidebarWidth: state.objectsSidebarWidth,
+        propertiesSidebarWidth: state.propertiesSidebarWidth,
         propertiesFloating: state.propertiesFloating,
         propertiesFloatingOpen: state.propertiesFloatingOpen,
         propertiesPanelRect: state.propertiesPanelRect,
@@ -373,6 +392,10 @@ export function useEditorConfig() {
     setShowEffectsBadges,
     showPanels,
     setShowPanels,
+    objectsSidebarWidth,
+    setObjectsSidebarWidth,
+    propertiesSidebarWidth,
+    setPropertiesSidebarWidth,
     propertiesFloating,
     setPropertiesFloating,
     propertiesFloatingOpen,
@@ -436,6 +459,10 @@ export function useEditorConfig() {
       setShowEffectsBadges: state.setShowEffectsBadges,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
+      objectsSidebarWidth: state.objectsSidebarWidth,
+      setObjectsSidebarWidth: state.setObjectsSidebarWidth,
+      propertiesSidebarWidth: state.propertiesSidebarWidth,
+      setPropertiesSidebarWidth: state.setPropertiesSidebarWidth,
       propertiesFloating: state.propertiesFloating,
       setPropertiesFloating: state.setPropertiesFloating,
       propertiesFloatingOpen: state.propertiesFloatingOpen,
@@ -619,6 +646,12 @@ export function useEditorConfig() {
     showPanels,
     setShowPanels,
     togglePanels,
+
+    // Docked sidebar widths
+    objectsSidebarWidth,
+    setObjectsSidebarWidth,
+    propertiesSidebarWidth,
+    setPropertiesSidebarWidth,
 
     // Properties panel float methods
     propertiesFloating,
