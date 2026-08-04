@@ -24,6 +24,10 @@ import { EditorCrossfade } from "./EditorCrossfade.bespoke"
 
 import type { CSSProperties } from "react"
 
+/** The narrowest a docked sidebar may be dragged, and its cap at 2.5x that width. */
+const SIDEBAR_MIN_WIDTH = 280
+const SIDEBAR_MAX_WIDTH = SIDEBAR_MIN_WIDTH * 2.5
+
 export default function Editor() {
   const {
     showPanels,
@@ -57,8 +61,8 @@ export default function Editor() {
       <EditorCrossfade transitionKey="editor">
         <Allotment proportionalLayout={false} onDragEnd={saveSidebarWidths}>
           <Allotment.Pane
-            minSize={280}
-            maxSize={600}
+            minSize={SIDEBAR_MIN_WIDTH}
+            maxSize={SIDEBAR_MAX_WIDTH}
             preferredSize={objectsSidebarWidth}
             visible={showSidePanels}
             priority={LayoutPriority.Low}
@@ -71,8 +75,8 @@ export default function Editor() {
             <Canvas />
           </Allotment.Pane>
           <Allotment.Pane
-            minSize={280}
-            maxSize={600}
+            minSize={SIDEBAR_MIN_WIDTH}
+            maxSize={SIDEBAR_MAX_WIDTH}
             preferredSize={propertiesSidebarWidth}
             visible={showDockedProperties}
             priority={LayoutPriority.Low}

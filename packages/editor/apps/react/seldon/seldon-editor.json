@@ -40677,7 +40677,7 @@
         "padding": {
           "top": {
             "type": "theme.ordinal",
-            "value": "@padding.compact"
+            "value": "@padding.tight"
           },
           "right": {
             "type": "theme.ordinal",
@@ -40685,7 +40685,7 @@
           },
           "bottom": {
             "type": "theme.ordinal",
-            "value": "@padding.compact"
+            "value": "@padding.tight"
           },
           "left": {
             "type": "theme.ordinal",
@@ -41320,20 +41320,32 @@
         ],
         "padding": {
           "top": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           },
           "right": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           },
           "bottom": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           },
           "left": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           }
         },
         "gap": {
@@ -41866,7 +41878,7 @@
         "padding": {
           "top": {
             "type": "theme.ordinal",
-            "value": "@padding.compact"
+            "value": "@padding.tight"
           },
           "right": {
             "type": "theme.ordinal",
@@ -41874,7 +41886,7 @@
           },
           "bottom": {
             "type": "theme.ordinal",
-            "value": "@padding.compact"
+            "value": "@padding.tight"
           },
           "left": {
             "type": "theme.ordinal",
@@ -42803,20 +42815,32 @@
         ],
         "padding": {
           "top": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           },
           "right": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           },
           "bottom": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           },
           "left": {
-            "type": "option",
-            "value": "none"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 1
+            }
           }
         },
         "border": {
@@ -43192,7 +43216,7 @@
         "padding": {
           "top": {
             "type": "theme.ordinal",
-            "value": "@padding.compact"
+            "value": "@padding.tight"
           },
           "right": {
             "type": "theme.ordinal",
@@ -43200,7 +43224,7 @@
           },
           "bottom": {
             "type": "theme.ordinal",
-            "value": "@padding.compact"
+            "value": "@padding.tight"
           },
           "left": {
             "type": "theme.ordinal",
@@ -43323,7 +43347,10 @@
               "value": null
             }
           }
-        ]
+        ],
+        "position": {},
+        "margin": {},
+        "corners": {}
       },
       "origin": "user"
     },

@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 import { useTool } from "./use-tool"
 
@@ -44,45 +45,55 @@ type PanelState = {
   closeAiChat: () => void
 }
 
-const useStore = create<PanelState>((set) => ({
-  activePanel: null,
-  target: undefined,
-  dialogLevel: undefined,
-  openPanel: (...args: OpenPanelArgs) => {
-    switch (args[0]) {
-      case "component":
-        set({ activePanel: args[0], target: args[1], dialogLevel: undefined })
-        break
-      case "add-board":
-        set({
-          activePanel: args[0],
-          target: undefined,
-          dialogLevel: args[1]?.level,
-        })
-        break
-      case "create-component":
-      case "export-components":
-      case "add-theme":
-      case "add-font-collection":
-      case "add-icon-set":
-      case "image-upload":
-        set({
-          activePanel: args[0],
-          target: undefined,
-          dialogLevel: undefined,
-        })
-        break
+const useStore = create<PanelState>()(
+  persist(
+    (set) => ({
+      activePanel: null,
+      target: undefined,
+      dialogLevel: undefined,
+      openPanel: (...args: OpenPanelArgs) => {
+        switch (args[0]) {
+          case "component":
+            set({ activePanel: args[0], target: args[1], dialogLevel: undefined })
+            break
+          case "add-board":
+            set({
+              activePanel: args[0],
+              target: undefined,
+              dialogLevel: args[1]?.level,
+            })
+            break
+          case "create-component":
+          case "export-components":
+          case "add-theme":
+          case "add-font-collection":
+          case "add-icon-set":
+          case "image-upload":
+            set({
+              activePanel: args[0],
+              target: undefined,
+              dialogLevel: undefined,
+            })
+            break
 
-      default:
-        set({ activePanel: null, target: undefined, dialogLevel: undefined })
-    }
-  },
-  closePanel: () => set({ activePanel: null, target: undefined, dialogLevel: undefined }),
+          default:
+            set({ activePanel: null, target: undefined, dialogLevel: undefined })
+        }
+      },
+      closePanel: () => set({ activePanel: null, target: undefined, dialogLevel: undefined }),
 
-  aiChatOpen: false,
-  openAiChat: () => set({ aiChatOpen: true }),
-  closeAiChat: () => set({ aiChatOpen: false }),
-}))
+      aiChatOpen: false,
+      openAiChat: () => set({ aiChatOpen: true }),
+      closeAiChat: () => set({ aiChatOpen: false }),
+    }),
+    {
+      name: "editor-panel",
+      // Only the palette-visibility flag persists; the exclusive dialog slot must
+      // start closed each session, so it stays out of storage.
+      partialize: (state) => ({ aiChatOpen: state.aiChatOpen }),
+    },
+  ),
+)
 
 export function usePanel() {
   const store = useStore()

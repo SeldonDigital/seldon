@@ -31,24 +31,50 @@ export function CanvasResizeAnchor() {
 
     if (!canvas) return
 
-    let width = canvas.getBoundingClientRect().width
+    // The board is centered by CSS at whatever width the pane settles to on launch, so the
+    // initial layout is not a move to hold against. Observing is deferred past the mount
+    // settle, and the baseline is then taken from the first callback rather than measured up
+    // front. Compensating for the settle would push the board offscreen on launch; only a
+    // later change, from toggling a sidebar or the palette, is a real move to hold.
+    let width: number | null = null
+    let observer: ResizeObserver | null = null
 
-    const observer = new ResizeObserver((entries) => {
-      const next = entries[0]?.contentRect.width ?? width
-      const delta = next - width
+    const start = (): void => {
+      observer = new ResizeObserver((entries) => {
+        const next = entries[0]?.contentRect.width
 
-      width = next
+        if (next === undefined) return
 
-      if (delta === 0) return
+        if (width === null) {
+          width = next
 
-      const { positionX, positionY, scale } = contextRef.current.transformState
+          return
+        }
 
-      setTransformRef.current(positionX - delta / 2, positionY, scale, 0)
+        const delta = next - width
+
+        width = next
+
+        if (delta === 0) return
+
+        const { positionX, positionY, scale } = contextRef.current.transformState
+
+        setTransformRef.current(positionX - delta / 2, positionY, scale, 0)
+      })
+
+      observer.observe(canvas)
+    }
+
+    let innerRaf = 0
+    const outerRaf = requestAnimationFrame(() => {
+      innerRaf = requestAnimationFrame(start)
     })
 
-    observer.observe(canvas)
-
-    return () => observer.disconnect()
+    return () => {
+      cancelAnimationFrame(outerRaf)
+      cancelAnimationFrame(innerRaf)
+      observer?.disconnect()
+    }
   }, [])
 
   return null

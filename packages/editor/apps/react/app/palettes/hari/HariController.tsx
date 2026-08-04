@@ -418,6 +418,7 @@ function Hari({
       initialWidth={HARI_INITIAL_WIDTH}
       initialHeight={HARI_INITIAL_HEIGHT}
       onClose={close}
+      paletteId="hari"
       testId="ai-chat-dialog"
       rect={hariPanelRect}
       onRectChange={setHariPanelRect}

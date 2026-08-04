@@ -115,6 +115,7 @@ function PropertyPalette() {
       initialWidth={PROPERTY_INITIAL_WIDTH}
       initialHeight={PROPERTY_INITIAL_HEIGHT}
       onClose={close}
+      paletteId="properties"
       testId="properties-palette"
       placement="right"
       rect={propertiesPanelRect}

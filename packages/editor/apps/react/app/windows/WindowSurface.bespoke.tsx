@@ -16,7 +16,13 @@ import { createPortal } from "react-dom"
 
 import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
 import type { BoundingBox, DragControls, MotionValue } from "framer-motion"
-import type { CSSProperties, MouseEvent, ReactNode, Ref } from "react"
+import type {
+  CSSProperties,
+  MouseEvent,
+  PointerEvent as ReactPointerEvent,
+  ReactNode,
+  Ref,
+} from "react"
 
 interface WindowSurfaceProps {
   x: MotionValue<number>
@@ -39,6 +45,15 @@ interface WindowSurfaceProps {
   resizeSides?: readonly ResizeSide[]
   minWidth?: number
   minHeight?: number
+  maxWidth?: number
+  /**
+   * Live z-index for a palette surface, so a click can lift it above its peers.
+   * Only the plain palette surface honors it; dialogs and anchored cards keep
+   * their own bands.
+   */
+  zIndex?: number
+  /** Fires on a palette-surface press, so the caller can raise it to the front. */
+  onSurfacePointerDown?: (event: ReactPointerEvent) => void
   // Render a centered modal whose surface hugs its content. `x`/`y` act as a
   // drag offset from center, the viewport bounds the drag, and no resize handles
   // are rendered.
@@ -95,10 +110,13 @@ export function WindowSurface({
   resizeSides = RESIZE_SIDES,
   minWidth,
   minHeight,
+  maxWidth,
   contentSized = false,
   portalTarget,
   anchored = false,
   surfaceRef,
+  zIndex,
+  onSurfacePointerDown,
 }: WindowSurfaceProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
@@ -149,7 +167,15 @@ export function WindowSurface({
     : isDialog
       ? styles.dialogSurface
       : styles.surface
-  const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
+  // Only a plain palette surface takes a live z-index and raise-on-press; dialogs
+  // and anchored cards keep their own bands.
+  const isPalette = !isDialog && !anchored
+  const raisedZ = isPalette && zIndex !== undefined ? zIndex : undefined
+  const surfaceMotionStyle =
+    raisedZ === undefined
+      ? { x, y, width, height, ...surfaceStyle }
+      : { x, y, width, height, ...surfaceStyle, zIndex: raisedZ }
+  const surfacePointerDown = isPalette ? onSurfacePointerDown : undefined
   const backdropStyle = isDialog ? styles.dialogBackdrop : styles.backdrop
   const backdrop = showBackdrop ? <div onClick={backdropClick} style={backdropStyle} /> : null
 
@@ -162,10 +188,14 @@ export function WindowSurface({
   const resizeHandles =
     onResize && getRect
       ? resizeSides.map((side) => {
+          // The width cap is held per side so a left-edge drag keeps its right edge fixed,
+          // shifting x, while a right-edge drag leaves x alone. The min cap already lives in
+          // the resize math; the max is applied here since only this View knows the side.
+          const handleResize = (rect: Rect) => onResize(clampResizeWidth(rect, side, maxWidth))
           const { onPointerDown } = createResizeHandle({
             side,
             getRect,
-            onResize,
+            onResize: handleResize,
             minWidth,
             minHeight,
             onStart: onResizeStart,
@@ -187,6 +217,7 @@ export function WindowSurface({
         dragElastic={false}
         dragConstraints={dragConstraints}
         onClick={surfaceClick}
+        onPointerDownCapture={surfacePointerDown}
         style={surfaceMotionStyle}
         data-testid={testId}
       >
@@ -196,6 +227,19 @@ export function WindowSurface({
     </div>,
     target,
   )
+}
+
+/**
+ * Cap a resized window's width, holding the edge opposite the drag in place. A left-edge
+ * drag keeps the right edge fixed, so the cap shifts x; a right-edge drag keeps the left
+ * edge, so x is untouched. The rect is returned unchanged when no cap is set or met.
+ */
+function clampResizeWidth(rect: Rect, side: ResizeSide, maxWidth?: number): Rect {
+  if (maxWidth === undefined || rect.width <= maxWidth) return rect
+
+  const x = side.includes("left") ? rect.x + (rect.width - maxWidth) : rect.x
+
+  return { ...rect, x, width: maxWidth }
 }
 
 const styles: Record<string, CSSProperties> = {

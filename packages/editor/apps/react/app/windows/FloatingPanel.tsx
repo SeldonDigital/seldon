@@ -2,6 +2,7 @@
 
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
+import { usePaletteStack, usePaletteZIndex } from "@app/windows/hooks/use-palette-stack"
 import { useCallback, useEffect } from "react"
 
 import type { Rect } from "@seldon/components/utils/resize"
@@ -28,11 +29,16 @@ const RIGHT_PLACEMENT_TOP = 56
 /** Debounce for persisting the rect while dragging or resizing, in ms. */
 const RECT_PERSIST_DELAY = 300
 
+/** The widest a palette may be dragged, as a multiple of its minimum width. */
+const MAX_WIDTH_RATIO = 2.5
+
 interface FloatingPanelProps {
   initialWidth: number
   initialHeight: number
   onClose: () => void
   children: (api: FloatingPanelApi) => ReactNode
+  /** Identity in the palette stack, so a press can raise this palette to the front. */
+  paletteId: string
   testId?: string
   closeOnClickOutside?: boolean
   placement?: FloatingPanelPlacement
@@ -54,6 +60,7 @@ export function FloatingPanel({
   initialHeight,
   onClose,
   children,
+  paletteId,
   testId,
   closeOnClickOutside = false,
   placement = "center",
@@ -94,7 +101,22 @@ export function FloatingPanel({
     handleClose: onClose,
   })
 
+  const maxWidth = minWidth * MAX_WIDTH_RATIO
+
   const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
+
+  // Join the palette stack on open (frontmost) and leave it on close, so its
+  // z-index tracks its place in the stack and a press lifts it above its peers.
+  const { register, unregister, raise } = usePaletteStack()
+  const zIndex = usePaletteZIndex(paletteId)
+
+  useEffect(() => {
+    register(paletteId)
+
+    return () => unregister(paletteId)
+  }, [paletteId, register, unregister])
+
+  const raiseToFront = useCallback(() => raise(paletteId), [raise, paletteId])
 
   // Persist the rect a short moment after a drag or resize settles, so the
   // palette reopens where the user left it without writing on every frame.
@@ -139,6 +161,9 @@ export function FloatingPanel({
       getRect={getRect}
       minWidth={minWidth}
       minHeight={minHeight}
+      maxWidth={maxWidth}
+      zIndex={zIndex}
+      onSurfacePointerDown={raiseToFront}
     >
       {content}
     </WindowSurface>

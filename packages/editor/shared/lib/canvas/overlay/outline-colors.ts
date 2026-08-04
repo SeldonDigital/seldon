@@ -31,12 +31,19 @@ interface Rgb {
   b: number
 }
 
+interface Rgba extends Rgb {
+  alpha: number
+}
+
+/** The page base translucent layers composite over when no opaque surface is found. */
+const WHITE_SURFACE: Rgb = { r: 255, g: 255, b: 255 }
+
 /**
- * Parses a computed `background-color` string. Returns null for a transparent
- * or fully see-through color so the surface walk keeps climbing to the painted
- * ancestor.
+ * Parses a computed `background-color` string. Returns null for a fully
+ * transparent color so the surface walk keeps climbing, and keeps the alpha of
+ * anything else so a translucent tint composites rather than reading as opaque.
  */
-function parseOpaqueColor(value: string): Rgb | null {
+function parseColor(value: string): Rgba | null {
   const match = value.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+))?/i)
 
   if (!match) {
@@ -49,28 +56,56 @@ function parseOpaqueColor(value: string): Rgb | null {
     return null
   }
 
-  return { r: Number(match[1]), g: Number(match[2]), b: Number(match[3]) }
+  return { r: Number(match[1]), g: Number(match[2]), b: Number(match[3]), alpha }
+}
+
+/** Alpha-composites overlays (topmost first) over an opaque base color. */
+function compositeOver(overlays: Rgba[], base: Rgb): Rgb {
+  let result = base
+
+  for (let index = overlays.length - 1; index >= 0; index--) {
+    const { r, g, b, alpha } = overlays[index]
+
+    result = {
+      r: r * alpha + result.r * (1 - alpha),
+      g: g * alpha + result.g * (1 - alpha),
+      b: b * alpha + result.b * (1 - alpha),
+    }
+  }
+
+  return result
 }
 
 /**
- * Walks up from the element and returns the first opaque painted background
- * color. This reads what is actually rendered, so resolved CSS variables and
- * theme colors are already applied.
+ * Walks up from the element and returns the surface color the dashes perceive.
+ * Translucent tints are gathered as overlays and composited over the first
+ * opaque background, so a light tint over white reads as light rather than as
+ * its own near-black source color. Reads what is rendered, so resolved CSS
+ * variables and theme colors are already applied.
  */
 function resolveSurfaceColor(start: HTMLElement | null, stop: HTMLElement | null): Rgb | null {
   let current = start
+  const overlays: Rgba[] = []
 
   while (current && current !== stop) {
-    const color = parseOpaqueColor(getComputedStyle(current).backgroundColor)
+    const color = parseColor(getComputedStyle(current).backgroundColor)
 
     if (color) {
-      return color
+      if (color.alpha >= 1) {
+        return compositeOver(overlays, color)
+      }
+
+      overlays.push(color)
     }
 
     current = current.parentElement
   }
 
-  return null
+  if (overlays.length === 0) {
+    return null
+  }
+
+  return compositeOver(overlays, WHITE_SURFACE)
 }
 
 /** Perceived brightness (YIQ). Below the midpoint reads as a dark surface. */
