@@ -159,6 +159,35 @@ describe("resolvePropertyValue", () => {
     expect(resolution.text).toContain("px, rem, %")
   })
 
+  it("parses a bare number against a unit-bearing schema with no spoken unit", async () => {
+    // opacity's schema carries units.allowed: ["%"] even though nobody ever
+    // speaks the unit ("set the opacity to 50") -- the same unit-bearing path
+    // width takes, landing on the schema default with no second call.
+    modelAnswers({ pick: "exact", value: 50 })
+    const context = turnContext("set the opacity to 50")
+
+    const resolution = await resolvePropertyValue(context, "opacity")
+
+    expect(resolution).toEqual({
+      kind: "resolved",
+      value: { type: "exact", value: { value: 50, unit: "%" } },
+    })
+    expect(callOllamaFormat).toHaveBeenCalledTimes(1)
+  })
+
+  it("parses a spoken percent sign against opacity with no second call", async () => {
+    modelAnswers({ pick: "exact", value: "50%" })
+    const context = turnContext("set the opacity to 50%")
+
+    const resolution = await resolvePropertyValue(context, "opacity")
+
+    expect(resolution).toEqual({
+      kind: "resolved",
+      value: { type: "exact", value: { value: 50, unit: "%" } },
+    })
+    expect(callOllamaFormat).toHaveBeenCalledTimes(1)
+  })
+
   it("never offers an exact branch for a property whose schema forbids it", async () => {
     // display supports only empty/inherit/option -- an exact pick is a
     // guaranteed Core rejection, so the stage must not offer that branch.
