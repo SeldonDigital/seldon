@@ -24,15 +24,24 @@ export interface TokenStubGeometry {
   points: ConnectorPoint[]
 }
 
+/** One run of a group's trunk, carrying its own muted state so a leg can stay dashed. */
+export interface TokenTrunkSegment {
+  points: ConnectorPoint[]
+  muted: boolean
+}
+
 /**
  * One group's single connector to the object: the elbow from the object to the group's bus,
- * the bus itself, and the dot where it meets the node. Drawn as one line so a group reads as
- * one connector however many badges feed it. `key` is the group id, unique per trunk.
+ * the bus split into runs, and the dot where it meets the node. A group reads as one
+ * connector however many badges feed it, but each run keeps its own muted state so a bus
+ * piece that only leads on to default tokens stays dashed until it meets a solid run. `key`
+ * is the group id, unique per trunk. `muted` is the anchor dot's state, faint only when
+ * every badge in the group is muted.
  */
 export interface TokenTrunkGeometry {
   key: string
   muted: boolean
-  segments: ConnectorPoint[][]
+  segments: TokenTrunkSegment[]
   anchor: ConnectorPoint
 }
 
@@ -281,26 +290,73 @@ export function buildTokenConnectorGeometry(
 
     const route = routeGroupTrunk({ band, nearSide, trunkY, stubX, spanTop, spanBottom })
 
-    // The elbow ends on the bus at `trunkY`; the bus is a second run through that x, so
-    // the branch to each stub draws without the polyline backtracking to reach it.
-    const segments: ConnectorPoint[][] = [route.points]
+    const allMuted = members.every((member) => member.muted)
+
+    // The elbow carries the group's current to the node, so it is solid unless the whole
+    // group is muted. The bus is split into runs that each stay dashed until a non-muted
+    // badge feeds them, so a piece that only leads on to default tokens reads faint.
+    const segments: TokenTrunkSegment[] = [{ points: route.points, muted: allMuted }]
 
     if (busBottom > busTop) {
-      segments.push([
-        { x: stubX, y: busTop },
-        { x: stubX, y: busBottom },
-      ])
+      segments.push(...buildBusSegments(members, trunkY, stubX))
     }
 
     trunks.push({
       key: members[0].group,
-      muted: members.every((member) => member.muted),
+      muted: allMuted,
       segments,
       anchor: route.anchor,
     })
   }
 
   return { stubs, trunks }
+}
+
+/** Float slack for treating a badge center as sitting on a bus breakpoint. */
+const BUS_EPSILON = 0.5
+
+/**
+ * Splits a group's vertical bus into runs at each badge center and the trunk junction.
+ *
+ * Current flows from each badge in toward the junction at `trunkY`. A run is solid when a
+ * non-muted badge lies beyond it, away from the junction, and dashed when only muted badges
+ * do. So a run past the last solid badge on its side stays dashed, and a default token's leg
+ * reads faint from its stub through the bus until it merges with a solid run.
+ */
+function buildBusSegments(
+  members: TokenBadgePlacement[],
+  trunkY: number,
+  stubX: number,
+): TokenTrunkSegment[] {
+  const centers = members.map((member) => member.badge.centerY)
+  const muted = members.map((member) => member.muted)
+  const breakpoints = Array.from(new Set([...centers, trunkY])).sort((a, b) => a - b)
+
+  const segments: TokenTrunkSegment[] = []
+
+  for (let index = 0; index < breakpoints.length - 1; index++) {
+    const top = breakpoints[index]
+    const bottom = breakpoints[index + 1]
+
+    if (bottom - top < BUS_EPSILON) continue
+
+    const above = (top + bottom) / 2 < trunkY
+    const solid = centers.some((center, member) => {
+      if (muted[member]) return false
+
+      return above ? center <= top + BUS_EPSILON : center >= bottom - BUS_EPSILON
+    })
+
+    segments.push({
+      points: [
+        { x: stubX, y: top },
+        { x: stubX, y: bottom },
+      ],
+      muted: !solid,
+    })
+  }
+
+  return segments
 }
 
 /** Where a group's trunk meets the node, from its bus midpoint against the node's span. */

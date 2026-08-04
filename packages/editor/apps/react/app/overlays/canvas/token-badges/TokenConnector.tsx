@@ -30,7 +30,7 @@ export function TokenConnector() {
 
   const shapes = useMemo(() => {
     const stubShapes = geometry.stubs.map(toStubShape)
-    const trunkShapes = geometry.trunks.map((trunk) => toTrunkShape(trunk, anchorRadius))
+    const trunkShapes = geometry.trunks.flatMap((trunk) => toTrunkShapes(trunk, anchorRadius))
 
     return [...stubShapes, ...trunkShapes]
   }, [geometry, anchorRadius])
@@ -77,18 +77,26 @@ function toStubShape(stub: TokenStubGeometry): ConnectorShape {
   }
 }
 
-/** A group's single connector to the object: the bus and trunk as one line, one dot. */
-function toTrunkShape(trunk: TokenTrunkGeometry, anchorRadius: number): ConnectorShape {
-  const strokeStyle = trunk.muted ? tokenConnectorMutedStrokeStyle : tokenConnectorStrokeStyle
+/**
+ * A group's single connector to the object, drawn as one shape per run so each bus piece
+ * keeps its own dashed or solid stroke. The dot where the trunk meets the node rides on the
+ * first run, the elbow, and the rest draw the bus with no dot of their own.
+ */
+function toTrunkShapes(trunk: TokenTrunkGeometry, anchorRadius: number): ConnectorShape[] {
   const anchorStyle = trunk.muted ? tokenConnectorMutedAnchorStyle : tokenConnectorAnchorStyle
 
-  return {
-    key: `token-trunk:${trunk.key}`,
-    d: trunk.segments.map(toElbowPath).join(" "),
-    anchorX: trunk.anchor.x,
-    anchorY: trunk.anchor.y,
-    anchorRadius,
-    strokeStyle,
-    anchorStyle,
-  }
+  return trunk.segments.map((segment, index) => {
+    const strokeStyle = segment.muted ? tokenConnectorMutedStrokeStyle : tokenConnectorStrokeStyle
+    const carriesAnchor = index === 0
+
+    return {
+      key: `token-trunk:${trunk.key}:${index}`,
+      d: toElbowPath(segment.points),
+      anchorX: trunk.anchor.x,
+      anchorY: trunk.anchor.y,
+      anchorRadius: carriesAnchor ? anchorRadius : 0,
+      strokeStyle,
+      anchorStyle,
+    }
+  })
 }
