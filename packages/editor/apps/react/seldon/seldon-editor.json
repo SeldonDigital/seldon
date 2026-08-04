@@ -7751,7 +7751,7 @@
             "type": "exact",
             "value": {
               "unit": "%",
-              "value": 60
+              "value": 80
             }
           }
         }
@@ -7820,8 +7820,16 @@
           "background": [
             {
               "color": {
-                "type": "option",
-                "value": "transparent"
+                "type": "theme.categorical",
+                "value": "@swatch.offWhite"
+              },
+              "brightness": {
+                "type": "empty",
+                "value": null
+              },
+              "opacity": {
+                "type": "empty",
+                "value": null
               }
             }
           ],
@@ -7833,20 +7841,28 @@
           }
         },
         "disabled": {
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
           "border": {
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.gray"
             }
-          }
+          },
+          "background": [
+            {
+              "color": {
+                "type": "theme.categorical",
+                "value": "@swatch.offWhite"
+              },
+              "brightness": {
+                "type": "empty",
+                "value": null
+              },
+              "opacity": {
+                "type": "empty",
+                "value": null
+              }
+            }
+          ]
         },
         "error": {
           "background": [
@@ -7875,8 +7891,16 @@
           "background": [
             {
               "color": {
-                "type": "option",
-                "value": "transparent"
+                "type": "theme.categorical",
+                "value": "@swatch.offWhite"
+              },
+              "brightness": {
+                "type": "empty",
+                "value": null
+              },
+              "opacity": {
+                "type": "empty",
+                "value": null
               }
             }
           ]
@@ -8192,7 +8216,7 @@
             "type": "exact",
             "value": {
               "unit": "%",
-              "value": 60
+              "value": 80
             }
           },
           "border": {}
@@ -8397,6 +8421,15 @@
             "type": "computed",
             "value": "highContrastColor"
           }
+        },
+        "active": {
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 80
+            }
+          }
         }
       }
     },
@@ -8586,6 +8619,15 @@
             "type": "theme.categorical",
             "value": "@swatch.active"
           }
+        },
+        "active": {
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 80
+            }
+          }
         }
       }
     },
@@ -8633,7 +8675,7 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 60
+                "value": 50
               }
             }
           }
@@ -8678,11 +8720,11 @@
               "type": "theme.categorical",
               "value": "@swatch.primary"
             },
-            "opacity": {
+            "brightness": {
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 40
+                "value": 50
               }
             }
           }
@@ -11827,10 +11869,6 @@
         "selected": {
           "background": [
             {
-              "color": {
-                "type": "theme.categorical",
-                "value": "@swatch.primary"
-              },
               "brightness": {
                 "type": "empty",
                 "value": null
@@ -11838,6 +11876,23 @@
               "opacity": {
                 "type": "empty",
                 "value": null
+              }
+            }
+          ]
+        },
+        "active": {
+          "background": [
+            {
+              "brightness": {
+                "type": "empty",
+                "value": null
+              },
+              "opacity": {
+                "type": "exact",
+                "value": {
+                  "unit": "%",
+                  "value": 80
+                }
               }
             }
           ]
