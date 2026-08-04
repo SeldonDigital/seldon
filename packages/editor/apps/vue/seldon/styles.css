@@ -2108,11 +2108,6 @@ body {
   width: 30%;
 }
 
-.sdn-button-menu--truc {
-  box-shadow: 0px 1px 0.0625rem 0.0625rem hsl(0 0% 0% / 10%);
-  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 40%, transparent);
-}
-
 .sdn-button-simple--dbgs {
   background-color: var(--sdn-swatch-offWhite);
   padding-top: var(--sdn-paddings-tight);
@@ -3372,6 +3367,16 @@ body {
   width: fit-content;
   flex-shrink: 0;
   height: 1rem;
+}
+
+.sdn-image--dqba {
+  align-self: unset;
+  flex: unset;
+  width: 2rem;
+  flex-shrink: 0;
+  height: 2rem;
+  border-radius: var(--sdn-corners-tight);
+  border: var(--sdn-border-width-small) solid var(--sdn-swatch-primary);
 }
 
 .sdn-image--hzdf {
