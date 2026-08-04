@@ -1128,7 +1128,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariSendIcon: {
     component: "Icon",
     nodeId: "component-button-YhTsODav",
-    className: "sdn-icon sdn-icon--gh8m",
+    className: "sdn-icon sdn-icon--yhts",
     views: [
       {
         component: "BarHariModels",
