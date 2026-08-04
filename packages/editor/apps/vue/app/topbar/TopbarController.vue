@@ -1,34 +1,17 @@
 <script setup lang="ts">
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useAppState } from "@app/editor/use-app-state"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import MenuController from "@app/menus/MenuController.vue"
 import BarTopbar from "@seldon/components/parts/BarTopbar.vue"
-import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 
-import { getChromeThemes } from "./chrome-themes"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
 
 import type { MenuDropdown } from "./menus/types"
-import type { InterfaceMode } from "@app/editor/editor-config-store"
 import type { AppState } from "@app/editor/use-app-state"
-import type { MenuAlign, MenuEntry } from "@app/menus/types"
-
-/** Menu id for the chrome-theme dropdown, distinct from the config menus. */
-const CHROME_THEME_MENU_ID = "chrome-theme"
-
-/** Menu id for the interface light/dark mode dropdown. */
-const INTERFACE_MODE_MENU_ID = "interface-mode"
-
-/** Interface mode options, in menu order. */
-const INTERFACE_MODES: { id: InterfaceMode; label: string }[] = [
-  { id: "system", label: "System" },
-  { id: "light", label: "Light" },
-  { id: "dark", label: "Dark" },
-]
+import type { MenuEntry } from "@app/menus/types"
 
 type SlotObject = Record<string, unknown> | null
 
@@ -45,11 +28,7 @@ function slotFor(trigger: MenuTrigger | null): SlotObject {
 
 const menuConfig = useMenuConfig()
 const { appState } = useAppState()
-const config = useEditorConfigStore()
-const { chromeTheme, interfaceMode } = storeToRefs(config)
 const exportStatus = useExportStatusStore()
-
-const chromeThemes = getChromeThemes()
 
 const openMenuId = ref<string | null>(null)
 const anchor = ref<HTMLElement | null>(null)
@@ -104,23 +83,6 @@ function toMenuEntries(menu: MenuDropdown, state: AppState): MenuEntry[] {
   })
 }
 
-/** Builds a right-side dropdown's `MenuEntry` list, marking the active option. */
-function buildDropdownItems<T extends string>(
-  options: { id: T; label: string }[],
-  activeId: T,
-  onSelect: (id: T) => void,
-  testIdPrefix: string,
-): MenuEntry[] {
-  return options.map((option) => ({
-    id: option.id,
-    label: option.label,
-    onSelect: () => onSelect(option.id),
-    active: option.id === activeId,
-    activeMarker: option.id === activeId ? "bullet" : undefined,
-    testId: `${testIdPrefix}-${option.id}`,
-  }))
-}
-
 function buildTrigger(menuId: string): MenuTrigger | null {
   const menu = menuConfig.value.find((entry) => entry.id === menuId)
   if (!menu) return null
@@ -146,74 +108,17 @@ function buildTrigger(menuId: string): MenuTrigger | null {
 const triggers = computed(() => ({
   file: buildTrigger("file"),
   edit: buildTrigger("edit"),
+  view: buildTrigger("view"),
   component: buildTrigger("component"),
   hari: buildTrigger("hari"),
-  view: buildTrigger("view"),
+  window: buildTrigger("window"),
   dev: buildTrigger("dev"),
 }))
 
-const themeMenuItems = computed<MenuEntry[]>(() =>
-  buildDropdownItems(
-    chromeThemes.map((theme) => ({ id: theme.slug, label: theme.label })),
-    chromeTheme.value,
-    config.setChromeTheme,
-    CHROME_THEME_MENU_ID,
-  ),
-)
-
-const activeThemeLabel = computed(() => {
-  const active = chromeThemes.find((theme) => theme.slug === chromeTheme.value)
-  return active?.label ?? chromeTheme.value
-})
-
-const themeButton = computed<SlotObject>(() => ({
-  "data-testid": `menu-${CHROME_THEME_MENU_ID}`,
-  "aria-haspopup": "menu",
-  "aria-expanded": openMenuId.value === CHROME_THEME_MENU_ID,
-  onClick: (event: MouseEvent) =>
-    handleTriggerClick(CHROME_THEME_MENU_ID, event.currentTarget as HTMLElement),
-}))
-
-const themeLabel = computed<SlotObject>(() => ({ children: activeThemeLabel.value }))
-
-const modeMenuItems = computed<MenuEntry[]>(() =>
-  buildDropdownItems(
-    INTERFACE_MODES,
-    interfaceMode.value,
-    config.setInterfaceMode,
-    INTERFACE_MODE_MENU_ID,
-  ),
-)
-
-const activeModeLabel = computed(() => {
-  const active = INTERFACE_MODES.find((mode) => mode.id === interfaceMode.value)
-  return active?.label ?? "System"
-})
-
-const modeButton = computed<SlotObject>(() => ({
-  "data-testid": `menu-${INTERFACE_MODE_MENU_ID}`,
-  "aria-haspopup": "menu",
-  "aria-expanded": openMenuId.value === INTERFACE_MODE_MENU_ID,
-  onClick: (event: MouseEvent) =>
-    handleTriggerClick(INTERFACE_MODE_MENU_ID, event.currentTarget as HTMLElement),
-}))
-
-const modeLabel = computed<SlotObject>(() => ({ children: activeModeLabel.value }))
-
 const openMenuItems = computed<MenuEntry[]>(() => {
-  if (openMenuId.value === CHROME_THEME_MENU_ID) return themeMenuItems.value
-  if (openMenuId.value === INTERFACE_MODE_MENU_ID) return modeMenuItems.value
   const menu = menuConfig.value.find((entry) => entry.id === openMenuId.value)
   return menu ? toMenuEntries(menu, appState.value) : []
 })
-
-// The theme and mode triggers sit at the right edge, so their menus align to
-// the trigger's right and open leftward. The left-side config menus align left.
-const menuAlign = computed<MenuAlign>(() =>
-  openMenuId.value === CHROME_THEME_MENU_ID || openMenuId.value === INTERFACE_MODE_MENU_ID
-    ? "end"
-    : "start",
-)
 
 const menuOpen = computed(() => openMenuId.value !== null)
 
@@ -232,19 +137,16 @@ const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
   menuFileLabel: { ...triggers.value.file?.label },
   menuEdit: { ...triggers.value.edit?.button },
   menuEditLabel: { ...triggers.value.edit?.label },
+  menuView: { ...triggers.value.view?.button },
+  menuViewLabel: { ...triggers.value.view?.label },
   menuComponent: { ...triggers.value.component?.button },
   menuComponentLabel: { ...triggers.value.component?.label },
   menuHari: { ...triggers.value.hari?.button },
   menuHariLabel: { ...triggers.value.hari?.label },
-  menuView: { ...triggers.value.view?.button },
-  menuViewLabel: { ...triggers.value.view?.label },
+  menuWindow: { ...triggers.value.window?.button },
+  menuWindowLabel: { ...triggers.value.window?.label },
   menuDev: { ...triggers.value.dev?.button },
   menuDevLabel: { ...triggers.value.dev?.label },
-
-  menuTheme: { ...themeButton.value },
-  menuThemeLabel: { ...themeLabel.value },
-  menuMode: { ...modeButton.value },
-  menuModeLabel: { ...modeLabel.value },
 }))
 
 // BarTopbar gates its opt-in slots on a prop being present, so every slot the
@@ -258,19 +160,16 @@ const slots = computed<Record<string, SlotObject>>(() => ({
   textLabel: slotFor(triggers.value.file),
   buttonSimple2: slotFor(triggers.value.edit),
   textLabel2: slotFor(triggers.value.edit),
-  buttonSimple3: slotFor(triggers.value.component),
-  textLabel3: slotFor(triggers.value.component),
-  buttonSimple4: slotFor(triggers.value.hari),
-  textLabel4: slotFor(triggers.value.hari),
-  buttonSimple5: slotFor(triggers.value.view),
-  textLabel5: slotFor(triggers.value.view),
-  buttonSimple6: slotFor(triggers.value.dev),
-  textLabel6: slotFor(triggers.value.dev),
-
-  buttonMenu: {},
-  textLabel7: {},
-  buttonMenu2: {},
-  textLabel8: {},
+  buttonSimple3: slotFor(triggers.value.view),
+  textLabel3: slotFor(triggers.value.view),
+  buttonSimple4: slotFor(triggers.value.component),
+  textLabel4: slotFor(triggers.value.component),
+  buttonSimple5: slotFor(triggers.value.hari),
+  textLabel5: slotFor(triggers.value.hari),
+  buttonSimple6: slotFor(triggers.value.window),
+  textLabel6: slotFor(triggers.value.window),
+  buttonSimple7: slotFor(triggers.value.dev),
+  textLabel7: slotFor(triggers.value.dev),
 }))
 </script>
 
@@ -281,7 +180,7 @@ const slots = computed<Record<string, SlotObject>>(() => ({
       :open="menuOpen"
       :anchor="anchor"
       :items="openMenuItems"
-      :align="menuAlign"
+      align="start"
       min-width="220px"
       @close="closeMenu"
     />

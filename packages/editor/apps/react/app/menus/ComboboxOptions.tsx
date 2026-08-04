@@ -54,10 +54,17 @@ const HIGHLIGHT_CLASS = "sdn-state-activated"
 const OPTION_LABEL_CLASS = "sdn-text-label sdn-text-label--xohb"
 const OPTION_ANNOTATION_CLASS = "sdn-text-label sdn-text-label--lqmh"
 
+// The option list portals to `document.body`, so it must sit above the floating
+// window surface (`WindowSurface` z-40) to stay visible when the properties panel
+// is a floating palette or the combobox opens over a dialog. It stays below the
+// top menu/toast tier (z-50). The backdrop sits one step under the panel.
+const OPTIONS_BACKDROP_Z_INDEX = 44
+const OPTIONS_PANEL_Z_INDEX = 45
+
 const backdropStyle: CSSProperties = {
   position: "fixed",
   inset: 0,
-  zIndex: 9,
+  zIndex: OPTIONS_BACKDROP_Z_INDEX,
 }
 
 // The portal root only scopes the chrome theme and mode swap; it lays out nothing.
@@ -85,7 +92,7 @@ export function ComboboxOptions({
 
   const panelStyle: CSSProperties = {
     position: "fixed",
-    zIndex: 10,
+    zIndex: OPTIONS_PANEL_Z_INDEX,
     top: position.y,
     left: position.x,
     minWidth: position.w,

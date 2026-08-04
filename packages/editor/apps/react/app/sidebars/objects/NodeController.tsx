@@ -100,6 +100,8 @@ const NodeInner = function NodeInner({
     dimStyle,
     labelDecorationStyle,
     isDuplicateLabel,
+    isDisplayExportConflict,
+    isDisplayExportConflictSource,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,
@@ -141,6 +143,8 @@ const NodeInner = function NodeInner({
   const dataTestId = `object-panel-node-${node.id}`
   const dataNodeId = node.id
   const dataDisplay = properties && "display" in properties ? properties.display?.value : undefined
+  const dataDisplayConflict = isDisplayExportConflict || undefined
+  const dataDisplayConflictSource = isDisplayExportConflictSource || undefined
 
   // Expand a repeated child into its index-0 row plus stripped echo rows.
   function renderChildRows(childNodeId: string): ReactElement[] {
@@ -227,10 +231,19 @@ const NodeInner = function NodeInner({
   // applies to the same icon and label leaves that carry the gray.
   const dimRef = dimStyle ? { style: dimStyle } : undefined
 
-  // A duplicate variant label is an error state. The name label sits outside
-  // the combobox-field, so forward `aria-invalid` onto the icon and label leaves
-  // and drive their own `[aria-invalid]` negative-swatch styles.
+  // A duplicate variant label blocks export, so it keeps the full invalid leaf
+  // state (negative color and the `sdn-input` invalid border).
   const invalidRef = buildInvalidRefProps(isDuplicateLabel)
+
+  // A display export conflict does not block export, so it reads as color only,
+  // like the node-type and punch tints, with no invalid border. The downstream
+  // node is negative; the mock/exclude source it copies is punch.
+  const conflictRef = isDisplayExportConflict
+    ? { style: { color: "var(--sdn-swatch-negative)" } }
+    : undefined
+  const conflictSourceRef = isDisplayExportConflictSource
+    ? { style: { color: "var(--sdn-swatch-punch)" } }
+    : undefined
 
   // Show Node Types debug tint. Applied inline to the icon and label refs only,
   // so it wins over the field's selection and state cascade there while leaving
@@ -275,8 +288,24 @@ const NodeInner = function NodeInner({
     nodeDisclosure: { ...buttonIconic },
     nodeDisclosureIcon: mergeStateProps(toggleIcon, disabledRef),
     nodeField: { ...comboboxField },
-    nodeIcon: mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef),
-    nodeLabel: mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef),
+    nodeIcon: mergeStateProps(
+      icon2,
+      disabledRef,
+      dimRef,
+      nodeTypeStyle,
+      conflictRef,
+      conflictSourceRef,
+      invalidRef,
+    ),
+    nodeLabel: mergeStateProps(
+      nodeLabel,
+      disabledRef,
+      dimRef,
+      nodeTypeStyle,
+      conflictRef,
+      conflictSourceRef,
+      invalidRef,
+    ),
     nodeDisplay: { ...displayPicker.buttonProps },
     nodeDisplayIcon: { ...displayIcon },
     nodeActions: { ...actionsMenu.buttonIconic },
@@ -321,6 +350,8 @@ const NodeInner = function NodeInner({
             data-nodeid={dataNodeId}
             data-node-type={dataNodeType}
             data-display={dataDisplay}
+            data-display-conflict={dataDisplayConflict}
+            data-display-conflict-source={dataDisplayConflictSource}
             data-dragging={dragging}
             data-active={isNodeActive}
           />

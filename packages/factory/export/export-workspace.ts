@@ -77,12 +77,17 @@ export async function exportWorkspace(
   if (options.includeScripts) {
     const { generateScripts } = await import("./shared/generate-scripts")
     const { generateScriptsIntegrity } = await import("./shared/generate-scripts-integrity")
+    const { generateRules } = await import("./shared/generate-rules")
 
     const scripts = await generateScripts(options)
 
     if (scripts.length > 0) {
       files.push(...scripts, await generateScriptsIntegrity(scripts, options))
     }
+
+    // Rules ship with the scripts export. They are docs the user copies and
+    // edits, so they stay out of the scripts integrity hashes.
+    files.push(...generateRules(options))
   }
 
   return files

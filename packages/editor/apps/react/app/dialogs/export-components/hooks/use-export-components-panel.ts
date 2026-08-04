@@ -8,7 +8,7 @@ import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/ex
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import { useCallback, useEffect, useState } from "react"
 
-import type { PlatformId } from "@seldon/factory/export/types"
+import { useExportOptions } from "./use-export-options"
 
 /** Upper bound on a workspace name, matching the inline title rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
@@ -41,14 +41,27 @@ export function useExportComponentsPanel() {
 
   const isOpen = activePanel === "export-components"
 
-  const [platform, setPlatform] = useState<PlatformId>("react")
-  const [includeHidden, setIncludeHidden] = useState(false)
-  const [allThemes, setAllThemes] = useState(false)
-  const [allFonts, setAllFonts] = useState(false)
-  const [fontLinks, setFontLinks] = useState(false)
-  const [allIcons, setAllIcons] = useState(true)
-  const [savedWorkspace, setSavedWorkspace] = useState(true)
-  const [includeScripts, setIncludeScripts] = useState(true)
+  // Platform and the scope toggles come from a persisted store, so reopening the
+  // dialog restores the last-used selections instead of the defaults.
+  const {
+    platform,
+    setPlatform,
+    includeHidden,
+    setIncludeHidden,
+    allThemes,
+    setAllThemes,
+    allFonts,
+    setAllFonts,
+    fontLinks,
+    setFontLinks,
+    allIcons,
+    setAllIcons,
+    savedWorkspace,
+    setSavedWorkspace,
+    includeScripts,
+    setIncludeScripts,
+  } = useExportOptions()
+
   const [directory, setDirectory] = useState<FileSystemDirectoryHandle | null>(null)
 
   // Holds what the user typed, including an empty string, so clearing the field
@@ -76,15 +89,10 @@ export function useExportComponentsPanel() {
     }
   }, [workspaceName, workspace, dispatch])
 
+  // Clears only the per-open local state. Platform and the scope toggles persist
+  // in their own store, so a close keeps them for the next open. The folder is
+  // refilled from storage on open, and the name re-derives from the label.
   const reset = useCallback(() => {
-    setPlatform("react")
-    setIncludeHidden(false)
-    setAllThemes(false)
-    setAllFonts(false)
-    setFontLinks(false)
-    setAllIcons(true)
-    setSavedWorkspace(true)
-    setIncludeScripts(true)
     setDirectory(null)
     setNameDraft(null)
   }, [])

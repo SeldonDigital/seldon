@@ -1,16 +1,20 @@
 "use client"
 
+import { usePropertiesFloating } from "@app/editor/hooks/use-editor-config"
 import { MIN_WINDOW_SIZE } from "@app/windows/hooks/use-draggable-window"
 import {
   REF_CARD_TOKENS,
   getRefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { toCanvasLocalPoint } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
+import { isInsideMenuSurface } from "@seldon/editor/lib/menus/floating-menu"
 import { getTokenPixels } from "@seldon/editor/lib/themes/token-pixels"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import type {
   BadgeBox,
+  CardAnchor,
   RefCardMetrics,
   RefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
@@ -54,7 +58,7 @@ export function setRefCardSize(size: RefCardSize): void {
  * current value rather than one captured earlier. The smallest it may be drawn is the
  * window minimum, since a card is a floating window like any other.
  */
-function getRefCardMetrics(badgeEl: HTMLElement): RefCardMetrics {
+export function getRefCardMetrics(badgeEl: HTMLElement): RefCardMetrics {
   const { gap, margin } = getTokenPixels(REF_CARD_TOKENS, badgeEl)
 
   return {
@@ -81,8 +85,22 @@ export function useRefCard(badge: BadgeBox): RefCardState {
   const badgeRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<RefCardPosition | null>(null)
+  // The badge box in the canvas layer's own space, read by the opener without a dep on it so
+  // opening does not rebuild each pan frame. The card is placed and moved in that same space.
+  const badgeBoxRef = useRef({ left: badge.left, top: badge.top })
 
-  const close = useCallback(() => setPosition(null), [])
+  badgeBoxRef.current = { left: badge.left, top: badge.top }
+  // The badge box and card point captured when the card opened, so a pan re-places it by the
+  // badge's delta alone.
+  const anchorRef = useRef<CardAnchor | null>(null)
+  // A floating palette lets a badge scroll off with its board, so its card follows past the
+  // window edge and the canvas layer clips it, rather than being held to the window.
+  const propertiesFloating = usePropertiesFloating()
+
+  const close = useCallback(() => {
+    anchorRef.current = null
+    setPosition(null)
+  }, [])
 
   const toggle = useCallback(() => {
     const badgeEl = badgeRef.current
@@ -90,37 +108,53 @@ export function useRefCard(badge: BadgeBox): RefCardState {
     if (!badgeEl) return
 
     setPosition((current) => {
-      if (current) return null
+      if (current) {
+        anchorRef.current = null
 
-      const rect = badgeEl.getBoundingClientRect()
+        return null
+      }
 
-      return getRefCardPosition(rect, getWindowInnerSize(), refCardSize, getRefCardMetrics(badgeEl))
-    })
-  }, [])
-
-  // Scrolling the canvas moves the badge, and the open card follows it so the pair stays
-  // readable together. The rect is re-measured from the badge rather than offset by the
-  // scroll, because a badge held at the edge of the gutter stops tracking its node.
-  useEffect(() => {
-    const badgeEl = badgeRef.current
-
-    if (!badgeEl) return
-
-    setPosition((current) => {
-      if (!current) return current
-
-      return getRefCardPosition(
+      // Deciding the side and clamp needs the window, so place against it once, then carry the
+      // point into the canvas layer's space, where the card is drawn and the badge box already is.
+      const viewport = getRefCardPosition(
         badgeEl.getBoundingClientRect(),
         getWindowInnerSize(),
         refCardSize,
         getRefCardMetrics(badgeEl),
+        propertiesFloating,
       )
+      const point = toCanvasLocalPoint(viewport)
+      const box = badgeBoxRef.current
+
+      anchorRef.current = { left: box.left, top: box.top, x: point.x, y: point.y }
+
+      return { ...viewport, x: point.x, y: point.y }
+    })
+  }, [propertiesFloating])
+
+  // Scrolling the canvas moves the badge, and the card is locked to it, so it moves by the
+  // badge's own delta. This runs every pan frame, so it reads no layout or style and does the
+  // arithmetic alone; the card's size and sides were fixed when it opened.
+  useLayoutEffect(() => {
+    const anchor = anchorRef.current
+
+    if (!anchor) return
+
+    setPosition((current) => {
+      if (!current) return current
+
+      const x = anchor.x + (badge.left - anchor.left)
+      const y = anchor.y + (badge.top - anchor.top)
+
+      return x === current.x && y === current.y ? current : { ...current, x, y }
     })
   }, [badge.top, badge.left])
 
   // Closing on `pointerdown` rather than `click` keeps a press on the canvas from
   // starting a drag under an open card. The badge is excluded so its own click is
-  // the toggle, and the card so reading or scrolling it does not close it.
+  // the toggle, and the card so reading or scrolling it does not close it. A floating
+  // menu the card opened portals out of the card, so a press on it is treated as the
+  // card's own; otherwise picking an option would close the card and drop the action.
   useEffect(() => {
     if (!position) return
 
@@ -128,7 +162,9 @@ export function useRefCard(badge: BadgeBox): RefCardState {
       const target = event.target as Node | null
 
       const pressedOwnParts =
-        badgeRef.current?.contains(target) || cardRef.current?.contains(target)
+        badgeRef.current?.contains(target) ||
+        cardRef.current?.contains(target) ||
+        isInsideMenuSurface(target)
 
       if (target && pressedOwnParts) return
 

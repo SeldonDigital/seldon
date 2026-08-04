@@ -18,10 +18,17 @@ import type { CSSProperties } from "vue"
 export const CONNECTOR_Z_INDEX = 5
 
 /**
- * An unbound ref is drawn faint rather than in another color, and its badge is faded
- * to match.
+ * An unbound ref is drawn faint rather than in another color. The connector fades to this,
+ * a thin line on a transparent layer where fading reads clean.
  */
 export const MUTED_OPACITY = 0.65
+
+/**
+ * A muted badge darkens by this rather than fading, so it stays opaque. Fading let the
+ * design behind a badge show through and read muddy where a badge sat over a card.
+ * Brightness has no theme token, so it is a named number like the other overlay filters.
+ */
+export const MUTED_BADGE_FILTER = "brightness(0.8)"
 
 export const connectorSvgStyle: CSSProperties = {
   position: "absolute",

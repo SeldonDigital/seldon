@@ -12,13 +12,18 @@ import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
+import { getNodeRowIcon } from "@seldon/core/icon-registry"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
+import {
+  isDisplayExportConflictNode,
+  isDisplayExportConflictSource,
+} from "@seldon/core/workspace/helpers/general/get-display-export-conflicts"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
 import { useSharedNodeHighlight } from "../../../overlays/hooks/use-shared-node-highlight"
-import { getComponentTypeIcon, getNodeLabel, getNodeTypeColor } from "./row-node-label"
+import { getNodeLabel, getNodeTypeColor } from "./row-node-label"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
@@ -80,6 +85,14 @@ export function useRowNode(
   // A user variant that repeats a sibling's label reads as an error: it exports
   // under a colliding component name and blocks factory export.
   const isDuplicateLabel = nodeExistsInWorkspace && isDuplicateVariantLabel(workspace, node.id)
+
+  // Display export conflict: a shown node still copies a mock or exclude
+  // variant, so the source is kept in the export. The downstream node reads as
+  // an error (negative) and the source variant reads as its origin (punch).
+  const isDisplayExportConflict =
+    nodeExistsInWorkspace && isDisplayExportConflictNode(node.id, workspace)
+  const isDisplayExportConflictSourceNode =
+    nodeExistsInWorkspace && isDisplayExportConflictSource(node.id, workspace)
   const expandedId = node.id
   const isExpandedState = useIsExpanded(expandedId)
 
@@ -169,7 +182,7 @@ export function useRowNode(
 
   const icon = createToggleIcon()
   const buttonIconic = createToggleButton()
-  const icon2: IconProps = { icon: getComponentTypeIcon(node) }
+  const icon2: IconProps = { icon: getNodeRowIcon(node, workspace) as IconProps["icon"] }
 
   // Show Node Types debug tint by node type. NodeController applies it onto the
   // icon and label refs only, so borders, buttons, and the disclosure arrow are
@@ -252,6 +265,8 @@ export function useRowNode(
     dimStyle,
     labelDecorationStyle,
     isDuplicateLabel,
+    isDisplayExportConflict,
+    isDisplayExportConflictSource: isDisplayExportConflictSourceNode,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,

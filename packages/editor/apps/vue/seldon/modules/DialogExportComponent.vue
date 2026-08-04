@@ -273,7 +273,7 @@ const sdn: Record<string, any> = {
     children: "Export Components",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
   },
   frame: {
     wrapperElement: "div",
@@ -700,7 +700,7 @@ const sdn: Record<string, any> = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button--upjl",
+    className: "sdn-button sdn-button--wjtm",
     "data-seldon-ref": "exportConfirm",
   },
   icon3: {
@@ -716,9 +716,7 @@ const sdn: Record<string, any> = {
   },
 }
 
-const rootClassName = computed(() =>
-  combineClassNames("sdn-dialog-export-component", props.className),
-)
+const rootClassName = computed(() => combineClassNames("sdn-dialog", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
 const textTitleProps = computed(() =>

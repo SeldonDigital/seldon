@@ -1,4 +1,4 @@
-import { CONNECTOR_Z_INDEX, MUTED_OPACITY } from "./connector-style"
+import { CONNECTOR_Z_INDEX, MUTED_BADGE_FILTER } from "./connector-style"
 
 import type { BadgeBox } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { CSSProperties } from "react"
@@ -87,7 +87,7 @@ export function refBadgeMutedStyle(badge: BadgeBox): CSSProperties {
     left: `${badge.left}px`,
     transform: "translateY(-50%)",
     zIndex: CONNECTOR_Z_INDEX,
-    opacity: MUTED_OPACITY,
+    filter: MUTED_BADGE_FILTER,
     pointerEvents: "auto",
     cursor: "pointer",
   }
@@ -101,7 +101,7 @@ export function refOmittedStyle(badge: BadgeBox): CSSProperties {
     left: `${badge.left}px`,
     transform: "translateY(-50%)",
     zIndex: CONNECTOR_Z_INDEX,
-    opacity: MUTED_OPACITY,
+    filter: MUTED_BADGE_FILTER,
     pointerEvents: "none",
   }
 }

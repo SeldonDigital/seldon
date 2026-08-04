@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react"
 
-import { useEditorConfig } from "./use-editor-config"
+import { useInterfaceMode } from "./use-editor-config"
 
 /** Resolved appearance after mapping `"system"` to the OS preference. */
 export type ResolvedInterfaceMode = "light" | "dark"
@@ -40,7 +40,7 @@ export function useSystemColorScheme(): ResolvedInterfaceMode {
  * the live OS preference.
  */
 export function useResolvedInterfaceMode(): ResolvedInterfaceMode {
-  const { interfaceMode } = useEditorConfig()
+  const interfaceMode = useInterfaceMode()
   const system = useSystemColorScheme()
 
   return interfaceMode === "system" ? system : interfaceMode

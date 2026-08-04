@@ -36,21 +36,17 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *         TextLabel   textLabel      -> menuFileLabel
  *       ButtonSimple  buttonSimple2  -> menuEdit
  *         TextLabel   textLabel2     -> menuEditLabel
- *       ButtonSimple  buttonSimple3  -> menuComponent
- *         TextLabel   textLabel3     -> menuComponentLabel
- *       ButtonSimple  buttonSimple4  -> menuHari
- *         TextLabel   textLabel4     -> menuHariLabel
- *       ButtonSimple  buttonSimple5  -> menuView
- *         TextLabel   textLabel5     -> menuViewLabel
- *       ButtonSimple  buttonSimple6  -> menuDev
- *         TextLabel   textLabel6     -> menuDevLabel
+ *       ButtonSimple  buttonSimple3  -> menuView
+ *         TextLabel   textLabel3     -> menuViewLabel
+ *       ButtonSimple  buttonSimple4  -> menuComponent
+ *         TextLabel   textLabel4     -> menuComponentLabel
+ *       ButtonSimple  buttonSimple5  -> menuHari
+ *         TextLabel   textLabel5     -> menuHariLabel
+ *       ButtonSimple  buttonSimple6  -> menuWindow
+ *         TextLabel   textLabel6     -> menuWindowLabel
+ *       ButtonSimple  buttonSimple7  -> menuDev
+ *         TextLabel   textLabel7     -> menuDevLabel
  *   Frame             frame4
- *     ButtonMenu      buttonMenu     -> menuTheme
- *       TextLabel     textLabel7     -> menuThemeLabel
- *       Icon          icon
- *     ButtonMenu      buttonMenu2    -> menuMode
- *       TextLabel     textLabel8     -> menuModeLabel
- *       Icon          icon2
  *
  * @example
  * ```vue
@@ -66,10 +62,8 @@ export default {}
 <script setup lang="ts">
 import { computed } from "vue"
 
-import ButtonMenu from "../elements/ButtonMenu.vue"
 import ButtonSimple from "../elements/ButtonSimple.vue"
 import Frame from "../frames/Frame.vue"
-import Icon from "../primitives/Icon.vue"
 import Image from "../primitives/Image.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
@@ -93,13 +87,9 @@ const props = defineProps<{
   textLabel5?: Record<string, unknown> | null
   buttonSimple6?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
-  frame4?: Record<string, unknown> | null
-  buttonMenu?: Record<string, unknown> | null
+  buttonSimple7?: Record<string, unknown> | null
   textLabel7?: Record<string, unknown> | null
-  icon?: Record<string, unknown> | null
-  buttonMenu2?: Record<string, unknown> | null
-  textLabel8?: Record<string, unknown> | null
-  icon2?: Record<string, unknown> | null
+  frame4?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
@@ -154,36 +144,45 @@ const sdn: Record<string, any> = {
   },
   buttonSimple3: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
-    "data-seldon-ref": "menuComponent",
-  },
-  textLabel3: {
-    children: "Component",
-    className: "sdn-text-label sdn-text-label--xohb",
-    "data-seldon-ref": "menuComponentLabel",
-  },
-  buttonSimple4: {
-    className: "sdn-button-simple sdn-button-simple--dbgs",
-    "data-seldon-ref": "menuHari",
-  },
-  textLabel4: {
-    children: "Hari",
-    className: "sdn-text-label sdn-text-label--xohb",
-    "data-seldon-ref": "menuHariLabel",
-  },
-  buttonSimple5: {
-    className: "sdn-button-simple sdn-button-simple--dbgs",
     "data-seldon-ref": "menuView",
   },
-  textLabel5: {
+  textLabel3: {
     children: "View",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuViewLabel",
   },
+  buttonSimple4: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuComponent",
+  },
+  textLabel4: {
+    children: "Component",
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "menuComponentLabel",
+  },
+  buttonSimple5: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuHari",
+  },
+  textLabel5: {
+    children: "Hari",
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "menuHariLabel",
+  },
   buttonSimple6: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuWindow",
+  },
+  textLabel6: {
+    children: "Window",
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "menuWindowLabel",
+  },
+  buttonSimple7: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
     "data-seldon-ref": "menuDev",
   },
-  textLabel6: {
+  textLabel7: {
     children: "Dev",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuDevLabel",
@@ -192,34 +191,6 @@ const sdn: Record<string, any> = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--nzij",
-  },
-  buttonMenu: {
-    className: "sdn-button-menu sdn-button-menu--truc",
-    "data-seldon-ref": "menuTheme",
-  },
-  textLabel7: {
-    children: "Theme",
-    className: "sdn-text-label sdn-text-label--sa6t",
-    "data-seldon-ref": "menuThemeLabel",
-  },
-  icon: {
-    icon: "material-chevronDown",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--y2ct",
-  },
-  buttonMenu2: {
-    className: "sdn-button-menu sdn-button-menu--truc",
-    "data-seldon-ref": "menuMode",
-  },
-  textLabel8: {
-    children: "Mode",
-    className: "sdn-text-label sdn-text-label--sa6t",
-    "data-seldon-ref": "menuModeLabel",
-  },
-  icon2: {
-    icon: "material-chevronDown",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--y2ct",
   },
 }
 
@@ -266,21 +237,13 @@ const buttonSimple6Props = computed(() =>
 const textLabel6Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs),
 )
-const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4, props.seldonRefs))
-const buttonMenuProps = computed(() =>
-  mergeOptionalSlot(sdn.buttonMenu, props.buttonMenu, props.seldonRefs),
+const buttonSimple7Props = computed(() =>
+  mergeOptionalSlot(sdn.buttonSimple7, props.buttonSimple7, props.seldonRefs),
 )
 const textLabel7Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel7, props.textLabel7, props.seldonRefs),
 )
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
-const buttonMenu2Props = computed(() =>
-  mergeOptionalSlot(sdn.buttonMenu2, props.buttonMenu2, props.seldonRefs),
-)
-const textLabel8Props = computed(() =>
-  mergeOptionalSlot(sdn.textLabel8, props.textLabel8, props.seldonRefs),
-)
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4, props.seldonRefs))
 </script>
 
 <template>
@@ -310,18 +273,12 @@ const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldon
           <ButtonSimple v-if="buttonSimple6Props !== null" v-bind="buttonSimple6Props">
             <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
           </ButtonSimple>
+          <ButtonSimple v-if="buttonSimple7Props !== null" v-bind="buttonSimple7Props">
+            <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
+          </ButtonSimple>
         </Frame>
       </Frame>
-      <Frame v-bind="frame4Props" v-if="frame4Props !== null">
-        <ButtonMenu v-if="buttonMenuProps !== null" v-bind="buttonMenuProps">
-          <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
-          <Icon v-if="iconProps !== null" v-bind="iconProps" />
-        </ButtonMenu>
-        <ButtonMenu v-if="buttonMenu2Props !== null" v-bind="buttonMenu2Props">
-          <TextLabel v-if="textLabel8Props !== null" v-bind="textLabel8Props" />
-          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-        </ButtonMenu>
-      </Frame>
+      <Frame v-bind="frame4Props" v-if="frame4Props !== null"> </Frame>
     </slot>
   </div>
 </template>

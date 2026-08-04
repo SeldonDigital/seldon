@@ -101,7 +101,7 @@ export function MenuGroupedOptions({
   seldonRefs,
   ...props
 }: MenuGroupedOptionsProps) {
-  const menuGroupedOptionsClassName = combineClassNames("sdn-menu-options", className)
+  const menuGroupedOptionsClassName = combineClassNames("sdn-menu", className)
 
   const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)

@@ -38,7 +38,10 @@ interface ConnectorMetricsState {
  *
  * Mirrors the React `useConnectorMetrics`.
  */
-export function useConnectorMetrics(labels: Ref<string[]>): ConnectorMetricsState {
+export function useConnectorMetrics(
+  labels: Ref<string[]>,
+  chipRef: string = "refChip",
+): ConnectorMetricsState {
   const measureRef = ref<{ $el?: HTMLElement } | null>(null)
   const metrics = ref<ConnectorMetrics | null>(null)
 
@@ -48,8 +51,9 @@ export function useConnectorMetrics(labels: Ref<string[]>): ConnectorMetricsStat
       await nextTick()
 
       const scope = measureRef.value?.$el
-      // `refChip` is the schema's name for the badge, until the workspace renames it.
-      const badges = scope?.querySelectorAll<HTMLElement>('[data-seldon-ref="refChip"]')
+      // The chip's ref names the badge, `refChip` for references and `tokenChip` for
+      // tokens, so the column measures the set it is drawing.
+      const badges = scope?.querySelectorAll<HTMLElement>(`[data-seldon-ref="${chipRef}"]`)
 
       if (!scope || !badges || badges.length === 0) return
 

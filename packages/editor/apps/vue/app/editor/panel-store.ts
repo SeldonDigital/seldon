@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { computed, ref } from "vue"
+import { computed, ref, watch } from "vue"
 
 import { useToolStore } from "./tool-store"
 
@@ -15,15 +15,34 @@ export type PanelType =
   | "add-icon-set"
   | "component"
   | "image-upload"
-  | "ai-chat"
   | null
+
+const STORAGE_KEY = "editor-panel"
+
+function loadAiChatOpen(): boolean {
+  if (typeof localStorage === "undefined") return false
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+
+    return raw ? Boolean((JSON.parse(raw) as { aiChatOpen?: boolean }).aiChatOpen) : false
+  } catch {
+    return false
+  }
+}
 
 /**
  * Which editor dialog/panel is open, plus its context (a click target for the
  * component panel, a hierarchy level for the add-board panel). Mirrors the React
  * `use-panel` store, including resetting the active tool to "select" when
- * closing a structural panel. Non-structural panels (image upload, AI chat)
- * leave the tool untouched.
+ * closing a structural panel. Non-structural panels (image upload) leave the
+ * tool untouched.
+ *
+ * `activePanel` is the single exclusive dialog slot: opening one dialog closes
+ * any other. Palettes are tracked separately (`aiChatOpen`), each independent of
+ * the dialog slot and of one another, so a palette stays open while a dialog is
+ * used. Only the palette-visibility flag persists; the dialog slot starts closed
+ * each session.
  */
 export const usePanelStore = defineStore("panel", () => {
   const tool = useToolStore()
@@ -31,6 +50,8 @@ export const usePanelStore = defineStore("panel", () => {
   const activePanel = ref<PanelType>(null)
   const targetRef = ref<Target | undefined>(undefined)
   const dialogLevelRef = ref<ComponentLevel | undefined>(undefined)
+
+  const aiChatOpen = ref(loadAiChatOpen())
 
   function openPanel(panel: PanelType, options?: { level?: ComponentLevel } | Target): void {
     if (panel === "component") {
@@ -63,11 +84,7 @@ export const usePanelStore = defineStore("panel", () => {
   }
 
   function closePanel(): void {
-    if (
-      activePanel.value !== "image-upload" &&
-      activePanel.value !== "ai-chat" &&
-      activePanel.value !== null
-    ) {
+    if (activePanel.value !== "image-upload" && activePanel.value !== null) {
       tool.setActiveTool("select")
     }
 
@@ -76,10 +93,32 @@ export const usePanelStore = defineStore("panel", () => {
     dialogLevelRef.value = undefined
   }
 
+  function openAiChat(): void {
+    aiChatOpen.value = true
+  }
+
+  function closeAiChat(): void {
+    aiChatOpen.value = false
+  }
+
   const target = computed(() => (activePanel.value === "component" ? targetRef.value : undefined))
   const dialogLevel = computed(() =>
     activePanel.value === "add-board" ? dialogLevelRef.value : undefined,
   )
 
-  return { activePanel, target, dialogLevel, openPanel, closePanel }
+  watch(aiChatOpen, (open) => {
+    if (typeof localStorage === "undefined") return
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ aiChatOpen: open }))
+  })
+
+  return {
+    activePanel,
+    target,
+    dialogLevel,
+    openPanel,
+    closePanel,
+    aiChatOpen,
+    openAiChat,
+    closeAiChat,
+  }
 })

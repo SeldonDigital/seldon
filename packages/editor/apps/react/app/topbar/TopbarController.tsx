@@ -1,76 +1,25 @@
 "use client"
 
 import { useAppState } from "@app/editor/hooks/use-app-state"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { MenuController } from "@app/menus"
 import { Frame } from "@seldon/components/frames/Frame"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
 import { useCallback, useMemo, useRef, useState } from "react"
 
-import { getChromeThemes } from "./chrome-themes"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
 
 import type { MenuDropdown } from "./menus/types"
 import type { AppState } from "@app/editor/hooks/use-app-state"
-import type { InterfaceMode } from "@app/editor/hooks/use-editor-config"
-import type { MenuAlign, MenuEntry } from "@app/menus"
-import type { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
+import type { MenuEntry } from "@app/menus"
 import type { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
 import type { BarTopbarProps } from "@seldon/components/parts/BarTopbar"
 import type { ImageProps } from "@seldon/components/primitives/Image"
 import type { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
 import type { CSSProperties, MouseEvent, PointerEvent } from "react"
-
-/** Menu id for the chrome-theme dropdown, distinct from the config menus. */
-const CHROME_THEME_MENU_ID = "chrome-theme"
-
-/** Menu id for the interface light/dark mode dropdown. */
-const INTERFACE_MODE_MENU_ID = "interface-mode"
-
-/** Interface mode options, in menu order. */
-const INTERFACE_MODES: { id: InterfaceMode; label: string }[] = [
-  { id: "system", label: "System" },
-  { id: "light", label: "Light" },
-  { id: "dark", label: "Dark" },
-]
-
-/**
- * Builds the `MenuEntry` list for a right-side dropdown (chrome theme or mode),
- * marking the active option with a bullet.
- */
-function buildDropdownItems<T extends string>(
-  options: { id: T; label: string }[],
-  activeId: T,
-  onSelect: (id: T) => void,
-  testIdPrefix: string,
-): MenuEntry[] {
-  return options.map((option) => ({
-    id: option.id,
-    label: option.label,
-    onSelect: () => onSelect(option.id),
-    active: option.id === activeId,
-    activeMarker: option.id === activeId ? "bullet" : undefined,
-    testId: `${testIdPrefix}-${option.id}`,
-  }))
-}
-
-/** Builds a right-side dropdown trigger wired to open or close its menu. */
-function buildMenuTrigger(
-  menuId: string,
-  openMenuId: string | null,
-  onTriggerClick: (menuId: string, anchor: HTMLElement) => void,
-): ButtonMenuProps {
-  return {
-    "data-testid": `menu-${menuId}`,
-    "aria-haspopup": "menu",
-    "aria-expanded": openMenuId === menuId,
-    onClick: (event: MouseEvent<HTMLButtonElement>) => onTriggerClick(menuId, event.currentTarget),
-  } as ButtonMenuProps
-}
 
 /**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
@@ -112,15 +61,12 @@ function slotFor(trigger: MenuTrigger | null) {
  * View-model for the topbar. Feeds the generated `BarTopbar` view: it injects
  * the logo/wordmark images and maps each menu from `useMenuConfig` onto a
  * `buttonSimple` trigger slot, then overlays a single controlled floating
- * `MenuController` anchored to whichever trigger is open. The right-side slots hold the
- * chrome-theme and interface-mode dropdowns, and the rainbow gradient strip is a
- * custom overlay because the view has no slot for it.
+ * `MenuController` anchored to whichever trigger is open. The rainbow gradient
+ * strip is a custom overlay because the view has no slot for it.
  */
 export function TopbarController() {
   const menuConfig = useMenuConfig()
   const { appState } = useAppState()
-  const { chromeTheme, setChromeTheme, interfaceMode, setInterfaceMode } = useEditorConfig()
-  const chromeThemes = useMemo(() => getChromeThemes(), [])
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const anchorRef = useRef<HTMLElement | null>(null)
 
@@ -184,76 +130,20 @@ export function TopbarController() {
     () => ({
       file: buildTrigger("file"),
       edit: buildTrigger("edit"),
+      view: buildTrigger("view"),
       component: buildTrigger("component"),
       hari: buildTrigger("hari"),
-      view: buildTrigger("view"),
+      window: buildTrigger("window"),
       dev: buildTrigger("dev"),
     }),
     [buildTrigger],
   )
 
-  const themeMenuItems = useMemo<MenuEntry[]>(
-    () =>
-      buildDropdownItems(
-        chromeThemes.map((theme) => ({ id: theme.slug, label: theme.label })),
-        chromeTheme,
-        setChromeTheme,
-        CHROME_THEME_MENU_ID,
-      ),
-    [chromeThemes, chromeTheme, setChromeTheme],
-  )
-
-  const activeThemeLabel = useMemo(() => {
-    const active = chromeThemes.find((theme) => theme.slug === chromeTheme)
-
-    return active?.label ?? chromeTheme
-  }, [chromeThemes, chromeTheme])
-
-  const themeButton = useMemo<ButtonMenuProps>(
-    () => buildMenuTrigger(CHROME_THEME_MENU_ID, openMenuId, handleTriggerClick),
-    [openMenuId, handleTriggerClick],
-  )
-
-  const themeLabel = useMemo<TextLabelProps>(
-    () => ({ children: activeThemeLabel }),
-    [activeThemeLabel],
-  )
-
-  const modeMenuItems = useMemo<MenuEntry[]>(
-    () =>
-      buildDropdownItems(INTERFACE_MODES, interfaceMode, setInterfaceMode, INTERFACE_MODE_MENU_ID),
-    [interfaceMode, setInterfaceMode],
-  )
-
-  const activeModeLabel = useMemo(() => {
-    const active = INTERFACE_MODES.find((mode) => mode.id === interfaceMode)
-
-    return active?.label ?? "System"
-  }, [interfaceMode])
-
-  const modeButton = useMemo<ButtonMenuProps>(
-    () => buildMenuTrigger(INTERFACE_MODE_MENU_ID, openMenuId, handleTriggerClick),
-    [openMenuId, handleTriggerClick],
-  )
-
-  const modeLabel = useMemo<TextLabelProps>(
-    () => ({ children: activeModeLabel }),
-    [activeModeLabel],
-  )
-
   const openMenuItems = useMemo<MenuEntry[]>(() => {
-    if (openMenuId === CHROME_THEME_MENU_ID) return themeMenuItems
-    if (openMenuId === INTERFACE_MODE_MENU_ID) return modeMenuItems
     const menu = menuConfig.find((entry) => entry.id === openMenuId)
 
     return menu ? toMenuEntries(menu, appState) : []
-  }, [menuConfig, openMenuId, appState, themeMenuItems, modeMenuItems])
-
-  // The theme and mode triggers sit at the right edge, so their menus align to
-  // the trigger's right and open leftward. The left-side config menus align to
-  // their left.
-  const menuAlign: MenuAlign =
-    openMenuId === CHROME_THEME_MENU_ID || openMenuId === INTERFACE_MODE_MENU_ID ? "end" : "start"
+  }, [menuConfig, openMenuId, appState])
 
   const menuKey = openMenuId ?? "closed"
 
@@ -269,21 +159,18 @@ export function TopbarController() {
       menuFileLabel: { ...triggers.file?.label },
       menuEdit: { ...triggers.edit?.button },
       menuEditLabel: { ...triggers.edit?.label },
+      menuView: { ...triggers.view?.button },
+      menuViewLabel: { ...triggers.view?.label },
       menuComponent: { ...triggers.component?.button },
       menuComponentLabel: { ...triggers.component?.label },
       menuHari: { ...triggers.hari?.button },
       menuHariLabel: { ...triggers.hari?.label },
-      menuView: { ...triggers.view?.button },
-      menuViewLabel: { ...triggers.view?.label },
+      menuWindow: { ...triggers.window?.button },
+      menuWindowLabel: { ...triggers.window?.label },
       menuDev: { ...triggers.dev?.button },
       menuDevLabel: { ...triggers.dev?.label },
-
-      menuTheme: { ...themeButton },
-      menuThemeLabel: { ...themeLabel },
-      menuMode: { ...modeButton },
-      menuModeLabel: { ...modeLabel },
     }),
-    [handleLogoClick, triggers, themeButton, themeLabel, modeButton, modeLabel],
+    [handleLogoClick, triggers],
   )
 
   // BarTopbar gates its opt-in slots on a prop being present, so every slot the
@@ -298,19 +185,16 @@ export function TopbarController() {
       textLabel: slotFor(triggers.file),
       buttonSimple2: slotFor(triggers.edit),
       textLabel2: slotFor(triggers.edit),
-      buttonSimple3: slotFor(triggers.component),
-      textLabel3: slotFor(triggers.component),
-      buttonSimple4: slotFor(triggers.hari),
-      textLabel4: slotFor(triggers.hari),
-      buttonSimple5: slotFor(triggers.view),
-      textLabel5: slotFor(triggers.view),
-      buttonSimple6: slotFor(triggers.dev),
-      textLabel6: slotFor(triggers.dev),
-
-      buttonMenu: {},
-      textLabel7: {},
-      buttonMenu2: {},
-      textLabel8: {},
+      buttonSimple3: slotFor(triggers.view),
+      textLabel3: slotFor(triggers.view),
+      buttonSimple4: slotFor(triggers.component),
+      textLabel4: slotFor(triggers.component),
+      buttonSimple5: slotFor(triggers.hari),
+      textLabel5: slotFor(triggers.hari),
+      buttonSimple6: slotFor(triggers.window),
+      textLabel6: slotFor(triggers.window),
+      buttonSimple7: slotFor(triggers.dev),
+      textLabel7: slotFor(triggers.dev),
     }),
     [triggers],
   )
@@ -324,7 +208,7 @@ export function TopbarController() {
         anchorRef={anchorRef}
         onClose={closeMenu}
         items={openMenuItems}
-        align={menuAlign}
+        align="start"
         minWidth="220px"
       />
       <Frame ref={gradientRef} className={TOPBAR_GRADIENT_CLASS} />

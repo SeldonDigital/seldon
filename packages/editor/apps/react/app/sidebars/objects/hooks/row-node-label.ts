@@ -5,7 +5,6 @@ import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-va
 import { iconLabels } from "@seldon/core/icon-sets"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
-import type { IconProps } from "@seldon/components/primitives/Icon"
 import type { Properties } from "@seldon/core"
 import type { IconId } from "@seldon/core/icon-sets"
 import type { EntryNode } from "@seldon/core/workspace/types"
@@ -56,21 +55,6 @@ export function getNodeLabel(
   }
 
   return node.label
-}
-
-/** Icon for the node's entity type shown left of the row label. */
-export function getComponentTypeIcon(node: EntryNode): IconProps["icon"] {
-  if (typeCheckingService.isVariant(node)) {
-    if (typeCheckingService.isDefaultVariant(node)) {
-      return "seldon-componentDefault"
-    }
-
-    if (typeCheckingService.isUserVariant(node)) {
-      return "seldon-componentVariant"
-    }
-  }
-
-  return "seldon-stub"
 }
 
 /**

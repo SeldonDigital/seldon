@@ -1,5 +1,6 @@
 import { isComponentId } from "../../../components/constants"
 import { findInObject } from "../../../helpers/utils/find-in-object"
+import { stableStringify } from "../../../helpers/utils/stable-stringify"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
 import { getInheritedNodeProperties } from "../../compute/compute-node-properties"
@@ -18,7 +19,7 @@ export type NodePropertyResetPatch =
   | { action: "set"; properties: Properties }
 
 function propertySlicesMatch(a: unknown, b: unknown): boolean {
-  return JSON.stringify(a) === JSON.stringify(b)
+  return stableStringify(a) === stableStringify(b)
 }
 
 function getBaselineProperties(

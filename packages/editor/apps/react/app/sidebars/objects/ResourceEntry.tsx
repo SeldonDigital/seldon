@@ -77,7 +77,7 @@ export function ResourceEntry({
 
   if (!show || !entry) return null
 
-  const icon2: IconProps = { icon: config.icon }
+  const icon2: IconProps = { icon: config.icon as IconProps["icon"] }
 
   // The row's selection is styled on its combobox-field child, matching `NodeController`
   // and `BoardController`.

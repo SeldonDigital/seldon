@@ -54,9 +54,10 @@ export type SeldonRef =
   | "exportScriptsNo"
   | "exportScriptsYes"
   | "exportWorkspaceName"
-  | "hariBar"
-  | "hariClamp"
-  | "hariClose"
+  | "filterField"
+  | "filterFieldClear"
+  | "filterFieldClearIcon"
+  | "filterFieldIcon"
   | "hariErrorIcon"
   | "hariErrorRetry"
   | "hariErrorRetryLabel"
@@ -64,7 +65,6 @@ export type SeldonRef =
   | "hariInput"
   | "hariModel"
   | "hariModelLabel"
-  | "hariOutcome"
   | "hariOutcomeIcon"
   | "hariOutcomeLabel"
   | "hariOutcomeText"
@@ -74,7 +74,6 @@ export type SeldonRef =
   | "hariReasoningLabel"
   | "hariReasoningToggle"
   | "hariReplyText"
-  | "hariReset"
   | "hariSelection"
   | "hariSelectionLabel"
   | "hariSend"
@@ -83,13 +82,18 @@ export type SeldonRef =
   | "hariStatusLabel"
   | "hariThinking"
   | "hariThinkingLabel"
+  | "hariTitle"
+  | "hariToggleClamp"
+  | "hariToggleClampIcon"
+  | "hariToggleOutcome"
+  | "hariToggleOutcomeIcon"
+  | "hariToggleTools"
+  | "hariToggleToolsIcon"
   | "hariToolIcon"
-  | "hariTools"
   | "hariToolsChevron"
   | "hariToolsLabel"
   | "hariToolsToggle"
   | "hariToolText"
-  | "hariTurns"
   | "hariUserText"
   | "logo"
   | "logoMark"
@@ -104,13 +108,11 @@ export type SeldonRef =
   | "menuFileLabel"
   | "menuHari"
   | "menuHariLabel"
-  | "menuMode"
-  | "menuModeLabel"
   | "menus"
-  | "menuTheme"
-  | "menuThemeLabel"
   | "menuView"
   | "menuViewLabel"
+  | "menuWindow"
+  | "menuWindowLabel"
   | "nodeActions"
   | "nodeDisclosure"
   | "nodeDisclosureIcon"
@@ -125,6 +127,15 @@ export type SeldonRef =
   | "optionAnnotation"
   | "optionIcon"
   | "optionLabel"
+  | "paletteBottomBar"
+  | "paletteBottomBarSlot"
+  | "paletteClose"
+  | "paletteCloseIcon"
+  | "paletteContents"
+  | "paletteOption"
+  | "paletteOptionIcon"
+  | "paletteTopBar"
+  | "paletteTopBarSlot"
   | "propertiesTree"
   | "propertyActions"
   | "propertyDisclosure"
@@ -136,12 +147,17 @@ export type SeldonRef =
   | "propertyFilterIcon"
   | "propertyLabel"
   | "propertyRow"
+  | "propertyState"
+  | "propertyStateIcon"
+  | "propertyStateLabel"
   | "propertyToggleActions"
   | "propertyToggleControl"
   | "propertyToggleDisclosure"
   | "propertyToggleDisclosureIcon"
   | "propertyToggleIcon"
   | "propertyToggleLabel"
+  | "propertyTogglePanel"
+  | "propertyTogglePanelIcon"
   | "propertyToggleRow"
   | "propertyToggleSwitch"
   | "propertyValueField"
@@ -170,6 +186,11 @@ export type SeldonRef =
   | "sectionDisclosureIcon"
   | "sectionLabel"
   | "sectionRow"
+  | "tokenCard"
+  | "tokenChip"
+  | "tokenChipIcon"
+  | "tokenChipName"
+  | "tokenChipValue"
   | "workspaceField"
   | "workspaceIcon"
   | "workspaceName"
@@ -503,7 +524,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   dialogTitle: {
     component: "TextTitle",
     nodeId: "component-panel-j8D9mUx4",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
     views: [
       {
         component: "PanelDialog",
@@ -615,7 +636,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   exportConfirm: {
     component: "Button",
     nodeId: "component-panel-Zd52I5RB",
-    className: "sdn-button sdn-button--upjl",
+    className: "sdn-button sdn-button--wjtm",
     views: [
       {
         component: "DialogExportComponent",
@@ -780,45 +801,59 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  hariBar: {
-    component: "Bar",
-    nodeId: "component-panel-DxDVepgS",
-    className: "sdn-bar sdn-bar--dxdv",
+  filterField: {
+    component: "ComboboxField",
+    nodeId: "component-comboboxField-F36VR1Yq",
+    className: "sdn-combobox-field sdn-combobox-field--f36v",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "bar",
-        type: "BarProps",
+        component: "BarFilter",
+        file: "parts/BarFilter.tsx",
+        slot: "comboboxField",
+        type: "ComboboxFieldProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  filterFieldClear: {
+    component: "ButtonIconic",
+    nodeId: "component-comboboxField-CSuBbc4O",
+    className: "sdn-button-iconic sdn-button-iconic--csub",
+    views: [
+      {
+        component: "BarFilter",
+        file: "parts/BarFilter.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
         rendersWhen: "unless-null",
       },
     ],
   },
-  hariClamp: {
-    component: "ButtonToggle",
-    nodeId: "component-button-N1pT65yh",
-    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  filterFieldClearIcon: {
+    component: "Icon",
+    nodeId: "component-comboboxField-rfTnLAMD",
+    className: "sdn-icon sdn-icon--rftn",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "buttonToggle3",
-        type: "ButtonToggleProps",
-        rendersWhen: "when-passed",
+        component: "BarFilter",
+        file: "parts/BarFilter.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
-  hariClose: {
-    component: "ButtonIconic",
-    nodeId: "component-panel-dHCB3O1v",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  filterFieldIcon: {
+    component: "Icon",
+    nodeId: "component-comboboxField-tOCQ20h1",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "buttonIconic2",
-        type: "ButtonIconicProps",
-        rendersWhen: "when-passed",
+        component: "BarFilter",
+        file: "parts/BarFilter.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -880,12 +915,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariInput: {
     component: "Textarea",
-    nodeId: "component-textarea-2uPWguWV",
-    className: "sdn-textarea sdn-textarea--2upw",
+    nodeId: "component-textarea-tYvCFCvC",
+    className: "sdn-textarea sdn-textarea--tyvc",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "textarea",
         type: "TextareaProps",
         rendersWhen: "when-passed",
@@ -894,12 +929,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariModel: {
     component: "ButtonMenu",
-    nodeId: "component-panel-EqziYbqa",
-    className: "sdn-button-menu sdn-button-menu--ipe0",
+    nodeId: "component-bar-gCzQDG2d",
+    className: "sdn-button-menu sdn-button-iconic--pgsr",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "buttonMenu",
         type: "ButtonMenuProps",
         rendersWhen: "when-passed",
@@ -908,28 +943,14 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariModelLabel: {
     component: "TextLabel",
-    nodeId: "component-panel-wKKOvQwf",
+    nodeId: "component-bar-jLXRVwZH",
     className: "sdn-text-label sdn-text-label--sa6t",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "textLabel",
         type: "TextLabelProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  hariOutcome: {
-    component: "ButtonToggle",
-    nodeId: "component-panel-PMmBQIRj",
-    className: "sdn-button-toggle sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "buttonToggle",
-        type: "ButtonToggleProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -1060,28 +1081,14 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  hariReset: {
-    component: "ButtonIconic",
-    nodeId: "component-panel-ATTVDoTF",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "buttonIconic",
-        type: "ButtonIconicProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
   hariSelection: {
     component: "Chip",
-    nodeId: "component-chip-LO6kjXwm",
-    className: "sdn-chip sdn-chip--lo6k",
+    nodeId: "component-chip-DzlQoGdW",
+    className: "sdn-chip sdn-chip--dzlq",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "chip",
         type: "ChipProps",
         rendersWhen: "when-passed",
@@ -1090,12 +1097,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariSelectionLabel: {
     component: "TextLabel",
-    nodeId: "component-chip-zawrF4dY",
-    className: "sdn-text-label sdn-text-label--lug5",
+    nodeId: "component-chip-ngh4ZoN9",
+    className: "sdn-text-label sdn-text-label--ngh4",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "textLabel3",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
@@ -1104,13 +1111,13 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariSend: {
     component: "ButtonIconic",
-    nodeId: "component-button-Wh0irV9y",
-    className: "sdn-button-iconic sdn-button-iconic--wh0i",
+    nodeId: "component-button-GBHLIfqW",
+    className: "sdn-button-iconic sdn-button-iconic--gbhl",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "buttonIconic3",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
+        slot: "buttonIconic",
         type: "ButtonIconicProps",
         rendersWhen: "when-passed",
       },
@@ -1118,13 +1125,13 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariSendIcon: {
     component: "Icon",
-    nodeId: "component-button-KQWpbKqF",
-    className: "sdn-icon sdn-icon--umgs",
+    nodeId: "component-button-YhTsODav",
+    className: "sdn-icon sdn-icon--yhts",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "icon8",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
+        slot: "icon3",
         type: "IconProps",
         rendersWhen: "unless-null",
       },
@@ -1160,12 +1167,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariThinking: {
     component: "ButtonMenu",
-    nodeId: "component-panel-IpE0XEo6",
-    className: "sdn-button-menu sdn-button-menu--ipe0",
+    nodeId: "component-bar-XEQtdCh2",
+    className: "sdn-button-menu sdn-button-iconic--pgsr",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "buttonMenu2",
         type: "ButtonMenuProps",
         rendersWhen: "when-passed",
@@ -1174,15 +1181,113 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   hariThinkingLabel: {
     component: "TextLabel",
-    nodeId: "component-panel-5LdFLd1M",
+    nodeId: "component-bar-AfryeuLW",
     className: "sdn-text-label sdn-text-label--sa6t",
     views: [
       {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
+        component: "BarHariModels",
+        file: "parts/BarHariModels.tsx",
         slot: "textLabel2",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariTitle: {
+    component: "TextTitle",
+    nodeId: "component-text-3VIlpHgu",
+    className: "sdn-text-title sdn-text-title--3vil",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "textTitle",
+        type: "TextTitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToggleClamp: {
+    component: "ButtonToggle",
+    nodeId: "component-bar-ksMWzItv",
+    className: "sdn-button-toggle sdn-button-iconic--tlj6",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "buttonToggle3",
+        type: "ButtonToggleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToggleClampIcon: {
+    component: "Icon",
+    nodeId: "component-bar-3Fy0Z7rh",
+    className: "sdn-icon sdn-icon--rftn",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "icon3",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariToggleOutcome: {
+    component: "ButtonToggle",
+    nodeId: "component-button-EbdI83gm",
+    className: "sdn-button-toggle sdn-button-iconic--tlj6",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "buttonToggle",
+        type: "ButtonToggleProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariToggleOutcomeIcon: {
+    component: "Icon",
+    nodeId: "component-button-H7swQt9L",
+    className: "sdn-icon sdn-icon--rftn",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariToggleTools: {
+    component: "ButtonToggle",
+    nodeId: "component-bar-H3jPJPE1",
+    className: "sdn-button-toggle sdn-button-iconic--tlj6",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "buttonToggle2",
+        type: "ButtonToggleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToggleToolsIcon: {
+    component: "Icon",
+    nodeId: "component-bar-2U9WkeTj",
+    className: "sdn-icon sdn-icon--rftn",
+    views: [
+      {
+        component: "BarHari",
+        file: "parts/BarHari.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -1196,20 +1301,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/MessageToolsUsed.tsx",
         slot: "icon",
         type: "IconProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  hariTools: {
-    component: "ButtonToggle",
-    nodeId: "component-panel-ablPq3kW",
-    className: "sdn-button-toggle sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "buttonToggle2",
-        type: "ButtonToggleProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -1267,20 +1358,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "textDescription",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  hariTurns: {
-    component: "Frame",
-    nodeId: "component-panel-VoRnpuW2",
-    className: "sdn-frame sdn-frame--vorn",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "frame2",
-        type: "FrameProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
@@ -1348,7 +1425,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "buttonSimple3",
+        slot: "buttonSimple4",
         type: "ButtonSimpleProps",
         rendersWhen: "when-passed",
       },
@@ -1362,7 +1439,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "textLabel3",
+        slot: "textLabel4",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1376,7 +1453,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "buttonSimple6",
+        slot: "buttonSimple7",
         type: "ButtonSimpleProps",
         rendersWhen: "when-passed",
       },
@@ -1390,7 +1467,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "textLabel6",
+        slot: "textLabel7",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1460,7 +1537,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "buttonSimple4",
+        slot: "buttonSimple5",
         type: "ButtonSimpleProps",
         rendersWhen: "when-passed",
       },
@@ -1474,35 +1551,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "textLabel4",
-        type: "TextLabelProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  menuMode: {
-    component: "ButtonMenu",
-    nodeId: "component-bar-nWDgCHuH",
-    className: "sdn-button-menu sdn-button-menu--truc",
-    views: [
-      {
-        component: "BarTopbar",
-        file: "parts/BarTopbar.tsx",
-        slot: "buttonMenu2",
-        type: "ButtonMenuProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  menuModeLabel: {
-    component: "TextLabel",
-    nodeId: "component-bar-xCgr4ifR",
-    className: "sdn-text-label sdn-text-label--sa6t",
-    views: [
-      {
-        component: "BarTopbar",
-        file: "parts/BarTopbar.tsx",
-        slot: "textLabel8",
+        slot: "textLabel5",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1522,34 +1571,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  menuTheme: {
-    component: "ButtonMenu",
-    nodeId: "component-button-trucC1Xo",
-    className: "sdn-button-menu sdn-button-menu--truc",
-    views: [
-      {
-        component: "BarTopbar",
-        file: "parts/BarTopbar.tsx",
-        slot: "buttonMenu",
-        type: "ButtonMenuProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  menuThemeLabel: {
-    component: "TextLabel",
-    nodeId: "component-button-RpiWZe3u",
-    className: "sdn-text-label sdn-text-label--sa6t",
-    views: [
-      {
-        component: "BarTopbar",
-        file: "parts/BarTopbar.tsx",
-        slot: "textLabel7",
-        type: "TextLabelProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
   menuView: {
     component: "ButtonSimple",
     nodeId: "component-bar-tyBBTxNH",
@@ -1558,7 +1579,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "buttonSimple5",
+        slot: "buttonSimple3",
         type: "ButtonSimpleProps",
         rendersWhen: "when-passed",
       },
@@ -1572,7 +1593,35 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.tsx",
-        slot: "textLabel5",
+        slot: "textLabel3",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuWindow: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-g1fwoxpH",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.tsx",
+        slot: "buttonSimple6",
+        type: "ButtonSimpleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuWindowLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-flgEUord",
+    className: "sdn-text-label sdn-text-label--xohb",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.tsx",
+        slot: "textLabel6",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1774,6 +1823,132 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  paletteBottomBar: {
+    component: "Frame",
+    nodeId: "component-panel-Rc9xXtDo",
+    className: "sdn-frame sdn-frame--rc9x",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "frame4",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  paletteBottomBarSlot: {
+    component: "Frame",
+    nodeId: "component-panel-TZvJDQ8z",
+    className: "sdn-frame sdn-frame--jm7o",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "frame5",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  paletteClose: {
+    component: "ButtonIconic",
+    nodeId: "component-button-Tlj6e7hh",
+    className: "sdn-button-iconic sdn-button-iconic--tlj6",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "buttonIconic2",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  paletteCloseIcon: {
+    component: "Icon",
+    nodeId: "component-button-MAHKuejE",
+    className: "sdn-icon sdn-icon--mahk",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  paletteContents: {
+    component: "Frame",
+    nodeId: "component-frame-p4QJRvvN",
+    className: "sdn-frame sdn-frame--p4qj",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "frame3",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  paletteOption: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-GZ0JkyKm",
+    className: "sdn-button-iconic sdn-button-iconic--tlj6",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  paletteOptionIcon: {
+    component: "Icon",
+    nodeId: "component-panel-5ruS3JlB",
+    className: "sdn-icon sdn-icon--mahk",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  paletteTopBar: {
+    component: "Frame",
+    nodeId: "component-frame-jbZnYxP8",
+    className: "sdn-frame sdn-frame--jbzn",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  paletteTopBarSlot: {
+    component: "Frame",
+    nodeId: "component-frame-JM7o41yc",
+    className: "sdn-frame sdn-frame--jm7o",
+    views: [
+      {
+        component: "PanelPalette",
+        file: "modules/PanelPalette.tsx",
+        slot: "frame2",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   propertiesTree: {
     component: "Frame",
     nodeId: "component-sidebar-evMwxVOP",
@@ -1928,6 +2103,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  propertyState: {
+    component: "ButtonMenu",
+    nodeId: "component-button-QBOeoZHq",
+    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "BarState",
+        file: "parts/BarState.tsx",
+        slot: "buttonMenu",
+        type: "ButtonMenuProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyStateIcon: {
+    component: "Icon",
+    nodeId: "component-button-ORIZZDfE",
+    className: "sdn-icon sdn-icon--y2ct",
+    views: [
+      {
+        component: "BarState",
+        file: "parts/BarState.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyStateLabel: {
+    component: "TextLabel",
+    nodeId: "component-button-Gx8YiKPP",
+    className: "sdn-text-label sdn-text-label--sa6t",
+    views: [
+      {
+        component: "BarState",
+        file: "parts/BarState.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   propertyToggleActions: {
     component: "ButtonIconic",
     nodeId: "component-item-qeIxCmeu",
@@ -2009,6 +2226,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "input",
         type: "InputProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTogglePanel: {
+    component: "ButtonToggle",
+    nodeId: "component-sidebar-bTlvf0vz",
+    className: "sdn-button-toggle sdn-button-toggle--btlv",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "buttonToggle",
+        type: "ButtonToggleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTogglePanelIcon: {
+    component: "Icon",
+    nodeId: "component-sidebar-iR28di0j",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "icon4",
+        type: "IconProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -2309,7 +2554,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionActionsIcon: {
     component: "Icon",
     nodeId: "component-item-X0ybtMzs",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "ItemSection",
@@ -2337,7 +2582,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionAddIcon: {
     component: "Icon",
     nodeId: "component-item-CMEf5HDL",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "ItemSection",
@@ -2365,7 +2610,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionDisclosureIcon: {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
-    className: "sdn-icon sdn-icon--rezm",
+    className: "sdn-icon sdn-icon--vsau",
     views: [
       {
         component: "ItemSection",
@@ -2400,6 +2645,76 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/ItemSection.tsx",
         slot: "formControlCombobox",
         type: "FormControlComboboxProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  tokenCard: {
+    component: "Frame",
+    nodeId: "component-panel-TNNIal1w",
+    className: "sdn-frame sdn-frame--tnni",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  tokenChip: {
+    component: "ChipAssist",
+    nodeId: "component-panel-5mMZfLmQ",
+    className: "sdn-chip sdn-chip-assist--5mmz",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "chipAssist",
+        type: "ChipAssistProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  tokenChipIcon: {
+    component: "Icon",
+    nodeId: "component-panel-dYILy1dR",
+    className: "sdn-icon sdn-icon--gh8m",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  tokenChipName: {
+    component: "TextLabel",
+    nodeId: "component-panel-Ee5hPeGV",
+    className: "sdn-text-label sdn-text-label--ee5h",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  tokenChipValue: {
+    component: "TextLabel",
+    nodeId: "component-panel-6yPrRPh3",
+    className: "sdn-text-label sdn-text-label--6ypr",
+    views: [
+      {
+        component: "PanelToken",
+        file: "modules/PanelToken.tsx",
+        slot: "textLabel2",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],

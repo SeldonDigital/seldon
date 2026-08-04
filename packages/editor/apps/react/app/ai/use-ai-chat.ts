@@ -217,7 +217,7 @@ function isAbortError(error: unknown): boolean {
  * validation failure leaves the workspace unchanged and surfaces in the chat.
  */
 export function useHari() {
-  const { activePanel, openPanel, closePanel } = usePanel()
+  const { aiChatOpen, openAiChat, closeAiChat } = usePanel()
   const dispatch = useDispatch()
   const { activeBoard } = useActiveBoard()
   const { isolatedView, isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
@@ -408,9 +408,9 @@ export function useHari() {
   const setThinkingLevel = useStore((state) => state.setThinkingLevel)
 
   return {
-    isOpen: activePanel === "ai-chat",
-    open: () => openPanel("ai-chat"),
-    close: closePanel,
+    isOpen: aiChatOpen,
+    open: openAiChat,
+    close: closeAiChat,
     turns,
     status,
     error,

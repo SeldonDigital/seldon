@@ -85,7 +85,7 @@ const sdn: Record<string, any> = {
   icon: {
     icon: "material-unfoldMore",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--rezm",
+    className: "sdn-icon sdn-icon--vsau",
     "data-seldon-ref": "sectionDisclosureIcon",
   },
   formControlCombobox: {
@@ -104,7 +104,7 @@ const sdn: Record<string, any> = {
   icon2: {
     icon: "material-add",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "sectionAddIcon",
   },
   buttonIconic3: {
@@ -114,7 +114,7 @@ const sdn: Record<string, any> = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "sectionActionsIcon",
   },
 }

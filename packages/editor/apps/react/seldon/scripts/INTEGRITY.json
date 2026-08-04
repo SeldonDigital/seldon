@@ -2,16 +2,16 @@
   "algorithm": "sha256",
   "bindingsVersion": 1,
   "files": {
-    "README.md": "88495025e1ee5050b518ccda519a7713410a4c71a9948d81778042715020d136",
-    "generate-bindings.mjs": "8722799c59cfd22eda6b7cc5c0171d701b43467b95e055a282782a4285785972",
-    "lib/config.mjs": "7debe8fd9f87011c66e52972ef5eade0b3f96354a11f1f93f9e26d797d7aef9b",
-    "lib/declaration-index.mjs": "3ac408941915b466b755c1f1b2eef061d2bdf7f19e44dbc21f6387a30fe71198",
-    "lib/describe-expression.mjs": "4c9ef38f7188b8781563be786a83f4d730398ac2c185faca2566c3baccd97bb1",
-    "lib/resolve-object-literal.mjs": "974b5032ba3a8afe692538ab0759a69d64b2ce45240ed95642418a5551b8e8f4",
-    "lib/scan-typescript.mjs": "fd9634c0c5ecd866faaa6c35f9dbd13d10d464dc24086ae18f42fa32aa3b4683",
-    "lib/scan.mjs": "a0143661013543f7c302fbfb35a6256b786d5b256fc553fe00951f161b358d74",
-    "lib/serialize.mjs": "92b303e7550a1346930f896517efdb87087ddb2ebcc470d79a1d2124151eac28",
-    "lib/shallow.mjs": "f131dbf85b0663214d82801565f3f79a8ae8e5982ccff3600fff6edcc46f6008",
-    "lib/version.mjs": "5ec2f0af2be6e9155c823651d5d243c9cd2384e8b48ebf5776ed9c4ce01d3b73"
+    "README.md": "030dab331f047a040befbb75bd97d15dc72afc9567a6b7b34b000453ae83099c",
+    "bindings/generate-bindings.mjs": "1d6ba90cdf0f877649456bc1a42b602fafbd0db16e9e117fde4a2de4fb5f453f",
+    "bindings/lib/config.mjs": "7debe8fd9f87011c66e52972ef5eade0b3f96354a11f1f93f9e26d797d7aef9b",
+    "bindings/lib/declaration-index.mjs": "3ac408941915b466b755c1f1b2eef061d2bdf7f19e44dbc21f6387a30fe71198",
+    "bindings/lib/describe-expression.mjs": "4c9ef38f7188b8781563be786a83f4d730398ac2c185faca2566c3baccd97bb1",
+    "bindings/lib/resolve-object-literal.mjs": "974b5032ba3a8afe692538ab0759a69d64b2ce45240ed95642418a5551b8e8f4",
+    "bindings/lib/scan-typescript.mjs": "fd9634c0c5ecd866faaa6c35f9dbd13d10d464dc24086ae18f42fa32aa3b4683",
+    "bindings/lib/scan.mjs": "a0143661013543f7c302fbfb35a6256b786d5b256fc553fe00951f161b358d74",
+    "bindings/lib/serialize.mjs": "92b303e7550a1346930f896517efdb87087ddb2ebcc470d79a1d2124151eac28",
+    "bindings/lib/shallow.mjs": "f131dbf85b0663214d82801565f3f79a8ae8e5982ccff3600fff6edcc46f6008",
+    "bindings/lib/version.mjs": "5ec2f0af2be6e9155c823651d5d243c9cd2384e8b48ebf5776ed9c4ce01d3b73"
   }
 }

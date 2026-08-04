@@ -134,7 +134,7 @@ const sdn: Record<string, any> = {
     children: "Dialog",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
   },
   comboboxFieldSearch: {
     "aria-hidden": "false",
@@ -236,7 +236,7 @@ const sdn: Record<string, any> = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button5: {
-    className: "sdn-button sdn-button--upjl",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon7: {
     icon: "material-check",

@@ -6,9 +6,60 @@ import { createEmptyWorkspace } from "@seldon/core"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 
+/** Hard cap on retained revisions, regardless of size. */
 const REVISION_LIMIT = 50
 
+/** Always keep at least this many revisions so undo stays useful on large files. */
+const MIN_REVISIONS = 10
+
+/**
+ * Memory budget for the undo stack, expressed as the total node entries retained
+ * across all revisions. Node count is a cheap proxy for a revision's size, so a
+ * large workspace keeps fewer revisions and the stack stays bounded, while a
+ * small workspace keeps the full {@link REVISION_LIMIT}. Immer shares unchanged
+ * sub-trees between revisions, so real memory is lower than this proxy implies.
+ */
+const HISTORY_NODE_BUDGET = 20_000
+
 export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
+
+/**
+ * Node count per workspace, memoized by the Immer-stable `nodes` reference so a
+ * push does not re-scan every retained revision on each edit.
+ */
+const nodeCountCache = new WeakMap<object, number>()
+
+function workspaceNodeCount(workspace: Workspace): number {
+  const nodes = workspace.nodes as object
+  const cached = nodeCountCache.get(nodes)
+
+  if (cached !== undefined) return cached
+
+  const count = Object.keys(workspace.nodes).length
+
+  nodeCountCache.set(nodes, count)
+
+  return count
+}
+
+/**
+ * Trims the undo stack from the oldest end. A hard count cap runs first, then a
+ * memory-aware pass drops the oldest revisions until the retained node total
+ * fits {@link HISTORY_NODE_BUDGET}, never going below {@link MIN_REVISIONS}.
+ */
+function trimHistory(history: Workspace[]): Workspace[] {
+  let trimmed =
+    history.length > REVISION_LIMIT ? history.slice(history.length - REVISION_LIMIT) : history
+
+  let total = trimmed.reduce((sum, workspace) => sum + workspaceNodeCount(workspace), 0)
+
+  while (trimmed.length > MIN_REVISIONS && total > HISTORY_NODE_BUDGET) {
+    total -= workspaceNodeCount(trimmed[0])
+    trimmed = trimmed.slice(1)
+  }
+
+  return trimmed
+}
 
 /**
  * Undo/redo history of committed workspace revisions. Mirrors the React history
@@ -33,9 +84,11 @@ export const useHistoryStore = defineStore("history", () => {
     const next = history.value.slice(0, currentIndex.value + 1)
 
     next.push(workspace)
-    if (next.length > REVISION_LIMIT) next.shift()
-    history.value = next
-    currentIndex.value = next.length - 1
+
+    const trimmed = trimHistory(next)
+
+    history.value = trimmed
+    currentIndex.value = trimmed.length - 1
   }
 
   function undo(): void {

@@ -121,7 +121,7 @@ const sdn: Record<string, any> = {
   },
   textTitle: {
     children: "Dialog",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
     "data-seldon-ref": "dialogTitle",
   },
   comboboxFieldSearch: {

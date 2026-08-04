@@ -354,6 +354,60 @@ export function getInheritedNodeProperties(
  */
 const effectivePropertiesCache = new WeakMap<object, Map<string, Properties>>()
 
+interface EffectivePropertiesMemo {
+  theme: ComputedTheme
+  state: NodeState
+  templateRefs: readonly WorkspaceNode[]
+  result: Properties
+}
+
+/**
+ * Cross-version reuse of effective properties, keyed by the Immer-stable node
+ * entry. Reducers preserve the entry reference for nodes an edit does not touch,
+ * so an unchanged node with an unchanged template chain returns the identical
+ * `Properties` object across edits, which lets downstream compute-context and
+ * CSS memoization hit from one edit to the next. Bounded per node so varied
+ * theme, state, and template combinations cannot grow it without limit. Entries
+ * fall away with their node when a workspace revision is dropped, since the
+ * WeakMap key is the node object itself.
+ */
+const CROSS_VERSION_EFFECTIVE_LIMIT = 8
+const crossVersionEffectiveCache = new WeakMap<object, EffectivePropertiesMemo[]>()
+
+/** Shallow reference equality over two arrays of objects. */
+function sameObjectRefs(a: readonly object[], b: readonly object[]): boolean {
+  if (a.length !== b.length) return false
+
+  for (let index = 0; index < a.length; index++) {
+    if (a[index] !== b[index]) return false
+  }
+
+  return true
+}
+
+/**
+ * The template-chain node entries a node's effective properties depend on, from
+ * the closest template to the farthest. Editing a template changes its entry
+ * reference while leaving the referencing node's entry untouched, so comparing
+ * these references detects template edits the node-entry key alone would miss.
+ */
+function collectTemplateChainRefs(
+  node: WorkspaceNode,
+  workspace: WorkspacePropertySource,
+): WorkspaceNode[] {
+  const refs: WorkspaceNode[] = []
+  const visited = new Set<string>([node.id])
+  let cursor = getTemplateNode(node, workspace)
+
+  while (cursor && !visited.has(cursor.id)) {
+    visited.add(cursor.id)
+    refs.push(cursor)
+    cursor = getTemplateNode(cursor, workspace)
+  }
+
+  return refs
+}
+
 export function getEffectiveNodeProperties(
   targetId: string,
   workspace: WorkspacePropertySource,
@@ -361,26 +415,70 @@ export function getEffectiveNodeProperties(
 ): Properties {
   const theme = options.theme
 
-  if (theme) {
-    const cacheKey = `${targetId}|${theme.id}|${options.state ?? NORMAL_STATE}`
-    let byKey = effectivePropertiesCache.get(workspace as object)
-    const cached = byKey?.get(cacheKey)
-
-    if (cached) return cached
-
-    const result = computeEffectiveNodeProperties(targetId, workspace, options)
-
-    if (!byKey) {
-      byKey = new Map<string, Properties>()
-      effectivePropertiesCache.set(workspace as object, byKey)
-    }
-
-    byKey.set(cacheKey, result)
-
-    return result
+  if (!theme) {
+    return computeEffectiveNodeProperties(targetId, workspace, options)
   }
 
-  return computeEffectiveNodeProperties(targetId, workspace, options)
+  const state = options.state ?? NORMAL_STATE
+  const cacheKey = `${targetId}|${theme.id}|${state}`
+  let byKey = effectivePropertiesCache.get(workspace as object)
+  const cached = byKey?.get(cacheKey)
+
+  if (cached) return cached
+
+  const node = getNodes(workspace)[targetId]
+  const result = node
+    ? reuseOrComputeEffectiveProperties(node, targetId, workspace, options, theme, state)
+    : computeEffectiveNodeProperties(targetId, workspace, options)
+
+  if (!byKey) {
+    byKey = new Map<string, Properties>()
+    effectivePropertiesCache.set(workspace as object, byKey)
+  }
+
+  byKey.set(cacheKey, result)
+
+  return result
+}
+
+/**
+ * Returns the prior `Properties` object when the node entry, its template chain,
+ * the resolved theme, and the state are all unchanged, so unchanged nodes keep
+ * one reference across edits. The theme is compared by reference, not id, so a
+ * theme edit (which builds a new computed theme with the same id) correctly
+ * invalidates look-preset expansion. Otherwise computes and records a fresh
+ * entry.
+ */
+function reuseOrComputeEffectiveProperties(
+  node: WorkspaceNode,
+  targetId: string,
+  workspace: WorkspacePropertySource,
+  options: EffectivePropertiesOptions,
+  theme: ComputedTheme,
+  state: NodeState,
+): Properties {
+  const templateRefs = collectTemplateChainRefs(node, workspace)
+  const memos = crossVersionEffectiveCache.get(node)
+  const hit = memos?.find(
+    (memo) =>
+      memo.theme === theme &&
+      memo.state === state &&
+      sameObjectRefs(memo.templateRefs, templateRefs),
+  )
+
+  if (hit) return hit.result
+
+  const result = computeEffectiveNodeProperties(targetId, workspace, options)
+  const memo: EffectivePropertiesMemo = { theme, state, templateRefs, result }
+
+  if (memos) {
+    memos.push(memo)
+    if (memos.length > CROSS_VERSION_EFFECTIVE_LIMIT) memos.shift()
+  } else {
+    crossVersionEffectiveCache.set(node, [memo])
+  }
+
+  return result
 }
 
 function computeEffectiveNodeProperties(
@@ -427,6 +525,20 @@ function computeEffectiveNodeProperties(
   )
 }
 
+interface BoardContextMemo {
+  theme: ComputedTheme
+  context: ComputeContext
+}
+
+/**
+ * Cross-version reuse of the board surface context, keyed by the Immer-stable
+ * board entry. A variant root's parent context is this object, so keeping it
+ * reference-stable across node edits is what lets every context above the
+ * changed node stay stable too. Recomputed when the board entry or its resolved
+ * theme changes.
+ */
+const boardContextCache = new WeakMap<object, BoardContextMemo>()
+
 /**
  * Builds a parent-like {@link ComputeContext} from the board that owns `node`, so `#parent.*`
  * paths on a variant root resolve against the board surface, such as its background color.
@@ -441,16 +553,42 @@ function buildBoardComputeContext(
   if (!board) return null
 
   const theme = resolveBoardTheme(board, workspace)
+  const cached = boardContextCache.get(board)
+
+  if (cached && cached.theme === theme) return cached.context
+
   const properties = mergeEffectiveProperties(
     expandPresetSources([getComponentPropertyDefaults(), getOwnProperties(board)], () => theme),
   )
 
-  return {
+  const context: ComputeContext = {
     properties,
     parentContext: null,
     theme,
   }
+
+  boardContextCache.set(board, { theme, context })
+
+  return context
 }
+
+interface ComputeContextMemo {
+  parentContext: ComputeContext | null
+  theme: ComputedTheme
+  properties: Properties
+  layoutMode: ReturnType<typeof resolveLayoutMode>
+  state: NodeState
+  context: ComputeContext
+}
+
+/**
+ * Cross-version reuse of a node's {@link ComputeContext}, keyed by the
+ * Immer-stable node entry. Bounded per node so a shared child drawn under
+ * several columns (each with its own parent context) cannot grow it without
+ * limit. Entries fall away with their node when a workspace revision is dropped.
+ */
+const COMPUTE_CONTEXT_LIMIT = 8
+const computeContextCache = new WeakMap<object, ComputeContextMemo[]>()
 
 function buildComputeContext(
   node: WorkspaceNode,
@@ -498,13 +636,51 @@ function buildComputeContext(
   })
 
   const layoutMode = resolveLayoutMode(node as EntryNode, workspace as Workspace)
+  const resolvedState = state ?? NORMAL_STATE
 
-  return {
+  // Cross-version reuse of the whole context. Every input below is already
+  // reference-stable for an unchanged subtree (`parentContext` from the cached
+  // recursion or board context, `effectiveProperties` from the cross-version
+  // effective cache, `theme` from the themes cache, `layoutMode` a primitive),
+  // so returning the prior object keeps `ComputeContext` identity stable across
+  // edits. That lets the renderer's CSS memo hit and skip regeneration for
+  // untouched nodes. `parentContext` distinguishes the same shared child drawn
+  // under different columns.
+  const memos = computeContextCache.get(node)
+  const hit = memos?.find(
+    (memo) =>
+      memo.parentContext === parentContext &&
+      memo.theme === theme &&
+      memo.properties === effectiveProperties &&
+      memo.layoutMode === layoutMode &&
+      memo.state === resolvedState,
+  )
+
+  if (hit) return hit.context
+
+  const context: ComputeContext = {
     properties: effectiveProperties,
     parentContext,
     theme,
     layoutMode,
   }
+  const memo: ComputeContextMemo = {
+    parentContext,
+    theme,
+    properties: effectiveProperties,
+    layoutMode,
+    state: resolvedState,
+    context,
+  }
+
+  if (memos) {
+    memos.push(memo)
+    if (memos.length > COMPUTE_CONTEXT_LIMIT) memos.shift()
+  } else {
+    computeContextCache.set(node, [memo])
+  }
+
+  return context
 }
 
 /**

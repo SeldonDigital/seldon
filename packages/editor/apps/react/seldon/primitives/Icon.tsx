@@ -41,25 +41,28 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
-    | "material-expandMore"
-    | "material-email"
-    | "material-menu"
-    | "material-phone"
     | "seldon-plus"
     | "seldon-minus"
-    | "material-arrowUpward"
     | "material-checkCircle"
     | "material-error"
     | "material-robot"
-    | "seldon-reset"
-    | "material-neurology"
-    | "material-outputCircle"
-    | "material-buildCircle"
     | "seldon-frame"
     | "material-gridOn"
     | "seldon-theme"
     | "seldon-display"
     | "material-build"
+    | "material-arrowForward"
+    | "material-wrapText"
+    | "seldon-positionTopLeft"
+    | "material-margin"
+    | "seldon-gap"
+    | "material-padding"
+    | "material-desktopLandscape"
+    | "seldon-panels"
+    | "material-arrowUpward"
+    | "material-outputCircle"
+    | "material-neurology"
+    | "material-buildCircle"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -85,7 +88,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-empty"
     | "seldon-frameColumns"
     | "seldon-frameRows"
-    | "seldon-gap"
     | "seldon-hexagon"
     | "seldon-hidden"
     | "seldon-positionBottom"
@@ -95,7 +97,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-positionBottomRight"
     | "seldon-positionLeft"
     | "seldon-positionRight"
-    | "seldon-positionTopLeft"
     | "seldon-positionTopRight"
     | "seldon-frameBackground"
     | "seldon-screen"
@@ -116,6 +117,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-default"
     | "seldon-edited"
     | "seldon-missing"
+    | "seldon-reset"
     | "seldon-size"
     | "seldon-sketchCircle"
     | "seldon-sketchPencil"
@@ -140,7 +142,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-primitives"
     | "seldon-modules"
     | "seldon-elements"
-    | "seldon-panels"
     | "seldon-catalog"
     | "seldon-heartPlus"
     | "seldon-lines"
@@ -278,7 +279,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-dashboard"
     | "material-delete"
     | "material-deployedCode"
-    | "material-desktopLandscape"
     | "material-desktopPortrait"
     | "material-dns"
     | "material-domain"
@@ -300,7 +300,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-layers"
     | "material-memory"
     | "material-mouse"
-    | "material-padding"
     | "material-personAdd"
     | "material-plumbing"
     | "material-preview"
@@ -319,8 +318,10 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-zoomIn"
     | "material-zoomOut"
     | "material-comment"
+    | "material-email"
     | "material-helpOutline"
     | "material-localLaundryService"
+    | "material-phone"
     | "material-smartphone"
     | "material-adsClick"
     | "material-audiotrack"
@@ -349,7 +350,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-alignHorizontalRight"
     | "material-arrowBack"
     | "material-arrowDownward"
-    | "material-arrowForward"
     | "material-arrowLeft"
     | "material-arrowRight"
     | "material-backspace"
@@ -375,6 +375,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-keyboardArrowRight"
     | "material-keyboardArrowUp"
     | "material-link"
+    | "material-menu"
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
@@ -404,12 +405,12 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-doneAll"
     | "material-dryCleaning"
     | "material-expandLess"
+    | "material-expandMore"
     | "material-height"
     | "material-info"
     | "material-invertColors"
     | "material-localFireDepartment"
     | "material-localPolice"
-    | "material-margin"
     | "material-nearMeDisabled"
     | "material-networkCheck"
     | "material-notifications"
@@ -480,7 +481,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-verticalAlignBottom"
     | "material-verticalAlignTop"
     | "material-viewModule"
-    | "material-wrapText"
     | "material-compassCalibration"
     | "material-navigation"
     | "material-nearMe"
@@ -562,25 +562,28 @@ const iconMap = {
   "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
-  "material-expandMore": Icons.IconMaterialExpandMore,
-  "material-email": Icons.IconMaterialEmail,
-  "material-menu": Icons.IconMaterialMenu,
-  "material-phone": Icons.IconMaterialPhone,
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
-  "material-arrowUpward": Icons.IconMaterialArrowUpward,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
   "material-error": Icons.IconMaterialError,
   "material-robot": Icons.IconMaterialRobot,
-  "seldon-reset": Icons.IconSeldonReset,
-  "material-neurology": Icons.IconMaterialNeurology,
-  "material-outputCircle": Icons.IconMaterialOutputCircle,
-  "material-buildCircle": Icons.IconMaterialBuildCircle,
   "seldon-frame": Icons.IconSeldonFrame,
   "material-gridOn": Icons.IconMaterialGridOn,
   "seldon-theme": Icons.IconSeldonTheme,
   "seldon-display": Icons.IconSeldonDisplay,
   "material-build": Icons.IconMaterialBuild,
+  "material-arrowForward": Icons.IconMaterialArrowForward,
+  "material-wrapText": Icons.IconMaterialWrapText,
+  "seldon-positionTopLeft": Icons.IconSeldonPositionTopLeft,
+  "material-margin": Icons.IconMaterialMargin,
+  "seldon-gap": Icons.IconSeldonGap,
+  "material-padding": Icons.IconMaterialPadding,
+  "material-desktopLandscape": Icons.IconMaterialDesktopLandscape,
+  "seldon-panels": Icons.IconSeldonPanels,
+  "material-arrowUpward": Icons.IconMaterialArrowUpward,
+  "material-outputCircle": Icons.IconMaterialOutputCircle,
+  "material-neurology": Icons.IconMaterialNeurology,
+  "material-buildCircle": Icons.IconMaterialBuildCircle,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -606,7 +609,6 @@ const iconMap = {
   "seldon-empty": Icons.IconSeldonEmpty,
   "seldon-frameColumns": Icons.IconSeldonFrameColumns,
   "seldon-frameRows": Icons.IconSeldonFrameRows,
-  "seldon-gap": Icons.IconSeldonGap,
   "seldon-hexagon": Icons.IconSeldonHexagon,
   "seldon-hidden": Icons.IconSeldonHidden,
   "seldon-positionBottom": Icons.IconSeldonPositionBottom,
@@ -616,7 +618,6 @@ const iconMap = {
   "seldon-positionBottomRight": Icons.IconSeldonPositionBottomRight,
   "seldon-positionLeft": Icons.IconSeldonPositionLeft,
   "seldon-positionRight": Icons.IconSeldonPositionRight,
-  "seldon-positionTopLeft": Icons.IconSeldonPositionTopLeft,
   "seldon-positionTopRight": Icons.IconSeldonPositionTopRight,
   "seldon-frameBackground": Icons.IconSeldonFrameBackground,
   "seldon-screen": Icons.IconSeldonScreen,
@@ -637,6 +638,7 @@ const iconMap = {
   "seldon-default": Icons.IconSeldonDefault,
   "seldon-edited": Icons.IconSeldonEdited,
   "seldon-missing": Icons.IconSeldonMissing,
+  "seldon-reset": Icons.IconSeldonReset,
   "seldon-size": Icons.IconSeldonSize,
   "seldon-sketchCircle": Icons.IconSeldonSketchCircle,
   "seldon-sketchPencil": Icons.IconSeldonSketchPencil,
@@ -661,7 +663,6 @@ const iconMap = {
   "seldon-primitives": Icons.IconSeldonPrimitives,
   "seldon-modules": Icons.IconSeldonModules,
   "seldon-elements": Icons.IconSeldonElements,
-  "seldon-panels": Icons.IconSeldonPanels,
   "seldon-catalog": Icons.IconSeldonCatalog,
   "seldon-heartPlus": Icons.IconSeldonHeartPlus,
   "seldon-lines": Icons.IconSeldonLines,
@@ -799,7 +800,6 @@ const iconMap = {
   "material-dashboard": Icons.IconMaterialDashboard,
   "material-delete": Icons.IconMaterialDelete,
   "material-deployedCode": Icons.IconMaterialDeployedCode,
-  "material-desktopLandscape": Icons.IconMaterialDesktopLandscape,
   "material-desktopPortrait": Icons.IconMaterialDesktopPortrait,
   "material-dns": Icons.IconMaterialDns,
   "material-domain": Icons.IconMaterialDomain,
@@ -821,7 +821,6 @@ const iconMap = {
   "material-layers": Icons.IconMaterialLayers,
   "material-memory": Icons.IconMaterialMemory,
   "material-mouse": Icons.IconMaterialMouse,
-  "material-padding": Icons.IconMaterialPadding,
   "material-personAdd": Icons.IconMaterialPersonAdd,
   "material-plumbing": Icons.IconMaterialPlumbing,
   "material-preview": Icons.IconMaterialPreview,
@@ -840,8 +839,10 @@ const iconMap = {
   "material-zoomIn": Icons.IconMaterialZoomIn,
   "material-zoomOut": Icons.IconMaterialZoomOut,
   "material-comment": Icons.IconMaterialComment,
+  "material-email": Icons.IconMaterialEmail,
   "material-helpOutline": Icons.IconMaterialHelpOutline,
   "material-localLaundryService": Icons.IconMaterialLocalLaundryService,
+  "material-phone": Icons.IconMaterialPhone,
   "material-smartphone": Icons.IconMaterialSmartphone,
   "material-adsClick": Icons.IconMaterialAdsClick,
   "material-audiotrack": Icons.IconMaterialAudiotrack,
@@ -870,7 +871,6 @@ const iconMap = {
   "material-alignHorizontalRight": Icons.IconMaterialAlignHorizontalRight,
   "material-arrowBack": Icons.IconMaterialArrowBack,
   "material-arrowDownward": Icons.IconMaterialArrowDownward,
-  "material-arrowForward": Icons.IconMaterialArrowForward,
   "material-arrowLeft": Icons.IconMaterialArrowLeft,
   "material-arrowRight": Icons.IconMaterialArrowRight,
   "material-backspace": Icons.IconMaterialBackspace,
@@ -896,6 +896,7 @@ const iconMap = {
   "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
   "material-keyboardArrowUp": Icons.IconMaterialKeyboardArrowUp,
   "material-link": Icons.IconMaterialLink,
+  "material-menu": Icons.IconMaterialMenu,
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
@@ -925,12 +926,12 @@ const iconMap = {
   "material-doneAll": Icons.IconMaterialDoneAll,
   "material-dryCleaning": Icons.IconMaterialDryCleaning,
   "material-expandLess": Icons.IconMaterialExpandLess,
+  "material-expandMore": Icons.IconMaterialExpandMore,
   "material-height": Icons.IconMaterialHeight,
   "material-info": Icons.IconMaterialInfo,
   "material-invertColors": Icons.IconMaterialInvertColors,
   "material-localFireDepartment": Icons.IconMaterialLocalFireDepartment,
   "material-localPolice": Icons.IconMaterialLocalPolice,
-  "material-margin": Icons.IconMaterialMargin,
   "material-nearMeDisabled": Icons.IconMaterialNearMeDisabled,
   "material-networkCheck": Icons.IconMaterialNetworkCheck,
   "material-notifications": Icons.IconMaterialNotifications,
@@ -1001,7 +1002,6 @@ const iconMap = {
   "material-verticalAlignBottom": Icons.IconMaterialVerticalAlignBottom,
   "material-verticalAlignTop": Icons.IconMaterialVerticalAlignTop,
   "material-viewModule": Icons.IconMaterialViewModule,
-  "material-wrapText": Icons.IconMaterialWrapText,
   "material-compassCalibration": Icons.IconMaterialCompassCalibration,
   "material-navigation": Icons.IconMaterialNavigation,
   "material-nearMe": Icons.IconMaterialNearMe,

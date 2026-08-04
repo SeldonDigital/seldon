@@ -144,7 +144,7 @@ const sdn: DialogExportComponentProps = {
     children: "Export Components",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-title--eodu",
+    className: "sdn-text-title sdn-text-title--j8d9",
   },
 
   frame: {
@@ -573,7 +573,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button--upjl",
+    className: "sdn-button sdn-button--wjtm",
     "data-seldon-ref": "exportConfirm",
   },
   icon3: {
@@ -813,7 +813,7 @@ export function DialogExportComponent({
   seldonRefs,
   ...props
 }: DialogExportComponentProps) {
-  const dialogExportComponentClassName = combineClassNames("sdn-dialog-export-component", className)
+  const dialogExportComponentClassName = combineClassNames("sdn-dialog", className)
 
   const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
   const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)

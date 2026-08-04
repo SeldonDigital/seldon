@@ -129,8 +129,9 @@ function ExportComponentsDialog({
 
   const directoryLabel = directory?.name ?? ""
 
-  // Only Export dims, so Cancel and the title bar stay usable during a run. Its
-  // pointer events go with it, which is what stops a second export from landing.
+  // Only Export takes its disabled look during a run, so Cancel and the title bar
+  // stay usable. Its pointer events go with it, which stops a second export from
+  // landing; the muted appearance comes from the button's own aria-disabled styling.
   const confirmStyle = exporting ? styles.busy : undefined
 
   const barHandle = useMemo(
@@ -378,7 +379,6 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   busy: {
-    opacity: 0.5,
     pointerEvents: "none",
   },
 }

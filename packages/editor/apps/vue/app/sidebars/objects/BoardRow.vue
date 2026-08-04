@@ -25,7 +25,7 @@ import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 
-import { getNodeKindIcon } from "@seldon/core/icon-registry"
+import { getBoardRowIcon } from "@seldon/core/icon-registry"
 import {
   isAuthoredBoard,
   isComponentBoard,
@@ -360,10 +360,7 @@ const {
 } = useRowActionsMenu(boardActions)
 
 function boardIconId(): string {
-  if (isIconSetBoard(props.board)) return getNodeKindIcon("iconSet")
-  if (isThemeBoard(props.board)) return getNodeKindIcon("theme")
-  if (isFontCollectionBoard(props.board)) return getNodeKindIcon("fontCollection")
-  return getNodeKindIcon("component")
+  return getBoardRowIcon(props.board)
 }
 
 const activatedRef = computed(() => buildActivatedRefProps(isActivated.value))

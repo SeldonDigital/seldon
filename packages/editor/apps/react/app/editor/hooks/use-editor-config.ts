@@ -1,7 +1,10 @@
+import { SIDEBAR_INITIAL_WIDTH } from "@app/constants"
 import { useCallback } from "react"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
+
+import type { Rect } from "@seldon/components/utils/resize"
 
 /**
  * Editor interface light/dark mode. `"system"` follows the OS appearance,
@@ -41,9 +44,49 @@ interface EditorConfigState {
   showRefBadges: boolean
   setShowRefBadges: (enabled: boolean) => void
 
+  // Token badge overlay, one group per toggle, drawing the selection's property
+  // tokens out to a gutter column opposite the reference badges.
+  showLayoutBadges: boolean
+  setShowLayoutBadges: (enabled: boolean) => void
+  showSpaceBadges: boolean
+  setShowSpaceBadges: (enabled: boolean) => void
+  showDimensionBadges: boolean
+  setShowDimensionBadges: (enabled: boolean) => void
+  showAppearanceBadges: boolean
+  setShowAppearanceBadges: (enabled: boolean) => void
+  showTypographyBadges: boolean
+  setShowTypographyBadges: (enabled: boolean) => void
+  showEffectsBadges: boolean
+  setShowEffectsBadges: (enabled: boolean) => void
+
   // Panel settings
   showPanels: boolean
   setShowPanels: (showPanels: boolean) => void
+
+  // Docked sidebar widths in pixels, persisted so each opens at the width the
+  // user last dragged it to. Clamped by the pane's own min and max.
+  objectsSidebarWidth: number
+  setObjectsSidebarWidth: (width: number) => void
+  propertiesSidebarWidth: number
+  setPropertiesSidebarWidth: (width: number) => void
+
+  // Properties panel: floating (detached palette) vs docked (right-edge pane).
+  // Each mode has its own shown flag, so "Show Properties" hides and reopens the
+  // properties in whichever mode they are in without detaching or re-docking.
+  propertiesFloating: boolean
+  setPropertiesFloating: (enabled: boolean) => void
+  propertiesFloatingOpen: boolean
+  setPropertiesFloatingOpen: (enabled: boolean) => void
+  propertiesDockedOpen: boolean
+  setPropertiesDockedOpen: (enabled: boolean) => void
+
+  // Persisted position and size of the floating palettes, so each reopens where
+  // the user last left it, session to session. Null until the user moves or
+  // resizes the palette, where it falls back to its default opening rect.
+  propertiesPanelRect: Rect | null
+  setPropertiesPanelRect: (rect: Rect) => void
+  hariPanelRect: Rect | null
+  setHariPanelRect: (rect: Rect) => void
 
   // Auto-scroll settings
   autoScrollToSelection: boolean
@@ -138,9 +181,52 @@ const useStore = create<EditorConfigState>()(
       showRefBadges: false,
       setShowRefBadges: (enabled) => set((state) => ({ ...state, showRefBadges: enabled })),
 
+      // Token badge overlay groups (off by default; persisted since tokens read
+      // from the workspace, not a linked folder)
+      showLayoutBadges: false,
+      setShowLayoutBadges: (enabled) => set((state) => ({ ...state, showLayoutBadges: enabled })),
+      showSpaceBadges: false,
+      setShowSpaceBadges: (enabled) => set((state) => ({ ...state, showSpaceBadges: enabled })),
+      showDimensionBadges: false,
+      setShowDimensionBadges: (enabled) =>
+        set((state) => ({ ...state, showDimensionBadges: enabled })),
+      showAppearanceBadges: false,
+      setShowAppearanceBadges: (enabled) =>
+        set((state) => ({ ...state, showAppearanceBadges: enabled })),
+      showTypographyBadges: false,
+      setShowTypographyBadges: (enabled) =>
+        set((state) => ({ ...state, showTypographyBadges: enabled })),
+      showEffectsBadges: false,
+      setShowEffectsBadges: (enabled) => set((state) => ({ ...state, showEffectsBadges: enabled })),
+
       // Panel settings
       showPanels: true,
       setShowPanels: (showPanels) => set((state) => ({ ...state, showPanels })),
+
+      // Docked sidebar widths (default to the shared opening width until dragged)
+      objectsSidebarWidth: SIDEBAR_INITIAL_WIDTH,
+      setObjectsSidebarWidth: (width) => set((state) => ({ ...state, objectsSidebarWidth: width })),
+      propertiesSidebarWidth: SIDEBAR_INITIAL_WIDTH,
+      setPropertiesSidebarWidth: (width) =>
+        set((state) => ({ ...state, propertiesSidebarWidth: width })),
+
+      // Properties panel float settings (docked by default; palette shown once
+      // it is detached, until the user closes it)
+      propertiesFloating: false,
+      setPropertiesFloating: (enabled) =>
+        set((state) => ({ ...state, propertiesFloating: enabled })),
+      propertiesFloatingOpen: true,
+      setPropertiesFloatingOpen: (enabled) =>
+        set((state) => ({ ...state, propertiesFloatingOpen: enabled })),
+      propertiesDockedOpen: true,
+      setPropertiesDockedOpen: (enabled) =>
+        set((state) => ({ ...state, propertiesDockedOpen: enabled })),
+
+      // Persisted floating palette geometry (null until first moved/resized)
+      propertiesPanelRect: null,
+      setPropertiesPanelRect: (rect) => set((state) => ({ ...state, propertiesPanelRect: rect })),
+      hariPanelRect: null,
+      setHariPanelRect: (rect) => set((state) => ({ ...state, hariPanelRect: rect })),
 
       // Auto-scroll settings
       autoScrollToSelection: true,
@@ -222,8 +308,21 @@ const useStore = create<EditorConfigState>()(
         wireframeMode: state.wireframeMode,
         showConnectors: state.showConnectors,
         showPanels: state.showPanels,
+        objectsSidebarWidth: state.objectsSidebarWidth,
+        propertiesSidebarWidth: state.propertiesSidebarWidth,
+        propertiesFloating: state.propertiesFloating,
+        propertiesFloatingOpen: state.propertiesFloatingOpen,
+        propertiesDockedOpen: state.propertiesDockedOpen,
+        propertiesPanelRect: state.propertiesPanelRect,
+        hariPanelRect: state.hariPanelRect,
         autoScrollToSelection: state.autoScrollToSelection,
         autoExpandOnSelection: state.autoExpandOnSelection,
+        showLayoutBadges: state.showLayoutBadges,
+        showSpaceBadges: state.showSpaceBadges,
+        showDimensionBadges: state.showDimensionBadges,
+        showAppearanceBadges: state.showAppearanceBadges,
+        showTypographyBadges: state.showTypographyBadges,
+        showEffectsBadges: state.showEffectsBadges,
         showUnusedProperties: state.showUnusedProperties,
         showUnusedFonts: state.showUnusedFonts,
         showUnusedIcons: state.showUnusedIcons,
@@ -242,6 +341,34 @@ const useStore = create<EditorConfigState>()(
   ),
 )
 
+/**
+ * Subscribes to just the properties-floating flag.
+ *
+ * `useEditorConfig` reads the whole config and rebuilds every action, so calling it in a
+ * per-item hook that re-renders each frame, such as a badge tracking its node during a pan,
+ * costs far more than the one boolean needs. This reads that field alone and re-renders only
+ * when it flips.
+ */
+export function usePropertiesFloating(): boolean {
+  return useStore((state) => state.propertiesFloating)
+}
+
+/**
+ * Subscribes to just the chrome theme slug.
+ *
+ * For the same reason as `usePropertiesFloating`: a surface that re-renders each frame, such
+ * as a badge card following its badge through a pan, needs this one field and not the whole
+ * config with every action rebuilt.
+ */
+export function useChromeTheme(): string {
+  return useStore((state) => state.chromeTheme)
+}
+
+/** Subscribes to just the stored interface mode, for the same per-frame reason. */
+export function useInterfaceMode(): InterfaceMode {
+  return useStore((state) => state.interfaceMode)
+}
+
 export function useEditorConfig() {
   const {
     showSelection,
@@ -254,8 +381,34 @@ export function useEditorConfig() {
     setShowConnectors,
     showRefBadges,
     setShowRefBadges,
+    showLayoutBadges,
+    setShowLayoutBadges,
+    showSpaceBadges,
+    setShowSpaceBadges,
+    showDimensionBadges,
+    setShowDimensionBadges,
+    showAppearanceBadges,
+    setShowAppearanceBadges,
+    showTypographyBadges,
+    setShowTypographyBadges,
+    showEffectsBadges,
+    setShowEffectsBadges,
     showPanels,
     setShowPanels,
+    objectsSidebarWidth,
+    setObjectsSidebarWidth,
+    propertiesSidebarWidth,
+    setPropertiesSidebarWidth,
+    propertiesFloating,
+    setPropertiesFloating,
+    propertiesFloatingOpen,
+    setPropertiesFloatingOpen,
+    propertiesDockedOpen,
+    setPropertiesDockedOpen,
+    propertiesPanelRect,
+    setPropertiesPanelRect,
+    hariPanelRect,
+    setHariPanelRect,
     autoScrollToSelection,
     setAutoScrollToSelection,
     autoExpandOnSelection,
@@ -297,8 +450,34 @@ export function useEditorConfig() {
       setShowConnectors: state.setShowConnectors,
       showRefBadges: state.showRefBadges,
       setShowRefBadges: state.setShowRefBadges,
+      showLayoutBadges: state.showLayoutBadges,
+      setShowLayoutBadges: state.setShowLayoutBadges,
+      showSpaceBadges: state.showSpaceBadges,
+      setShowSpaceBadges: state.setShowSpaceBadges,
+      showDimensionBadges: state.showDimensionBadges,
+      setShowDimensionBadges: state.setShowDimensionBadges,
+      showAppearanceBadges: state.showAppearanceBadges,
+      setShowAppearanceBadges: state.setShowAppearanceBadges,
+      showTypographyBadges: state.showTypographyBadges,
+      setShowTypographyBadges: state.setShowTypographyBadges,
+      showEffectsBadges: state.showEffectsBadges,
+      setShowEffectsBadges: state.setShowEffectsBadges,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
+      objectsSidebarWidth: state.objectsSidebarWidth,
+      setObjectsSidebarWidth: state.setObjectsSidebarWidth,
+      propertiesSidebarWidth: state.propertiesSidebarWidth,
+      setPropertiesSidebarWidth: state.setPropertiesSidebarWidth,
+      propertiesFloating: state.propertiesFloating,
+      setPropertiesFloating: state.setPropertiesFloating,
+      propertiesFloatingOpen: state.propertiesFloatingOpen,
+      setPropertiesFloatingOpen: state.setPropertiesFloatingOpen,
+      propertiesDockedOpen: state.propertiesDockedOpen,
+      setPropertiesDockedOpen: state.setPropertiesDockedOpen,
+      propertiesPanelRect: state.propertiesPanelRect,
+      setPropertiesPanelRect: state.setPropertiesPanelRect,
+      hariPanelRect: state.hariPanelRect,
+      setHariPanelRect: state.setHariPanelRect,
       autoScrollToSelection: state.autoScrollToSelection,
       setAutoScrollToSelection: state.setAutoScrollToSelection,
       autoExpandOnSelection: state.autoExpandOnSelection,
@@ -335,6 +514,31 @@ export function useEditorConfig() {
     setShowPanels(!showPanels)
   }, [setShowPanels, showPanels])
 
+  // Detach the Properties panel into a floating palette and show it. Docking is
+  // the plain setter with `false`.
+  const floatProperties = useCallback(() => {
+    setPropertiesFloating(true)
+    setPropertiesFloatingOpen(true)
+  }, [setPropertiesFloating, setPropertiesFloatingOpen])
+
+  // Hide or reveal the properties in whichever mode they are in. It never detaches
+  // or re-docks: floating toggles the palette, docked toggles the right-edge pane.
+  const showProperties = useCallback(() => {
+    if (propertiesFloating) {
+      setPropertiesFloatingOpen(!propertiesFloatingOpen)
+
+      return
+    }
+
+    setPropertiesDockedOpen(!propertiesDockedOpen)
+  }, [
+    propertiesFloating,
+    propertiesFloatingOpen,
+    setPropertiesFloatingOpen,
+    propertiesDockedOpen,
+    setPropertiesDockedOpen,
+  ])
+
   const toggleShowSelection = useCallback(() => {
     setShowSelection(!showSelection)
   }, [setShowSelection, showSelection])
@@ -346,6 +550,30 @@ export function useEditorConfig() {
   const toggleShowConnectors = useCallback(() => {
     setShowConnectors(!showConnectors)
   }, [setShowConnectors, showConnectors])
+
+  const toggleLayoutBadges = useCallback(() => {
+    setShowLayoutBadges(!showLayoutBadges)
+  }, [setShowLayoutBadges, showLayoutBadges])
+
+  const toggleSpaceBadges = useCallback(() => {
+    setShowSpaceBadges(!showSpaceBadges)
+  }, [setShowSpaceBadges, showSpaceBadges])
+
+  const toggleDimensionBadges = useCallback(() => {
+    setShowDimensionBadges(!showDimensionBadges)
+  }, [setShowDimensionBadges, showDimensionBadges])
+
+  const toggleAppearanceBadges = useCallback(() => {
+    setShowAppearanceBadges(!showAppearanceBadges)
+  }, [setShowAppearanceBadges, showAppearanceBadges])
+
+  const toggleTypographyBadges = useCallback(() => {
+    setShowTypographyBadges(!showTypographyBadges)
+  }, [setShowTypographyBadges, showTypographyBadges])
+
+  const toggleEffectsBadges = useCallback(() => {
+    setShowEffectsBadges(!showEffectsBadges)
+  }, [setShowEffectsBadges, showEffectsBadges])
 
   const toggleAutoScrollToSelection = useCallback(() => {
     setAutoScrollToSelection(!autoScrollToSelection)
@@ -407,10 +635,50 @@ export function useEditorConfig() {
     showRefBadges,
     setShowRefBadges,
 
+    // Token badge overlay groups
+    showLayoutBadges,
+    setShowLayoutBadges,
+    toggleLayoutBadges,
+    showSpaceBadges,
+    setShowSpaceBadges,
+    toggleSpaceBadges,
+    showDimensionBadges,
+    setShowDimensionBadges,
+    toggleDimensionBadges,
+    showAppearanceBadges,
+    setShowAppearanceBadges,
+    toggleAppearanceBadges,
+    showTypographyBadges,
+    setShowTypographyBadges,
+    toggleTypographyBadges,
+    showEffectsBadges,
+    setShowEffectsBadges,
+    toggleEffectsBadges,
+
     // Panel methods
     showPanels,
     setShowPanels,
     togglePanels,
+
+    // Docked sidebar widths
+    objectsSidebarWidth,
+    setObjectsSidebarWidth,
+    propertiesSidebarWidth,
+    setPropertiesSidebarWidth,
+
+    // Properties panel float methods
+    propertiesFloating,
+    setPropertiesFloating,
+    propertiesFloatingOpen,
+    setPropertiesFloatingOpen,
+    propertiesDockedOpen,
+    setPropertiesDockedOpen,
+    propertiesPanelRect,
+    setPropertiesPanelRect,
+    hariPanelRect,
+    setHariPanelRect,
+    floatProperties,
+    showProperties,
 
     // Auto-scroll methods
     autoScrollToSelection,

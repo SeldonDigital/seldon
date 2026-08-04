@@ -87,6 +87,43 @@ export function useEditorShortcuts(): void {
       return
     }
 
+    // Token badge groups, Shift-1 through Shift-6 in View menu order. Uses
+    // event.code so it is layout-independent (Shift+1 yields "!" on US layouts).
+    if (shift && !mod && !alt) {
+      switch (event.code) {
+        case "Digit1":
+          event.preventDefault()
+          config.toggleLayoutBadges()
+
+          return
+        case "Digit2":
+          event.preventDefault()
+          config.toggleDimensionBadges()
+
+          return
+        case "Digit3":
+          event.preventDefault()
+          config.toggleSpaceBadges()
+
+          return
+        case "Digit4":
+          event.preventDefault()
+          config.toggleAppearanceBadges()
+
+          return
+        case "Digit5":
+          event.preventDefault()
+          config.toggleTypographyBadges()
+
+          return
+        case "Digit6":
+          event.preventDefault()
+          config.toggleEffectsBadges()
+
+          return
+      }
+    }
+
     switch (key) {
       case "a":
         if (!mod && !shift && !alt) {
@@ -107,10 +144,10 @@ export function useEditorShortcuts(): void {
           panel.openPanel("add-board")
           tool.setActiveTool("select")
         } else if (shift) {
-          tool.setActiveTool("component")
-        } else {
           panel.openPanel("create-component")
           tool.setActiveTool("select")
+        } else {
+          tool.setActiveTool("component")
         }
 
         return
@@ -121,10 +158,10 @@ export function useEditorShortcuts(): void {
           selectSource()
         } else if (shift) {
           selectOriginal()
-        } else if (panel.activePanel === "ai-chat") {
-          panel.closePanel()
+        } else if (panel.aiChatOpen) {
+          panel.closeAiChat()
         } else {
-          panel.openPanel("ai-chat")
+          panel.openAiChat()
         }
 
         return
@@ -194,6 +231,11 @@ export function useEditorShortcuts(): void {
 
         return
       case "p":
+        event.preventDefault()
+        config.showProperties()
+
+        return
+      case "u":
         event.preventDefault()
         config.showUnusedProperties = !config.showUnusedProperties
 

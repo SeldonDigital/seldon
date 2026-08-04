@@ -73,6 +73,44 @@ import type { CSSProperties, RefObject } from "react"
 
 export type CanvasHtmlAttributes = Record<string, string | boolean>
 
+/**
+ * CSS is a pure function of the compute context and the class name. The compute
+ * pipeline keeps a node's `ComputeContext` reference-stable across edits that do
+ * not touch it, so keying the cache on that object reuses the generated CSS from
+ * one edit to the next and skips `getCssFromProperties` for untouched nodes.
+ * The WeakMap lets entries fall away with their context when a workspace
+ * revision is dropped.
+ */
+const cssByContext = new WeakMap<object, Map<string, string>>()
+
+function getCachedCss(context: ComputeContext, properties: Properties, className: string): string {
+  let byClass = cssByContext.get(context)
+  const cached = byClass?.get(className)
+
+  if (cached !== undefined) return cached
+
+  let css: string
+
+  try {
+    css = getCssFromProperties(properties, context, className)
+  } catch (error) {
+    // Log the error for debugging but don't crash the component. Return empty CSS
+    // so the node still renders. Toasts cannot fire during render, so surfacing
+    // this to the user is handled at the input level instead.
+    console.error("CSS generation error:", error)
+    css = ""
+  }
+
+  if (!byClass) {
+    byClass = new Map<string, string>()
+    cssByContext.set(context, byClass)
+  }
+
+  byClass.set(className, css)
+
+  return css
+}
+
 type TemplateProps = {
   componentId: ComponentId
   nodeId: VariantId | InstanceId | ComponentId
@@ -105,19 +143,10 @@ export const ComponentRenderer = ({
 }: TemplateProps) => {
   const { properties, parentContext: _parentContext } = computeContext
   const className = `node-${nodeId}`
-  const css = useMemo(() => {
-    try {
-      return getCssFromProperties(properties, computeContext, className)
-    } catch (error) {
-      // Log the error for debugging but don't crash the component
-      console.error("CSS generation error:", error)
-
-      // Return empty CSS to prevent component crash
-      // Note: We cannot call addToast here as it would cause a state update during render
-      // Toast notifications should be handled at the input level instead
-      return ""
-    }
-  }, [computeContext, properties, className])
+  const css = useMemo(
+    () => getCachedCss(computeContext, properties, className),
+    [computeContext, properties, className],
+  )
 
   if (properties.display && properties.display.value === Display.EXCLUDE) {
     return null

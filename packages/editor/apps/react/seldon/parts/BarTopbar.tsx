@@ -13,10 +13,8 @@
 
 import { HTMLAttributes } from "react"
 
-import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
 import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
 import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
 import { Image, ImageProps } from "../primitives/Image"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
@@ -43,14 +41,10 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   textLabel5?: TextLabelProps | null
   buttonSimple6?: ButtonSimpleProps | null
   textLabel6?: TextLabelProps | null
+  buttonSimple7?: ButtonSimpleProps | null
+  textLabel7?: TextLabelProps | null
 
   frame4?: FrameProps | null
-  buttonMenu?: ButtonMenuProps | null
-  textLabel7?: TextLabelProps | null
-  icon?: IconProps | null
-  buttonMenu2?: ButtonMenuProps | null
-  textLabel8?: TextLabelProps | null
-  icon2?: IconProps | null
 }
 
 //
@@ -104,36 +98,45 @@ const sdn: BarTopbarProps = {
   },
   buttonSimple3: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
-    "data-seldon-ref": "menuComponent",
-  },
-  textLabel3: {
-    children: "Component",
-    className: "sdn-text-label sdn-text-label--xohb",
-    "data-seldon-ref": "menuComponentLabel",
-  },
-  buttonSimple4: {
-    className: "sdn-button-simple sdn-button-simple--dbgs",
-    "data-seldon-ref": "menuHari",
-  },
-  textLabel4: {
-    children: "Hari",
-    className: "sdn-text-label sdn-text-label--xohb",
-    "data-seldon-ref": "menuHariLabel",
-  },
-  buttonSimple5: {
-    className: "sdn-button-simple sdn-button-simple--dbgs",
     "data-seldon-ref": "menuView",
   },
-  textLabel5: {
+  textLabel3: {
     children: "View",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuViewLabel",
   },
+  buttonSimple4: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuComponent",
+  },
+  textLabel4: {
+    children: "Component",
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "menuComponentLabel",
+  },
+  buttonSimple5: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuHari",
+  },
+  textLabel5: {
+    children: "Hari",
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "menuHariLabel",
+  },
   buttonSimple6: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuWindow",
+  },
+  textLabel6: {
+    children: "Window",
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "menuWindowLabel",
+  },
+  buttonSimple7: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
     "data-seldon-ref": "menuDev",
   },
-  textLabel6: {
+  textLabel7: {
     children: "Dev",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "menuDevLabel",
@@ -143,34 +146,6 @@ const sdn: BarTopbarProps = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--nzij",
-  },
-  buttonMenu: {
-    className: "sdn-button-menu sdn-button-menu--truc",
-    "data-seldon-ref": "menuTheme",
-  },
-  textLabel7: {
-    children: "Theme",
-    className: "sdn-text-label sdn-text-label--sa6t",
-    "data-seldon-ref": "menuThemeLabel",
-  },
-  icon: {
-    icon: "material-chevronDown",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--y2ct",
-  },
-  buttonMenu2: {
-    className: "sdn-button-menu sdn-button-menu--truc",
-    "data-seldon-ref": "menuMode",
-  },
-  textLabel8: {
-    children: "Mode",
-    className: "sdn-text-label sdn-text-label--sa6t",
-    "data-seldon-ref": "menuModeLabel",
-  },
-  icon2: {
-    icon: "material-chevronDown",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--y2ct",
   },
 }
 
@@ -191,21 +166,17 @@ const sdn: BarTopbarProps = {
  *         TextLabel   textLabel      -> menuFileLabel
  *       ButtonSimple  buttonSimple2  -> menuEdit
  *         TextLabel   textLabel2     -> menuEditLabel
- *       ButtonSimple  buttonSimple3  -> menuComponent
- *         TextLabel   textLabel3     -> menuComponentLabel
- *       ButtonSimple  buttonSimple4  -> menuHari
- *         TextLabel   textLabel4     -> menuHariLabel
- *       ButtonSimple  buttonSimple5  -> menuView
- *         TextLabel   textLabel5     -> menuViewLabel
- *       ButtonSimple  buttonSimple6  -> menuDev
- *         TextLabel   textLabel6     -> menuDevLabel
+ *       ButtonSimple  buttonSimple3  -> menuView
+ *         TextLabel   textLabel3     -> menuViewLabel
+ *       ButtonSimple  buttonSimple4  -> menuComponent
+ *         TextLabel   textLabel4     -> menuComponentLabel
+ *       ButtonSimple  buttonSimple5  -> menuHari
+ *         TextLabel   textLabel5     -> menuHariLabel
+ *       ButtonSimple  buttonSimple6  -> menuWindow
+ *         TextLabel   textLabel6     -> menuWindowLabel
+ *       ButtonSimple  buttonSimple7  -> menuDev
+ *         TextLabel   textLabel7     -> menuDevLabel
  *   Frame             frame4
- *     ButtonMenu      buttonMenu     -> menuTheme
- *       TextLabel     textLabel7     -> menuThemeLabel
- *       Icon          icon
- *     ButtonMenu      buttonMenu2    -> menuMode
- *       TextLabel     textLabel8     -> menuModeLabel
- *       Icon          icon2
  *
  * @example
  * ```tsx
@@ -234,14 +205,10 @@ export function BarTopbar({
   textLabel5,
   buttonSimple6,
   textLabel6,
+  buttonSimple7,
+  textLabel7,
 
   frame4,
-  buttonMenu,
-  textLabel7,
-  icon,
-  buttonMenu2,
-  textLabel8,
-  icon2,
 
   children,
   seldonRefs,
@@ -266,14 +233,10 @@ export function BarTopbar({
   const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
   const buttonSimple6Props = mergeOptionalSlot(sdn.buttonSimple6, buttonSimple6, seldonRefs)
   const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+  const buttonSimple7Props = mergeOptionalSlot(sdn.buttonSimple7, buttonSimple7, seldonRefs)
+  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
 
   const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
-  const buttonMenuProps = mergeOptionalSlot(sdn.buttonMenu, buttonMenu, seldonRefs)
-  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
-  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
-  const buttonMenu2Props = mergeOptionalSlot(sdn.buttonMenu2, buttonMenu2, seldonRefs)
-  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
-  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
 
   return (
     <Frame
@@ -322,22 +285,14 @@ export function BarTopbar({
                   {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
                 </ButtonSimple>
               )}
+              {buttonSimple7Props !== null && (
+                <ButtonSimple {...buttonSimple7Props}>
+                  {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                </ButtonSimple>
+              )}
             </Frame>
           </Frame>
-          <Frame {...frame4Props}>
-            {buttonMenuProps !== null && (
-              <ButtonMenu {...buttonMenuProps}>
-                {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
-                {iconProps !== null && <Icon {...iconProps} />}
-              </ButtonMenu>
-            )}
-            {buttonMenu2Props !== null && (
-              <ButtonMenu {...buttonMenu2Props}>
-                {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
-                {icon2Props !== null && <Icon {...icon2Props} />}
-              </ButtonMenu>
-            )}
-          </Frame>
+          <Frame {...frame4Props}></Frame>
         </>
       )}
     </Frame>

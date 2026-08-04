@@ -1,12 +1,50 @@
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { useDragControls, useMotionValue } from "framer-motion"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import type { Rect } from "@seldon/components/utils/resize"
 import type { BoundingBox } from "framer-motion"
 
 /** The smallest a floating window is drawn at, and the size one opens at by default. */
 export const MIN_WINDOW_SIZE = { width: 300, height: 300 }
+
+/**
+ * Open windows that close on Escape, most recently opened last.
+ *
+ * Every floating window once bound its own `keydown` listener, so one Escape closed all of
+ * them at once, including palettes meant to stay open behind a dialog. They share this stack
+ * instead: Escape closes only the last window opened, so a dialog opened over a palette closes
+ * alone and the palette stays. Registration order stands in for stacking order, which holds
+ * because a window is opened onto the top.
+ */
+const escapeStack: Array<() => void> = []
+
+function handleGlobalEscape(event: KeyboardEvent): void {
+  if (event.key !== "Escape") return
+
+  const close = escapeStack.at(-1)
+
+  if (close) close()
+}
+
+/** Puts a window on top of the Escape stack, returning the removal for its unmount. */
+function pushEscapeHandler(close: () => void): () => void {
+  if (escapeStack.length === 0) {
+    window.addEventListener("keydown", handleGlobalEscape)
+  }
+
+  escapeStack.push(close)
+
+  return () => {
+    const index = escapeStack.lastIndexOf(close)
+
+    if (index !== -1) escapeStack.splice(index, 1)
+
+    if (escapeStack.length === 0) {
+      window.removeEventListener("keydown", handleGlobalEscape)
+    }
+  }
+}
 
 /**
  * Drag, resize, and position mechanics for a floating editor window. Shared by
@@ -109,22 +147,18 @@ export function useDraggableWindow({
     }
   }, [width, height, windowWidth, windowHeight])
 
-  /**
-   * Listen to escape key to close the window
-   */
+  // The latest close, held in a ref so the window registers once on open and keeps its place
+  // in the stack, rather than re-registering to the top whenever `handleClose` changes.
+  const handleCloseRef = useRef(handleClose)
+
+  handleCloseRef.current = handleClose
+
+  // Join the shared Escape stack while open, so only the top window closes on Escape.
   useEffect(() => {
     if (!closeOnEscape) return
 
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        handleClose()
-      }
-    }
-
-    window.addEventListener("keydown", handleEscapeKey)
-
-    return () => window.removeEventListener("keydown", handleEscapeKey)
-  }, [closeOnEscape, handleClose])
+    return pushEscapeHandler(() => handleCloseRef.current())
+  }, [closeOnEscape])
 
   /**
    * Recalculate the drag constraints when the window is resized

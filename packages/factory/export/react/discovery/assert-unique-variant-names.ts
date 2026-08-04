@@ -22,9 +22,18 @@ export class DuplicateVariantNameError extends Error {
  * Rejects export when any board has duplicate variant labels. Two variants that
  * share a label resolve to the same component name and output path, so one
  * would silently overwrite the other. Rename the flagged variants first.
+ *
+ * Pass `emittedVariantIds` to scope the check to the variants the export
+ * actually emits, so a pruned mock or exclude variant cannot block export.
  */
-export function assertUniqueVariantNames(workspace: Workspace): void {
-  const duplicateIds = getDuplicateVariantLabelNodeIds(workspace)
+export function assertUniqueVariantNames(
+  workspace: Workspace,
+  emittedVariantIds?: Set<string>,
+): void {
+  const duplicateIds = getDuplicateVariantLabelNodeIds(
+    workspace,
+    emittedVariantIds ? (nodeId) => emittedVariantIds.has(nodeId) : undefined,
+  )
 
   if (duplicateIds.size === 0) return
 

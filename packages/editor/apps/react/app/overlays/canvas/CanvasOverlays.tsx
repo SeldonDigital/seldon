@@ -14,6 +14,7 @@ import { useMemo } from "react"
 
 import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure-store"
 import { useNodeBelongsToActiveBoard } from "../hooks/use-belongs-to-active-board"
+import { useStableIds } from "../hooks/use-stable-ids"
 import { useTrackNodeRects } from "../hooks/use-track-node-rects"
 import { useVisibleNodes } from "../hooks/use-visible-nodes"
 import { HighlightConnectors } from "./highlight/HighlightConnectors"
@@ -23,6 +24,7 @@ import { CanvasDragLayer } from "./select/CanvasDragLayer"
 import { HoverOverlay } from "./select/HoverOverlay"
 import { NodeWireframe } from "./select/NodeWireframe"
 import { SelectionOverlay } from "./select/SelectionOverlay"
+import { TokenConnector } from "./token-badges/TokenConnector"
 
 export function CanvasOverlays() {
   const selectedNodeId = useSelectedNodeId()
@@ -32,8 +34,22 @@ export function CanvasOverlays() {
   // Held stable, because the tracker re-tracks whenever this list is a new one: a fresh
   // array on every render would mean tearing down and rebuilding an observer per node
   // each time anything here changes, several times over during a single pan.
-  const nodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
-  const { showSelection, wireframeMode, showRefBadges, isolatedView } = useEditorConfig()
+  // `useStableIds` also holds the array across board-level edits that rebuild the
+  // visible-node list without changing the set of ids.
+  const rawNodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
+  const nodeIds = useStableIds(rawNodeIds)
+  const {
+    showSelection,
+    wireframeMode,
+    showRefBadges,
+    isolatedView,
+    showLayoutBadges,
+    showSpaceBadges,
+    showDimensionBadges,
+    showAppearanceBadges,
+    showTypographyBadges,
+    showEffectsBadges,
+  } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
@@ -57,6 +73,17 @@ export function CanvasOverlays() {
   // Theme boards have no node tree to reference.
   const drawRefBadges = showRefBadges && !activeBoardIsTheme
   const refBadges = drawRefBadges ? <RefConnector /> : null
+
+  // Token badges draw when any group is enabled. Like reference badges they show in
+  // both isolation and normal modes, and never on a theme board's preview.
+  const anyTokenGroupEnabled =
+    showLayoutBadges ||
+    showSpaceBadges ||
+    showDimensionBadges ||
+    showAppearanceBadges ||
+    showTypographyBadges ||
+    showEffectsBadges
+  const tokenBadges = anyTokenGroupEnabled && !activeBoardIsTheme ? <TokenConnector /> : null
 
   // Isolation draws the whole gallery at once, which is what makes a line from
   // the selection to the boards it reaches worth drawing. The connectors draw
@@ -88,6 +115,7 @@ export function CanvasOverlays() {
       {activeTool === "component" && hasHoverState && <InsertOverlay />}
       {highlightConnectors}
       {refBadges}
+      {tokenBadges}
       {dragLayer}
     </>
   )

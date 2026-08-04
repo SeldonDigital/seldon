@@ -37,12 +37,17 @@ import {
   VariantId,
   resolveNodeRepeat,
 } from "@seldon/core"
+import { getNodeRowIcon } from "@seldon/core/icon-registry"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
+import {
+  isDisplayExportConflictNode,
+  isDisplayExportConflictSource,
+} from "@seldon/core/workspace/helpers/general/get-display-export-conflicts"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
-import { getComponentTypeIcon, getNodeLabel, getNodeTypeColor } from "./hooks/row-node-label"
+import { getNodeLabel, getNodeTypeColor } from "./hooks/row-node-label"
 import { useEditState } from "./hooks/use-edit-state"
 import { useRowNodeActions } from "./hooks/use-row-node-actions"
 import { useRowNodeDisplay } from "./hooks/use-row-node-display"
@@ -123,10 +128,20 @@ const labelText = computed(() =>
     properties: properties.value,
   }),
 )
-const typeIcon = computed(() => getComponentTypeIcon(node.value as EntryNode))
+const typeIcon = computed(() => getNodeRowIcon(node.value as EntryNode, props.workspace))
 const nodeTypeColor = computed(() => getNodeTypeColor(node.value as EntryNode, showNodeTypes.value))
 const isDuplicateLabel = computed(
   () => nodeExists.value && isDuplicateVariantLabel(props.workspace, props.nodeId),
+)
+
+// Display export conflict: a shown node still copies a mock or exclude variant,
+// so the source is kept in the export. The downstream node reads as an error
+// (negative) and the source variant reads as its origin (punch).
+const isDisplayExportConflict = computed(
+  () => nodeExists.value && isDisplayExportConflictNode(props.nodeId, props.workspace),
+)
+const isDisplayExportConflictSourceNode = computed(
+  () => nodeExists.value && isDisplayExportConflictSource(props.nodeId, props.workspace),
 )
 
 // Display model: option groups, glyph, dim/italic decoration, and selection.
@@ -336,7 +351,20 @@ function onDrop(event: DragEvent): void {
 // Slot props for the generated ItemNode.
 const disabledRef = computed(() => buildDisabledRefProps(isDimmed.value))
 const dimRef = computed(() => (dimStyle.value ? { style: dimStyle.value } : undefined))
+// A duplicate variant label blocks export, so it keeps the full invalid leaf
+// state (negative color and the `sdn-input` invalid border).
 const invalidRef = computed(() => buildInvalidRefProps(isDuplicateLabel.value))
+// A display export conflict does not block export, so it reads as color only,
+// like the node-type and punch tints, with no invalid border. The downstream
+// node is negative; the mock/exclude source it copies is punch.
+const conflictRef = computed(() =>
+  isDisplayExportConflict.value ? { style: { color: "var(--sdn-swatch-negative)" } } : undefined,
+)
+const conflictSourceRef = computed(() =>
+  isDisplayExportConflictSourceNode.value
+    ? { style: { color: "var(--sdn-swatch-punch)" } }
+    : undefined,
+)
 const nodeTypeStyle = computed(() =>
   nodeTypeColor.value ? { style: { color: nodeTypeColor.value } } : undefined,
 )
@@ -374,6 +402,8 @@ const nodeIconSlot = computed(() =>
     disabledRef.value,
     dimRef.value,
     nodeTypeStyle.value,
+    conflictRef.value,
+    conflictSourceRef.value,
     invalidRef.value,
   ),
 )
@@ -384,6 +414,8 @@ const labelSlot = computed(() =>
     disabledRef.value,
     dimRef.value,
     nodeTypeStyle.value,
+    conflictRef.value,
+    conflictSourceRef.value,
     invalidRef.value,
   ),
 )
@@ -471,6 +503,8 @@ function childRootId(childId: EntryNodeId): string {
       :data-nodeid="nodeId"
       :data-node-type="entityType"
       :data-display="dataDisplay"
+      :data-display-conflict="isDisplayExportConflict || undefined"
+      :data-display-conflict-source="isDisplayExportConflictSourceNode || undefined"
       :data-dragging="drag.draggingNodeId === nodeId || undefined"
       :data-active="parentIsSelected || undefined"
       :draggable="draggable"

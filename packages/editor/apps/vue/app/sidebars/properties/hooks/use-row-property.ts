@@ -11,7 +11,10 @@ import { getCurrentOptionValue, getOptionIcon } from "@seldon/editor/lib/icons/r
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
 import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
-import { getCompoundChildRows } from "@seldon/editor/lib/properties/inspector/properties-data"
+import {
+  getCompoundChildRows,
+  getPropertiesSubjectId,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
 import {
@@ -29,6 +32,7 @@ import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import { getPropertyValueForDisplay, shouldShowMenuIcon } from "../helpers/property-control-data"
 import { usePropertyExpansionStore } from "../property-expansion-store"
 import { usePropertyEditNavigation } from "../use-property-edit-navigation"
+import { usePropertyCardScope } from "./use-property-card-scope"
 import { usePropertyControl } from "./use-property-control"
 
 import type { MenuEntry } from "@app/menus/types"
@@ -109,6 +113,11 @@ export function useRowProperty(input: RowPropertyInput) {
   const expansion = usePropertyExpansionStore()
   const editNavigation = usePropertyEditNavigation()
 
+  // A token card carries its own disclosure state, so opening a compound in the
+  // card leaves the sidebar's copy of that compound alone. Inspector rows keep
+  // the shared store; the scope picks which one wins.
+  const cardScope = usePropertyCardScope()
+
   const rowRef = ref<{ $el?: HTMLElement } | null>(null)
   const rowEl = computed<HTMLElement | null>(() => rowRef.value?.$el ?? null)
 
@@ -173,8 +182,56 @@ export function useRowProperty(input: RowPropertyInput) {
     return getCompoundChildRows(property.value.key, input.allProperties.value)
   })
   const hasChildren = computed(() => children.value.length > 0)
-  const isExpanded = computed(() => expansion.isPropertyExpanded(property.value.key))
+
+  // A compound whose summary reads "None" (a Background with kind None, a Border
+  // with no line) exposes nothing worth opening, so treat it as a leaf: hide the
+  // disclosure and render no facet rows. Background already drops its facets for
+  // None; this also covers Border, whose schema keeps its facets. `showFacets`
+  // then stands in for `hasChildren` everywhere the row gates the disclosure and
+  // its children.
+  const isNoneCompound = computed(
+    () => property.value.isCompound && property.value.actualValue === "None",
+  )
+  const showFacets = computed(() => hasChildren.value && !isNoneCompound.value)
+
+  const globalExpanded = computed(() => expansion.isPropertyExpanded(property.value.key))
+  const expandedState = computed(() =>
+    cardScope ? (cardScope.expanded[property.value.key] ?? false) : globalExpanded.value,
+  )
+
+  // `isExpanded` drives the facet animation, so it collapses when the compound
+  // reads None even if a stale expansion flag lingers.
+  const isExpanded = computed(() => showFacets.value && expandedState.value)
   const labelText = computed(() => property.value.label)
+
+  // Open the compound when its selector adds facets (None -> Color, None ->
+  // Solid) and close it when they go away (-> None). Track the subject so this
+  // fires only on a user selector change on the same node, never on mount or when
+  // a different selection reuses this row, keeping the persisted open/closed state
+  // stable across selections.
+  const subjectId = computed(() => getPropertiesSubjectId(node.value))
+  let autoExpandBaseline = { subjectId: subjectId.value, showFacets: showFacets.value }
+
+  watch([subjectId, showFacets], ([nextSubjectId, nextShowFacets]) => {
+    const baseline = autoExpandBaseline
+
+    if (baseline.subjectId !== nextSubjectId) {
+      autoExpandBaseline = { subjectId: nextSubjectId, showFacets: nextShowFacets }
+
+      return
+    }
+
+    if (baseline.showFacets === nextShowFacets) return
+    autoExpandBaseline = { subjectId: nextSubjectId, showFacets: nextShowFacets }
+
+    if (cardScope) {
+      cardScope.toggle(property.value.key, nextShowFacets)
+
+      return
+    }
+
+    expansion.toggleProperty(property.value.key, nextShowFacets)
+  })
 
   const isNavigable = computed(
     () =>
@@ -309,7 +366,15 @@ export function useRowProperty(input: RowPropertyInput) {
 
   function handleToggle(event: MouseEvent): void {
     event.stopPropagation()
-    if (hasChildren.value) expansion.toggleProperty(property.value.key)
+    if (!showFacets.value) return
+
+    if (cardScope) {
+      cardScope.toggle(property.value.key)
+
+      return
+    }
+
+    expansion.toggleProperty(property.value.key)
   }
 
   function handleReset(): void {
@@ -343,13 +408,20 @@ export function useRowProperty(input: RowPropertyInput) {
       target.closest("button") ||
       isEditing.value ||
       property.value.isDimmed ||
-      !hasChildren.value
+      !showFacets.value
     ) {
       return
     }
 
     if (target.closest(FRAME_REF_SELECTOR)) return
-    if (hasChildren.value) expansion.toggleProperty(property.value.key)
+
+    if (cardScope) {
+      cardScope.toggle(property.value.key)
+
+      return
+    }
+
+    expansion.toggleProperty(property.value.key)
   }
 
   function handleRenameSubmit(value: string): void {
@@ -450,7 +522,7 @@ export function useRowProperty(input: RowPropertyInput) {
     buildPropertyRowProps({
       property: property.value,
       isExpanded: isExpanded.value,
-      hasChildren: hasChildren.value,
+      hasChildren: showFacets.value,
       labelColor: undefined,
       iconId: iconId.value,
       isThemeAssignment: isThemeAssignment.value,
@@ -550,7 +622,10 @@ export function useRowProperty(input: RowPropertyInput) {
     stateRef,
     resetActions,
     isExpanded,
-    hasChildren,
+    // `hasChildren` returns the facet-visibility gate, so a None compound reads
+    // as a leaf. `showDisclosure` gates the toggle affordance the same way.
+    hasChildren: showFacets,
+    showDisclosure: showFacets,
     children,
     layerDrag,
     displayValue,

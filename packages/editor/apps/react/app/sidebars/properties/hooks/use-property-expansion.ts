@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 import type { PropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-property-sections"
 import type { ThemePropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
@@ -12,34 +13,47 @@ interface PropertyExpansionState {
   toggleProperty: (propertyKey: string, shouldExpand?: boolean) => void
 }
 
-// Categories default to expanded: reads and toggles fall back with `?? true`,
-// so the store only tracks explicit collapses.
-const useStore = create<PropertyExpansionState>((set) => ({
-  categories: {},
-  properties: {},
-  toggleCategory: (category: AllCategoryType, shouldExpand?: boolean) =>
-    set((state) => {
-      const expand = shouldExpand ?? !(state.categories[category] ?? true)
+// A single expansion memory, keyed by stable category and property names rather
+// than by node, so open/closed carries across selections. Categories default to
+// expanded (`?? true`) and properties to collapsed (`?? false`), so the store only
+// records explicit toggles. It persists so the state survives reloads.
+const useStore = create<PropertyExpansionState>()(
+  persist(
+    (set) => ({
+      categories: {},
+      properties: {},
+      toggleCategory: (category: AllCategoryType, shouldExpand?: boolean) =>
+        set((state) => {
+          const expand = shouldExpand ?? !(state.categories[category] ?? true)
 
-      return {
-        categories: {
-          ...state.categories,
-          [category]: expand,
-        },
-      }
-    }),
-  toggleProperty: (propertyKey: string, shouldExpand?: boolean) =>
-    set((state) => {
-      const expand = shouldExpand ?? !state.properties[propertyKey]
+          return {
+            categories: {
+              ...state.categories,
+              [category]: expand,
+            },
+          }
+        }),
+      toggleProperty: (propertyKey: string, shouldExpand?: boolean) =>
+        set((state) => {
+          const expand = shouldExpand ?? !state.properties[propertyKey]
 
-      return {
-        properties: {
-          ...state.properties,
-          [propertyKey]: expand,
-        },
-      }
+          return {
+            properties: {
+              ...state.properties,
+              [propertyKey]: expand,
+            },
+          }
+        }),
     }),
-}))
+    {
+      name: "property-expansion",
+      partialize: (state) => ({
+        categories: state.categories,
+        properties: state.properties,
+      }),
+    },
+  ),
+)
 
 /**
  * Reactive read for one category's expansion state.

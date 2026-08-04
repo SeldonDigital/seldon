@@ -1,4 +1,4 @@
-import { invariant } from "@seldon/core"
+import { Display, invariant } from "@seldon/core"
 import { getComponentExportConfig, getComponentSchema } from "@seldon/core/components/catalog"
 import {
   ComponentId,
@@ -7,7 +7,9 @@ import {
 } from "@seldon/core/components/constants"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getAllVariants } from "@seldon/core/workspace/helpers/general/get-all-variants"
+import { getKeptMockVariantIds } from "@seldon/core/workspace/helpers/general/get-display-export-conflicts"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 import { nodeRetrievalService } from "@seldon/core/workspace/services"
 
@@ -49,10 +51,22 @@ export function getComponentsToExport(
   options: ExportOptions,
   nodeIdToClass: NodeIdToClass,
 ) {
+  // Mock and exclude variants are authoring-only and not emitted, unless a shown
+  // instance still copies one, in which case it is kept so the export never
+  // dangles an import. `includeHiddenComponents` opts back into emitting all.
+  const includeHidden = options.includeHiddenComponents === true
+  const keptMockVariantIds = getKeptMockVariantIds(workspace)
+
   const variants = getAllVariants(workspace).filter((variant) => {
     const board = getBoardByNodeId(workspace, variant.id)
 
     if (!board) return false
+
+    if (!includeHidden && !keptMockVariantIds.has(variant.id)) {
+      const display = getNodeProperties(variant, workspace).display?.value
+
+      if (display === Display.MOCK || display === Display.EXCLUDE) return false
+    }
 
     // Authored boards export their authored root and user variants regardless
     // of the Container/Frame template they resolve to.

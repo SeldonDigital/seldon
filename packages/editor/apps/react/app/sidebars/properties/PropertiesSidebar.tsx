@@ -1,3 +1,4 @@
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { MenuController } from "@app/menus"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -29,6 +30,7 @@ import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 
+import type { FilterInput } from "./hooks/use-filter-input"
 import type { MenuEntry } from "@app/menus"
 import type { Board, Instance, LayeredPaintKey, Theme, Variant, Workspace } from "@seldon/core"
 import type {
@@ -39,7 +41,7 @@ import type {
 import type { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
 import type { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import type { MouseEvent as ReactMouseEvent } from "react"
+import type { CSSProperties, MouseEvent as ReactMouseEvent, ReactNode } from "react"
 
 const PROPERTIES_TREE_GAP = "var(--sdn-gaps-tight)"
 
@@ -67,10 +69,30 @@ export interface PropertyTreeProps {
 }
 
 /**
- * View-model for the properties sidebar. Renders the no-selection shell or
- * the property tree for the current selection.
+ * Shared body of the properties panel, consumed by both the docked
+ * `PropertiesSidebar` and the floating `PanelPropertyController`. It owns the
+ * deferred inspector state, the filtered property tree, the filter field, and
+ * the interaction-state menu, so the two shells render the exact same content
+ * and only relocate the filter and state controls.
  */
-export function PropertiesSidebar() {
+export interface PropertiesPanel {
+  /** True when nothing is selected, so the shell shows its no-selection state. */
+  isEmpty: boolean
+  /** The property tree for the current selection, or null when empty. */
+  tree: ReactNode | null
+  /** Filter field state and props (query, field, input, clear button). */
+  filter: FilterInput
+  /** Current interaction-state name shown on the State trigger. */
+  stateLabel: string
+  /** True when the selection has no board to hold interaction state. */
+  stateDisabled: boolean
+  /** Opens the State menu anchored to the clicked trigger. */
+  openStateMenu: (event: ReactMouseEvent<HTMLButtonElement>) => void
+  /** The shared State `MenuController`, rendered as a sibling by each shell. */
+  stateMenuController: ReactNode
+}
+
+export function usePropertiesPanel(): PropertiesPanel {
   const state = usePropertiesSidebar()
   const filter = useFilterInput()
 
@@ -95,8 +117,8 @@ export function PropertiesSidebar() {
   )
 
   // The header State menu selects the active interaction state for the selected
-  // node's board tree. Its trigger is the generated `boardState` ButtonMenu; the
-  // dropdown anchors to it through the shared MenuController.
+  // node's board tree. Its trigger is a ButtonMenu; the dropdown anchors to it
+  // through the shared MenuController.
   const stateMenu = useBoardStateMenu()
   const [stateMenuOpen, setStateMenuOpen] = useState(false)
   const stateMenuAnchor = useRef<HTMLElement | null>(null)
@@ -116,24 +138,62 @@ export function PropertiesSidebar() {
     />
   )
 
+  const isEmpty = deferredState.kind === "empty"
+  const tree =
+    deferredState.kind === "tree" ? (
+      <PropertiesTree {...deferredState.treeProps} sections={sections} />
+    ) : null
+
+  return {
+    isEmpty,
+    tree,
+    filter,
+    stateLabel: stateMenu.label,
+    stateDisabled: stateMenu.disabled,
+    openStateMenu,
+    stateMenuController,
+  }
+}
+
+/**
+ * View-model for the docked properties sidebar. Renders the no-selection shell
+ * or the property tree, and offers a toggle that detaches the panel into the
+ * floating palette.
+ *
+ * TODO: the docked shell still drives its header through its own ref vocabulary
+ * (`propertyFilter*`, `boardState`, `propertyTogglePanel`). Refactor it onto the
+ * shared `BarState`/`BarFilter` refs (`propertyState`, `filterField`) that the
+ * floating palette uses, so both shells share one ref set.
+ */
+export function PropertiesSidebar() {
+  const { isEmpty, tree, filter, stateLabel, stateDisabled, openStateMenu, stateMenuController } =
+    usePropertiesPanel()
+  const { propertiesFloating, floatProperties } = useEditorConfig()
+
   // Drive every header slot through its stable workspace ref. The filter field,
-  // the State trigger, and its label are conditional slots, so they keep a
-  // positional `{}` enabler to render; their data flows through `seldonRefs`.
-  // Both the no-selection shell and the tree share these; only the tree adds
-  // `propertiesTree`.
+  // the State trigger, its label, and the dock toggle are conditional slots, so
+  // they keep a positional `{}` enabler to render; their data flows through
+  // `seldonRefs`. Both the no-selection shell and the tree share these; only the
+  // tree adds `propertiesTree`.
   const seldonRefs: Record<string, Record<string, unknown>> = {
     propertyFilterField: { ...filter.comboboxField },
     propertyFilter: { ...filter.input },
     propertyFilterClear: { ...filter.buttonIconic },
     boardState: {
       onClick: openStateMenu,
-      disabled: stateMenu.disabled,
+      disabled: stateDisabled,
       "data-testid": "board-state-trigger",
     },
-    boardStateLabel: { children: stateMenu.label },
+    boardStateLabel: { children: stateLabel },
+    propertyTogglePanel: {
+      onClick: floatProperties,
+      "aria-pressed": propertiesFloating,
+      title: "Detach panel",
+      "data-testid": "properties-dock-toggle",
+    },
   }
 
-  if (deferredState.kind === "empty") {
+  if (isEmpty) {
     return (
       <>
         <SidebarProperties
@@ -141,6 +201,7 @@ export function PropertiesSidebar() {
           comboboxFieldFilter={{}}
           buttonMenu={{}}
           textLabel={{}}
+          buttonToggle={{}}
           seldonRefs={seldonRefs}
           style={styles.sidebar}
         />
@@ -151,7 +212,7 @@ export function PropertiesSidebar() {
 
   seldonRefs.propertiesTree = {
     style: styles.frame,
-    children: <PropertiesTree {...deferredState.treeProps} sections={sections} />,
+    children: tree,
   }
 
   return (
@@ -161,6 +222,7 @@ export function PropertiesSidebar() {
         comboboxFieldFilter={{}}
         buttonMenu={{}}
         textLabel={{}}
+        buttonToggle={{}}
         seldonRefs={seldonRefs}
         style={styles.sidebar}
       />
@@ -506,17 +568,24 @@ function TreeSection({
   )
 }
 
+/**
+ * Fills the tree slot in either shell: a flex column that takes the remaining
+ * height so the inner scroller can overflow. Shared with the floating palette's
+ * contents zone so both shells frame the tree identically.
+ */
+export const propertiesContentStyle: CSSProperties = {
+  flex: 1,
+  minHeight: 0,
+  display: "flex",
+  flexDirection: "column",
+}
+
 const styles = {
   sidebar: {
     height: "100%",
     minHeight: 0,
   },
-  frame: {
-    flex: 1,
-    minHeight: 0,
-    display: "flex",
-    flexDirection: "column" as const,
-  },
+  frame: propertiesContentStyle,
   scroller: {
     flex: 1,
     minHeight: 0,
