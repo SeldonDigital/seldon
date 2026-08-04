@@ -28,13 +28,14 @@ export default function Editor() {
   const {
     showPanels,
     propertiesFloating,
+    propertiesDockedOpen,
     objectsSidebarWidth,
     setObjectsSidebarWidth,
     propertiesSidebarWidth,
     setPropertiesSidebarWidth,
   } = useEditorConfig()
   const showSidePanels = showPanels
-  const showDockedProperties = showSidePanels && !propertiesFloating
+  const showDockedProperties = showSidePanels && !propertiesFloating && propertiesDockedOpen
 
   // Persist each docked sidebar's width once a drag settles, so the next session opens
   // where it was left. The panes render in order, so the objects width is the first size

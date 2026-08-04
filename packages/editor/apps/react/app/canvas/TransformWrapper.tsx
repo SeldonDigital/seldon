@@ -4,6 +4,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { TransformWrapper as ReactTransformWrapper, useControls } from "react-zoom-pan-pinch"
 
 import { CanvasOverlayTracker } from "./CanvasOverlayTracker"
+import { CanvasResizeAnchor } from "./CanvasResizeAnchor"
 import { CanvasScrollToSelection } from "./CanvasScrollToSelection"
 import { CanvasTransformRemeasure } from "./CanvasTransformRemeasure"
 
@@ -58,6 +59,7 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
         <ZoomControls />
         <CanvasScrollToSelection />
         <CanvasOverlayTracker />
+        <CanvasResizeAnchor />
         <CanvasTransformRemeasure />
       </>
     </ReactTransformWrapper>

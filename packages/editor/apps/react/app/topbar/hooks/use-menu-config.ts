@@ -54,6 +54,7 @@ export function useMenuConfig(): MenuConfig {
     togglePanels,
     propertiesFloating,
     propertiesFloatingOpen,
+    propertiesDockedOpen,
     showProperties,
     showSelection,
     toggleShowSelection,
@@ -164,7 +165,7 @@ export function useMenuConfig(): MenuConfig {
   const addToast = useAddToast()
   const workspaceId = useWorkspaceId()
   const { setActiveTool } = useTool()
-  const { activePanel, openPanel, closePanel } = usePanel()
+  const { openPanel, aiChatOpen, openAiChat, closeAiChat } = usePanel()
 
   const canDeleteSelection = useMemo(() => {
     if (selectedNode) return true
@@ -516,19 +517,19 @@ export function useMenuConfig(): MenuConfig {
   const selectionMenuItems = useMemo(() => {
     const items = [
       {
+        id: "insert-component",
+        label: "Insert Component",
+        action: () => setActiveTool("component"),
+        shortcut: "C",
+      },
+      "separator",
+      {
         id: "create-component",
         label: "Create Component",
         action: () => {
           openPanel("create-component")
           setActiveTool("select")
         },
-        shortcut: "C",
-      },
-      "separator",
-      {
-        id: "insert-component",
-        label: "Insert Component",
-        action: () => setActiveTool("component"),
         shortcut: "⇧ C",
       },
       {
@@ -651,13 +652,13 @@ export function useMenuConfig(): MenuConfig {
     canSelectSource,
   ])
 
-  const isChatOpen = activePanel === "ai-chat"
+  const isChatOpen = aiChatOpen
   const hariMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
       {
         id: "show-chat",
         label: "Show Chat",
-        action: () => (isChatOpen ? closePanel() : openPanel("ai-chat")),
+        action: () => (isChatOpen ? closeAiChat() : openAiChat()),
         active: isChatOpen,
         shortcut: "~",
       },
@@ -692,8 +693,8 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     isChatOpen,
-    closePanel,
-    openPanel,
+    closeAiChat,
+    openAiChat,
     showOutcome,
     toggleShowOutcome,
     showTools,
@@ -744,7 +745,8 @@ export function useMenuConfig(): MenuConfig {
             id: "show-properties",
             label: "Show Properties",
             action: showProperties,
-            active: propertiesFloating && propertiesFloatingOpen,
+            active: propertiesFloating ? propertiesFloatingOpen : propertiesDockedOpen,
+            shortcut: "P",
           },
           "separator",
           {
@@ -851,7 +853,7 @@ export function useMenuConfig(): MenuConfig {
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
             active: showUnusedProperties,
-            shortcut: "P",
+            shortcut: "U",
           },
           {
             id: "show-unused-fonts",
@@ -905,6 +907,7 @@ export function useMenuConfig(): MenuConfig {
       showProperties,
       propertiesFloating,
       propertiesFloatingOpen,
+      propertiesDockedOpen,
       toggleShowSelection,
       showSelection,
       toggleShowFocus,

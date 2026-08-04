@@ -71,13 +71,15 @@ interface EditorConfigState {
   propertiesSidebarWidth: number
   setPropertiesSidebarWidth: (width: number) => void
 
-  // Properties panel: floating (detached palette) vs docked (right-edge pane),
-  // and whether the floating palette is currently shown. Docked stays visible
-  // with the sidebars; only the floating palette can be hidden and reopened.
+  // Properties panel: floating (detached palette) vs docked (right-edge pane).
+  // Each mode has its own shown flag, so "Show Properties" hides and reopens the
+  // properties in whichever mode they are in without detaching or re-docking.
   propertiesFloating: boolean
   setPropertiesFloating: (enabled: boolean) => void
   propertiesFloatingOpen: boolean
   setPropertiesFloatingOpen: (enabled: boolean) => void
+  propertiesDockedOpen: boolean
+  setPropertiesDockedOpen: (enabled: boolean) => void
 
   // Persisted position and size of the floating palettes, so each reopens where
   // the user last left it, session to session. Null until the user moves or
@@ -218,6 +220,9 @@ const useStore = create<EditorConfigState>()(
       propertiesFloatingOpen: true,
       setPropertiesFloatingOpen: (enabled) =>
         set((state) => ({ ...state, propertiesFloatingOpen: enabled })),
+      propertiesDockedOpen: true,
+      setPropertiesDockedOpen: (enabled) =>
+        set((state) => ({ ...state, propertiesDockedOpen: enabled })),
 
       // Persisted floating palette geometry (null until first moved/resized)
       propertiesPanelRect: null,
@@ -310,6 +315,7 @@ const useStore = create<EditorConfigState>()(
         propertiesSidebarWidth: state.propertiesSidebarWidth,
         propertiesFloating: state.propertiesFloating,
         propertiesFloatingOpen: state.propertiesFloatingOpen,
+        propertiesDockedOpen: state.propertiesDockedOpen,
         propertiesPanelRect: state.propertiesPanelRect,
         hariPanelRect: state.hariPanelRect,
         autoScrollToSelection: state.autoScrollToSelection,
@@ -400,6 +406,8 @@ export function useEditorConfig() {
     setPropertiesFloating,
     propertiesFloatingOpen,
     setPropertiesFloatingOpen,
+    propertiesDockedOpen,
+    setPropertiesDockedOpen,
     propertiesPanelRect,
     setPropertiesPanelRect,
     hariPanelRect,
@@ -467,6 +475,8 @@ export function useEditorConfig() {
       setPropertiesFloating: state.setPropertiesFloating,
       propertiesFloatingOpen: state.propertiesFloatingOpen,
       setPropertiesFloatingOpen: state.setPropertiesFloatingOpen,
+      propertiesDockedOpen: state.propertiesDockedOpen,
+      setPropertiesDockedOpen: state.setPropertiesDockedOpen,
       propertiesPanelRect: state.propertiesPanelRect,
       setPropertiesPanelRect: state.setPropertiesPanelRect,
       hariPanelRect: state.hariPanelRect,
@@ -514,17 +524,23 @@ export function useEditorConfig() {
     setPropertiesFloatingOpen(true)
   }, [setPropertiesFloating, setPropertiesFloatingOpen])
 
-  // Menu action mirroring "Show Chat": while docked, detach and show; while
-  // floating, toggle the palette's visibility.
+  // Hide or reveal the properties in whichever mode they are in. It never detaches
+  // or re-docks: floating toggles the palette, docked toggles the right-edge pane.
   const showProperties = useCallback(() => {
-    if (!propertiesFloating) {
-      floatProperties()
+    if (propertiesFloating) {
+      setPropertiesFloatingOpen(!propertiesFloatingOpen)
 
       return
     }
 
-    setPropertiesFloatingOpen(!propertiesFloatingOpen)
-  }, [propertiesFloating, propertiesFloatingOpen, floatProperties, setPropertiesFloatingOpen])
+    setPropertiesDockedOpen(!propertiesDockedOpen)
+  }, [
+    propertiesFloating,
+    propertiesFloatingOpen,
+    setPropertiesFloatingOpen,
+    propertiesDockedOpen,
+    setPropertiesDockedOpen,
+  ])
 
   const toggleShowSelection = useCallback(() => {
     setShowSelection(!showSelection)
@@ -658,6 +674,8 @@ export function useEditorConfig() {
     setPropertiesFloating,
     propertiesFloatingOpen,
     setPropertiesFloatingOpen,
+    propertiesDockedOpen,
+    setPropertiesDockedOpen,
     propertiesPanelRect,
     setPropertiesPanelRect,
     hariPanelRect,

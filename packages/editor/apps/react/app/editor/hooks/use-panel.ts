@@ -14,7 +14,6 @@ export type PanelType =
   | "add-icon-set"
   | "component"
   | "image-upload"
-  | "ai-chat"
   | null
 
 type OpenPanelArgs =
@@ -26,15 +25,23 @@ type OpenPanelArgs =
   | [activePanel: "add-icon-set", options?: undefined]
   | [activePanel: "component", options?: Target]
   | [activePanel: "image-upload", options?: undefined]
-  | [activePanel: "ai-chat", options?: undefined]
   | [activePanel: null, options?: undefined]
 
 type PanelState = {
+  // The single exclusive slot: opening one dialog closes any other. Palettes are
+  // not tracked here, so a palette stays open while a dialog is used.
   activePanel: PanelType
   openPanel: (...args: OpenPanelArgs) => void
   closePanel: () => void
   target?: Target
   dialogLevel?: ComponentLevel
+
+  // Palette visibility, each independent of `activePanel` and of one another, so a
+  // palette coexists with a dialog and with the other palettes. The Hari chat is the
+  // first; other palettes keep their own flags where they already live.
+  aiChatOpen: boolean
+  openAiChat: () => void
+  closeAiChat: () => void
 }
 
 const useStore = create<PanelState>((set) => ({
@@ -59,7 +66,6 @@ const useStore = create<PanelState>((set) => ({
       case "add-font-collection":
       case "add-icon-set":
       case "image-upload":
-      case "ai-chat":
         set({
           activePanel: args[0],
           target: undefined,
@@ -72,6 +78,10 @@ const useStore = create<PanelState>((set) => ({
     }
   },
   closePanel: () => set({ activePanel: null, target: undefined, dialogLevel: undefined }),
+
+  aiChatOpen: false,
+  openAiChat: () => set({ aiChatOpen: true }),
+  closeAiChat: () => set({ aiChatOpen: false }),
 }))
 
 export function usePanel() {
@@ -82,11 +92,7 @@ export function usePanel() {
     activePanel: store.activePanel,
     openPanel: store.openPanel,
     closePanel: () => {
-      if (
-        store.activePanel !== "image-upload" &&
-        store.activePanel !== "ai-chat" &&
-        store.activePanel !== null
-      ) {
+      if (store.activePanel !== "image-upload" && store.activePanel !== null) {
         setActiveTool("select")
       }
 
@@ -94,5 +100,9 @@ export function usePanel() {
     },
     target: store.activePanel === "component" ? store.target : undefined,
     dialogLevel: store.activePanel === "add-board" ? store.dialogLevel : undefined,
+
+    aiChatOpen: store.aiChatOpen,
+    openAiChat: store.openAiChat,
+    closeAiChat: store.closeAiChat,
   }
 }

@@ -111,6 +111,11 @@ export function WindowSurface({
   const showBackdrop = modal || closeOnClickOutside || preventInteractionOutside
   const backdropClick = modal || closeOnClickOutside ? onClose : undefined
 
+  // Dialogs sit above palettes: a modal or content-sized surface is a dialog, and a plain
+  // draggable surface is a palette or a badge card. The two take separate z-index bands so a
+  // dialog is never obscured by a palette left open behind it.
+  const isDialog = modal || contentSized
+
   if (contentSized) {
     // The centered overlay both backs the modal and bounds the drag, so the
     // surface stays on screen. Clicking the overlay closes; clicking the surface
@@ -139,9 +144,14 @@ export function WindowSurface({
     )
   }
 
-  const surfaceStyle = anchored ? styles.anchoredSurface : styles.surface
+  const surfaceStyle = anchored
+    ? styles.anchoredSurface
+    : isDialog
+      ? styles.dialogSurface
+      : styles.surface
   const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
-  const backdrop = showBackdrop ? <div onClick={backdropClick} style={styles.backdrop} /> : null
+  const backdropStyle = isDialog ? styles.dialogBackdrop : styles.backdrop
+  const backdrop = showBackdrop ? <div onClick={backdropClick} style={backdropStyle} /> : null
 
   // Anchored inside the canvas layer, a press bubbles to the canvas click handler; stop it
   // so interacting with the card never reads as a canvas click. A body-portaled surface has
@@ -194,6 +204,7 @@ const styles: Record<string, CSSProperties> = {
   scope: {
     display: "contents",
   },
+  // Palette band (30/40): a non-modal draggable surface and its optional backdrop.
   backdrop: {
     position: "fixed",
     inset: 0,
@@ -213,12 +224,25 @@ const styles: Record<string, CSSProperties> = {
     top: 0,
     zIndex: 40,
   },
+  // Dialog band (50/60): above the palette band, so a dialog is never hidden behind a
+  // palette that stays open behind it. Shared by modal surfaces and the content-sized modal.
+  dialogBackdrop: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 50,
+  },
+  dialogSurface: {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    zIndex: 60,
+  },
   // Content-sized modal: a fixed, flex-centered overlay holds a surface that
   // hugs its authored content and drags as an offset from center.
   centerOverlay: {
     position: "fixed",
     inset: 0,
-    zIndex: 30,
+    zIndex: 50,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -226,6 +250,6 @@ const styles: Record<string, CSSProperties> = {
   contentSurface: {
     width: "fit-content",
     height: "fit-content",
-    zIndex: 40,
+    zIndex: 60,
   },
 }

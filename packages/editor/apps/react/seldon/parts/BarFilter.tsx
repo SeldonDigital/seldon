@@ -103,7 +103,7 @@ export function BarFilter({
   seldonRefs,
   ...props
 }: BarFilterProps) {
-  const barFilterClassName = combineClassNames("sdn-bar-state", className)
+  const barFilterClassName = combineClassNames("sdn-bar-filter", className)
 
   const comboboxFieldProps = mergeOptionalSlot(sdn.comboboxField, comboboxField, seldonRefs)
   const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)

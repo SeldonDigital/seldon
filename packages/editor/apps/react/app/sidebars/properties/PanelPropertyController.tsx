@@ -45,11 +45,16 @@ function PropertyPalette() {
   const {
     setPropertiesFloating,
     setPropertiesFloatingOpen,
+    setPropertiesDockedOpen,
     propertiesPanelRect,
     setPropertiesPanelRect,
   } = useEditorConfig()
 
-  const dock = useCallback(() => setPropertiesFloating(false), [setPropertiesFloating])
+  // Re-docking reveals the docked pane, even if it was previously hidden via Show Properties.
+  const dock = useCallback(() => {
+    setPropertiesFloating(false)
+    setPropertiesDockedOpen(true)
+  }, [setPropertiesFloating, setPropertiesDockedOpen])
   const close = useCallback(() => setPropertiesFloatingOpen(false), [setPropertiesFloatingOpen])
 
   // Every value reaches its slot by the slot's baked `data-seldon-ref` name, so

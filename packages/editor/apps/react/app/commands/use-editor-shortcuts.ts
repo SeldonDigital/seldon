@@ -46,6 +46,7 @@ export function useEditorShortcuts() {
   const { copyNode, pasteNode, cutNode } = useNodeClipboardActions()
   const {
     togglePanels,
+    showProperties,
     toggleShowSelection,
     toggleWireframeMode,
     toggleShowConnectors,
@@ -63,7 +64,7 @@ export function useEditorShortcuts() {
   } = useEditorConfig()
   const { toggleRefBadges } = useRefBadges()
   const { toggleIsolation } = useToggleIsolation()
-  const { activePanel, openPanel, closePanel } = usePanel()
+  const { activePanel, openPanel, aiChatOpen, openAiChat, closeAiChat } = usePanel()
   const navigate = useNavigate()
 
   const { workspace } = useWorkspace()
@@ -107,22 +108,17 @@ export function useEditorShortcuts() {
   )
   useHotkeys("shift+alt+c", addVariant, { preventDefault: true })
 
-  // Create authored component (opens the create-component dialog)
-  useHotkeys(
-    "c",
-    () => {
-      openPanel("create-component")
-      setActiveTool("select")
-    },
-    { preventDefault: true },
-  )
+  // Insert component (arms the component placement tool)
+  useHotkeys("c", () => setActiveTool("component"), {
+    preventDefault: true,
+  }) // prevent the character from being typed after the trigger
 
   // Toggle the Hari chat palette
   useHotkeys(
     "`",
     () => {
-      if (activePanel === "ai-chat") closePanel()
-      else openPanel("ai-chat")
+      if (aiChatOpen) closeAiChat()
+      else openAiChat()
     },
     { preventDefault: true },
   )
@@ -182,10 +178,17 @@ export function useEditorShortcuts() {
     enabled: activeTool === "component",
   })
 
+  // Create authored component (opens the create-component dialog)
+  useHotkeys(
+    "shift+c",
+    () => {
+      openPanel("create-component")
+      setActiveTool("select")
+    },
+    { preventDefault: true },
+  )
+
   // Header tools
-  useHotkeys("shift+c", () => setActiveTool("component"), {
-    preventDefault: true,
-  }) // prevent the character from being typed after the trigger
   useHotkeys("v", () => setActiveTool("select"))
 
   // Isolation mode
@@ -215,8 +218,11 @@ export function useEditorShortcuts() {
   useHotkeys("shift+5", () => toggleTypographyBadges(), { preventDefault: true })
   useHotkeys("shift+6", () => toggleEffectsBadges(), { preventDefault: true })
 
+  // Show the properties palette.
+  useHotkeys("p", () => showProperties(), { preventDefault: true })
+
   // Show unused properties / fonts / icons in the properties sidebar.
-  useHotkeys("p", () => toggleShowUnusedProperties(), { preventDefault: true })
+  useHotkeys("u", () => toggleShowUnusedProperties(), { preventDefault: true })
   useHotkeys("f", () => toggleShowUnusedFonts(), { preventDefault: true })
   useHotkeys("n", () => toggleShowUnusedIcons(), { preventDefault: true })
 
