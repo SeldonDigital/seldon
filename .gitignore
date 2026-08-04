@@ -37,3 +37,9 @@ __exports__
 
 # Shared filesystem workspace store used by both editors
 /.seldon
+
+# Agent tooling is per-developer and tool-specific, so it stays out of the repo:
+# harness config, prompts/skills, and the local markdown issue tracker.
+/.claude
+/CLAUDE.md
+/.scratch
