@@ -23,26 +23,31 @@ describe("buildFindNodeEscalateStage", () => {
 })
 
 describe("findNodeMissMessage", () => {
-  it("renders the same candidate lines as the prompt", () => {
-    const { prompt } = buildFindNodeEscalateStage({
-      query: "the title",
-      pool: POOL,
-    })
-    const message = findNodeMissMessage("the title", POOL)
-    for (const candidate of POOL) {
-      const line = `- ${candidate.id}: ${candidate.text}`
-      expect(prompt).toContain(line)
-      expect(message).toContain(line)
-    }
+  it("bullets the descriptions it is given", () => {
+    const message = findNodeMissMessage("the title", [
+      'the text "Welcome" (row 1)',
+      "the heading (row 2)",
+    ])
+    expect(message).toContain('- the text "Welcome" (row 1)')
+    expect(message).toContain("- the heading (row 2)")
+    expect(message).toContain("select it on the canvas")
+  })
+
+  // The pick prompt lists ids because the model answers with one. This message
+  // is read by a person, so an id in it would be debug output.
+  it("carries no internal node ids", () => {
+    const message = findNodeMissMessage("the title", ["the chip (row 1)"])
+    expect(message).not.toContain("component-")
+    expect(message).not.toMatch(/\bn1\b/)
   })
 
   it("lists at most five near misses", () => {
-    const bigPool = Array.from({ length: 8 }, (_, index) => ({
-      id: `n${index}`,
-      text: `candidate ${index}`,
-    }))
-    const message = findNodeMissMessage("x", bigPool)
-    expect(message).toContain("- n4:")
-    expect(message).not.toContain("- n5:")
+    const manyNearMisses = Array.from(
+      { length: 8 },
+      (_, index) => `candidate ${index}`,
+    )
+    const message = findNodeMissMessage("x", manyNearMisses)
+    expect(message).toContain("- candidate 4")
+    expect(message).not.toContain("- candidate 5")
   })
 })

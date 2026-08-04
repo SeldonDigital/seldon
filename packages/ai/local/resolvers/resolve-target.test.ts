@@ -80,20 +80,48 @@ describe("resolveNodeTarget", () => {
     )
     expect(resolution.kind).toBe("message")
     if (resolution.kind === "message") {
-      expect(resolution.text).toContain("No node matches")
+      expect(resolution.reason).toBe("not-found")
+      expect(resolution.text).toContain('Nothing here matches "does-not-exist"')
+      // The message goes to the user verbatim, so it tells THEM what to do --
+      // it used to tell a tool-calling model to "ask the user".
+      expect(resolution.text).toContain("select it on the canvas")
     }
+  })
+
+  it("offers a pick list in plain words, with the ids carried as data", async () => {
+    const { seedChipRowWorkspace, CHIP_ROW_BOARD } =
+      await import("../../eval/seed")
+    const { workspace } = seedChipRowWorkspace()
+    const resolution = resolveNodeTarget(
+      workspace,
+      CHIP_ROW_BOARD as never,
+      undefined,
+      undefined,
+      { nodeId: "chip" },
+      undefined,
+      "instance",
+    )
+    expect(resolution.kind).toBe("message")
+    if (resolution.kind !== "message") return
+    expect(resolution.reason).toBe("several")
+    expect(resolution.candidateIds?.length).toBeGreaterThan(1)
+    // The ids are how the caller re-offers the choice; the TEXT is what the
+    // user reads, and an internal id in it reads as debug output.
+    for (const candidateId of resolution.candidateIds ?? []) {
+      expect(resolution.text).not.toContain(candidateId)
+    }
+    expect(resolution.text).toContain("Tell me which one you mean")
   })
 })
 
 describe("resolveClassTarget: texts include authored content", () => {
   it("counts a typed sentence on a list item as a text, but never catalog boilerplate", async () => {
-    const { seedChipRowWorkspace, CHIP_ROW_BOARD } = await import("../../eval/seed")
-    const { applyActions } = await import(
-      "@seldon/core/workspace/reducers/apply-actions"
-    )
-    const { isComponentBoard } = await import(
-      "@seldon/core/workspace/model/components"
-    )
+    const { seedChipRowWorkspace, CHIP_ROW_BOARD } =
+      await import("../../eval/seed")
+    const { applyActions } =
+      await import("@seldon/core/workspace/reducers/apply-actions")
+    const { isComponentBoard } =
+      await import("@seldon/core/workspace/model/components")
     let { workspace } = seedChipRowWorkspace()
     const board = workspace.boards[CHIP_ROW_BOARD]
     if (!board || !isComponentBoard(board)) throw new Error("no board")

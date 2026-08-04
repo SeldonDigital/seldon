@@ -61,14 +61,19 @@ describeIfOllama("findNodeSemantic (live)", () => {
       expect(findResult.kind).toBe("message")
       if (findResult.kind === "message") {
         expect(findResult.reason).toBe("several")
-        // The ask must list real, existing nodes to choose from.
-        const listedNodeIds = [...findResult.text.matchAll(/- (\S+):/g)].map(
-          (match) => match[1]!,
-        )
-        expect(listedNodeIds.length).toBeGreaterThanOrEqual(2)
-        for (const nodeId of listedNodeIds) {
+        // The ask must offer real, existing nodes to choose from -- but the
+        // ids travel as DATA on candidateIds, because this text reaches the
+        // user word for word and an id in it reads as debug output.
+        const candidateIds = findResult.candidateIds ?? []
+        expect(candidateIds.length).toBeGreaterThanOrEqual(2)
+        for (const nodeId of candidateIds) {
           expect(workspace.nodes[nodeId]).toBeDefined()
         }
+        const bulletedChoices = findResult.text
+          .split("\n")
+          .filter((line) => line.startsWith("- "))
+        expect(bulletedChoices).toHaveLength(candidateIds.length)
+        expect(findResult.text).not.toContain("component-")
       }
     },
     LIVE_TIMEOUT_MS,

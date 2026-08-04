@@ -1,4 +1,5 @@
-import { buildConversationalReplyStage } from "../../prompt/stages/reply"
+import { buildCompletedWorkReplyStage } from "../../prompt/stages/reply"
+import { replaceNodeIdsWithWords } from "../node-words"
 import { callOllamaFormat } from "../ollama-client"
 import {
   type FamilyOutcome,
@@ -13,10 +14,17 @@ import {
  * because the template exposes raw node ids -- "Set content to "Go" on
  * component-text-ac6JiaK3." -- which reads as debug output, not an answer.
  *
- * Two safety properties make generating this text safe: the call only ever
- * sees the structured outcomes of what actually committed, so it cannot claim
- * work that never happened, and any failure of the call itself falls back to
- * the template, so reply phrasing can never fail a turn that did its work.
+ * The reply is assembled from two halves that are kept apart on purpose. What
+ * COMMITTED is phrased by a model call. What did NOT -- a clarification, a
+ * refusal, a skipped step -- is carried through verbatim, only with its node
+ * ids swapped for plain words. The phrasing call never sees the failing half,
+ * so it has no failure to soften, reorder, or restate as a success: a turn
+ * that stopped at resolve_target used to come back as "The text in several
+ * elements was changed."
+ *
+ * Nor does it see the REQUEST. Only the handlers' own descriptions of what
+ * they wrote reach it, so a step whose handler did something other than what
+ * was asked cannot be narrated as though it obeyed (issue 17).
  */
 
 /** One executed step of the plan, with what came of it. */
@@ -26,6 +34,39 @@ export interface StepOutcome {
   /** The intent the classifier assigned, or "skipped" for a none-label. */
   intent: string
   outcome: FamilyOutcome
+}
+
+/** A step whose handler committed at least one action. */
+type CompletedStep = StepOutcome & {
+  outcome: Extract<FamilyOutcome, { kind: "applied" }>
+}
+
+/** A step that stopped or was skipped: nothing was written for it. */
+type UnresolvedStep = StepOutcome & {
+  outcome: Extract<FamilyOutcome, { kind: "message" }>
+}
+
+function stepCommittedWork(
+  stepOutcome: StepOutcome,
+): stepOutcome is CompletedStep {
+  return stepOutcome.outcome.kind === "applied"
+}
+
+/**
+ * Splits the plan by what actually landed. Both halves keep their original
+ * step order, so a reply reads in the order the user asked for things.
+ */
+function partitionByWhatCommitted(stepOutcomes: StepOutcome[]): {
+  completed: CompletedStep[]
+  unresolved: UnresolvedStep[]
+} {
+  const completed: CompletedStep[] = []
+  const unresolved: UnresolvedStep[] = []
+  for (const stepOutcome of stepOutcomes) {
+    if (stepCommittedWork(stepOutcome)) completed.push(stepOutcome)
+    else unresolved.push(stepOutcome as UnresolvedStep)
+  }
+  return { completed, unresolved }
 }
 
 /** Deterministic reply: exactly what happened, step by step. */
@@ -49,24 +90,18 @@ export function buildTemplateReply(stepOutcomes: StepOutcome[]): string {
 }
 
 /**
- * Conversational reply: one call given only the structured outcomes. Throws
- * are swallowed into the template so reply generation can never fail a turn
- * that already did its work.
+ * Phrases the committed half of the turn. Throws are swallowed into the
+ * template so reply generation can never fail a turn that already did its
+ * work.
  */
-export async function buildConversationalReply(
+async function phraseCompletedWork(
   context: TurnContext,
-  stepOutcomes: StepOutcome[],
+  completed: CompletedStep[],
+  options: { requestHasUnfinishedSteps: boolean },
 ): Promise<string> {
-  const templateReply = buildTemplateReply(stepOutcomes)
-  const { prompt, schema } = buildConversationalReplyStage({
-    outcomes: stepOutcomes.map(({ step, outcome }) => {
-      const stepApplied = outcome.kind === "applied"
-      return {
-        status: stepApplied ? "DONE" : "STOPPED",
-        step,
-        body: stepApplied ? outcome.reply : outcome.text,
-      }
-    }),
+  const { prompt, schema } = buildCompletedWorkReplyStage({
+    completions: completed.map(({ outcome }) => ({ body: outcome.reply })),
+    requestHasUnfinishedSteps: options.requestHasUnfinishedSteps,
   })
   try {
     const { value: replyAnswer, metrics } = await callOllamaFormat<{
@@ -90,8 +125,36 @@ export async function buildConversationalReply(
       prompt,
       output: "The reply call failed; fell back to the template reply.",
     })
-    return templateReply
+    return buildTemplateReply(completed)
   }
+}
+
+/**
+ * Conversational reply: the committed half phrased by the model, the
+ * unresolved half forwarded word for word. A turn where nothing committed
+ * makes no model call at all -- there is nothing to phrase, and the resolver
+ * messages are already written for the user.
+ */
+export async function buildConversationalReply(
+  context: TurnContext,
+  stepOutcomes: StepOutcome[],
+): Promise<string> {
+  const { completed, unresolved } = partitionByWhatCommitted(stepOutcomes)
+  const unresolvedSentences = unresolved.map(({ outcome }) =>
+    replaceNodeIdsWithWords(context.state.workspace, outcome.text),
+  )
+
+  const nothingCommitted = completed.length === 0
+  if (nothingCommitted) {
+    const planDidNothingAtAll = unresolvedSentences.length === 0
+    if (planDidNothingAtAll) return "Nothing to do."
+    return unresolvedSentences.join(" ")
+  }
+
+  const phrasedCompletions = await phraseCompletedWork(context, completed, {
+    requestHasUnfinishedSteps: unresolvedSentences.length > 0,
+  })
+  return [phrasedCompletions, ...unresolvedSentences].join(" ")
 }
 
 /**

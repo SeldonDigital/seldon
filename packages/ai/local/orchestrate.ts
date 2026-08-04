@@ -298,9 +298,34 @@ export async function chatToActions(
     })
 
     const familyHandler = FAMILY_HANDLERS_BY_INTENT[intentKey]
-    const outcome: FamilyOutcome = familyHandler
+    const committedActionsBeforeStep = turnState.actions.length
+    const handlerOutcome: FamilyOutcome = familyHandler
       ? await familyHandler(context)
       : { kind: "message", text: UNSUPPORTED_INTENT_REPLY }
+
+    // `commit` is the only writer of `turnState.actions`, and it throws unless
+    // the working copy really changed -- so the action count is ground truth
+    // for "something happened". A handler that answers `applied` without one
+    // is claiming work the document never got, and the reply would repeat the
+    // claim. Audited here rather than trusted, because that lie is invisible:
+    // the user sees a confident sentence and an unchanged canvas.
+    const handlerClaimedSuccess = handlerOutcome.kind === "applied"
+    const stepWroteNothing =
+      turnState.actions.length === committedActionsBeforeStep
+    const handlerClaimedWorkItDidNotDo =
+      handlerClaimedSuccess && stepWroteNothing
+    if (handlerClaimedWorkItDidNotDo) {
+      recordStep(context, "commit-audit", {
+        ok: false,
+        output: `${intentKey} reported "${handlerOutcome.reply}" but committed no action; reporting it as unchanged.`,
+      })
+    }
+    const outcome: FamilyOutcome = handlerClaimedWorkItDidNotDo
+      ? {
+          kind: "message",
+          text: `Nothing changed for "${step}": the edit reported success but wrote nothing to the document.`,
+        }
+      : handlerOutcome
     stepOutcomes.push({ step, intent: intentKey, outcome })
 
     // A stop is terminal for the REST of the plan: later steps may depend on

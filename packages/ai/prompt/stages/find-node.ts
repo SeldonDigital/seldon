@@ -6,9 +6,18 @@ export interface FindNodeCandidate {
   text: string
 }
 
-/** The shared `- id: text` rendering, so prompt and miss message agree. */
+/**
+ * The `- id: text` rendering the PICK prompt needs: the model answers with an
+ * id, so it has to see them. A user never does -- the miss message below takes
+ * plain-word descriptions instead. These two renderings used to be one shared
+ * helper, which is how the embedding descriptor
+ * (`chip, Chip, content="Assist", position: row 1`) ended up in a sentence
+ * addressed to a person.
+ */
 function candidateLines(pool: readonly FindNodeCandidate[]): string {
-  return pool.map((candidate) => `- ${candidate.id}: ${candidate.text}`).join("\n")
+  return pool
+    .map((candidate) => `- ${candidate.id}: ${candidate.text}`)
+    .join("\n")
 }
 
 /**
@@ -42,12 +51,21 @@ export function buildFindNodeEscalateStage(inputs: {
   }
 }
 
-/** The terminal clarification for a "none" pick, listing the near misses. */
+/** Most near misses the user is asked to choose between. */
+const MISS_LIST_LIMIT = 5
+
+/**
+ * The terminal clarification for a "none" pick, listing the near misses. Takes
+ * descriptions already phrased for a reader, not candidates: this message goes
+ * to the user verbatim.
+ */
 export function findNodeMissMessage(
   query: string,
-  pool: readonly FindNodeCandidate[],
+  candidateDescriptions: readonly string[],
 ): string {
-  return `I couldn't confidently match "${query}" to an element on this board. The closest candidates were:\n${candidateLines(
-    pool.slice(0, 5),
-  )}\nTell me which one you mean, or select it on the canvas.`
+  const bulletedNearMisses = candidateDescriptions
+    .slice(0, MISS_LIST_LIMIT)
+    .map((description) => `- ${description}`)
+    .join("\n")
+  return `I couldn't confidently match "${query}" to an element on this board. The closest were:\n${bulletedNearMisses}\nTell me which one you mean, or select it on the canvas and ask again.`
 }

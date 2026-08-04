@@ -6,14 +6,13 @@ import {
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
-import type { MessageReason } from "../../types"
-
-import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import {
   matchNodeStrings,
   nodeAuthoredContent,
 } from "../../prompt/context-sections/node-strings"
+import type { MessageReason } from "../../types"
 import type { SelectionScope } from "../../types"
+import { describeNodeInWords } from "../node-words"
 
 /** How the model names a node to edit: the current selection or an explicit id. */
 export type TargetSpec = "selection" | { nodeId: string }
@@ -74,18 +73,6 @@ function boardNodeIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
     ids.add(ref.id)
   })
   return ids
-}
-
-/** The settable values of one node's component, appended when a match is found off-board. */
-function nodeValuesBlock(workspace: Workspace, nodeId: string): string {
-  const node = workspace.nodes[nodeId]
-  if (!node) return ""
-  const catalogId = getNodeCatalogId(node, workspace)
-  if (!catalogId) return ""
-  const block = componentValuesSection(new Set([catalogId]), workspace)
-    .join("\n")
-    .trim()
-  return block ? `\n\nSettable values for ${catalogId}:\n${block}` : ""
 }
 
 /** Every node id in the subtree rooted at `rootId` on a component board. */
@@ -247,18 +234,58 @@ export function resolveClassTarget(
   if (matchedIds.size === 0) {
     return {
       kind: "message",
-      text: `No elements on this board match "${phrase}". Ask the user which elements to change, or try a different name.`,
+      text: `No elements on this board match "${phrase}". Name the elements you mean, or select one on the canvas and ask again.`,
       reason: "not-found",
     }
   }
   return { kind: "resolved-many", nodeIds: [...matchedIds] }
 }
 
-function describe(match: NodeMatch): string {
-  const name = match.label || match.catalogId || match.id
-  const value = match.snippet ? ` value="${match.snippet}"` : ""
-  return `${match.id} ("${name}"${match.catalogId ? ` ${match.catalogId}` : ""})${value} on board ${match.boardKey} "${match.boardLabel}"`
+/**
+ * How one candidate reads in a pick list the user sees. The old form was built
+ * for the removed free-tool-calling loop -- `component-text-h8 ("Text" text)
+ * value="..." on board list "Lists"` -- and every message that uses it now
+ * reaches the user word for word, so the internal id and board key are gone
+ * and the content they can actually see on the canvas leads. The board name is
+ * only worth the words when the candidates span boards.
+ */
+function describeMatch(
+  workspace: Workspace,
+  match: NodeMatch,
+  options: { includeBoard: boolean },
+): string {
+  // The catalog kind and label alone repeat: five list texts all read "the
+  // Text". What tells them apart is the sentence someone typed onto each,
+  // which is exactly what describeNodeInWords leads with.
+  const nameInWords = describeNodeInWords(workspace, match.id)
+  // A value match ("hsl(202 50% 95%)") is why this node is in the list at
+  // all, so it is named -- unless the description already showed it.
+  const matchedValueIsAlreadyShown =
+    match.snippet === null || nameInWords.includes(match.snippet)
+  const valueNote = matchedValueIsAlreadyShown
+    ? ""
+    : ` (matching "${match.snippet}")`
+  const boardPart = options.includeBoard
+    ? ` on the "${match.boardLabel}" board`
+    : ""
+  return `${nameInWords}${valueNote}${boardPart}`
 }
+
+/** The pick list itself, bounded and bulleted. */
+function describePickList(
+  workspace: Workspace,
+  matches: NodeMatch[],
+  options: { includeBoard: boolean },
+): string {
+  return matches
+    .slice(0, MATCH_LIMIT)
+    .map((match) => `- ${describeMatch(workspace, match, options)}`)
+    .join("\n")
+}
+
+/** The closing line every ask ends on, so the user hears one way to answer. */
+export const HOW_TO_ANSWER =
+  "Tell me which one you mean, or select it on the canvas and ask again."
 
 /**
  * Widens once to a workspace lookup and reports one outcome. A single match in
@@ -278,7 +305,7 @@ function widen(
   if (matches.length === 0) {
     return {
       kind: "message",
-      text: `No node matches "${query}". Ask the user which node to change, or try a different search term.`,
+      text: `Nothing here matches "${query}". Name the element you mean, or select it on the canvas and ask again.`,
       reason: "not-found",
     }
   }
@@ -289,17 +316,14 @@ function widen(
     }
     return {
       kind: "message",
-      text: `Found ${describe(match)}, outside the active board. Ask the user to confirm before editing it, then call again with target { "nodeId": "${match.id}" }.${nodeValuesBlock(workspace, match.id)}`,
+      text: `The only match for "${query}" is ${describeMatch(workspace, match, { includeBoard: true })}, which isn't on the board you're working on. Open that board and ask again, or tell me to change it there.`,
       reason: "off-board",
     }
   }
-  const list = matches
-    .slice(0, MATCH_LIMIT)
-    .map((match) => `- ${describe(match)}`)
-    .join("\n")
+  // A workspace-wide search crosses boards, so the board name earns its place.
   return {
     kind: "message",
-    text: `Several nodes match "${query}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
+    text: `Several elements match "${query}":\n${describePickList(workspace, matches, { includeBoard: true })}\n${HOW_TO_ANSWER}`,
     reason: "several",
     candidateIds: matches.slice(0, MATCH_LIMIT).map((match) => match.id),
   }
@@ -335,13 +359,11 @@ export function resolveNodeTarget(
         return { kind: "resolved", nodeId: within[0].id }
       }
       if (within.length > 1) {
-        const list = within
-          .slice(0, MATCH_LIMIT)
-          .map((item) => `- ${describe(item)}`)
-          .join("\n")
+        // Every candidate sits inside the one selected element, so naming the
+        // board on each line would repeat the same word ten times.
         return {
           kind: "message",
-          text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
+          text: `Several parts of the selection match "${match}":\n${describePickList(workspace, within, { includeBoard: false })}\n${HOW_TO_ANSWER}`,
           reason: "several",
           candidateIds: within
             .slice(0, MATCH_LIMIT)

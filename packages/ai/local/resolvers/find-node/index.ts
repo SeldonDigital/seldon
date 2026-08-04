@@ -12,6 +12,7 @@ import {
   buildFindNodeEscalateStage,
   findNodeMissMessage,
 } from "../../../prompt/stages/find-node"
+import { describeNodeInWords } from "../../node-words"
 import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
 import type { MessageReason } from "../resolve-target"
@@ -70,6 +71,21 @@ export function describeCandidate(
   const nodeHasSpatialLabel = spatialLabel !== undefined && spatialLabel !== ""
   if (nodeHasSpatialLabel) descriptorParts.push(`position: ${spatialLabel}`)
   return { id: nodeId, text: descriptorParts.join(", ") }
+}
+
+/**
+ * How one candidate reads in an ask the user sees. The candidate's own `text`
+ * is an embedding descriptor built for cosine similarity, so it is rebuilt
+ * here from plain words -- keeping the spatial label, which is usually the
+ * only thing that tells two tied siblings apart.
+ */
+function describeCandidateInWords(
+  workspace: Workspace,
+  candidate: Candidate,
+): string {
+  const spatialLabel = candidate.text.split("position: ")[1]
+  const positionNote = spatialLabel ? ` (${spatialLabel})` : ""
+  return `${describeNodeInWords(workspace, candidate.id)}${positionNote}`
 }
 
 /** Every node on the board as an embeddable candidate string. */
@@ -195,7 +211,12 @@ async function escalate(
   if (!modelFoundAMatch) {
     return {
       kind: "message",
-      text: findNodeMissMessage(query, pool),
+      text: findNodeMissMessage(
+        query,
+        pool.map((candidate) =>
+          describeCandidateInWords(context.state.workspace, candidate),
+        ),
+      ),
       reason: "not-found",
     }
   }
@@ -364,14 +385,17 @@ export async function findNodeSemantic(
 
   const clusterLines = tiedCluster
     .slice(0, TIE_LIST_LIMIT)
-    .map((rankedEntry) => {
-      const candidate = candidateById.get(rankedEntry.id)!
-      return `- ${candidate.id}: ${candidate.text}`
-    })
+    .map(
+      (rankedEntry) =>
+        `- ${describeCandidateInWords(
+          context.state.workspace,
+          candidateById.get(rankedEntry.id)!,
+        )}`,
+    )
     .join("\n")
   return {
     kind: "message",
-    text: `${tiedCluster.length} elements match "${query}" equally well:\n${clusterLines}\nAsk the user to select the one they mean on the canvas (or name it more specifically), then run again.`,
+    text: `${tiedCluster.length} elements match "${query}" equally well:\n${clusterLines}\nTell me which one you mean, or name it more specifically and ask again.`,
     reason: "several",
     candidateIds: tiedCluster
       .slice(0, TIE_LIST_LIMIT)
