@@ -725,8 +725,13 @@ export function useRowProperty({
     endEdit,
     resetActions,
     focusTargetRef: frameRef,
-    isExpanded,
-    hasChildren: showFacets,
+    // `isExpanded` drives the facet animation, so it collapses when the compound
+    // reads None even if a stale expansion flag lingers. `hasChildren` stays
+    // structural (does the row have facet rows to build), while `showDisclosure`
+    // gates the toggle affordance, which None hides.
+    isExpanded: showFacets && isExpanded,
+    hasChildren,
+    showDisclosure: showFacets,
     childItems,
     layerDrag,
   }

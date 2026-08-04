@@ -55,7 +55,7 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
   const isToken = presentation === "token"
   const inCard = cardScope !== null
   const labelHideProps = isToken ? { style: HIDDEN_SLOT_STYLE } : undefined
-  const hideDisclosure = inCard && !view.hasChildren
+  const hideDisclosure = inCard && !view.showDisclosure
 
   const { listItemProps, control } = view
   const switchControl = control.kind === "switch" ? control : null
@@ -97,7 +97,13 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
   // facets flush at the left edge instead.
   const indentedChildren = cardScope ? childList : <IndentationLevel>{childList}</IndentationLevel>
 
-  const childRows = view.hasChildren ? (
+  // Keep the expandable mounted for every compound or shorthand parent, even when
+  // the current value drops its facets (a Background set to None reseeds to a bare
+  // layer). AnimatePresence then plays the collapse from the last open facets, and
+  // the enter when the value adds them back, instead of snapping. `isExpanded`
+  // already reads false for None, so a mounted-but-empty parent stays collapsed.
+  const isCompoundParent = props.property.isCompound || props.property.isShorthand
+  const childRows = isCompoundParent ? (
     <FramerExpandable isExpanded={view.isExpanded}>{indentedChildren}</FramerExpandable>
   ) : null
 
