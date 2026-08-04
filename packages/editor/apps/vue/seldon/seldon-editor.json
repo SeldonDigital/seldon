@@ -18872,17 +18872,16 @@
         },
         "background": [
           {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.offWhite"
             },
             "brightness": {
-              "type": "empty",
-              "value": null
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 80
+              }
             },
             "opacity": {
               "type": "empty",

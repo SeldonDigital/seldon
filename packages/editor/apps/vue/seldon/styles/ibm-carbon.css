@@ -52,6 +52,8 @@
   --sdn-swatch-primary-b75: hsl(218 100% 87%);
   --sdn-swatch-active-bn20: hsl(218 100% 38.4%);
   --sdn-swatch-active-bn40: hsl(218 100% 28.8%);
+  --sdn-swatch-offWhite-b80: hsl(0 0% 99.2%);
+  --sdn-swatch-negative-b80: hsl(354 89% 88.8%);
   --sdn-swatch-offWhite-bn20: hsl(0 0% 76.8%);
   --sdn-swatch-swatch4-b50: hsl(38 100% 94%);
   --sdn-swatch-negative-b50: hsl(354 89% 72%);
@@ -158,6 +160,8 @@
   --sdn-hc-on-primary-b75: hsl(218 12% 8%);
   --sdn-hc-on-active-bn20: hsl(218 12% 98%);
   --sdn-hc-on-active-bn40: hsl(218 12% 98%);
+  --sdn-hc-on-offWhite-b80: hsl(218 12% 8%);
+  --sdn-hc-on-negative-b80: hsl(218 12% 8%);
   --sdn-hc-on-offWhite-bn20: hsl(218 12% 8%);
   --sdn-hc-on-swatch4-b50: hsl(218 12% 8%);
   --sdn-hc-on-negative-b50: hsl(218 12% 98%);
@@ -247,6 +251,8 @@
   --sdn-swatch-primary-b75: hsl(228 100% 90.75%);
   --sdn-swatch-active-bn20: hsl(228 100% 50.4%);
   --sdn-swatch-active-bn40: hsl(228 100% 37.8%);
+  --sdn-swatch-offWhite-b80: hsl(0 0% 82.6%);
+  --sdn-swatch-negative-b80: hsl(1 76% 90.8%);
   --sdn-swatch-offWhite-bn20: hsl(0 0% 10.4%);
   --sdn-swatch-swatch4-b50: hsl(36 96% 99.5%);
   --sdn-swatch-negative-b50: hsl(1 76% 77%);
@@ -285,6 +291,8 @@
   --sdn-hc-on-primary-b75: hsl(218 12% 8%);
   --sdn-hc-on-active-bn20: hsl(218 12% 98%);
   --sdn-hc-on-active-bn40: hsl(218 12% 98%);
+  --sdn-hc-on-offWhite-b80: hsl(218 12% 8%);
+  --sdn-hc-on-negative-b80: hsl(218 12% 8%);
   --sdn-hc-on-offWhite-bn20: hsl(218 12% 98%);
   --sdn-hc-on-swatch4-b50: hsl(218 12% 8%);
   --sdn-hc-on-negative-b50: hsl(218 12% 98%);
