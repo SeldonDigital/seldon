@@ -59,7 +59,7 @@ export default function Editor() {
   return (
     <Frame wrapperElement="main" style={styles.main}>
       <EditorCrossfade transitionKey="editor">
-        <Allotment proportionalLayout={false} onDragEnd={saveSidebarWidths}>
+        <Allotment separator={false} proportionalLayout={false} onDragEnd={saveSidebarWidths}>
           <Allotment.Pane
             minSize={SIDEBAR_MIN_WIDTH}
             maxSize={SIDEBAR_MAX_WIDTH}
@@ -81,7 +81,9 @@ export default function Editor() {
             visible={showDockedProperties}
             priority={LayoutPriority.Low}
           >
-            <PropertiesSidebar />
+            <Frame style={styles.propertiesPane}>
+              <PropertiesSidebar />
+            </Frame>
           </Allotment.Pane>
         </Allotment>
       </EditorCrossfade>
@@ -102,6 +104,25 @@ export default function Editor() {
   )
 }
 
+/**
+ * The divider between each sidebar and the canvas. Allotment's own separator
+ * only paints on the leading edge of non-first panes, so it lands on the black
+ * canvas on one side and the sidebar on the other and cannot match. Drawing the
+ * border on each sidebar's canvas-facing edge keeps both dividers on the same
+ * surface. OffBlack inverts with the theme mode, so the line stays legible in
+ * light and dark chrome.
+ */
+const SIDEBAR_CANVAS_BORDER =
+  "var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent)"
+
+const SIDEBAR_PANE: CSSProperties = {
+  position: "relative",
+  zIndex: 1,
+  height: "100%",
+  width: "100%",
+  backgroundColor: "var(--sdn-swatch-offWhite)",
+}
+
 const styles: Record<string, CSSProperties> = {
   main: {
     display: "flex",
@@ -113,11 +134,12 @@ const styles: Record<string, CSSProperties> = {
     zIndex: 0,
   },
   objectsPane: {
-    position: "relative",
-    zIndex: 1,
-    height: "100%",
-    width: "100%",
-    backgroundColor: "var(--sdn-swatch-offBlack)",
+    ...SIDEBAR_PANE,
+    borderInlineEnd: SIDEBAR_CANVAS_BORDER,
+  },
+  propertiesPane: {
+    ...SIDEBAR_PANE,
+    borderInlineStart: SIDEBAR_CANVAS_BORDER,
   },
 }
 

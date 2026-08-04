@@ -205,18 +205,6 @@ html:not(.sdn-show-focus)
   color: var(--sdn-swatch-negative);
 }
 
-/*
- * Pane separators drawn by the Allotment split-view library between the
- * sidebars and the canvas. Allotment paints them with `--separator-border`;
- * defining it on the themed chrome root wins over the library's `:root`
- * default through inheritance. The theme's mode block inverts swatch
- * lightness, so this one reference renders OffBlack at 20% in light mode and
- * OffWhite at 20% in dark mode.
- */
-[data-theme] {
-  --separator-border: color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent);
-}
-
 /* Unified focus ring drawn by FocusRingOverlay. Geometry is set inline. */
 .editor-focus-ring {
   position: fixed;

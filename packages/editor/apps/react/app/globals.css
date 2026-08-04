@@ -183,7 +183,6 @@ html,
 }
 
 :root {
-  --separator-border: var(--sdn-swatch-black) !important;
   --hairline: 1px;
 }
 
