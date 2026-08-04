@@ -1294,7 +1294,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariToolIcon: {
     component: "Icon",
     nodeId: "component-message-GL7BdSOW",
-    className: "sdn-icon sdn-icon--gl7b",
+    className: "sdn-icon sdn-icon--rdh1",
     views: [
       {
         component: "MessageToolsUsed",
@@ -1798,7 +1798,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   optionIcon: {
     component: "Icon",
     nodeId: "component-icon-3QOuNmn2",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "MenuItemOption",

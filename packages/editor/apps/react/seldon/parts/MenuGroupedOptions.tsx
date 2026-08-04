@@ -53,7 +53,7 @@ const sdn: MenuGroupedOptionsProps = {
   },
   icon: {
     icon: "material-check",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--rdh1",
   },
   textLabel2: {
     children: "Option",

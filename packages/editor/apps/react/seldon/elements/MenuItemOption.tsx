@@ -38,7 +38,7 @@ const sdn: MenuItemOptionProps = {
   "aria-hidden": "false",
   icon: {
     icon: "material-check",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "optionIcon",
   },
 

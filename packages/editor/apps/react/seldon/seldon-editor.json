@@ -15580,19 +15580,7 @@
         "color": {
           "type": "computed",
           "value": "highContrastColor"
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.primary"
-            }
-          }
-        ]
+        }
       },
       "origin": "schema"
     },
