@@ -8,9 +8,18 @@ import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants/
 import { getCatalogKeyForPropertyPath } from "@seldon/core/properties/schemas/helpers/property-path"
 
 import { SHORTHAND_SIDES, propertyShape } from "../../prompt/property-taxonomy"
-import { buildResolvePropertyNamesStage } from "../../prompt/stages/resolve-property-name"
+import {
+  BARE_COLOR_ANSWER,
+  buildResolvePropertyNamesStage,
+  messageWords,
+} from "../../prompt/stages/resolve-property-name"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
+import {
+  isSwatchColorProperty,
+  wordNamesAColorValue,
+  workspaceSwatchEntries,
+} from "./resolve-color-value"
 
 /**
  * Every property key a component's nodes accept, as the dotted write paths the
@@ -171,7 +180,7 @@ export async function resolvePropertyNames(
 
   // Belt and braces: the grammar should already restrict picks to the enums,
   // but array-of-enum wasn't in the spike's tested envelope, so re-filter.
-  const knownKeys = new Set(settableKeys)
+  const knownKeys = new Set([...settableKeys, BARE_COLOR_ANSWER])
   const validPicks = (pickAnswer.picks ?? []).filter((pick) =>
     knownKeys.has(pick.key),
   )
@@ -180,7 +189,58 @@ export async function resolvePropertyNames(
     validPicks,
     context.targetHint,
   )
-  const requestedKeys = [...new Set(surviving.map((pick) => pick.key))]
+
+  // qwen3 skips the bare-color escape branch when a plausible key sits in
+  // the enum ("make all the chips blue" picked `color`, evidence "blue",
+  // live). The evidence makes the miss detectable in code: a color-family
+  // pick justified by a word that is itself a color value was named by the
+  // VALUE, not by a property word, so it becomes the bare-color answer and
+  // the component's own schema picks the key. Non-color keys are never
+  // converted -- 'change the text to "blue"' keeps its content pick.
+  //
+  // The evidence alone cannot carry this: qwen3 cites the value word even
+  // when the property IS named ("make its background yellow" evidenced
+  // "yellow" five out of five live, with the right key picked). So the
+  // message must also lack a discriminating color-property word -- a word
+  // taken from the component's own color-capable keys ("background",
+  // "border", "shadow"...), never a hand-kept list. Bare "color" does not
+  // discriminate: it names the family, not a member, so "change the color
+  // to red" still resolves through the convention.
+  const colorFamilyKeys = settableKeys.filter((settableKey) =>
+    isSwatchColorProperty(
+      getCatalogKeyForPropertyPath(settableKey) ?? settableKey,
+    ),
+  )
+  const discriminatingColorWords = new Set(
+    colorFamilyKeys
+      .flatMap((colorKey) => colorKey.split(/[.\d]+|(?=[A-Z])/))
+      .map((segment) => segment.toLowerCase())
+      .filter((segment) => segment !== "" && segment !== "color"),
+  )
+  const messageNamesAColorProperty = messageWords(context.message).some(
+    (word) => discriminatingColorWords.has(word),
+  )
+  const swatches = workspaceSwatchEntries(context.state.workspace)
+  const evidencedPicks = surviving.map((pick) => {
+    const pickIsColorFamily = isSwatchColorProperty(
+      getCatalogKeyForPropertyPath(pick.key) ?? pick.key,
+    )
+    const pickReadsAsABareColor =
+      pickIsColorFamily &&
+      !messageNamesAColorProperty &&
+      wordNamesAColorValue(pick.evidenceWord, swatches)
+    return pickReadsAsABareColor ? { ...pick, key: BARE_COLOR_ANSWER } : pick
+  })
+  const someColorPicksWereValueEvidenced = evidencedPicks.some(
+    (pick, pickIndex) => pick.key !== surviving[pickIndex]!.key,
+  )
+  if (someColorPicksWereValueEvidenced) {
+    recordStep(context, "bare_color_evidence", {
+      ok: true,
+      output: `Converted color-family picks evidenced by a color value to ${BARE_COLOR_ANSWER}: the evidence names the value, not a property word, so the component schema picks the key (deterministic, no model call).`,
+    })
+  }
+  const requestedKeys = [...new Set(evidencedPicks.map((pick) => pick.key))]
   const namesWereResolved = requestedKeys.length > 0
   recordStep(context, "resolve_property_name", {
     ok: namesWereResolved,

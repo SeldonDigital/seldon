@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import {
+  BARE_COLOR_ANSWER,
   buildResolvePropertyNamesStage,
   messageWords,
 } from "./resolve-property-name"
@@ -21,7 +22,7 @@ describe("buildResolvePropertyNamesStage", () => {
         picks: {
           items: {
             properties: {
-              key: { enum: keys },
+              key: { enum: [...keys, BARE_COLOR_ANSWER] },
               evidenceWord: { enum: ["make", "it", "red"] },
             },
           },

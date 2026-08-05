@@ -13,10 +13,19 @@ import type {
 } from "@seldon/core/workspace/types"
 
 import { buildSetLabelStage } from "../../prompt/stages/properties"
+import { BARE_COLOR_ANSWER } from "../../prompt/stages/resolve-property-name"
 import { commit, commitFailureReason } from "../commit"
 import { assembleLayeredWrites } from "./layered-paint"
 import { callOllamaFormat } from "../ollama-client"
-import { resolvePropertyNames } from "../resolvers/resolve-property-name"
+import {
+  colorSettableKeys,
+  defaultColorKeyFor,
+  overriddenColorKeys,
+} from "../resolvers/bare-color"
+import {
+  type PropertyNameResolution,
+  resolvePropertyNames,
+} from "../resolvers/resolve-property-name"
 import { resolvePropertyValue } from "../resolvers/resolve-property-value"
 import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
@@ -104,6 +113,48 @@ function resolveWriteNode(
   }
 }
 
+/**
+ * Swaps the stage's bare-color escape answer for the key the target's own
+ * schema picks. The whole convention lives in `defaultColorKeyFor`; this
+ * records the deterministic step and phrases the two terminal buckets.
+ */
+function resolveBareColorKeys(
+  context: TurnContext,
+  catalogId: string,
+  propertyNames: { keys: string[] },
+): PropertyNameResolution {
+  const bareColorWasAnswered = propertyNames.keys.includes(BARE_COLOR_ANSWER)
+  if (!bareColorWasAnswered)
+    return { kind: "resolved", keys: propertyNames.keys }
+
+  const bareColor = defaultColorKeyFor(catalogId)
+  const conventionPickedAKey = "key" in bareColor
+  recordStep(context, "bare_color_default", {
+    ok: conventionPickedAKey,
+    output: `Bare color on ${catalogId} -> ${JSON.stringify(bareColor)} (deterministic, from the component schema).`,
+  })
+  if (bareColor.bucket === "none") {
+    return {
+      kind: "message",
+      text: `The ${catalogId} has no color property to set.`,
+    }
+  }
+  if (bareColor.bucket === "ask") {
+    return {
+      kind: "message",
+      text: `The ${catalogId} has several color properties (${bareColor.candidateKeys.join(", ")}) and the message doesn't say which. Name one, then ask again.`,
+    }
+  }
+  const keys = [
+    ...new Set(
+      propertyNames.keys.map((requestedKey) =>
+        requestedKey === BARE_COLOR_ANSWER ? bareColor.key : requestedKey,
+      ),
+    ),
+  ]
+  return { kind: "resolved", keys }
+}
+
 /** Handles the `set_node_properties` intent: target -> names -> values -> commit. */
 export async function executeSetProperties(
   context: TurnContext,
@@ -135,8 +186,11 @@ export async function executeSetProperties(
   const propertyNames = await resolvePropertyNames(context, catalogId)
   if (isClarification(propertyNames)) return forwardClarification(propertyNames)
 
+  const propertyKeys = resolveBareColorKeys(context, catalogId, propertyNames)
+  if (isClarification(propertyKeys)) return forwardClarification(propertyKeys)
+
   const propertyValues: Record<string, unknown> = {}
-  for (const propertyKey of propertyNames.keys) {
+  for (const propertyKey of propertyKeys.keys) {
     const valueResolution = await resolvePropertyValue(context, propertyKey)
     if (isClarification(valueResolution))
       return forwardClarification(valueResolution)
@@ -196,7 +250,7 @@ export async function executeSetProperties(
     }
     return JSON.stringify(rawValue)
   }
-  const describedChanges = propertyNames.keys
+  const describedChanges = propertyKeys.keys
     .map(
       (propertyKey) =>
         `${propertyKey} to ${describeValue(propertyValues[propertyKey])}`,
@@ -248,8 +302,45 @@ export async function executeResetProperty(
   const propertyNames = await resolvePropertyNames(context, catalogId)
   if (isClarification(propertyNames)) return forwardClarification(propertyNames)
 
-  for (const targetNodeId of targetNodeIds)
-  for (const dottedKey of propertyNames.keys) {
+  // "Reset the color" must clear the key the set pipeline actually wrote,
+  // not the key the vocabulary happens to map "color" onto (observed live:
+  // set wrote one color key, reset cleared a different one, and the chips
+  // stayed dark). Any color-family pick therefore switches to override
+  // inspection: each node resets the color keys it actually carries.
+  const colorFamily = new Set(colorSettableKeys(catalogId))
+  const colorFamilyWasRequested = propertyNames.keys.some(
+    (requestedKey) =>
+      colorFamily.has(requestedKey) || requestedKey === BARE_COLOR_ANSWER,
+  )
+  const literalKeys = propertyNames.keys.filter(
+    (requestedKey) =>
+      !colorFamily.has(requestedKey) && requestedKey !== BARE_COLOR_ANSWER,
+  )
+  const resetPlan = targetNodeIds.map((nodeId) => ({
+    nodeId,
+    keys: colorFamilyWasRequested
+      ? [
+          ...new Set([
+            ...literalKeys,
+            ...overriddenColorKeys(context.state.workspace, nodeId, catalogId),
+          ]),
+        ]
+      : propertyNames.keys,
+  }))
+  const nothingToReset = resetPlan.every((nodePlan) => nodePlan.keys.length === 0)
+  if (nothingToReset) {
+    return {
+      kind: "message",
+      text:
+        targetNodeIds.length === 1
+          ? `${targetNodeIds[0]} carries no color override, so there is nothing to reset.`
+          : `None of the ${targetNodeIds.length} elements carries a color override, so there is nothing to reset.`,
+    }
+  }
+
+  for (const nodePlan of resetPlan)
+  for (const dottedKey of nodePlan.keys) {
+    const targetNodeId = nodePlan.nodeId
     // A compound facet path (`border.color`) resets via propertyKey +
     // subpropertyKey; a layered path (`background.0.color`) additionally
     // carries its slot as layerIndex, which the reset payload supports
@@ -283,12 +374,25 @@ export async function executeResetProperty(
     }
   }
   recordStep(context, "commit", { ok: true })
+  // The reply names what was actually cleared, per node inspection -- a
+  // misfired convention must read as a visibly wrong claim, not a silent one.
+  const resetNodePlans = resetPlan.filter(
+    (nodePlan) => nodePlan.keys.length > 0,
+  )
+  const resetKeys = [
+    ...new Set(resetNodePlans.flatMap((nodePlan) => nodePlan.keys)),
+  ]
+  const skippedCount = resetPlan.length - resetNodePlans.length
+  const skippedNote =
+    skippedCount > 0
+      ? ` The other ${skippedCount} carried no color override.`
+      : ""
   return {
     kind: "applied",
     reply:
-      targetNodeIds.length === 1
-        ? `Reset ${propertyNames.keys.join(", ")} on ${targetNodeIds[0]}.`
-        : `Reset ${propertyNames.keys.join(", ")} on ${targetNodeIds.length} elements.`,
+      resetNodePlans.length === 1
+        ? `Reset ${resetKeys.join(", ")} on ${resetNodePlans[0]!.nodeId}.${skippedNote}`
+        : `Reset ${resetKeys.join(", ")} on ${resetNodePlans.length} elements.${skippedNote}`,
   }
 }
 

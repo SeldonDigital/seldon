@@ -4,6 +4,7 @@ import type { SwatchEntry } from "./resolve-color-value"
 import {
   isSwatchColorProperty,
   matchColorPhrase,
+  wordNamesAColorValue,
 } from "./resolve-color-value"
 
 const SWATCHES: SwatchEntry[] = [
@@ -26,6 +27,19 @@ describe("isSwatchColorProperty", () => {
     }
     expect(isSwatchColorProperty("display")).toBe(false)
     expect(isSwatchColorProperty("fontSize")).toBe(false)
+  })
+})
+
+describe("wordNamesAColorValue", () => {
+  it("recognizes CSS names, literals, and swatch names, and nothing else", () => {
+    expect(wordNamesAColorValue("blue", SWATCHES)).toBe(true)
+    expect(wordNamesAColorValue("#e53935", SWATCHES)).toBe(true)
+    expect(wordNamesAColorValue("primary", SWATCHES)).toBe(true)
+    // The words a property pick is legitimately evidenced by must stay out:
+    // this predicate decides when a pick was named by its value instead.
+    expect(wordNamesAColorValue("color", SWATCHES)).toBe(false)
+    expect(wordNamesAColorValue("background", SWATCHES)).toBe(false)
+    expect(wordNamesAColorValue("bold", SWATCHES)).toBe(false)
   })
 })
 

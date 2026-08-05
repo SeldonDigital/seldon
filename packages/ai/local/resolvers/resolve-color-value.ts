@@ -103,6 +103,27 @@ function normalizeForNameMatch(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9#(),.%]/g, "")
 }
 
+/**
+ * True when the word alone names a color: a CSS color name, a color literal,
+ * or a theme swatch. Every vocabulary here is a closed table that already
+ * exists -- nothing is guessed.
+ */
+export function wordNamesAColorValue(
+  word: string,
+  swatches: SwatchEntry[],
+): boolean {
+  const normalizedWord = normalizeForNameMatch(word)
+  const wordMatchesASwatch = swatches.some(
+    (swatch) =>
+      normalizeForNameMatch(swatch.key) === normalizedWord ||
+      (swatch.displayName !== undefined &&
+        normalizeForNameMatch(swatch.displayName) === normalizedWord),
+  )
+  return (
+    wordMatchesASwatch || isValidColor(word) || cssColorHex(word) !== undefined
+  )
+}
+
 /** Outcome of the deterministic cascade over a color phrase. */
 export type ColorPhraseMatch =
   | { kind: "matched"; value: unknown }

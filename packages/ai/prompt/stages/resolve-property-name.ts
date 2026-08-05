@@ -15,6 +15,16 @@ export function messageWords(message: string): string[] {
 }
 
 /**
+ * The escape answer for a message that names only a color value and no
+ * property word ("make it red"). Without it the key enum forces a guess, and
+ * the guess lands on an invisible property as often as not (the chip-red
+ * live failure wrote the foreground of a surface). With it the choice of key
+ * moves to code (`defaultColorKeyFor`), which reads the component's own
+ * schema instead of guessing.
+ */
+export const BARE_COLOR_ANSWER = "bare_color_value"
+
+/**
  * Picks which of the component's settable property keys the message asks to
  * change. The schema's key enum is the same key list the prompt renders, so
  * the model can only answer from the menu it was shown.
@@ -44,6 +54,7 @@ export function buildResolvePropertyNamesStage(inputs: {
     "Answer with the key(s) the message asks to change, and for each key the",
     "single word in the message that names that property. Pick only keys from",
     "the list and only words from the message.",
+    `If the message names only a color value and no property ("make it red", "turn the chips blue"), answer with the single key "${BARE_COLOR_ANSWER}" and the color word as its evidence.`,
   ].join("\n")
   return {
     prompt,
@@ -55,7 +66,10 @@ export function buildResolvePropertyNamesStage(inputs: {
           items: {
             type: "object",
             properties: {
-              key: { type: "string", enum: inputs.keys },
+              key: {
+                type: "string",
+                enum: [...inputs.keys, BARE_COLOR_ANSWER],
+              },
               evidenceWord: {
                 type: "string",
                 enum: messageWords(inputs.message),
