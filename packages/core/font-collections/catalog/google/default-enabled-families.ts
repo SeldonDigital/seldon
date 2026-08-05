@@ -1,7 +1,7 @@
 /**
  * Families enabled by default when the Google font collection is added to a
  * workspace. Every other Google family is seeded to `None` (all variants
- * disabled). Names match the `family` field in `google-fonts-manifest.ts`.
+ * disabled). Names match the `family` field in `GOOGLE_FONT_FAMILIES`.
  */
 export const GOOGLE_DEFAULT_ENABLED_FAMILIES: ReadonlySet<string> = new Set([
   "Inter",

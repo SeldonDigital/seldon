@@ -40,9 +40,17 @@ Each family in `families` is a `FontFamilyEntry`:
 - `stack` sets a CSS fallback stack for local families.
 - `variants` lists weights and styles for remote families. URL builders read this.
 
+## Font files
+
+Core ships no font binaries. The `googleFonts` collection is catalog data only, a list of families and variants built from `GOOGLE_FONT_FAMILIES`. The editor canvas self-hosts the woff2 so it renders offline. `scripts/generate-fonts.mjs` reads `GOOGLE_FONT_FAMILIES`, fetches each wanted variant's woff2 from google-webfonts-helper and a redistributable license from the google/fonts GitHub, and writes them into the editor's public dir at `packages/editor/shared/public/font-files/<slug>/` and `font-licenses/<slug>.txt`. That dir is gitignored, so nothing is committed or shipped.
+
+Run `npm run fonts` to materialize every family, or pass family names to scope it. The output dir doubles as the cache. A family whose files already exist is skipped without a network call, so reruns are fast and a warm cache works offline. A fresh clone materializes fonts on the first editor `dev` or `build`.
+
+Factory export never reads these files. An exported app loads Google families from the Google Fonts CDN through `getRemoteFontUrl`. Pinning font bytes only affects the editor canvas.
+
 ## Module layout
 
-- `catalog/` holds `system.ts` for the `system` collection and the `google/` folder for the `googleFonts` collection. The `google/` folder holds `index.ts`, `google-fonts-manifest.ts`, `default-enabled-families.ts`, and the `.woff2` assets. The google collection builds its families from `GOOGLE_FONT_FAMILIES`. `catalog/index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, `defaultFontCollection`, and `computeFontCollection`.
+- `catalog/` holds `system.ts` for the `system` collection and the `google/` folder for the `googleFonts` collection. The `google/` folder holds `index.ts` and `default-enabled-families.ts`. The google collection builds its families from `GOOGLE_FONT_FAMILIES`. `catalog/index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, `defaultFontCollection`, and `computeFontCollection`.
 - `types/` holds the document and id types.
 - `constants/` holds the `FontOrigin` type and the `FontOriginValue` values.
 - `helpers/` holds `computeFontCollection`, `normalizeFontCollection`, `getRemoteFontUrl`, `isRemoteFontFamily`, `getFamilyNameByValue`, and the variant selection helpers `deriveVariantPreset`, `getEnabledVariants`, and `isVariantEnabled`.
