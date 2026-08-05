@@ -26,6 +26,23 @@ import { injectBoardBackground } from "./inject-board-background"
 import type { Board, Properties } from "@seldon/core"
 import type { IconId } from "@seldon/core/icon-sets"
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { CSSProperties } from "react"
+
+/**
+ * Cap on previews rendered per icon set board. Each preview renders a full
+ * themed Icon component tree, so an unbounded "enable all" on a large set
+ * (thousands of icons) would mount thousands of trees and can hang or crash the
+ * tab. The cap bounds render cost; the symbol picker still reaches every enabled
+ * icon. Set comfortably above the default curated sets.
+ */
+const MAX_RENDERED_BOARD_ICONS = 750
+
+const ICON_SET_OVERFLOW_STYLE: CSSProperties = {
+  width: "100%",
+  padding: "1rem",
+  fontStyle: "italic",
+  opacity: 0.7,
+}
 
 export type IconSetBoardProps = {
   board: Board
@@ -55,6 +72,40 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
     className,
   )
 
+  const visibleIcons =
+    icons.length > MAX_RENDERED_BOARD_ICONS ? icons.slice(0, MAX_RENDERED_BOARD_ICONS) : icons
+  const overflowCount = icons.length - visibleIcons.length
+  const overflowLabel = `Showing ${visibleIcons.length} of ${icons.length} icons. Turn off categories in this icon set to preview the rest.`
+
+  const iconPreviews = visibleIcons.map(({ entryId, iconId }) => {
+    const selectionKey = formatResourceItemKey({
+      resource: "icon-set",
+      boardKey: boardKey,
+      entryId,
+      slot: iconId,
+    })
+
+    return (
+      <IconPreview
+        key={`${entryId}-${iconId}`}
+        scope={`${boardKey}-${entryId}-${iconId}`}
+        entryId={entryId}
+        resourceItemKey={selectionKey}
+        iconId={iconId}
+        themes={workspace.themes}
+        boardThemeId={board.componentTheme}
+        boardBackground={properties.background}
+      />
+    )
+  })
+
+  const overflowNotice =
+    overflowCount > 0 ? (
+      <div className={`${className}-overflow`} style={ICON_SET_OVERFLOW_STYLE}>
+        {overflowLabel}
+      </div>
+    ) : null
+
   return (
     <>
       <CssPortal>
@@ -75,27 +126,8 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
           padding: "2rem",
         }}
       >
-        {icons.map(({ entryId, iconId }) => {
-          const selectionKey = formatResourceItemKey({
-            resource: "icon-set",
-            boardKey: boardKey,
-            entryId,
-            slot: iconId,
-          })
-
-          return (
-            <IconPreview
-              key={`${entryId}-${iconId}`}
-              scope={`${boardKey}-${entryId}-${iconId}`}
-              entryId={entryId}
-              resourceItemKey={selectionKey}
-              iconId={iconId}
-              themes={workspace.themes}
-              boardThemeId={board.componentTheme}
-              boardBackground={properties.background}
-            />
-          )
-        })}
+        {iconPreviews}
+        {overflowNotice}
       </Frame>
     </>
   )

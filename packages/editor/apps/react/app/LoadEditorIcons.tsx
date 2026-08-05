@@ -102,6 +102,11 @@ export function LoadEditorIcons({ iconId, unavailable, ...props }: LoadEditorIco
 
   if (data) {
     const viewBox = data.viewBox
+    // data.body is committed glyph markup sanitized and validated at generation
+    // time (scripts, foreignObject, event handlers, and javascript: urls are
+    // rejected in scripts/generate-icons.mjs). The user-controlled `iconId` only
+    // selects a data entry; an unknown id resolves to no data and falls through
+    // to IconMissing, so a user value never reaches this sink.
     const inner = { __html: data.body }
 
     return (

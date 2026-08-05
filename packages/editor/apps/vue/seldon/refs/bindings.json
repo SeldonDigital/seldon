@@ -2697,7 +2697,7 @@
         "component": "HariThinking",
         "line": 46,
         "conditional": false,
-        "expression": "{ icon: open.value ? \"material-chevronDown\" : \"material-chevronRight\", }",
+        "expression": "{ icon: open.value ? \"material-keyboardArrowDown\" : \"material-chevronRight\", }",
         "inputs": [
           {
             "name": "open",
@@ -2711,7 +2711,7 @@
         "props": [
           {
             "key": "icon",
-            "expression": "open.value ? \"material-chevronDown\" : \"material-chevronRight\"",
+            "expression": "open.value ? \"material-keyboardArrowDown\" : \"material-chevronRight\"",
             "inputs": [
               {
                 "name": "open",
@@ -4438,7 +4438,7 @@
         "component": "HariTools",
         "line": 32,
         "conditional": false,
-        "expression": "{ icon: open.value ? \"material-chevronDown\" : \"material-chevronRight\", }",
+        "expression": "{ icon: open.value ? \"material-keyboardArrowDown\" : \"material-chevronRight\", }",
         "inputs": [
           {
             "name": "open",
@@ -4452,7 +4452,7 @@
         "props": [
           {
             "key": "icon",
-            "expression": "open.value ? \"material-chevronDown\" : \"material-chevronRight\"",
+            "expression": "open.value ? \"material-keyboardArrowDown\" : \"material-chevronRight\"",
             "inputs": [
               {
                 "name": "open",

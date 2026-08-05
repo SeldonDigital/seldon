@@ -39,7 +39,9 @@ export function getDataBackedIcon(iconId: IconId): DataBackedIcon | undefined {
 /**
  * Renders a React icon component from glyph data. The inner SVG is injected as
  * markup so any body shape (single path, group, stroke) emits unchanged and the
- * output is deterministic.
+ * output is deterministic. `body` is committed glyph data sanitized and
+ * validated at generation time (see scripts/generate-icons.mjs), so the emitted
+ * component injects trusted markup, never a user value.
  */
 function synthesizeIconComponent(componentName: string, viewBox: string, body: string): string {
   return `import type { SVGAttributes } from "react"

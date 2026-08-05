@@ -98,7 +98,7 @@ function generate({ prefix, upstream, catalogFolder, style }) {
     const entry = resolveUpstream(iconSet, suffix, style)
 
     if (entry) {
-      data[suffix] = entry
+      data[suffix] = { body: sanitizeBody(entry.body, id), viewBox: entry.viewBox }
     } else {
       missing.push(id)
     }
@@ -204,6 +204,38 @@ function normalize(full) {
   const viewBox = `${left} ${top} ${width} ${height}`
 
   return { body: full.body, viewBox }
+}
+
+/**
+ * Strips markup that must never appear in a glyph body: scripts, `foreignObject`
+ * (which can host HTML and scripts), inline event handlers, and `javascript:`
+ * urls. The body is injected as raw SVG at render and export time, so this makes
+ * the committed data safe to trust there. Upstream Iconify glyphs are pure shape
+ * markup, so this normally changes nothing; it is a guard against a compromised
+ * or mistaken upstream, and it fails the build if anything unsafe is found so a
+ * regeneration cannot silently commit dangerous markup.
+ */
+function sanitizeBody(body, id) {
+  const cleaned = body
+    .replace(/<script[\s\S]*?<\/script\s*>/gi, "")
+    .replace(/<script\b[^>]*\/?>/gi, "")
+    .replace(/<foreignObject[\s\S]*?<\/foreignObject\s*>/gi, "")
+    .replace(/<foreignObject\b[^>]*\/?>/gi, "")
+    .replace(/\son[a-z]+\s*=\s*"[^"]*"/gi, "")
+    .replace(/\son[a-z]+\s*=\s*'[^']*'/gi, "")
+    .replace(/\s(?:xlink:)?href\s*=\s*"(?:\s|&#\w+;)*javascript:[^"]*"/gi, "")
+    .replace(/\s(?:xlink:)?href\s*=\s*'(?:\s|&#\w+;)*javascript:[^']*'/gi, "")
+
+  if (cleaned !== body) {
+    console.error(
+      `\n[${setName}] unsafe markup in "${id}" upstream glyph. ` +
+        `Refusing to commit sanitized-but-suspect data; inspect the pinned ` +
+        `upstream package before regenerating.`,
+    )
+    process.exit(1)
+  }
+
+  return cleaned
 }
 
 function camelToKebab(value) {

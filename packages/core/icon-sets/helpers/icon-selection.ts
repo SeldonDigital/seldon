@@ -51,12 +51,31 @@ export function isIconIncluded(
  * are appended last, preserving their original order.
  */
 export function getIconsInCategoryOrder(set: ComputedIconSet): IconId[] {
+  // Bucket every icon by its category path in one pass, preserving set order
+  // within each bucket, then read the buckets back in category then subcategory
+  // order. This resolves each icon's category once instead of re-filtering the
+  // whole set per subcategory, so a large set (thousands of icons) orders in
+  // linear time.
+  const byPath = new Map<string, IconId[]>()
+
+  for (const iconId of set.icons) {
+    const path = getIconCategoryFromId(iconId)
+    const bucket = byPath.get(path)
+
+    if (bucket) bucket.push(iconId)
+    else byPath.set(path, [iconId])
+  }
+
   const ordered: IconId[] = []
   const seen = new Set<IconId>()
 
   for (const category of iconCategories) {
     for (const subcategory of categorySubcategories[category]) {
-      for (const iconId of getIconsInSubcategory(set, `${category}/${subcategory}`)) {
+      const bucket = byPath.get(`${category}/${subcategory}`)
+
+      if (!bucket) continue
+
+      for (const iconId of bucket) {
         if (seen.has(iconId)) continue
         ordered.push(iconId)
         seen.add(iconId)
