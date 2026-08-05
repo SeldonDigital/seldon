@@ -12,8 +12,8 @@
     "prepublishOnly": "echo '@seldon/desktop is an app and is never published.' && exit 1"
   },
   "devDependencies": {
-    "electron": "^33.0.0",
-    "electron-builder": "^25.1.8"
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3"
   },
   "build": {
     "appId": "com.seldon.desktop",
