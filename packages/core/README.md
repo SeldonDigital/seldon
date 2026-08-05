@@ -53,7 +53,7 @@ An editor and an autonomous agent follow the same contract. Both hold a **worksp
 Each user gesture or agent step becomes one **workspace action**: a `type` plus a `payload`. Examples include adding a component board, setting node property overrides, moving an instance, or editing a theme token.
 
 ```typescript
-// Illustrative shape — see workspace/reducers/types.ts for the full union
+// Illustrative shape. See workspace/reducers/types.ts for the full union
 {
   type: "set_node_properties",
   payload: {
@@ -72,7 +72,7 @@ Each user gesture or agent step becomes one **workspace action**: a `type` plus 
 ```mermaid
 flowchart TD
   start[Current workspace + action] --> validation[Validate action]
-  validation -->|fails| rejected[Rejected — no save]
+  validation -->|fails| rejected[Rejected, no save]
   validation -->|passes| handler[Reducer handler]
   handler --> candidate[Candidate workspace]
   candidate --> migration[Migration when needed]

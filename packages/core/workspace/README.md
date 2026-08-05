@@ -29,7 +29,7 @@ Board keys are camelCase slugs unique across the workspace, referencing their so
 | Key | Description | ID Pattern |
 | --- | --- | --- |
 | `metadata` | File-level metadata: migration version, ownership, optional notices, and other fields tied to the overall workspace. |  |
-| `boards` | Catalog index for all row kinds (`component`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Boards** below. | `{boardKey}` |
+| `boards` | Catalog index for all row kinds (`component`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`. See **Boards** below. | `{boardKey}` |
 | `playgrounds` | Grouping containers. Each container holds independent Sandbox roots placed on the shared canvas. The Factory ignores this whole section. See **Playgrounds** below. | `{playgroundKey}` |
 | `nodes` | Sandboxes, components, variants, and instances all keyed by stable ids. | `playground-{playgroundKey}-{suffix}`, `component-{boardKey}-{suffix}` |
 | `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{boardKey}-{suffix}` |
@@ -41,11 +41,11 @@ Board keys are camelCase slugs unique across the workspace, referencing their so
 
 ### Catalog alignment
 
-Every **`node`** marked with **`type: "default"`**, every **`theme`** with **`type: "default"`**, and the **first** entry in each board’s **`variants`** array always match the schemas from the catalog.
+Every **`node`** marked with **`type: "default"`**, every **`theme`** with **`type: "default"`**, and the **first** entry in each board's **`variants`** array always match the schemas from the catalog.
 
 **All structure** must match the catalog, including nested **`children`** on component catalog rows, theme tokens defined by stock templates, and resource variant lists for font-collection, icon-set, and media boards.
 
-You cannot add, remove, or reorder structural data relative to the catalog baseline. This includes rewiring the default variant’s **`children`** graph, deleting the default row, or moving the default variant off index **`0`** in **`variants`**.
+You cannot add, remove, or reorder structural data relative to the catalog baseline. This includes rewiring the default variant's **`children`** graph, deleting the default row, or moving the default variant off index **`0`** in **`variants`**.
 
 A serialized workspace file may diverge only through specified **overrides** on node or theme entries, or catalog row fields that are marked as editor-only or display-only, such as **`componentProperties`**.
 
@@ -207,13 +207,13 @@ The result of this is that an editor's object panel will display and edit all co
 | `variants` | `{ "id", "children"? }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom, along with their nested children. (See the **Nodes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this component. |
 
-The **default variant** entry’s **`children`** tree must stay **catalog-aligned** (see **Default catalog alignment** above). Customize the shipped look of the default through the **`nodes`** row keyed by that variant’s **`id`**: **`overrides`** on the default node apply on top of the component schema baseline and affect every variant or instance that inherits from that default; clearing those overrides restores catalog defaults for that subtree.
+The **default variant** entry's **`children`** tree must stay **catalog-aligned** (see **Default catalog alignment** above). Customize the shipped look of the default through the **`nodes`** row keyed by that variant's **`id`**: **`overrides`** on the default node apply on top of the component schema baseline and affect every variant or instance that inherits from that default. Clearing those overrides restores catalog defaults for that subtree.
 
 When placing or pasting a component from another workspace, the rules are:
 
 1. **Same `id`, same payload**: If every pasted `id` already exists in `nodes` and its nested `children` match the workspace, only update catalog row references to those ids. Do not duplicate entries in `nodes`.
 2. **Same `id`, different payload**: If a pasted subtree reuses an `id` but `children` differ, merge the pasted definition into the existing `nodes` entry, resolving conflicts like a normal code merge. Never store two entries with the same `id`.
-3. **New or unknown ids**: Otherwise add or fork nodes as needed. Create default, variant, and instance entries in `nodes`, using new ids where the source id is absent or would collide, then wire the board’s variant tree to those entries.
+3. **New or unknown ids**: Otherwise add or fork nodes as needed. Create default, variant, and instance entries in `nodes`, using new ids where the source id is absent or would collide, then wire the board's variant tree to those entries.
 
 ```json
 "boards": {
@@ -270,7 +270,7 @@ When placing or pasting a component from another workspace, the rules are:
 
 Authored component boards define a component that lives only in the workspace. They have no `core/components/` schema. The board is created through `add_authored_component` from a name, a root kind, a declared level, and optional intent and tags. The root node is an `authored` node that templates from `catalog:container` or `catalog:frame`, so it inherits that property vocabulary, but the board owns the name and the declared `level`.
 
-The declared `level` is enforced for containment the same way a catalog component's level is. A module-level authored component cannot be placed inside an element, and an element-level authored component only accepts element, primitive, and frame children. Container versus Frame only decides flex versus grid and the exported element; both are opaque at the declared level.
+The declared `level` is enforced for containment the same way a catalog component's level is. A module-level authored component cannot be placed inside an element, and an element-level authored component only accepts element, primitive, and frame children. Container versus Frame only decides flex versus grid and the exported element. Both are opaque at the declared level.
 
 Authored boards support user variants and instances the same way component boards do. There is no reset-to-catalog for the board, the authored root, or its variants, because there is no schema to reset to. Instances placed inside an authored component still reset to their source or original.
 
@@ -608,29 +608,29 @@ The result of this is that an editor's properties panel will display and edit al
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | `string` | Unique node identifier; must equal the key used for this node in the `nodes` map. |
-| `type` | `string` | Node type discriminator. One of: `"default"`, `"variant"`, `"instance"`, `"authored"`. An `authored` node is the schema-free root of an authored component board; it is freely editable and never resets to a catalog schema. |
+| `id` | `string` | Unique node identifier. It must equal the key used for this node in the `nodes` map. |
+| `type` | `string` | Node type discriminator. One of: `"default"`, `"variant"`, `"instance"`, `"authored"`. An `authored` node is the schema-free root of an authored component board. It is freely editable and never resets to a catalog schema. |
 | `level` | `string` | Identifies the atomic level of the component as one of `screen`, `module`, `part`, `element`, `primitive`, or `frame`. For catalog nodes this matches the level in the template. For an `authored` root it is the authored board's declared level, which may differ from the Container/Frame template level. |
 | `label` | `string` | Display name for the node. |
 | `theme` | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent. |
 | `template` | `string` | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below. |
 | `overrides` | `Properties` | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored. This is the Normal state layer. |
-| `states` | `object` | Optional per-state property override bags keyed by interaction-state name. Each bag holds the same `Properties` shape as `overrides`. Sparse: a key exists only when that state carries overrides. Authored on `default` and `variant` nodes only; instances inherit. See **Interaction States** below. |
+| `states` | `object` | Optional per-state property override bags keyed by interaction-state name. Each bag holds the same `Properties` shape as `overrides`. Sparse: a key exists only when that state carries overrides. Authored on `default` and `variant` nodes only. Instances inherit. See **Interaction States** below. |
 | `origin` | `string` | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below. |
 | `ref` | `string` | Optional stable, user-assigned reference handle. Unique across the whole workspace and never inherited or merged, so generated code and app logic can target a specific node regardless of position. Absent until set via `set_node_ref`. |
 | `__editor` | `object` | Editor-only metadata. |
 
-When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, `authoredVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
+When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, `authoredVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts). See [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
 
 ---
 
 ### Default Node
 
-Default rows follow **Default catalog alignment** (Workspace Structure): catalog-true shape; customize the shipped default through **`overrides`** (and **`label`** where editors allow), not by diverging structure from the component schema.
+Default rows follow **Default catalog alignment** (Workspace Structure): catalog-true shape. Customize the shipped default through **`overrides`** (and **`label`** where editors allow), not by diverging structure from the component schema.
 
 - The **`template`** field is always **`catalog:{ComponentId}`**. This node's properties and defaults are defined by schemas under `core/components/.../ComponentId.schema.ts`, with the default baseline being the result of `template` properties with `overrides` applied on top.
 
-- The **`overrides`** field applies property values on top of catalog baseline; keys not present in `overrides` use `template` defaults. Property keys should generally not appear in `overrides` unless the template definition allows them.
+- The **`overrides`** field applies property values on top of catalog baseline. Keys not present in `overrides` use `template` defaults. Property keys should generally not appear in `overrides` unless the template definition allows them.
 
 ```json
 "nodes": {
@@ -670,7 +670,7 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 - The **`template`** field for variants is always a **`node:{nodeId}`**. This node's properties and defaults are defined by that node, with the variant baseline being the result of `template` properties applied with `template` overrides, then variant `overrides` applied on top.
 
-- The **`overrides`** field applies property values on top of the `template` baseline; keys not present in `overrides` use `template` defaults. Property keys should generally not appear in `overrides` unless the template definition allows them.
+- The **`overrides`** field applies property values on top of the `template` baseline. Keys not present in `overrides` use `template` defaults. Property keys should generally not appear in `overrides` unless the template definition allows them.
 
 ```json
 "nodes": {
@@ -698,7 +698,7 @@ When a component board is first added from the catalog, child instance ids are s
 
 An instance also carries an `origin` field set to `"schema"` or `"user"`. `schema` means the instance exists because a component schema composition requires it. `user` means a person inserted, pasted, or duplicated it. The engine sets and maintains `origin`. It is not user editable. The field drives removal behavior, described in **Composition Rules**.
 
-Validation, export, and editors use this node's `template`, not the parent’s.
+Validation, export, and editors use this node's `template`, not the parent's.
 
 The **`template`** field then chooses how properties are obtained for the instance:
 
@@ -793,7 +793,7 @@ Theme keys are theme ID strings and must match each value's `id` field. All meta
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | `string` | Unique node identifier; must equal the key used for this theme in the `themes` map. |
+| `id` | `string` | Unique node identifier. It must equal the key used for this theme in the `themes` map. |
 | `type` | `string` | Node type discriminator. One of: `"default"`, `"variant"`. |
 | `label` | `string` | Display name for the node. |
 | `template` | `string` | Where the theme gets its metadata, along with its list of **tokens** and subsequent default values, which are resolved before `overrides` are applied. This value is either `catalog:{ThemeTemplateId}` or `theme:{themeId}`. See **Default Theme** and **Variant Theme** below. |
@@ -804,13 +804,13 @@ Theme keys are theme ID strings and must match each value's `id` field. All meta
 
 ### Default Theme
 
-Default rows follow **Default catalog alignment** (Workspace Structure): token shape stays catalog-true; customize through **`overrides`** (and **`label`** where editors allow).
+Default rows follow **Default catalog alignment** (Workspace Structure): token shape stays catalog-true. Customize through **`overrides`** (and **`label`** where editors allow).
 
 The root for a theme catalog row, with `type` set to `"default"`. Whenever an editor modifies this default theme, changes propagate to other variant themes that reference this one as their template. Default themes are commonly created through adding catalog themes into the workspace.
 
 - The **`template`** field is always **`catalog:{ThemeTemplateId}`**. This node's tokens and defaults are defined by the stock theme modules under `core/themes/catalog/`, with the default baseline being the result of `template` tokens with `overrides` applied on top.
 
-- The **`overrides`** field applies token values on top of catalog baseline; keys not present in `overrides` use `template` defaults. Token keys should generally not appear in `overrides` unless the template definition allows them.
+- The **`overrides`** field applies token values on top of catalog baseline. Keys not present in `overrides` use `template` defaults. Token keys should generally not appear in `overrides` unless the template definition allows them.
 
 ```json
 "themes": {
@@ -842,7 +842,7 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 - The **`template`** field for variants is always a **`theme:{themeId}`**. This node's properties and defaults are defined by that theme, with the variant baseline being the result of `template` properties applied with `template` overrides, then variant `overrides` applied on top.
 
-- The **`overrides`** field applies token values on top of the `template` baseline; keys not present in `overrides` use `template` defaults. Token keys should generally not appear in `overrides` unless the template definition allows them.
+- The **`overrides`** field applies token values on top of the `template` baseline. Keys not present in `overrides` use `template` defaults. Token keys should generally not appear in `overrides` unless the template definition allows them.
 
 ```json
 "themes": {
@@ -866,7 +866,7 @@ Font collection keys are font collection ID strings and must match each value's 
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | `string` | Unique entry identifier; must equal the key used for this font collection in the `font-collections` map. |
+| `id` | `string` | Unique entry identifier. It must equal the key used for this font collection in the `font-collections` map. |
 | `type` | `string` | Entry type discriminator. One of: `"default"`, `"variant"`. |
 | `label` | `string` | Display name for the entry. |
 | `template` | `string` | Where the font collection gets its metadata, along with its list of **families** and subsequent default values, which are resolved before `overrides` are applied. This value is either `catalog:{FontCollectionTemplateId}` or `font-collection:{collectionId}`. See **Default Font Collection** and **Variant Font Collection** below. |
@@ -877,13 +877,13 @@ Font collection keys are font collection ID strings and must match each value's 
 
 ### Default Font Collection
 
-Default rows follow **Default catalog alignment** (Workspace Structure): family shape stays catalog-true; customize through **`overrides`** (and **`label`** where editors allow).
+Default rows follow **Default catalog alignment** (Workspace Structure): family shape stays catalog-true. Customize through **`overrides`** (and **`label`** where editors allow).
 
 The root for a font collection catalog row, with `type` set to `"default"`. Whenever an editor modifies this default font collection, changes propagate to other variant font collections that reference this one as their template. Default font collections are commonly created through adding catalog collections into the workspace.
 
 - The **`template`** field is always **`catalog:{FontCollectionTemplateId}`**. This entry's families and defaults are defined by the stock modules under `core/font-collections/catalog/`, with the default baseline being the result of `template` families with `overrides` applied on top.
 
-- The **`overrides`** field applies family values on top of catalog baseline; keys not present in `overrides` use `template` defaults.
+- The **`overrides`** field applies family values on top of catalog baseline. Keys not present in `overrides` use `template` defaults.
 
 ```json
 "font-collections": {
@@ -905,7 +905,7 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 - The **`template`** field for variants is always a **`font-collection:{collectionId}`**. This entry's families and defaults are defined by that collection, with the variant baseline being the result of `template` families applied with `template` overrides, then variant `overrides` applied on top.
 
-- The **`overrides`** field carries a `families` map of user-added families on top of the `template` baseline; keys not present in `overrides` use `template` defaults. Each family slot uses a `familyNN` key, and each entry is a `FontFamilyEntry` with `name`, `origin` (`local` or `remote`), an optional `stack` CSS fallback, and an optional `variants` list of weights and styles.
+- The **`overrides`** field carries a `families` map of user-added families on top of the `template` baseline. Keys not present in `overrides` use `template` defaults. Each family slot uses a `familyNN` key, and each entry is a `FontFamilyEntry` with `name`, `origin` (`local` or `remote`), an optional `stack` CSS fallback, and an optional `variants` list of weights and styles.
 
 ```json
 "font-collections": {
@@ -937,7 +937,7 @@ Icon set keys are icon set ID strings and must match each value's `id` field. Al
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | `string` | Unique entry identifier; must equal the key used for this icon set in the `icon-sets` map. |
+| `id` | `string` | Unique entry identifier. It must equal the key used for this icon set in the `icon-sets` map. |
 | `type` | `string` | Entry type discriminator. One of: `"default"`, `"variant"`. |
 | `label` | `string` | Display name for the entry. |
 | `template` | `string` | Where the icon set gets its metadata, along with its list of **icons** and subsequent default values, which are resolved before `overrides` are applied. This value is either `catalog:{IconSetTemplateId}` or `icon-set:{iconSetId}`. See **Default Icon Set** and **Variant Icon Set** below. |
@@ -948,13 +948,13 @@ Icon set keys are icon set ID strings and must match each value's `id` field. Al
 
 ### Default Icon Set
 
-Default rows follow **Default catalog alignment** (Workspace Structure): icon shape stays catalog-true; customize through **`overrides`** (and **`label`** where editors allow).
+Default rows follow **Default catalog alignment** (Workspace Structure): icon shape stays catalog-true. Customize through **`overrides`** (and **`label`** where editors allow).
 
 The root for an icon set catalog row, with `type` set to `"default"`. Whenever an editor modifies this default icon set, changes propagate to other variant icon sets that reference this one as their template. Default icon sets are commonly created through adding catalog icon sets into the workspace.
 
 - The **`template`** field is always **`catalog:{IconSetTemplateId}`**. This entry's icons and defaults are defined by the stock set folders under `core/icon-sets/catalog/`, with the default baseline being the result of `template` icons with `overrides` applied on top.
 
-- The **`overrides`** field carries the per-icon selection under `includedIcons`; an icon absent from the map falls back to the set's default categories.
+- The **`overrides`** field carries the per-icon selection under `includedIcons`. An icon absent from the map falls back to the set's default categories.
 
 ```json
 "icon-sets": {
@@ -1231,7 +1231,7 @@ An `authored-component` board holds exactly one `authored` node at **`variants[0
 
 Each **`playgrounds`** container follows the same rule as a `component` board: every **`id`** in its **`variants`** and nested **`children`** must be a key in **`nodes`**. Playground containers may use **`{ "id", "children"? }`**.
 
-Collect ids by walking **`variants`** in order, and for each object that has **`children`**, walk **`children`** in order and continue depth-first until all reachable **`id`** values are visited. Every visited **`id`** must be a key in the map for that board’s `type`.
+Collect ids by walking **`variants`** in order, and for each object that has **`children`**, walk **`children`** in order and continue depth-first until all reachable **`id`** values are visited. Every visited **`id`** must be a key in the map for that board's `type`.
 
 ### 2. Template references resolve inside the right map
 

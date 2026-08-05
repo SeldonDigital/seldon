@@ -20,14 +20,9 @@ const set: StockIconSet = {
 
 ## Packaged icon sets
 
-Packaged set ids, typed as `IconSetTemplateId`, are:
+Packaged sets are registered in `catalog/index.ts` and typed as `IconSetTemplateId`. The set today is `seldonIcons`, `googleMaterial`, `ibmCarbon`, and `lucideIcons`, and it can grow as more sets ship.
 
-- `seldonIcons`
-- `googleMaterial`
-- `ibmCarbon`
-- `lucideIcons`
-
-`seldonIcons` is the default. It seeds into every workspace. A workspace adds `googleMaterial`, `ibmCarbon`, and `lucideIcons` on demand.
+`seldonIcons` is the default. It seeds into every workspace. A workspace adds any other packaged set on demand.
 
 ## Set fields
 
@@ -47,8 +42,8 @@ An icon set entry stores which icons are on. The selection lives in the entry `o
 
 ## Module layout
 
-- `catalog/` holds one folder per packaged set: `seldon/`, `material/`, `carbon/`, and `lucide/`. `seldon/` ships one component file per icon in category subfolders plus its folder-derived `category-map.ts`. `material/`, `carbon/`, and `lucide/` ship no component files; each holds `stock.ts`, `index.ts`, and `index-all.ts`. `catalog/index.ts` exports `STOCK_ICON_SETS`, `STOCK_ICON_SETS_BY_ID`, `ICON_SETS`, `ICON_SETS_BY_ID`, `defaultIconSet`, and `computeIconSet`.
-- `data/` holds the generated glyph data for the vendor sets: `material.icons.json`, `carbon.icons.json`, and `lucide.icons.json`, plus `getIconData` and `hasIconData`. Only rendering and export read this module; the workspace engine never imports it.
+- `catalog/` holds one folder per packaged set: `seldon/`, `material/`, `carbon/`, and `lucide/`. `seldon/` ships one component file per icon in category subfolders plus its folder-derived `category-map.ts`. `material/`, `carbon/`, and `lucide/` ship no component files. Each holds `stock.ts`, `index.ts`, and `index-all.ts`. `catalog/index.ts` exports `STOCK_ICON_SETS`, `STOCK_ICON_SETS_BY_ID`, `ICON_SETS`, `ICON_SETS_BY_ID`, `defaultIconSet`, and `computeIconSet`.
+- `data/` holds the generated glyph data for the vendor sets: `material.icons.json`, `carbon.icons.json`, and `lucide.icons.json`, plus `getIconData` and `hasIconData`. Only rendering and export read this module. The workspace engine never imports it.
 - `types/` holds the document and id types, such as `StockIconSet`, `ComputedIconSet`, `IconSetMetadata`, `IconSetTemplateId`, `IconSetInstanceId`, and `IconSetId`.
 - `constants/` holds the category types and values, such as `iconCategories`, `categorySubcategories`, `categoryPaths`, and `DEFAULT_CATEGORY_PATH`, the shared `categoryKeywords` table with `matchCategoryKeyword`, and the curated `vendorIconCategories` source that maps each vendor icon id to its category path.
 - `helpers/` holds `computeIconSet`, the icon selection helpers (`getIncludedIcons`, `isIconIncluded`, `isIconEnabledByDefault`, `getIconsInSubcategory`, `getIconsInCategoryOrder`, `deriveSubcategoryPreset`), the category lookup helpers (`getIconCategoryFromId`, `iconBelongsToIconSet`), `getAvailableIcons`, and the workspace helpers (`getWorkspaceEnabledIcons`, `getAddedIconSetPrefixes`, `isIconUnavailable`).
@@ -68,7 +63,7 @@ To grow a set, run `node scripts/generate-icons.mjs --seed <set>`. Seeding refil
 
 ### Loading, memory, and safety
 
-Each glyph `body` is injected as raw SVG at render time (editor `LoadEditorIcons`) and at export time (factory React and Vue). The generator sanitizes and validates every body before writing: scripts, `foreignObject`, inline event handlers, and `javascript:` urls fail the build. The committed data is therefore trusted markup. A user-selected `symbol` id only looks up a data entry; an unknown id resolves to no data and renders the `seldon-missing` glyph, so a user value never reaches the injection sink.
+Each glyph `body` is injected as raw SVG at render time in the editor `LoadEditorIcons` and at export time in the factory React and Vue output. The generator sanitizes and validates every body before writing. Scripts, `foreignObject`, inline event handlers, and `javascript:` urls fail the build. The committed data is therefore trusted markup. A user-selected `symbol` id only looks up a data entry. An unknown id resolves to no data and renders the `seldon-missing` glyph, so a user value never reaches the injection sink.
 
 The data module is a separate export subpath, `@seldon/core/icon-sets/data`. The shared `@seldon/core` barrel and the workspace engine never import it, so a package that only consumes the workspace model, such as `terminus`, `hari`, or `ai`, never loads it. The editor render path and the factory export import it directly. The package ships the JSON because factory export reads it at consumer runtime.
 
