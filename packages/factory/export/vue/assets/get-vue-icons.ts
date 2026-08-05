@@ -1,5 +1,7 @@
 import fs from "node:fs"
 
+import { getIconData } from "@seldon/core/icon-sets/data"
+
 import { getIconSourcePath, resolveIconExport } from "../../react/utils/find-icon-path"
 import { parseIconSource } from "../../shared/parse-icon-source"
 
@@ -17,8 +19,9 @@ const DEFAULT_ICON: IconGeometry = {
  * Emits the Vue icon layer: a framework-neutral geometry data module
  * (`icons/index.ts`), a runtime registry for prop-driven dynamic icons
  * (`utils/icon-registry.ts`), and the `Icon.vue` renderer that draws any icon
- * from that shared data. Geometry is parsed from the same catalog `.tsx` sources
- * the React target copies, so both editors render identical icons.
+ * from that shared data. Geometry comes from core glyph data for sets that ship
+ * it, and falls back to parsing catalog `.tsx` sources for sets that still ship
+ * source files, so both editors render identical icons.
  */
 export function getVueIcons(usedIconIds: Set<IconId>, options: ExportOptions): FileToExport[] {
   const folder = options.output.componentsFolder
@@ -28,6 +31,23 @@ export function getVueIcons(usedIconIds: Set<IconId>, options: ExportOptions): F
 
   for (const iconId of usedIconIds) {
     if (iconId === "__default__") continue
+
+    const data = getIconData(iconId)
+
+    if (data) {
+      geometry[iconId] = { viewBox: data.viewBox, body: data.body }
+      continue
+    }
+
+    const readerSource = options.assetReader?.getIconExportSource?.(iconId)
+
+    if (readerSource) {
+      const parsedReaderSource = parseIconSource(readerSource.content)
+
+      if (parsedReaderSource) geometry[iconId] = parsedReaderSource
+      continue
+    }
+
     const resolved = resolveIconExport(iconId, options.rootDirectory)
 
     if (!resolved) continue

@@ -21,3 +21,12 @@ export function insertLicense(source: string) {
     content: LICENSE_HEADER,
   })
 }
+
+/**
+ * True for files emitted under an `icons/` directory. Icon output is generated
+ * glyph data, so it carries no license header. Icon renderers and registries
+ * live under other folders and keep the header.
+ */
+export function isIconExportPath(path: string): boolean {
+  return /[\\/]icons[\\/]/.test(path)
+}

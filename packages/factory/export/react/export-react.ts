@@ -21,7 +21,7 @@ import { generateComponentFiles } from "./generation/helpers/generate-component-
 import { generateFrameComponent } from "./generation/helpers/generate-frame-component"
 import { generateReadmeFile } from "./generation/helpers/generate-readme-file"
 import { getNativeComponentFiles } from "./generation/helpers/get-native-component-files"
-import { insertLicense } from "./generation/inserts/insert-license"
+import { insertLicense, isIconExportPath } from "./generation/inserts/insert-license"
 import { getUtilityFileContents } from "./utils/generate-utility-file-contents"
 
 import type { RefViewSource } from "../shared/generate-refs-registry"
@@ -203,7 +203,7 @@ export async function exportReact(
     filesToExport.map(async (file) => {
       if (typeof file.content !== "string") return
 
-      if (supportsLicenseHeader(file.path)) {
+      if (supportsLicenseHeader(file.path) && !isIconExportPath(file.path)) {
         file.content = insertLicense(file.content)
       }
 
