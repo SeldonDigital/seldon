@@ -1,32 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialVerified(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M23 11.99 20.56 9.2l.34-3.69-3.61-.82L15.4 1.5 12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 11.99l2.44 2.79-.34 3.7 3.61.82 1.89 3.2 3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69 2.44-2.8zm-3.95 1.48-.56.65.08.85.18 1.95-1.9.43-.84.19-.44.74-.99 1.68-1.78-.77-.8-.34-.79.34-1.78.77-.99-1.67-.44-.74-.84-.19-1.9-.43.18-1.96.08-.85-.56-.65L3.67 12l1.29-1.48.56-.65-.09-.86-.18-1.94 1.9-.43.84-.19.44-.74.99-1.68 1.78.77.8.34.79-.34 1.78-.77.99 1.68.44.74.84.19 1.9.43-.18 1.95-.08.85.56.65 1.29 1.47-1.28 1.48z" />
-        <path d="m10.09 13.75-2.32-2.33-1.48 1.49 3.8 3.81 7.34-7.36-1.48-1.49z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="m8.6 22.5l-1.9-3.2l-3.6-.8l.35-3.7L1 12l2.45-2.8l-.35-3.7l3.6-.8l1.9-3.2L12 2.95l3.4-1.45l1.9 3.2l3.6.8l-.35 3.7L23 12l-2.45 2.8l.35 3.7l-3.6.8l-1.9 3.2l-3.4-1.45zm.85-2.55l2.55-1.1l2.6 1.1l1.4-2.4l2.75-.65l-.25-2.8l1.85-2.1l-1.85-2.15l.25-2.8l-2.75-.6l-1.45-2.4L12 5.15l-2.6-1.1L8 6.45l-2.75.6l.25 2.8L3.65 12l1.85 2.1l-.25 2.85l2.75.6zm1.5-4.4L16.6 9.9l-1.4-1.45l-4.25 4.25l-2.15-2.1L7.4 12z"/>',
+      }}
+    />
   )
 }

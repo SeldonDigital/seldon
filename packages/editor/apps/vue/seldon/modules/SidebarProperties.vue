@@ -128,7 +128,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "boardStateLabel",
   },
   icon3: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
     "data-seldon-ref": "boardStateMenuIcon",

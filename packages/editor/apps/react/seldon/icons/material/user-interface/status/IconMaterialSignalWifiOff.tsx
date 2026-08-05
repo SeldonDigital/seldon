@@ -1,31 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialSignalWifiOff(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M23.64 7c-.45-.34-4.93-4-11.64-4-1.32 0-2.55.14-3.69.38L18.43 13.5 23.64 7zM3.41 1.31 2 2.72l2.05 2.05C1.91 5.76.59 6.82.36 7L12 21.5l3.91-4.87 3.32 3.32 1.41-1.41L3.41 1.31z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M17.925 15.075L16.5 13.65l4.6-4.6q-1.975-1.5-4.3-2.275T12 6q-.725 0-1.45.075t-1.45.2l-1.65-1.65q1.125-.3 2.25-.462T12 4q3.4 0 6.513 1.287T24 9zM12 18.15l1.675-1.65l-8.75-8.75q-.525.275-1.025.613t-1 .687zm8.475 5.15L15.1 17.9L12 21L0 9q.8-.8 1.663-1.475T3.475 6.3l-2.8-2.8L2.1 2.075l19.8 19.8zM9.3 12.125"/>',
+      }}
+    />
   )
 }

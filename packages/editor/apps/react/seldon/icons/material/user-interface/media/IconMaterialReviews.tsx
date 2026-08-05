@@ -1,32 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialReviews(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z" />
-        <path d="m12 15 1.57-3.43L17 10l-3.43-1.57L12 5l-1.57 3.43L7 10l3.43 1.57z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M9.075 14.25L12 12.475l2.925 1.775l-.775-3.325l2.6-2.25l-3.425-.275L12 5.25L10.675 8.4l-3.425.275l2.6 2.25zM2 22V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18H6zm3.15-6H20V4H4v13.125zM4 16V4z"/>',
+      }}
+    />
   )
 }

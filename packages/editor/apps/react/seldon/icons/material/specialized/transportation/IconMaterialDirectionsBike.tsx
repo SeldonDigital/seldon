@@ -1,31 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialDirectionsBike(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M15.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM5 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5zm5.8-10 2.4-2.4.8.8c1.3 1.3 3 2.1 5.1 2.1V9c-1.5 0-2.7-.6-3.6-1.5l-1.9-1.9c-.5-.4-1-.6-1.6-.6s-1.1.2-1.4.6L7.8 8.4c-.4.4-.6.9-.6 1.4 0 .6.2 1.1.6 1.4L11 14v5h2v-6.2l-2.2-2.3zM19 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M5 22q-2.075 0-3.537-1.463T0 17t1.463-3.537T5 12t3.538 1.463T10 17t-1.463 3.538T5 22m2.125-2.875Q8 18.25 8 17t-.875-2.125T5 14t-2.125.875T2 17t.875 2.125T5 20t2.125-.875M11 19v-5l-3.2-2.8q-.3-.275-.45-.637T7.2 9.8t.163-.762T7.8 8.4l2.8-2.8q.3-.3.688-.45T12.1 5t.813.15t.687.45l1.9 1.9q.7.7 1.6 1.1T19 9v2q-1.425 0-2.713-.55T14 8.9l-.8-.8l-2.4 2.4l2.2 2.3V19zm3.088-14.087Q13.5 4.325 13.5 3.5t.588-1.412T15.5 1.5t1.413.588T17.5 3.5t-.587 1.413T15.5 5.5t-1.412-.587M19 22q-2.075 0-3.537-1.463T14 17t1.463-3.537T19 12t3.538 1.463T24 17t-1.463 3.538T19 22m2.125-2.875Q22 18.25 22 17t-.875-2.125T19 14t-2.125.875T16 17t.875 2.125T19 20t2.125-.875"/>',
+      }}
+    />
   )
 }

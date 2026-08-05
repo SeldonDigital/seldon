@@ -1,29 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialFormatTextdirectionVertical(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <path d="M240-240v-200q-66 0-113-47T80-600q0-66 47-113t113-47h320v80h-80v440h-80v-440h-80v440h-80Zm480 80L560-320l56-56 64 63v-447h80v447l64-64 56 57-160 160ZM240-520v-160q-33 0-56.5 23.5T160-600q0 33 23.5 56.5T240-520Zm0-80Z" />
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M6 18v-5q-1.65 0-2.825-1.175T2 9t1.175-2.825T6 5h8v2h-2v11h-2V7H8v11zm12 2l-4-4l1.4-1.4l1.6 1.575V5h2v11.175l1.6-1.6L22 16zM6 11V7q-.825 0-1.412.588T4 9t.588 1.413T6 11m0-2"/>',
+      }}
+    />
   )
 }

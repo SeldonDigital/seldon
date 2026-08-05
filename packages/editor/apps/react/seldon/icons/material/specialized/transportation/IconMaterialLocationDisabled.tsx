@@ -1,31 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialLocationDisabled(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M23 13v-2h-2.06A8.994 8.994 0 0 0 13 3.06V1h-2v2.06c-.98.11-1.91.38-2.77.78l1.53 1.53a6.995 6.995 0 0 1 8.87 8.87l1.53 1.53c.4-.86.67-1.79.78-2.77H23zM4.41 2.86 3 4.27l2.04 2.04A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06c1.77-.2 3.38-.91 4.69-1.98L19.73 21l1.41-1.41L4.41 2.86zM12 19A6.995 6.995 0 0 1 6.46 7.73l9.81 9.81A6.972 6.972 0 0 1 12 19z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="m19.6 16.85l-1.45-1.45q.425-.75.638-1.6T19 12.05q0-2.9-2.05-4.95T12 5.05q-.9 0-1.75.213t-1.6.637L7.2 4.45q.875-.525 1.813-.875T11 3.1v-2h2v2q3.125.35 5.363 2.588t2.587 5.362h2v2h-2q-.125 1.05-.475 1.988T19.6 16.85M11 23v-2q-3.125-.35-5.363-2.588T3.05 13.05h-2v-2h2q.125-1.05.475-1.987T4.4 7.25l-3-3l1.4-1.4l18.4 18.4l-1.45 1.4l-2.95-3q-.875.525-1.812.875T13 21v2zm1-3.95q.9 0 1.75-.213t1.6-.637l-9.5-9.5q-.425.75-.638 1.6T5 12.05q0 2.9 2.05 4.95T12 19.05"/>',
+      }}
+    />
   )
 }

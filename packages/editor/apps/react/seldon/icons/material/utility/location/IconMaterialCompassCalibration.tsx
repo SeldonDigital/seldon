@@ -1,31 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialCompassCalibration(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M12 12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3zm0-17C8.1 3 4.56 4.59 2 7.15l5 5a7.06 7.06 0 0 1 10-.01l5-5C19.44 4.59 15.9 3 12 3zm4.84 6.47c-1.44-.91-3.1-1.4-4.84-1.4-1.74 0-3.41.49-4.85 1.41L4.94 7.26C6.99 5.79 9.44 5 12 5c2.56 0 5 .79 7.05 2.26l-2.21 2.21z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M8.463 20.538Q7 19.075 7 17t1.463-3.537T12 12t3.538 1.463T17 17t-1.463 3.538T12 22t-3.537-1.463m5.662-1.412Q15 18.25 15 17t-.875-2.125T12 14t-2.125.875T9 17t.875 2.125T12 20t2.125-.875M7 12.15l-5-5q2-2 4.588-3.075T12 3t5.413 1.075T22 7.15l-5 5q-1.025-1.025-2.3-1.588T12 10t-2.7.563T7 12.15m.15-2.65q1.05-.75 2.288-1.125T12 8t2.538.363T16.85 9.45l2.2-2.2q-1.55-1.1-3.338-1.675T12 5t-3.713.575T4.95 7.25zM12 17"/>',
+      }}
+    />
   )
 }

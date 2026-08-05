@@ -11897,7 +11897,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         }
       },
       "origin": "schema"
@@ -12752,7 +12752,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         }
       },
       "origin": "schema"
@@ -12884,7 +12884,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         },
         "size": {
           "type": "theme.ordinal",
@@ -13040,7 +13040,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         }
       },
       "origin": "schema"
@@ -16838,7 +16838,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-favoriteBorder"
+          "value": "material-favorite"
         },
         "size": {
           "type": "theme.ordinal",
@@ -22140,7 +22140,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         },
         "size": {
           "type": "computed",
@@ -22563,7 +22563,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         }
       },
       "origin": "schema"
@@ -23389,7 +23389,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         },
         "size": {
           "type": "computed",
@@ -24330,7 +24330,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         },
         "size": {
           "type": "computed",
@@ -29281,7 +29281,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-chevronDown"
+          "value": "material-keyboardArrowDown"
         }
       },
       "origin": "user"

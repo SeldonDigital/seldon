@@ -74,7 +74,7 @@ const sdn: BarHariModelsProps = {
     "data-seldon-ref": "hariModelLabel",
   },
   icon: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
   },
@@ -88,7 +88,7 @@ const sdn: BarHariModelsProps = {
     "data-seldon-ref": "hariThinkingLabel",
   },
   icon2: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
   },

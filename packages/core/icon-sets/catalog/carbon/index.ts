@@ -136,7 +136,6 @@ export const carbonIconIds: readonly IconId[] = [
   "carbon-userRole",
   "carbon-userSimulation",
   "carbon-userSpeaker",
-  "carbon-userXRay",
   "carbon-userFavoriteAltFilled",
   "carbon-settingsCheck",
   "carbon-settingsServices",

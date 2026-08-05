@@ -137,7 +137,7 @@ export function buildPropertyRowProps({
   }
 
   const icon3: Record<string, unknown> = {
-    icon: supportsUpload ? "material-upload" : "material-chevronDown",
+    icon: supportsUpload ? "material-upload" : "material-keyboardArrowDown",
     style: getMenuIconStyle({
       isCalculated,
       supportsUpload,

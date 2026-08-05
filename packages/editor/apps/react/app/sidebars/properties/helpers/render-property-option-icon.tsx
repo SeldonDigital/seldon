@@ -2,11 +2,10 @@ import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
 import { type OptionIconRender } from "@app/menus"
 import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
+import { IconSeldonMissing } from "@seldon/components/icons"
 import { resolvePropertyOptionIconBinding } from "@seldon/editor/lib/icons/property-option-icon"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
 import React from "react"
-
-import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 
 import type { useThemes } from "@app/themes/hooks/use-themes"
 import type { Theme, Workspace } from "@seldon/core"

@@ -1,31 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialNetworkCheck(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M15.9 5c-.17 0-.32.09-.41.23l-.07.15-5.18 11.65c-.16.29-.26.61-.26.96 0 1.11.9 2.01 2.01 2.01.96 0 1.77-.68 1.96-1.59l.01-.03L16.4 5.5c0-.28-.22-.5-.5-.5zM1 9l2 2c2.88-2.88 6.79-4.08 10.53-3.62l1.19-2.68C9.89 3.84 4.74 5.27 1 9zm20 2 2-2a15.367 15.367 0 0 0-5.59-3.57l-.53 2.82c1.5.62 2.9 1.53 4.12 2.75zm-4 4 2-2c-.8-.8-1.7-1.42-2.66-1.89l-.55 2.92c.42.27.83.59 1.21.97zM5 13l2 2a7.1 7.1 0 0 1 4.03-2l1.28-2.88c-2.63-.08-5.3.87-7.31 2.88z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M2.1 11.1L0 9q2.375-2.425 5.488-3.713T12 4q.6 0 1.2.038t1.2.112l-1.5 2.9q-.225-.025-.45-.038T12 7Q9.2 7 6.637 8.063T2.1 11.1m4.25 4.25l-2.1-2.15q1.425-1.425 3.275-2.225t3.875-.925l-1.6 3.275q-.975.275-1.85.788t-1.6 1.237m4.95 4.5q-.825-.275-1.2-1.037t0-1.513l6-12.2q.1-.2.3-.262t.4.012t.3.263t.05.387L13.9 18.65q-.2.825-.987 1.175t-1.613.025m6.35-4.5q-.175-.175-.337-.312t-.363-.288l.8-3.125q.525.35 1.038.738t.962.837zm4.225-4.225q-.8-.725-1.638-1.375T18.45 8.6l.7-3q1.35.65 2.575 1.5T24 9z"/>',
+      }}
+    />
   )
 }

@@ -64,7 +64,7 @@ const sdn: Record<string, any> = {
     className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
   },

@@ -202,7 +202,7 @@ export const schema = {
                 overrides: {
                   symbol: {
                     type: Sdn.ValueType.OPTION,
-                    value: "material-chevronDoubleLeft",
+                    value: "material-keyboardDoubleArrowLeft",
                   },
                 },
               },
@@ -314,7 +314,7 @@ export const schema = {
                 overrides: {
                   symbol: {
                     type: Sdn.ValueType.OPTION,
-                    value: "material-chevronDoubleRight",
+                    value: "material-keyboardDoubleArrowRight",
                   },
                 },
               },

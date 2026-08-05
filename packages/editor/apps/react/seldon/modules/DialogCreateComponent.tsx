@@ -199,7 +199,7 @@ const sdn: DialogCreateComponentProps = {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   icon3: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
   },

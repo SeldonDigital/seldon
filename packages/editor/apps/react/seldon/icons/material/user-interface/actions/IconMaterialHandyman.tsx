@@ -1,32 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialHandyman(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="m21.67 18.17-5.3-5.3h-.99l-2.54 2.54v.99l5.3 5.3c.39.39 1.02.39 1.41 0l2.12-2.12a.996.996 0 0 0 0-1.41zm-2.83 1.42-4.24-4.24.71-.71 4.24 4.24-.71.71z" />
-        <path d="m17.34 10.19 1.41-1.41 2.12 2.12a3 3 0 0 0 0-4.24l-3.54-3.54-1.41 1.41V1.71l-.7-.71-3.54 3.54.71.71h2.83l-1.41 1.41 1.06 1.06-2.89 2.89-4.13-4.13V5.06L4.83 2.04 2 4.87 5.03 7.9h1.41l4.13 4.13-.85.85H7.6l-5.3 5.3a.996.996 0 0 0 0 1.41l2.12 2.12c.39.39 1.02.39 1.41 0l5.3-5.3v-2.12l5.15-5.15 1.06 1.05zm-7.98 5.15-4.24 4.24-.71-.71 4.24-4.24.71.71z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M18.475 21.913q-.175-.063-.325-.213l-5.1-5.1q-.15-.15-.213-.325t-.062-.375t.063-.375t.212-.325l2.125-2.125q.15-.15.325-.212t.375-.063t.375.063t.325.212l5.1 5.1q.15.15.213.325t.062.375t-.062.375t-.213.325L19.55 21.7q-.15.15-.325.213t-.375.062t-.375-.062m.375-2.313l.725-.725L15.9 15.2l-.725.725zM4.738 21.925Q4.55 21.85 4.4 21.7l-2.1-2.1q-.15-.15-.225-.338T2 18.876t.075-.375t.225-.325l5.3-5.3h2.125l.85-.85L6.45 7.9H5.025L2 4.875L4.825 2.05L7.85 5.075V6.5l4.125 4.125l2.9-2.9L13.8 6.65l1.4-1.4h-2.825l-.7-.7L15.225 1l.7.7v2.825l1.4-1.4l3.55 3.55q.425.425.65.963t.225 1.137t-.225 1.15t-.65.975L18.75 8.775l-1.4 1.4l-1.05-1.05l-5.175 5.175v2.1l-5.3 5.3q-.15.15-.325.225T5.125 22t-.387-.075m.387-2.325l4.25-4.25v-.725H8.65l-4.25 4.25zm0 0l-.725-.725l.375.35zm13.725 0l.725-.725z"/>',
+      }}
+    />
   )
 }

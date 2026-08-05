@@ -3,48 +3,16 @@ import path from "node:path"
 
 import { getIconSourcePath, resolveIconExport } from "../utils/find-icon-path"
 import { getDataBackedIcon } from "./data-backed-icon"
+import { MISSING_ICON_ID } from "./resolve-icon-component"
 
 import type { ExportOptions, FileToExport } from "../../types"
 import type { IconId } from "@seldon/core/icon-sets"
 
 /**
- * Get icon files to export from the icon-sets/catalog directory structure.
- * Icons whose catalog file cannot be resolved are skipped with a warning so
- * the emitted files always match the generated icon index.
- *
- * @param usedIconIds - Set of icon IDs that are used in the workspace (for tree shaking)
- * @param options - Export options
- * @returns List of icon files to export
+ * The inline `__default__` glyph, shown for an unset or component-default icon.
+ * It lives outside the icon sets and is emitted directly.
  */
-export function getIcons(usedIconIds: Set<IconId>, options: ExportOptions): FileToExport[] {
-  const icons: FileToExport[] = []
-
-  for (const iconId of usedIconIds) {
-    const dataBacked = getDataBackedIcon(iconId)
-
-    if (dataBacked) {
-      icons.push({
-        path: path.join(options.output.componentsFolder, "icons", `${dataBacked.relativePath}.tsx`),
-        content: dataBacked.content,
-      })
-      continue
-    }
-
-    const fromReader = options.assetReader?.getIconExportSource?.(iconId)
-
-    if (fromReader) {
-      icons.push({
-        path: path.join(options.output.componentsFolder, "icons", `${fromReader.relativePath}.tsx`),
-        content: fromReader.content,
-      })
-      continue
-    }
-
-    // The __default__ icon lives outside icon sets and is generated directly
-    if (iconId === "__default__") {
-      const outputPath = path.join(options.output.componentsFolder, "icons", "IconDefault.tsx")
-
-      const iconDefaultContent = `import { SVGAttributes } from "react"
+const ICON_DEFAULT_CONTENT = `import { SVGAttributes } from "react"
 
 export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
   return (
@@ -70,46 +38,100 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
 }
 `
 
-      icons.push({
-        path: outputPath,
-        content: iconDefaultContent,
-      })
+/**
+ * Get icon files to export from the icon-sets catalog and generated glyph data.
+ * A referenced id that resolves to neither data nor a catalog source emits the
+ * Seldon `seldon-missing` glyph instead of being skipped, so the emitted files
+ * always match the icon index and the icon map. Files are deduplicated by
+ * output path, since several unresolvable ids share the one missing glyph.
+ *
+ * @param usedIconIds - Set of icon IDs that are used in the workspace (for tree shaking)
+ * @param options - Export options
+ * @returns List of icon files to export
+ */
+export function getIcons(usedIconIds: Set<IconId>, options: ExportOptions): FileToExport[] {
+  const icons: FileToExport[] = []
+  const seenPaths = new Set<string>()
+
+  function push(relativePath: string, content: string): void {
+    const outputPath = path.join(options.output.componentsFolder, "icons", `${relativePath}.tsx`)
+
+    if (seenPaths.has(outputPath)) return
+    seenPaths.add(outputPath)
+    icons.push({ path: outputPath, content })
+  }
+
+  for (const iconId of usedIconIds) {
+    const dataBacked = getDataBackedIcon(iconId)
+
+    if (dataBacked) {
+      push(dataBacked.relativePath, dataBacked.content)
       continue
     }
 
-    const resolved = resolveIconExport(iconId, options.rootDirectory)
+    const fromReader = options.assetReader?.getIconExportSource?.(iconId)
 
-    if (!resolved) {
-      console.warn(`Skipping icon "${iconId}": no catalog file found`)
+    if (fromReader) {
+      push(fromReader.relativePath, fromReader.content)
       continue
     }
 
-    const sourcePath = getIconSourcePath(resolved, options.rootDirectory)
-    const outputPath = path.join(
-      options.output.componentsFolder,
-      "icons",
-      `${resolved.relativePath}.tsx`,
-    )
-
-    const iconFileFromReader = options.assetReader?.readIconFile(sourcePath)
-
-    if (iconFileFromReader) {
-      icons.push({
-        path: outputPath,
-        content: iconFileFromReader.toString("utf8"),
-      })
+    if (iconId === "__default__") {
+      push("IconDefault", ICON_DEFAULT_CONTENT)
       continue
     }
 
-    if (fs.existsSync(sourcePath)) {
-      icons.push({
-        path: outputPath,
-        content: fs.readFileSync(sourcePath, "utf8"),
-      })
+    const source = readCatalogSource(iconId, options)
+
+    if (source) {
+      push(source.relativePath, source.content)
+      continue
+    }
+
+    const missing = readMissingGlyph(options)
+
+    if (missing) {
+      push(missing.relativePath, missing.content)
     } else {
-      console.warn(`Skipping icon "${iconId}": source file not readable`)
+      console.warn(`Skipping icon "${iconId}": no catalog source and no seldon-missing glyph`)
     }
   }
 
   return icons
+}
+
+/** Reads a catalog `.tsx` source for an id from the installed core or the repo. */
+function readCatalogSource(
+  iconId: IconId,
+  options: ExportOptions,
+): { relativePath: string; content: string } | undefined {
+  const fromReader = options.assetReader?.getIconExportSource?.(iconId)
+
+  if (fromReader) {
+    return { relativePath: fromReader.relativePath, content: fromReader.content }
+  }
+
+  const resolved = resolveIconExport(iconId, options.rootDirectory)
+
+  if (!resolved) return undefined
+
+  const sourcePath = getIconSourcePath(resolved, options.rootDirectory)
+  const iconFileFromReader = options.assetReader?.readIconFile(sourcePath)
+
+  if (iconFileFromReader) {
+    return { relativePath: resolved.relativePath, content: iconFileFromReader.toString("utf8") }
+  }
+
+  if (fs.existsSync(sourcePath)) {
+    return { relativePath: resolved.relativePath, content: fs.readFileSync(sourcePath, "utf8") }
+  }
+
+  return undefined
+}
+
+/** Resolves the `seldon-missing` glyph source, the fallback for a missing id. */
+function readMissingGlyph(
+  options: ExportOptions,
+): { relativePath: string; content: string } | undefined {
+  return readCatalogSource(MISSING_ICON_ID, options)
 }

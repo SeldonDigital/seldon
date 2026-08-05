@@ -1,14 +1,23 @@
 /**
- * Generates the compact icon data file for a set from its upstream Iconify
- * package, falling back to the committed `.tsx` glyph for any id the upstream
- * does not carry. Run deliberately; the emitted data is committed and the
- * upstream package is a pinned devDependency, so a consumer install never
+ * Generates the compact icon data file for a set from its pinned upstream
+ * Iconify package. Every id in the set's `index-all.ts` manifest must resolve
+ * upstream; the generator fails and lists any id that does not, so the emitted
+ * data always matches the manifest. There is no vendor glyph fallback: a
+ * referenced id that cannot render uses the Seldon `seldon-missing` glyph at
+ * render and export time, handled by the consumer, not by this generator.
+ *
+ * The upstream package is a pinned devDependency, so a consumer install never
  * touches upstream and an upstream release never changes a build.
  *
- * Usage: node scripts/generate-icons.mjs material
+ * Usage:
+ *   node scripts/generate-icons.mjs material        Regenerate data + category map.
+ *   node scripts/generate-icons.mjs --seed material  Refill the manifest from
+ *                                                    upstream up to the cap
+ *                                                    (deliberate, not part of a
+ *                                                    normal regenerate).
  *
  * Output: packages/core/icon-sets/data/<set>.icons.json
- *   { "<idSuffix>": { "body": "<svg inner>", "viewBox": "0 0 24 24" }, ... }
+ *   { "<idSuffix>": { "body": "<svg inner>", "viewBox": "..." }, ... }
  * keyed by the Seldon id without its set prefix, sorted for a stable diff.
  */
 import fs from "node:fs"
@@ -17,16 +26,20 @@ import { fileURLToPath } from "node:url"
 
 import { getIconData } from "@iconify/utils"
 
+import { writeCategoryMap } from "./generate-category-map.mjs"
+
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.dirname(scriptDir)
 const catalogDir = path.join(repoRoot, "packages/core/icon-sets/catalog")
 const dataDir = path.join(repoRoot, "packages/core/icon-sets/data")
 
 /**
- * Set config: id prefix, upstream Iconify data package, catalog folder, and the
- * preferred fill `style`. Material Symbols ships each glyph as a filled base
- * name and an `-outline` variant; `style: "outline"` prefers the outlined glyph
- * and falls back to the base for icons that ship a single style.
+ * Set config: id prefix, upstream Iconify data package, catalog folder, the
+ * preferred fill `style`, and the seed `cap`. Material Symbols ships each glyph
+ * as a filled base name and an `-outline` variant; `style: "outline"` prefers
+ * the outlined glyph and falls back to the base for single-style icons. `cap`
+ * bounds how many icons `--seed` writes so a set stays a production-sized
+ * subset rather than the full upstream package.
  */
 const SETS = {
   material: {
@@ -34,22 +47,27 @@ const SETS = {
     upstream: "@iconify-json/material-symbols/icons.json",
     catalogFolder: "material",
     style: "outline",
+    cap: 5000,
   },
   carbon: {
     prefix: "carbon",
     upstream: "@iconify-json/carbon/icons.json",
     catalogFolder: "carbon",
     style: "default",
+    cap: 5000,
   },
   lucide: {
     prefix: "lucide",
     upstream: "@iconify-json/lucide/icons.json",
     catalogFolder: "lucide",
     style: "default",
+    cap: 5000,
   },
 }
 
-const setName = process.argv[2]
+const args = process.argv.slice(2)
+const seed = args.includes("--seed")
+const setName = args.find((arg) => !arg.startsWith("--"))
 const config = SETS[setName]
 
 if (!config) {
@@ -57,46 +75,41 @@ if (!config) {
   process.exit(1)
 }
 
-generate(config)
+if (seed) {
+  seedManifest(config)
+} else {
+  generate(config)
+}
 
+/**
+ * Reads the manifest, resolves every id upstream, and writes the data file and
+ * the category map. Fails listing any id that does not resolve upstream.
+ */
 function generate({ prefix, upstream, catalogFolder, style }) {
-  const ids = readSeldonIds(catalogFolder, prefix)
-  const iconSet = JSON.parse(fs.readFileSync(path.join(repoRoot, "node_modules", upstream), "utf8"))
-  const glyphIndex = buildGlyphIndex(path.join(catalogDir, catalogFolder))
-  const previous = readExistingData()
+  const ids = readManifestIds(catalogFolder, prefix)
+  const iconSet = loadUpstream(upstream)
 
   const data = {}
-  let fromUpstream = 0
-  const fallback = []
   const missing = []
 
   for (const id of ids) {
     const suffix = id.slice(prefix.length + 1)
-    const upstreamEntry = resolveUpstream(iconSet, suffix, style)
+    const entry = resolveUpstream(iconSet, suffix, style)
 
-    if (upstreamEntry) {
-      data[suffix] = upstreamEntry
-      fromUpstream += 1
-      continue
+    if (entry) {
+      data[suffix] = entry
+    } else {
+      missing.push(id)
     }
-
-    // Ids the upstream cannot provide keep their existing glyph: the committed
-    // `.tsx` when one is still present, otherwise the last generated data. This
-    // makes regeneration self-sustaining once the source files are removed.
-    const kept = readCommittedGlyph(glyphIndex, id) ?? previous[suffix]
-
-    if (kept) {
-      data[suffix] = kept
-      fallback.push(suffix)
-      continue
-    }
-
-    missing.push(suffix)
   }
 
   if (missing.length > 0) {
-    console.error(`\n[${setName}] ${missing.length} id(s) resolved neither upstream nor from a committed glyph:`)
-    for (const id of missing) console.error(`  - ${prefix}-${id}`)
+    console.error(`\n[${setName}] ${missing.length} manifest id(s) do not resolve upstream:`)
+    for (const id of missing) console.error(`  - ${id}`)
+    console.error(
+      `\nRename them to an upstream-canonical id or remove them from ` +
+        `catalog/${catalogFolder}/index-all.ts, then rerun.`,
+    )
     process.exit(1)
   }
 
@@ -104,25 +117,54 @@ function generate({ prefix, upstream, catalogFolder, style }) {
   const outPath = path.join(dataDir, `${setName}.icons.json`)
   fs.writeFileSync(outPath, serialize(data))
 
-  console.log(
-    `[${setName}] ${ids.length} icons (${style} style) -> ${path.relative(repoRoot, outPath)} ` +
-      `(${fromUpstream} upstream, ${fallback.length} from committed glyph)`,
-  )
+  const categoryPath = writeCategoryMap(setName)
 
-  if (fallback.length > 0) {
-    console.log(`  fallback ids: ${fallback.join(", ")}`)
-  }
+  console.log(
+    `[${setName}] ${ids.length} icons (${style} style) -> ${path.relative(repoRoot, outPath)}`,
+  )
+  console.log(`[${setName}] category map -> ${path.relative(repoRoot, categoryPath)}`)
 }
 
-/** Reads the previously generated data file, or an empty map when none exists. */
-function readExistingData() {
-  const outPath = path.join(dataDir, `${setName}.icons.json`)
+/**
+ * Refills the set manifest from upstream up to `cap`, grouping style variants to
+ * one concept and dropping pure aliases and redundant twins. Deliberate: run to
+ * grow a set, not as part of a normal regenerate. Prints the id count and does
+ * not touch the data file; run the default mode afterwards.
+ */
+function seedManifest({ prefix, upstream, catalogFolder, style, cap }) {
+  const iconSet = loadUpstream(upstream)
+  const names = Object.keys(iconSet.icons || {})
 
-  return fs.existsSync(outPath) ? JSON.parse(fs.readFileSync(outPath, "utf8")) : {}
+  // One entry per concept: strip the style suffixes so `foo`, `foo-outline`,
+  // `foo-rounded`, and `foo-sharp` collapse to `foo`.
+  const concepts = new Map()
+  for (const name of names) {
+    const concept = name.replace(/-(outline|rounded|sharp|filled)$/g, "")
+    if (!concepts.has(concept)) concepts.set(concept, name)
+  }
+
+  const chosen = [...concepts.keys()].sort().slice(0, cap)
+  const ids = chosen.map((concept) => `${prefix}-${kebabToCamel(concept)}`)
+
+  const manifestPath = path.join(catalogDir, catalogFolder, "index-all.ts")
+  const header =
+    `import type { IconId } from "@seldon/core/icon-sets"\n\n` +
+    `export const ${catalogFolder}AllIconIds: readonly IconId[] = [\n`
+  const body = ids.map((id) => `  "${id}",`).join("\n")
+  fs.writeFileSync(manifestPath, `${header}${body}\n] as const\n`)
+
+  console.log(
+    `[${setName}] seeded ${ids.length} ids (cap ${cap}, ${style} style) -> ` +
+      `${path.relative(repoRoot, manifestPath)}. Run "node scripts/generate-icons.mjs ${setName}" next.`,
+  )
+}
+
+function loadUpstream(upstream) {
+  return JSON.parse(fs.readFileSync(path.join(repoRoot, "node_modules", upstream), "utf8"))
 }
 
 /** Reads the set's ids from its `<set>AllIconIds` array in index-all.ts. */
-function readSeldonIds(catalogFolder, prefix) {
+function readManifestIds(catalogFolder, prefix) {
   const source = fs.readFileSync(path.join(catalogDir, catalogFolder, "index-all.ts"), "utf8")
   const array = source.slice(source.indexOf(`${catalogFolder}AllIconIds`))
   const escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
@@ -166,71 +208,6 @@ function normalize(full) {
   return { body: full.body, viewBox }
 }
 
-/** Extracts the inner SVG and viewBox from a committed `.tsx` glyph. */
-function readCommittedGlyph(glyphIndex, id) {
-  const filePath = glyphIndex.get(normalizeName(componentNameFor(id)))
-
-  if (!filePath) {
-    return null
-  }
-
-  const source = fs.readFileSync(filePath, "utf8")
-  const inner = source.match(/<svg[^>]*>([\s\S]*?)<\/svg>/)
-  const viewBox = source.match(/viewBox="([^"]+)"/)
-
-  if (!inner || !viewBox) {
-    return null
-  }
-
-  return { body: collapse(inner[1]), viewBox: viewBox[1] }
-}
-
-/**
- * Derives the exported component name from a Seldon id, matching the codebase
- * `pascalCase` rule, e.g. `material-personAddAlt_1` -> `IconMaterialPersonAddAlt_1`.
- */
-function componentNameFor(id) {
-  const words = id
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/[^a-zA-Z0-9\s_]/g, " ")
-    .split(/[\s_]+/)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-
-  const pascal = words.join("").replace(/([a-zA-Z])(\d)/g, "$1_$2")
-
-  return `Icon${pascal}`
-}
-
-/**
- * Indexes every glyph file under a set by its normalized component name. The id
- * loses original casing and underscore placement (`addAPhoto`, `starPurple500`),
- * so normalizing to lowercase alphanumerics matches the file regardless.
- */
-function buildGlyphIndex(root) {
-  const index = new Map()
-  const stack = [root]
-
-  while (stack.length > 0) {
-    const dir = stack.pop()
-
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name)
-
-      if (entry.isDirectory()) {
-        stack.push(full)
-      } else if (entry.name.endsWith(".tsx")) {
-        index.set(normalizeName(entry.name.replace(/\.tsx$/, "")), full)
-      }
-    }
-  }
-
-  return index
-}
-
-function normalizeName(value) {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, "")
-}
-
 function camelToKebab(value) {
   return value
     .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
@@ -238,12 +215,8 @@ function camelToKebab(value) {
     .toLowerCase()
 }
 
-function capitalize(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1)
-}
-
-function collapse(markup) {
-  return markup.replace(/\s+/g, " ").trim()
+function kebabToCamel(value) {
+  return value.replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase())
 }
 
 function serialize(data) {

@@ -90,7 +90,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "propertyDisclosure",
   },
   icon: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
     "data-seldon-ref": "propertyDisclosureIcon",
@@ -129,7 +129,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "propertyValueMenu",
   },
   icon3: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "propertyValueMenuIcon",

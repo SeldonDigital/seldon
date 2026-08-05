@@ -157,7 +157,7 @@ export function buildPropertyRowProps({
   // generated `.sdn-item-property` CSS so it tints on hover and state like the
   // rest of the row, instead of a baked-in label tint that overrides them.
   const icon3 = {
-    icon: (supportsUpload ? "material-upload" : "material-chevronDown") as IconProps["icon"],
+    icon: (supportsUpload ? "material-upload" : "material-keyboardArrowDown") as IconProps["icon"],
     style: getMenuIconStyle({
       isCalculated,
       supportsUpload,

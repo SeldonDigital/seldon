@@ -1,32 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialPlumbing(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="m19.28 4.93-2.12-2.12c-.78-.78-2.05-.78-2.83 0L11.5 5.64l2.12 2.12 2.12-2.12 3.54 3.54a3.012 3.012 0 0 0 0-4.25zM5.49 13.77c.59.59 1.54.59 2.12 0l2.47-2.47-2.12-2.13-2.47 2.47c-.59.59-.59 1.54 0 2.13z" />
-        <path d="m15.04 7.76-.71.71-.71.71L10.44 6c-.59-.6-1.54-.6-2.12-.01a1.49 1.49 0 0 0 0 2.12l3.18 3.18-.71.71-6.36 6.36c-.78.78-.78 2.05 0 2.83.78.78 2.05.78 2.83 0L16.45 12a.996.996 0 1 0 1.41-1.41l-2.82-2.83z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M19.275 9.175L15.75 5.65l-2.125 2.1l-2.125-2.1l2.825-2.85q.3-.3.675-.437t.75-.138q.4 0 .763.138t.637.437l2.125 2.125q.45.425.663.988t.212 1.137t-.212 1.125t-.663 1M5.5 13.775q-.45-.45-.45-1.062t.45-1.063l2.45-2.475l2.125 2.125L7.6 13.775q-.425.45-1.037.45t-1.063-.45M4.425 21.2q-.275-.3-.425-.662t-.15-.763t.138-.762t.437-.663L11.5 11.3L8.325 8.1q-.45-.425-.45-1.037T8.325 6q.425-.45 1.05-.45T10.45 6l3.175 3.175L15.05 7.75l2.8 2.85q.3.3.3.7t-.3.7t-.7.3t-.7-.3l-9.2 9.2q-.3.3-.663.438t-.737.137t-.75-.15t-.675-.425"/>',
+      }}
+    />
   )
 }

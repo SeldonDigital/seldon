@@ -1,32 +1,18 @@
-/*****
- *
- * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
- *
- * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
- * any machine learning or artificial intelligence system without written permission.
- *
- *****/
-
 import type { SVGAttributes } from "react"
 
 export function IconMaterialElectricalServices(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -960 960 960"
+      viewBox="0 0 24 24"
       fill="currentColor"
       height="1em"
       width="1em"
       {...props}
-    >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M21 14c0-.55-.45-1-1-1h-2v2h2c.55 0 1-.45 1-1zm-1 3h-2v2h2c.55 0 1-.45 1-1s-.45-1-1-1zm-8-3h-2v4h2c0 1.1.9 2 2 2h3v-8h-3c-1.1 0-2 .9-2 2z" />
-        <path d="M5 13c0-1.1.9-2 2-2h1.5c1.93 0 3.5-1.57 3.5-3.5S10.43 4 8.5 4H5c-.55 0-1 .45-1 1s.45 1 1 1h3.5c.83 0 1.5.67 1.5 1.5S9.33 9 8.5 9H7c-2.21 0-4 1.79-4 4s1.79 4 4 4h2v-2H7c-1.1 0-2-.9-2-2z" />
-      </g>
-    </svg>
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M18 15v-2h2q.425 0 .713.288T21 14t-.288.713T20 15zm0 4v-2h2q.425 0 .713.288T21 18t-.288.713T20 19zm-4 1q-.825 0-1.412-.587T12 18h-2v-4h2q0-.825.588-1.412T14 12h3v8zm-7-3q-1.65 0-2.825-1.175T3 13t1.175-2.825T7 9h1.5q.625 0 1.063-.437T10 7.5t-.437-1.062T8.5 6H5q-.425 0-.712-.288T4 5t.288-.712T5 4h3.5q1.45 0 2.475 1.025T12 7.5t-1.025 2.475T8.5 11H7q-.825 0-1.412.588T5 13t.588 1.413T7 15h2v2z"/>',
+      }}
+    />
   )
 }

@@ -70,6 +70,10 @@ async function main() {
     },
   })
 
+  // Clear the generated icon folder so a pruned or renamed icon leaves no stale
+  // file behind, matching the React export script.
+  fs.rmSync(path.join(editorRoot, "seldon/icons"), { recursive: true, force: true })
+
   for (const file of files) {
     const target = path.join(editorRoot, file.path)
     fs.mkdirSync(path.dirname(target), { recursive: true })

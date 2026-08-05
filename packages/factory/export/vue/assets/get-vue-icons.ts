@@ -15,6 +15,13 @@ const DEFAULT_ICON: IconGeometry = {
   body: `<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"><path d="m149.745 193.824-77.015 79.99 111.427 11.736M189.587 179.323 300 191.094l-77.817 80.616M184.157 285.55l5.43-106.227M300 191.094 247.27 46.22M72.73 273.814 20 128.939M97.017 48.953 20 128.939l111.427 11.737M136.854 34.45 247.27 46.22l-77.815 80.619"/></g>`,
 }
 
+/** The Seldon `seldon-missing` glyph, shown for an unresolvable referenced id. */
+const MISSING_ICON: IconGeometry = {
+  viewBox: "0 -960 960 960",
+  fill: "red",
+  body: `<path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q54 0 104-17.5t92-50.5L228-676q-33 42-50.5 92T160-480q0 134 93 227t227 93Zm252-124q33-42 50.5-92T800-480q0-134-93-227t-227-93q-54 0-104 17.5T284-732l448 448Z"/>`,
+}
+
 /**
  * Emits the Vue icon layer: a framework-neutral geometry data module
  * (`icons/index.ts`), a runtime registry for prop-driven dynamic icons
@@ -50,21 +57,28 @@ export function getVueIcons(usedIconIds: Set<IconId>, options: ExportOptions): F
 
     const resolved = resolveIconExport(iconId, options.rootDirectory)
 
-    if (!resolved) continue
-    const sourcePath = getIconSourcePath(resolved, options.rootDirectory)
-    let source: string | undefined
-    const fromReader = options.assetReader?.readIconFile(sourcePath)
+    if (resolved) {
+      const sourcePath = getIconSourcePath(resolved, options.rootDirectory)
+      let source: string | undefined
+      const fromReader = options.assetReader?.readIconFile(sourcePath)
 
-    if (fromReader) {
-      source = fromReader.toString("utf8")
-    } else if (fs.existsSync(sourcePath)) {
-      source = fs.readFileSync(sourcePath, "utf8")
+      if (fromReader) {
+        source = fromReader.toString("utf8")
+      } else if (fs.existsSync(sourcePath)) {
+        source = fs.readFileSync(sourcePath, "utf8")
+      }
+
+      const parsed = source ? parseIconSource(source) : undefined
+
+      if (parsed) {
+        geometry[iconId] = parsed
+        continue
+      }
     }
 
-    if (!source) continue
-    const parsed = parseIconSource(source)
-
-    if (parsed) geometry[iconId] = parsed
+    // Referenced id that resolves to no data and no source draws the Seldon
+    // `seldon-missing` glyph instead of silently falling back to the default.
+    geometry[iconId] = MISSING_ICON
   }
 
   const dataModule = `export type IconGeometry = {

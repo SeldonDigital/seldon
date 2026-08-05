@@ -172,6 +172,11 @@ async function main() {
     },
   })
 
+  // Clear the generated icon folder so a pruned or renamed icon leaves no stale
+  // file behind. Renaming an icon's casing on a case-insensitive filesystem
+  // otherwise keeps the old name and collides with the freshly written one.
+  fs.rmSync(path.join(editorRoot, COMPONENTS_FOLDER, "icons"), { recursive: true, force: true })
+
   for (const file of files) {
     const target = path.join(editorRoot, file.path)
     fs.mkdirSync(path.dirname(target), { recursive: true })

@@ -83,7 +83,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "hariReasoningToggle",
   },
   icon: {
-    icon: "material-chevronDown",
+    icon: "material-keyboardArrowDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--kzy9",
     "data-seldon-ref": "hariReasoningChevron",

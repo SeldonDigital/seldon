@@ -218,7 +218,7 @@ export const schema = {
             overrides: {
               symbol: {
                 type: Sdn.ValueType.OPTION,
-                value: "material-chevronDown",
+                value: "material-keyboardArrowDown",
               },
               size: {
                 type: Sdn.ValueType.COMPUTED,

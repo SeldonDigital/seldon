@@ -44,7 +44,7 @@ const seldonRefs = computed(() => ({
     "aria-label": open.value ? "Hide reasoning" : "Show reasoning",
   },
   hariReasoningChevron: {
-    icon: open.value ? "material-chevronDown" : "material-chevronRight",
+    icon: open.value ? "material-keyboardArrowDown" : "material-chevronRight",
   },
   hariReasoningLabel: { children: label.value },
   hariReasoningBody: {
