@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
-    "@seldon/core": "file:../../../core",
-    "@seldon/factory": "file:../../../factory",
+    "@seldon/core": "0.0.0",
+    "@seldon/factory": "0.0.0",
     "allotment": "^1.20.4",
     "change-case": "^5.4.4",
     "framer-motion": "^12.23.12",

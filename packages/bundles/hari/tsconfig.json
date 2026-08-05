@@ -1,0 +1,26 @@
+{
+  "extends": "../../../scripts/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": false,
+    "declarationMap": false,
+    "incremental": false,
+    "rootDir": ".",
+    "outDir": "./dist",
+    "moduleResolution": "bundler",
+    "customConditions": null,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@seldon/core": ["../../core/dist/index.d.ts"],
+      "@seldon/core/*": ["../../core/dist/*"],
+      "@seldon/factory": ["../../factory/dist/index.d.ts"],
+      "@seldon/factory/*": ["../../factory/dist/*"],
+      "@seldon/ai": ["../../ai/dist/index.d.ts"],
+      "@seldon/ai/*": ["../../ai/dist/*"],
+      "@seldon/terminus": ["../terminus/dist/index.d.ts"]
+    }
+  },
+  "include": ["index.ts"]
+}

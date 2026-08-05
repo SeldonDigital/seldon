@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021", "DOM"],
+    "strict": true,
+    "declaration": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "target": "ES2021",
+    "paths": {
+      "@seldon/core": ["../core/dist/index.d.ts"],
+      "@seldon/core/*": ["../core/dist/*"]
+    }
+  },
+  "include": ["index.ts", "orchestrate.ts", "types.ts", "pi/**/*.ts", "prompt/**/*.ts", "repair/**/*.ts", "schema/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

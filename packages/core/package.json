@@ -1,18 +1,36 @@
 {
   "name": "@seldon/core",
+  "version": "0.0.0",
+  "private": true,
   "type": "module",
+  "description": "Seldon core: components, properties, themes, and the workspace engine that editors and agents drive through actions.",
+  "license": "SEE LICENSE IN ../../license/noncommercial/LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
   "scripts": {
-    "build": "tsc --build tsconfig.json",
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs index.ts dist/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "typecheck": "tsc --build tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "node ../../scripts/format.mjs",
-    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required",
+    "prepublishOnly": "echo 'Publishing @seldon/core is blocked. See PUBLISHING.md to unlock.' && exit 1"
   },
   "exports": {
     ".": {
       "node": {
+        "types": "./dist/index.d.ts",
         "development": "./index.ts",
         "default": "./dist/index.js"
       },
@@ -20,6 +38,7 @@
     },
     "./icon-sets": {
       "node": {
+        "types": "./dist/icon-sets/index.d.ts",
         "development": "./icon-sets/index.ts",
         "default": "./dist/icon-sets/index.js"
       },
@@ -27,6 +46,7 @@
     },
     "./helpers/validation": {
       "node": {
+        "types": "./dist/helpers/validation/index.d.ts",
         "development": "./helpers/validation/index.ts",
         "default": "./dist/helpers/validation/index.js"
       },
@@ -34,6 +54,7 @@
     },
     "./properties": {
       "node": {
+        "types": "./dist/properties/index.d.ts",
         "development": "./properties/index.ts",
         "default": "./dist/properties/index.js"
       },
@@ -41,6 +62,7 @@
     },
     "./properties/constants": {
       "node": {
+        "types": "./dist/properties/constants/index.d.ts",
         "bun": "./properties/constants/index.ts",
         "development": "./properties/constants/index.ts",
         "default": "./dist/properties/constants/index.js"
@@ -49,6 +71,7 @@
     },
     "./properties/types": {
       "node": {
+        "types": "./dist/properties/types/index.d.ts",
         "development": "./properties/types/index.ts",
         "default": "./dist/properties/types/index.js"
       },
@@ -56,6 +79,7 @@
     },
     "./properties/types/schema": {
       "node": {
+        "types": "./dist/properties/types/schema.d.ts",
         "development": "./properties/types/schema.ts",
         "default": "./dist/properties/types/schema.js"
       },
@@ -63,6 +87,7 @@
     },
     "./properties/types/properties": {
       "node": {
+        "types": "./dist/properties/types/properties.d.ts",
         "development": "./properties/types/properties.ts",
         "default": "./dist/properties/types/properties.js"
       },
@@ -70,6 +95,7 @@
     },
     "./properties/schemas": {
       "node": {
+        "types": "./dist/properties/schemas/index.d.ts",
         "development": "./properties/schemas/index.ts",
         "default": "./dist/properties/schemas/index.js"
       },
@@ -77,6 +103,7 @@
     },
     "./properties/schemas/helpers": {
       "node": {
+        "types": "./dist/properties/schemas/helpers/index.d.ts",
         "development": "./properties/schemas/helpers/index.ts",
         "default": "./dist/properties/schemas/helpers/index.js"
       },
@@ -84,6 +111,7 @@
     },
     "./properties/values": {
       "node": {
+        "types": "./dist/properties/values/index.d.ts",
         "development": "./properties/values/index.ts",
         "default": "./dist/properties/values/index.js"
       },
@@ -91,6 +119,7 @@
     },
     "./properties/helpers": {
       "node": {
+        "types": "./dist/properties/helpers/index.d.ts",
         "development": "./properties/helpers/index.ts",
         "default": "./dist/properties/helpers/index.js"
       },
@@ -98,6 +127,7 @@
     },
     "./properties/compute": {
       "node": {
+        "types": "./dist/properties/compute/index.d.ts",
         "development": "./properties/compute/index.ts",
         "default": "./dist/properties/compute/index.js"
       },
@@ -105,6 +135,7 @@
     },
     "./workspace/compute": {
       "node": {
+        "types": "./dist/workspace/compute/index.d.ts",
         "development": "./workspace/compute/index.ts",
         "default": "./dist/workspace/compute/index.js"
       },
@@ -112,6 +143,7 @@
     },
     "./themes/compute": {
       "node": {
+        "types": "./dist/themes/compute/index.d.ts",
         "development": "./themes/compute/index.ts",
         "default": "./dist/themes/compute/index.js"
       },
@@ -119,6 +151,7 @@
     },
     "./themes/types": {
       "node": {
+        "types": "./dist/themes/types/index.d.ts",
         "development": "./themes/types/index.ts",
         "default": "./dist/themes/types/index.js"
       },
@@ -126,6 +159,7 @@
     },
     "./themes/values": {
       "node": {
+        "types": "./dist/themes/values/index.d.ts",
         "development": "./themes/values/index.ts",
         "default": "./dist/themes/values/index.js"
       },
@@ -133,19 +167,40 @@
     },
     "./helpers/math": {
       "node": {
+        "types": "./dist/helpers/math/index.d.ts",
         "development": "./helpers/math/index.ts",
         "default": "./dist/helpers/math/index.js"
       },
       "default": "./helpers/math/index.ts"
     },
+    "./package.json": "./package.json",
     "./*": {
       "node": {
+        "types": "./dist/*.d.ts",
         "development": "./*.ts",
         "default": "./dist/*.js"
       },
       "default": "./*.ts"
     }
   },
+  "files": [
+    "dist",
+    "components",
+    "font-collections",
+    "helpers",
+    "icon-registry",
+    "icon-sets",
+    "properties",
+    "rules",
+    "themes",
+    "utils",
+    "workspace",
+    "index.ts",
+    "constants.ts",
+    "README.md",
+    "!**/*.test.ts",
+    "!**/*.test.tsx"
+  ],
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@testing-library/react": "^16.3.0",

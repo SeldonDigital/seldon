@@ -6,6 +6,23 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 ---
 
+## Install And Public API
+
+Install `@seldon/core` on its own, or get it through a bundle: `@seldon/terminus` adds the export factory, and `@seldon/hari` adds AI. The public API is the bare `@seldon/core` specifier:
+
+```typescript
+import {
+  applyActions,
+  createEmptyWorkspace,
+  loadWorkspace,
+  workspaceReducer,
+} from "@seldon/core"
+```
+
+`loadWorkspace(json)` and `createEmptyWorkspace()` produce a workspace. `workspaceReducer` and `applyActions` apply typed `WorkspaceAction`s. The load/edit/save flow below is the contract every host follows. For the headless standalone flow with no editor, see [docs/host-contract.md](../../docs/host-contract.md).
+
+---
+
 ## What Core Contains
 
 Core groups four ideas that work together:

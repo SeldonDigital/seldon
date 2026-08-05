@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 
+import type { ResolvedIconExport } from "./react/utils/find-icon-path"
 import type { IconId } from "@seldon/core/icon-sets"
 
 export type IconExportSource = {
@@ -14,6 +15,13 @@ export type ExportAssetReader = {
   listNativeComponentFileStems(): string[]
   readCustomComponent?(fileStem: string): string | undefined
   getIconExportSource?(iconId: IconId): IconExportSource | undefined
+  /**
+   * Resolves an icon id to its export metadata (component name and path relative
+   * to the icons output folder). The icon index uses this so its export lines
+   * match the files {@link getIconExportSource} emits. A host without the catalog
+   * omits it, and the index falls back to the monorepo resolver.
+   */
+  resolveIconExport?(iconId: IconId): ResolvedIconExport | undefined
   /**
    * Every bindings library source, as a path relative to the bindings folder
    * using `/`. A host that cannot reach the factory sources omits this, and the

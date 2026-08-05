@@ -36,7 +36,11 @@
     "bindings:check": "npm run bindings:check --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "notices:thirdparty": "node packages/editor/shared/scripts/generate-third-party-notices.mjs",
     "ollama:ensure": "npm run ollama:ensure --workspace @seldon/ai",
-    "ollama:kill": "npm run ollama:kill --workspace @seldon/ai"
+    "ollama:kill": "npm run ollama:kill --workspace @seldon/ai",
+    "build:packages": "npm run build --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/ai --workspace @seldon/terminus --workspace @seldon/hari",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "verify:packages": "node scripts/verify-packages.mjs"
   },
   "repository": {
     "type": "git",
@@ -55,11 +59,19 @@
     "packages/editor/apps/vue",
     "packages/core",
     "packages/factory",
-    "packages/ai"
+    "packages/ai",
+    "packages/bundles/terminus",
+    "packages/bundles/hari",
+    "packages/bundles/foundation",
+    "apps/desktop"
   ],
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.0",
+    "@changesets/cli": "^2.27.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@vitest/coverage-v8": "^4.1.9",
+    "esbuild": "^0.28.1",
+    "publint": "^0.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "happy-dom": "^20.10.6",
     "prettier": "^3.3.3",

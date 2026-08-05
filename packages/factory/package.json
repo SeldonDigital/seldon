@@ -1,15 +1,66 @@
 {
   "name": "@seldon/factory",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Seldon factory: exports a workspace to framework components (React, Vue) and emits the bindings scanner and rules.",
+  "license": "SEE LICENSE IN ../../license/noncommercial/LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git",
+    "directory": "packages/factory"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "bin": {
+    "seldon-export": "./dist/export/cli/index.js"
+  },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core index.ts dist/index.js && node scripts/build-cli.mjs",
+    "build:cli": "node scripts/build-cli.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json",
-    "format": "node ../../scripts/format.mjs"
+    "format": "node ../../scripts/format.mjs",
+    "prepublishOnly": "echo 'Publishing @seldon/factory is blocked. See PUBLISHING.md to unlock.' && exit 1"
   },
+  "exports": {
+    ".": {
+      "node": {
+        "types": "./dist/index.d.ts",
+        "development": "./index.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./index.ts"
+    },
+    "./package.json": "./package.json",
+    "./*": {
+      "node": {
+        "types": "./dist/*.d.ts",
+        "development": "./*.ts",
+        "default": "./dist/*.js"
+      },
+      "default": "./*.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "index.ts",
+    "export",
+    "bindings",
+    "README.md",
+    "!**/*.test.ts",
+    "!**/*.test.tsx"
+  ],
   "devDependencies": {
-    "@seldon/core": "file:../core",
     "@types/react": "^19.1.9",
+    "esbuild": "^0.28.1",
     "eslint": "^9.39.4",
     "typescript-eslint": "^8.61.0"
   },
@@ -23,6 +74,7 @@
     }
   },
   "dependencies": {
+    "@seldon/core": "0.0.0",
     "@vue/compiler-sfc": "^3.5.13",
     "change-case": "^5.4.4",
     "csstype": "^3.1.3",

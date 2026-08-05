@@ -46,7 +46,36 @@ const files = await exportWorkspace(workspace, {
 
 `assetsFolder` and `assetPublicPath` are optional. When omitted they default to nest under `componentsFolder`, so image assets land in `${componentsFolder}/assets` and generated components reference them at `/${componentsFolder}/assets`. Set them explicitly to place assets elsewhere. Keeping the default keeps a generated library self-contained and avoids emitting a stray top-level `assets/` folder.
 
-Factory has no `exports` field and no top-level barrel. Import the concrete file paths shown here, not a bare `@seldon/factory` specifier.
+Factory has a top-level barrel (`index.ts`) and an `exports` map, so a consumer imports the public API from the bare `@seldon/factory` specifier:
+
+```typescript
+import {
+  createResolvedExportAssetReader,
+  exportWorkspace,
+  PLATFORMS,
+} from "@seldon/factory"
+```
+
+The barrel re-exports `exportWorkspace`, the platform registry, both asset readers, and the export types. Deep imports such as `@seldon/factory/export/types` still resolve for advanced use.
+
+When the export runs from a consumer project (no monorepo on disk), pass `createResolvedExportAssetReader()` so engine assets resolve from the installed `@seldon/core`. In-repo callers can omit `assetReader` and let `exportWorkspace` default to the monorepo reader.
+
+### Export CLI
+
+Factory ships a `seldon-export` bin. It reads a workspace JSON through `@seldon/core`, runs `exportWorkspace`, and writes the files to disk. It resolves engine assets from the installed `@seldon/core`, so it works from any consumer project.
+
+```bash
+# Vite project layout: components under src/seldon, assets under public/seldon
+npx seldon-export --input seldon-editor.json --preset vite
+
+# Next.js project layout: components under components/seldon
+npx seldon-export --input seldon-editor.json --preset next --platform react
+
+# Self-contained default under seldon/
+npx seldon-export --input seldon-editor.json
+```
+
+`--platform` selects the framework (`react`, `vue`). `--preset` selects the project layout (`vite`, `next`, `plain`). Run `seldon-export --help` for every flag.
 
 `exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and dispatches by `target.framework`. React is the only implemented target today, so it delegates to React generation when `target.framework` is `"react"` and throws for any other framework. Future targets such as Swift and Java add their own generation branches here.
 

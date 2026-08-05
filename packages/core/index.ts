@@ -45,6 +45,9 @@ export {
   ensureWorkspaceEditableThemeEntry,
 } from "./workspace/helpers/themes/workspace-editable-theme"
 export { createEmptyWorkspace } from "./workspace/helpers/create-empty-workspace"
+export { loadWorkspace } from "./workspace/reducers/load-workspace"
+export { applyActions } from "./workspace/reducers/apply-actions"
+export { workspaceReducer } from "./workspace/reducers/reducer"
 export {
   applyNodeRepeat,
   getNodeRepeat,

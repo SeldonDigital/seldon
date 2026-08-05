@@ -21,7 +21,9 @@ export function generateIconIndex(usedIconIds: Set<IconId>, options: ExportOptio
     const sortedIconIds = Array.from(usedIconIds).sort()
 
     for (const iconId of sortedIconIds) {
-      const resolved = resolveIconExport(iconId, options.rootDirectory)
+      const resolved =
+        options.assetReader?.resolveIconExport?.(iconId) ??
+        resolveIconExport(iconId, options.rootDirectory)
 
       if (!resolved) {
         console.warn(`Skipping icon index export for "${iconId}": no catalog file found`)
