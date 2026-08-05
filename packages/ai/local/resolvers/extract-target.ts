@@ -307,11 +307,15 @@ export async function extractTargetHint(
       output: `The model extracted no element, but the message names "${bareNoun}" -- a kind on the active board. Using it as the search noun (deterministic, no model call).`,
     })
   }
-  return {
+  const targetHint: TargetHint = {
     pointsAtSelection: rawHint.pointsAtSelection,
     match: searchPhrase === "" ? undefined : searchPhrase,
     baseNode: bareNoun === "" ? undefined : bareNoun,
     plural,
     count: requestedCount,
   }
+  // Kept on the context so stages running after target resolution can tell
+  // target words from edit words (see TurnContext.targetHint).
+  context.targetHint = targetHint
+  return targetHint
 }

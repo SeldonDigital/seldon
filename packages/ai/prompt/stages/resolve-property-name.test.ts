@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { buildResolvePropertyNamesStage } from "./resolve-property-name"
+import {
+  buildResolvePropertyNamesStage,
+  messageWords,
+} from "./resolve-property-name"
 
 describe("buildResolvePropertyNamesStage", () => {
-  it("lists the keys in the prompt and constrains the item enum to them", () => {
+  it("lists the keys in the prompt and constrains the pick enums to them", () => {
     const keys = ["color", "fontSize", "padding.top"]
     const { prompt, schema } = buildResolvePropertyNamesStage({
       message: "make it red",
@@ -14,7 +17,29 @@ describe("buildResolvePropertyNamesStage", () => {
     expect(prompt).toContain('"make it red"')
     for (const key of keys) expect(prompt).toContain(`- ${key}`)
     expect(schema).toMatchObject({
-      properties: { keys: { items: { enum: keys } } },
+      properties: {
+        picks: {
+          items: {
+            properties: {
+              key: { enum: keys },
+              evidenceWord: { enum: ["make", "it", "red"] },
+            },
+          },
+        },
+      },
     })
+  })
+})
+
+describe("messageWords", () => {
+  it("lowercases, splits on non-alphanumerics, and dedupes", () => {
+    expect(messageWords("Hide the top two chips, the TOP ones!")).toEqual([
+      "hide",
+      "the",
+      "top",
+      "two",
+      "chips",
+      "ones",
+    ])
   })
 })

@@ -1,6 +1,7 @@
 import type { AgentToolCall } from "../types"
 import type { ResolvedContext } from "./editor-context"
 import type { OllamaCallMetrics } from "./ollama-client"
+import type { TargetHint } from "./resolvers/extract-target"
 import type { TurnState } from "./turn-state"
 
 /**
@@ -33,6 +34,15 @@ export interface TurnContext {
   calls: OllamaCallMetrics[]
   /** Resolver steps taken this turn, for the transcript's tool-step list. */
   steps: AgentToolCall[]
+  /**
+   * The target hint extraction produced, kept past target resolution so later
+   * stages can tell target words from edit words: a property pick evidenced
+   * by a word of the target phrase read the target, not the edit ("hide the
+   * top two chips" picked position.top live). Absent until extraction runs,
+   * and on paths that resolve without extraction (pickTarget) -- consumers
+   * must treat that as "no target words known", never as an error.
+   */
+  targetHint?: TargetHint
   /** Streams a step to the caller as it happens, when the caller listens. */
   onStep?: (name: string, detail: StepDetail) => void
 }
