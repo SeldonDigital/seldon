@@ -68,6 +68,8 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.0",
     "@changesets/cli": "^2.27.0",
+    "@iconify-json/material-symbols": "^1.2.88",
+    "@iconify/utils": "^3.1.4",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@vitest/coverage-v8": "^4.1.9",
     "esbuild": "^0.28.1",

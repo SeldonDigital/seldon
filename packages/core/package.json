@@ -44,6 +44,14 @@
       },
       "default": "./icon-sets/index.ts"
     },
+    "./icon-sets/data": {
+      "node": {
+        "types": "./dist/icon-sets/data/index.d.ts",
+        "development": "./icon-sets/data/index.ts",
+        "default": "./dist/icon-sets/data/index.js"
+      },
+      "default": "./icon-sets/data/index.ts"
+    },
     "./helpers/validation": {
       "node": {
         "types": "./dist/helpers/validation/index.d.ts",

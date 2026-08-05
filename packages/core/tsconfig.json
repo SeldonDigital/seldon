@@ -25,6 +25,7 @@
     "./helpers/**/*.*",
     "./icon-registry/**/*.*",
     "./icon-sets/**/*.*",
+    "./icon-sets/**/*.json",
     "./properties/**/*.*",
     "./rules/**/*.*",
     "./themes/**/*.*",

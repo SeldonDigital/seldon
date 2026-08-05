@@ -1,4 +1,5 @@
 import { resolveIconExport } from "../utils/find-icon-path"
+import { getDataBackedIcon } from "./data-backed-icon"
 
 import type { ExportOptions, FileToExport } from "../../types"
 import type { IconId } from "@seldon/core/icon-sets"
@@ -22,6 +23,7 @@ export function generateIconIndex(usedIconIds: Set<IconId>, options: ExportOptio
 
     for (const iconId of sortedIconIds) {
       const resolved =
+        getDataBackedIcon(iconId) ??
         options.assetReader?.resolveIconExport?.(iconId) ??
         resolveIconExport(iconId, options.rootDirectory)
 

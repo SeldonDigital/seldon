@@ -2,6 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 
 import { getIconSourcePath, resolveIconExport } from "../utils/find-icon-path"
+import { getDataBackedIcon } from "./data-backed-icon"
 
 import type { ExportOptions, FileToExport } from "../../types"
 import type { IconId } from "@seldon/core/icon-sets"
@@ -19,6 +20,16 @@ export function getIcons(usedIconIds: Set<IconId>, options: ExportOptions): File
   const icons: FileToExport[] = []
 
   for (const iconId of usedIconIds) {
+    const dataBacked = getDataBackedIcon(iconId)
+
+    if (dataBacked) {
+      icons.push({
+        path: path.join(options.output.componentsFolder, "icons", `${dataBacked.relativePath}.tsx`),
+        content: dataBacked.content,
+      })
+      continue
+    }
+
     const fromReader = options.assetReader?.getIconExportSource?.(iconId)
 
     if (fromReader) {
