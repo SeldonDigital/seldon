@@ -1,0 +1,10 @@
+{
+  "platform": "react",
+  "includeHidden": false,
+  "allThemes": false,
+  "allFonts": false,
+  "fontLinks": false,
+  "allIcons": true,
+  "savedWorkspace": true,
+  "includeScripts": true
+}
