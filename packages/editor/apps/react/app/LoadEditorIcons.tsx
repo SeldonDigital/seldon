@@ -1,10 +1,6 @@
 import { IconDefault, IconSeldonMissing as IconMissing } from "@seldon/components/icons"
 
 import { getIconData } from "@seldon/core/icon-sets/data"
-import * as CarbonIcons from "@seldon/core/icon-sets/catalog/carbon"
-import * as CarbonIconsAll from "@seldon/core/icon-sets/catalog/carbon/index-all"
-import * as LucideIcons from "@seldon/core/icon-sets/catalog/lucide"
-import * as LucideIconsAll from "@seldon/core/icon-sets/catalog/lucide/index-all"
 import * as SeldonIcons from "@seldon/core/icon-sets/catalog/seldon"
 import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/index-all"
 
@@ -49,13 +45,11 @@ function mergeIconModules(all: object, curated: object): IconModule {
 
 /**
  * Icon components for sets that still ship source files, keyed by icon-id
- * prefix. Sets with generated glyph data (`material`) render from
- * {@link getIconData} instead and are absent here. Each set resolves against
- * its full catalog (index-all.ts), so every shipped icon renders.
+ * prefix. Sets with generated glyph data (`material`, `carbon`, `lucide`)
+ * render from {@link getIconData} instead and are absent here. `seldon` resolves
+ * against its full catalog (index-all.ts), so every shipped icon renders.
  */
 const ICON_MODULES_BY_PREFIX: Record<string, IconModule> = {
-  carbon: mergeIconModules(CarbonIconsAll, CarbonIcons),
-  lucide: mergeIconModules(LucideIconsAll, LucideIcons),
   seldon: mergeIconModules(SeldonIconsAll, SeldonIcons),
 }
 

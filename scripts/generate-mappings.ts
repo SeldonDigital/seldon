@@ -24,15 +24,13 @@ const CATALOG_DIR = path.join(REPO_ROOT, "packages/core/icon-sets/catalog")
 /**
  * Icon sets to process: catalog folder name -> icon id prefix.
  *
- * `material` is omitted: its glyphs are generated data, so its `index-all.ts`
- * holds ids only with no per-file exports to derive categories from. Its
- * `category-map.ts` is maintained alongside the data by
- * `scripts/generate-icons.mjs`.
+ * Only `seldon` ships per-file glyph exports. The `material`, `carbon`, and
+ * `lucide` sets are generated data, so their `index-all.ts` holds ids only with
+ * no exports to derive categories from; their `category-map.ts` is maintained
+ * alongside the data by `scripts/generate-icons.mjs`.
  */
 const ICON_SETS: Record<string, string> = {
   seldon: "seldon",
-  carbon: "carbon",
-  lucide: "lucide",
 }
 
 const VALID_CATEGORY_PATHS = new Set<string>(categoryPaths)

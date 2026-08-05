@@ -35,6 +35,18 @@ const SETS = {
     catalogFolder: "material",
     style: "outline",
   },
+  carbon: {
+    prefix: "carbon",
+    upstream: "@iconify-json/carbon/icons.json",
+    catalogFolder: "carbon",
+    style: "default",
+  },
+  lucide: {
+    prefix: "lucide",
+    upstream: "@iconify-json/lucide/icons.json",
+    catalogFolder: "lucide",
+    style: "default",
+  },
 }
 
 const setName = process.argv[2]

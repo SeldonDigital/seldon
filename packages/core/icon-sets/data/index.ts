@@ -7,13 +7,17 @@
  * Iconify package. Regenerate deliberately; a consumer install never reads
  * upstream.
  */
-import materialIcons from "./material.icons.json"
+import carbonIcons from "./carbon.icons.json" with { type: "json" }
+import lucideIcons from "./lucide.icons.json" with { type: "json" }
+import materialIcons from "./material.icons.json" with { type: "json" }
 
 import type { IconId } from "../../icon-sets"
 import type { IconData } from "./types"
 
 const ICON_DATA_BY_PREFIX: Record<string, Record<string, IconData>> = {
   material: materialIcons as Record<string, IconData>,
+  carbon: carbonIcons as Record<string, IconData>,
+  lucide: lucideIcons as Record<string, IconData>,
 }
 
 /** Glyph data for an icon id, or `undefined` when the set has no data file. */
