@@ -10,9 +10,10 @@
  * touches upstream and an upstream release never changes a build.
  *
  * Usage:
- *   node scripts/generate-icons.mjs material        Regenerate the data file.
- *   node scripts/generate-icons.mjs --seed material  Refill the manifest from
- *                                                    upstream up to the cap
+ *   node scripts/generate-icons.mjs                 Regenerate every set.
+ *   node scripts/generate-icons.mjs material        Regenerate one set.
+ *   node scripts/generate-icons.mjs --seed material  Refill one set's manifest
+ *                                                    from upstream up to the cap
  *                                                    (deliberate, not part of a
  *                                                    normal regenerate).
  *
@@ -66,17 +67,22 @@ const SETS = {
 const args = process.argv.slice(2)
 const seed = args.includes("--seed")
 const setName = args.find((arg) => !arg.startsWith("--"))
-const config = SETS[setName]
 
-if (!config) {
+if (setName && !SETS[setName]) {
   console.error(`Unknown set "${setName}". Known: ${Object.keys(SETS).join(", ")}.`)
   process.exit(1)
 }
 
 if (seed) {
-  seedManifest(config)
+  if (!setName) {
+    console.error(`--seed needs one set. Known: ${Object.keys(SETS).join(", ")}.`)
+    process.exit(1)
+  }
+  seedManifest(SETS[setName])
+} else if (setName) {
+  generate(SETS[setName])
 } else {
-  generate(config)
+  for (const config of Object.values(SETS)) generate(config)
 }
 
 /**
@@ -105,7 +111,7 @@ function generate({ prefix, upstream, catalogFolder, style }) {
   }
 
   if (missing.length > 0) {
-    console.error(`\n[${setName}] ${missing.length} manifest id(s) do not resolve upstream:`)
+    console.error(`\n[${prefix}] ${missing.length} manifest id(s) do not resolve upstream:`)
     for (const id of missing) console.error(`  - ${id}`)
     console.error(
       `\nRename them to an upstream-canonical id or remove them from ` +
@@ -115,11 +121,11 @@ function generate({ prefix, upstream, catalogFolder, style }) {
   }
 
   fs.mkdirSync(dataDir, { recursive: true })
-  const outPath = path.join(dataDir, `${setName}.icons.json`)
+  const outPath = path.join(dataDir, `${prefix}.icons.json`)
   fs.writeFileSync(outPath, serialize(data))
 
   console.log(
-    `[${setName}] ${ids.length} icons (${style} style) -> ${path.relative(repoRoot, outPath)}`,
+    `[${prefix}] ${ids.length} icons (${style} style) -> ${path.relative(repoRoot, outPath)}`,
   )
 }
 
@@ -228,8 +234,8 @@ function sanitizeBody(body, id) {
 
   if (cleaned !== body) {
     console.error(
-      `\n[${setName}] unsafe markup in "${id}" upstream glyph. ` +
-        `Refusing to commit sanitized-but-suspect data; inspect the pinned ` +
+      `\nUnsafe markup in "${id}" upstream glyph. ` +
+        `Refusing to commit sanitized-but-suspect data. Inspect the pinned ` +
         `upstream package before regenerating.`,
     )
     process.exit(1)

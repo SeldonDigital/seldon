@@ -44,7 +44,7 @@ An entry stores its selection in `overrides.includedIcons`, keyed by icon id. An
 
 The `material`, `carbon`, and `lucide` sets ship generated glyph data instead of component files. `scripts/generate-icons.mjs` reads a set's `index-all.ts` manifest, resolves every id against a pinned upstream Iconify package, and writes `data/<set>.icons.json`. Every id must resolve or the build fails, so the data always matches the manifest. There is no vendor fallback. An id that resolves to no glyph renders the `seldon-missing` glyph. The `__default__` id stays the arrow shown for an unset icon.
 
-Run `node scripts/generate-icons.mjs <set>` after editing a manifest, or `--seed <set>` to refill it from upstream up to 5000 icons, group style variants, and drop aliases. The upstream package is a pinned devDependency, so a consumer install never reads upstream.
+Run `npm run icons` to regenerate every set, or pass one set to scope it. Use `node scripts/generate-icons.mjs --seed <set>` to refill a manifest from upstream up to 5000 icons, group style variants, and drop aliases. The upstream package is a pinned devDependency, so a consumer install never reads upstream.
 
 Each glyph `body` is injected as raw SVG when rendered and exported. The generator sanitizes and validates it first, failing on scripts, `foreignObject`, event handlers, or `javascript:` urls, so the committed data is trusted markup. A user-selected `symbol` id only looks it up. An unknown id renders `seldon-missing` and never reaches the sink.
 
