@@ -1,4 +1,4 @@
-import { iconLabels } from "@seldon/core/icon-sets"
+import { getIconLabel } from "@seldon/core/icon-sets"
 import { categorySubcategories, iconCategories } from "@seldon/core/icon-sets/constants"
 import {
   deriveSubcategoryPreset,
@@ -84,7 +84,7 @@ export function flattenIconSetCategories(
         rows.push(
           createResourceMenuRow(
             `icon.${subcategoryPath}.${iconId}`,
-            iconLabels[iconId as keyof typeof iconLabels] ?? iconId,
+            getIconLabel(iconId),
             enabled ? "On" : "Off",
             RESOURCE_TOGGLE_OPTIONS,
             true,

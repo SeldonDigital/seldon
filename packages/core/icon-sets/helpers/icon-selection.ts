@@ -31,11 +31,6 @@ export function isIconEnabledByDefault(set: ComputedIconSet, iconId: IconId): bo
   return set.defaultEnabledCategories.includes(getIconTopCategory(iconId))
 }
 
-/** Icons enabled by default, derived from the set's default categories. */
-export function getDefaultIncludedIcons(set: ComputedIconSet): IconId[] {
-  return set.icons.filter((iconId) => isIconEnabledByDefault(set, iconId))
-}
-
 /** True when an icon is on. Explicit overrides win over the default categories. */
 export function isIconIncluded(
   set: ComputedIconSet,
@@ -95,11 +90,6 @@ export type IconSubcategoryPreset = "all" | "none" | "custom"
 /** Icons in the set that belong to a `category/subcategory` path. */
 export function getIconsInSubcategory(set: ComputedIconSet, subcategoryPath: string): IconId[] {
   return set.icons.filter((iconId) => getIconCategoryFromId(iconId) === subcategoryPath)
-}
-
-/** Icons in the set that belong to a top-level category. */
-export function getIconsInCategory(set: ComputedIconSet, category: IconCategory): IconId[] {
-  return set.icons.filter((iconId) => getIconTopCategory(iconId) === category)
 }
 
 /** Derives the preset for a subcategory from its icons' inclusion. */

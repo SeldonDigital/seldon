@@ -1,6 +1,6 @@
 import { deriveVariantPreset, isVariantEnabled } from "@seldon/core/font-collections"
 import { fontVariantDisplayLabel, sortFontVariants } from "@seldon/core/helpers/utils/font-variant"
-import { iconLabels } from "@seldon/core/icon-sets"
+import { getIconLabel } from "@seldon/core/icon-sets"
 import { categorySubcategories, iconCategories } from "@seldon/core/icon-sets/constants"
 import {
   deriveSubcategoryPreset,
@@ -188,7 +188,7 @@ export function buildIconSetRows(
 
         rows.push({
           key: `icon.${subcategoryPath}.${iconId}`,
-          label: iconLabels[iconId as keyof typeof iconLabels] ?? iconId,
+          label: getIconLabel(iconId),
           control: {
             kind: "option",
             value: enabled ? "On" : "Off",

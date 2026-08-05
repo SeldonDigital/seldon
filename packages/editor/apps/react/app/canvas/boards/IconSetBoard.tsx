@@ -13,7 +13,7 @@ import { useMemo } from "react"
 
 import { ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
-import { iconLabels } from "@seldon/core/icon-sets"
+import { getIconLabel } from "@seldon/core/icon-sets"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import { CssPortal } from "../CssPortal"
@@ -135,7 +135,7 @@ function IconPreview({
 }: IconPreviewProps) {
   const { workspace: iconBase, rootId } = getIconSheetPreviewBase()
 
-  const label = iconLabels[iconId as keyof typeof iconLabels] ?? iconId
+  const label = getIconLabel(iconId)
 
   const previewWorkspace = useMemo(() => {
     if (!rootId) {
