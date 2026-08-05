@@ -1,6 +1,6 @@
 import type { IconId } from "@seldon/core/icon-sets"
 
-export const carbonAllIconIds: readonly IconId[] = [
+export const carbonAvailableIconIds: readonly IconId[] = [
   "carbon-ibmConsultingAdvantageAssistant",
   "carbon-receipt",
   "carbon-shoppingBag",

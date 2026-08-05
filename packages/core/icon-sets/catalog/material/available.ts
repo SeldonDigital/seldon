@@ -1,6 +1,6 @@
 import type { IconId } from "@seldon/core/icon-sets"
 
-export const materialAllIconIds: readonly IconId[] = [
+export const materialAvailableIconIds: readonly IconId[] = [
   "material-appsOutage",
   "material-attachMoney",
   "material-cardMembership",

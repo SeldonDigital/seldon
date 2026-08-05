@@ -1,5 +1,5 @@
 import { computeFontCollection } from "../helpers/compute-font-collection"
-import { collection as googleStock } from "./google"
+import { collection as googleStock } from "./google/stock"
 import { defaultFontCollection, collection as systemStock } from "./system"
 
 import type { ComputedFontCollection, StockFontCollection } from "../types/font-collection"

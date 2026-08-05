@@ -1,4 +1,5 @@
 import { GOOGLE_FONT_FAMILIES } from "../../../properties/constants/typography/font-families"
+import { googleDefaultEnabledFamilies } from "./default-enabled"
 
 import type { FontFamilyEntry, StockFontCollection } from "../../types/font-collection"
 
@@ -32,4 +33,5 @@ export const collection: StockFontCollection = {
     intent: "Remote font families loaded from Google Fonts when added to a workspace.",
   },
   families,
+  defaultEnabledFamilies: [...googleDefaultEnabledFamilies],
 }

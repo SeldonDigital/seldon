@@ -42,7 +42,7 @@ An entry stores its selection in `overrides.includedIcons`, keyed by icon id. An
 
 ## Vendor icon data
 
-The `material`, `carbon`, and `lucide` sets ship generated glyph data instead of component files. `scripts/generate-icons.mjs` reads a set's `index-all.ts` manifest, resolves every id against a pinned upstream Iconify package, and writes `data/<set>.icons.json`. Every id must resolve or the build fails, so the data always matches the manifest. There is no vendor fallback. An id that resolves to no glyph renders the `seldon-missing` glyph. The `__default__` id stays the arrow shown for an unset icon.
+The `material`, `carbon`, and `lucide` sets ship generated glyph data instead of component files. `scripts/generate-icons.mjs` reads a set's `available.ts` manifest, resolves every id against a pinned upstream Iconify package, and writes `data/<set>.icons.json`. Every id must resolve or the build fails, so the data always matches the manifest. There is no vendor fallback. An id that resolves to no glyph renders the `seldon-missing` glyph. The `__default__` id stays the arrow shown for an unset icon.
 
 Run `npm run icons` to regenerate every set, or pass one set to scope it. Use `node scripts/generate-icons.mjs --seed <set>` to refill a manifest from upstream up to 5000 icons, group style variants, and drop aliases. The upstream package is a pinned devDependency, so a consumer install never reads upstream.
 
@@ -52,7 +52,7 @@ The data lives behind the `@seldon/core/icon-sets/data` subpath. The core barrel
 
 ## Module layout
 
-- `catalog/` holds one folder per packaged set plus `index.ts`, which exports the set maps and `computeIconSet`. `seldon/` ships component files and a `category-map.ts`. The vendor folders ship only manifests.
+- `catalog/` holds one folder per packaged set plus `index.ts`, which exports the set maps and `computeIconSet`. Each set folder holds `stock.ts` for the set definition, `available.ts` for the full available id list, and `default-enabled.ts` for the default-on subset. `seldon/` also ships component files and a `category-map.ts`.
 - `data/` holds the generated vendor glyph data with `getIconData` and `hasIconData`.
 - `constants/` holds the category types, values, keyword table, and the `vendorIconCategories` map.
 - `helpers/` holds `computeIconSet`, the selection helpers, category lookups, and workspace helpers.

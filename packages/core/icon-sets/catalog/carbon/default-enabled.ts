@@ -1,6 +1,6 @@
 import type { IconId } from "@seldon/core/icon-sets"
 
-export const carbonIconIds: readonly IconId[] = [
+export const carbonDefaultEnabledIconIds: readonly IconId[] = [
   "carbon-add",
   "carbon-addAlt",
   "carbon-addFilled",

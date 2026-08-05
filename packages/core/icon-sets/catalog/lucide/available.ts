@@ -1,6 +1,6 @@
 import type { IconId } from "@seldon/core/icon-sets"
 
-export const lucideAllIconIds: readonly IconId[] = [
+export const lucideAvailableIconIds: readonly IconId[] = [
   "lucide-store",
   "lucide-octagonMinus",
   "lucide-cardSim",

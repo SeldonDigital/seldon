@@ -1,6 +1,6 @@
 import type { IconId } from "@seldon/core/icon-sets"
 
-export const lucideIconIds: readonly IconId[] = [
+export const lucideDefaultEnabledIconIds: readonly IconId[] = [
   "lucide-plus",
   "lucide-minus",
   "lucide-arrowLeft",

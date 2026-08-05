@@ -1,6 +1,6 @@
 import type { IconId } from "@seldon/core/icon-sets"
 
-export const materialIconIds: readonly IconId[] = [
+export const materialDefaultEnabledIconIds: readonly IconId[] = [
   "material-arrowBack",
   "material-arrowForward",
   "material-arrowUpward",

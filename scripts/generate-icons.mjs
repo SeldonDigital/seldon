@@ -1,6 +1,6 @@
 /**
  * Generates the compact icon data file for a set from its pinned upstream
- * Iconify package. Every id in the set's `index-all.ts` manifest must resolve
+ * Iconify package. Every id in the set's `available.ts` manifest must resolve
  * upstream; the generator fails and lists any id that does not, so the emitted
  * data always matches the manifest. There is no vendor glyph fallback: a
  * referenced id that cannot render uses the Seldon `seldon-missing` glyph at
@@ -115,7 +115,7 @@ function generate({ prefix, upstream, catalogFolder, style }) {
     for (const id of missing) console.error(`  - ${id}`)
     console.error(
       `\nRename them to an upstream-canonical id or remove them from ` +
-        `catalog/${catalogFolder}/index-all.ts, then rerun.`,
+        `catalog/${catalogFolder}/available.ts, then rerun.`,
     )
     process.exit(1)
   }
@@ -150,10 +150,10 @@ function seedManifest({ prefix, upstream, catalogFolder, style, cap }) {
   const chosen = [...concepts.keys()].sort().slice(0, cap)
   const ids = chosen.map((concept) => `${prefix}-${kebabToCamel(concept)}`)
 
-  const manifestPath = path.join(catalogDir, catalogFolder, "index-all.ts")
+  const manifestPath = path.join(catalogDir, catalogFolder, "available.ts")
   const header =
     `import type { IconId } from "@seldon/core/icon-sets"\n\n` +
-    `export const ${catalogFolder}AllIconIds: readonly IconId[] = [\n`
+    `export const ${catalogFolder}AvailableIconIds: readonly IconId[] = [\n`
   const body = ids.map((id) => `  "${id}",`).join("\n")
   fs.writeFileSync(manifestPath, `${header}${body}\n] as const\n`)
 
@@ -167,10 +167,10 @@ function loadUpstream(upstream) {
   return JSON.parse(fs.readFileSync(path.join(repoRoot, "node_modules", upstream), "utf8"))
 }
 
-/** Reads the set's ids from its `<set>AllIconIds` array in index-all.ts. */
+/** Reads the set's ids from its `<set>AvailableIconIds` array in available.ts. */
 function readManifestIds(catalogFolder, prefix) {
-  const source = fs.readFileSync(path.join(catalogDir, catalogFolder, "index-all.ts"), "utf8")
-  const array = source.slice(source.indexOf(`${catalogFolder}AllIconIds`))
+  const source = fs.readFileSync(path.join(catalogDir, catalogFolder, "available.ts"), "utf8")
+  const array = source.slice(source.indexOf(`${catalogFolder}AvailableIconIds`))
   const escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
   const pattern = new RegExp(`"(${escaped}-[^"]+)"`, "g")
 

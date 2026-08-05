@@ -2,7 +2,7 @@ import { IconDefault, IconSeldonMissing as IconMissing } from "@seldon/component
 
 import { getIconData } from "@seldon/core/icon-sets/data"
 import * as SeldonIcons from "@seldon/core/icon-sets/catalog/seldon"
-import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/index-all"
+import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/available"
 
 import type { IconId } from "@seldon/core/icon-sets"
 import type { SVGAttributes } from "react"
@@ -47,7 +47,7 @@ function mergeIconModules(all: object, curated: object): IconModule {
  * Icon components for sets that still ship source files, keyed by icon-id
  * prefix. Sets with generated glyph data (`material`, `carbon`, `lucide`)
  * render from {@link getIconData} instead and are absent here. `seldon` resolves
- * against its full catalog (index-all.ts), so every shipped icon renders.
+ * against its full catalog (available.ts), so every shipped icon renders.
  */
 const ICON_MODULES_BY_PREFIX: Record<string, IconModule> = {
   seldon: mergeIconModules(SeldonIconsAll, SeldonIcons),

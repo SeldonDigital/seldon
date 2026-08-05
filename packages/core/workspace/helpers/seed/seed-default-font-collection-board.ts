@@ -1,5 +1,4 @@
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
-import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../font-collections/catalog/google/default-enabled-families"
 import { isFontCollectionBoard } from "../../model/components"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
 import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"
@@ -45,12 +44,13 @@ function createGoogleFontCollectionEntry(): EntryFontCollection {
   }
 
   const stock = STOCK_FONT_COLLECTIONS_BY_ID["googleFonts"]
+  const defaultEnabledFamilies = new Set(stock.defaultEnabledFamilies ?? [])
 
   for (const [slot, family] of Object.entries(stock.families)) {
     if (
       family.variants &&
       family.variants.length > 0 &&
-      GOOGLE_DEFAULT_ENABLED_FAMILIES.has(family.name)
+      defaultEnabledFamilies.has(family.name)
     ) {
       setFamilyVariantPreset(entry, slot, "all", family.variants)
     }

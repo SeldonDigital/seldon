@@ -1,9 +1,10 @@
 /**
- * Families enabled by default when the Google font collection is added to a
- * workspace. Every other Google family is seeded to `None` (all variants
- * disabled). Names match the `family` field in `GOOGLE_FONT_FAMILIES`.
+ * Families enabled by default when the Google font collection is seeded or added
+ * to a workspace. Every other Google family starts off, meaning all variants are
+ * disabled. Names match the `family` field in `GOOGLE_FONT_FAMILIES`. The Google
+ * collection declares this as its `defaultEnabledFamilies`.
  */
-export const GOOGLE_DEFAULT_ENABLED_FAMILIES: ReadonlySet<string> = new Set([
+export const googleDefaultEnabledFamilies: readonly string[] = [
   "Inter",
   "Roboto",
   "Open Sans",
@@ -36,4 +37,4 @@ export const GOOGLE_DEFAULT_ENABLED_FAMILIES: ReadonlySet<string> = new Set([
   "Space Grotesk",
   "Sora",
   "Quicksand",
-])
+]

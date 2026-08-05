@@ -31,10 +31,15 @@ export type FontCollectionCustomKey = `family${number}`
 /** Family map keyed by family slot id. */
 export type FontFamilyTable = Record<string, FontFamilyEntry>
 
-/** Packaged collection schema (`collections/`). */
+/**
+ * Packaged collection schema (`collections/`). `families` lists every family the collection ships.
+ * `defaultEnabledFamilies`, when present, names the families enabled by default when the collection
+ * is first seeded or added. Every other family starts off. Names match the `name` of a family entry.
+ */
 export interface StockFontCollection {
   metadata: FontCollectionMetadata
   families: FontFamilyTable
+  defaultEnabledFamilies?: string[]
 }
 
 /** Complete collection in memory, including the resolved `id`. */

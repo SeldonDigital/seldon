@@ -50,7 +50,7 @@ Factory export never reads these files. An exported app loads Google families fr
 
 ## Module layout
 
-- `catalog/` holds `system.ts` for the `system` collection and the `google/` folder for the `googleFonts` collection. The `google/` folder holds `index.ts` and `default-enabled-families.ts`. The google collection builds its families from `GOOGLE_FONT_FAMILIES`. `catalog/index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, `defaultFontCollection`, and `computeFontCollection`.
+- `catalog/` holds `system.ts` for the `system` collection and the `google/` folder for the `googleFonts` collection. The `google/` folder holds `stock.ts` and `default-enabled.ts`. The google collection builds its families from `GOOGLE_FONT_FAMILIES`. `catalog/index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, `defaultFontCollection`, and `computeFontCollection`.
 - `types/` holds the document and id types.
 - `constants/` holds the `FontOrigin` type and the `FontOriginValue` values.
 - `helpers/` holds `computeFontCollection`, `normalizeFontCollection`, `getRemoteFontUrl`, `isRemoteFontFamily`, `getFamilyNameByValue`, and the variant selection helpers `deriveVariantPreset`, `getEnabledVariants`, and `isVariantEnabled`.

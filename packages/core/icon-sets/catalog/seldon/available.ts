@@ -112,7 +112,7 @@ export { IconSocialTelegram } from "./social-media/social/IconSocialTelegram"
 export { IconSocialInstagram } from "./social-media/social/IconSocialInstagram"
 export { IconSocialGithub } from "./social-media/social/IconSocialGithub"
 
-export const seldonAllIconIds: readonly IconId[] = [
+export const seldonAvailableIconIds: readonly IconId[] = [
   "seldon-lines",
   "seldon-text",
   "seldon-codeCube",
