@@ -25,7 +25,7 @@ import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 
-import { getBoardRowIcon } from "@seldon/core/icon-registry"
+import { getBoardRowIcon } from "@seldon/core/icon-lookup"
 import {
   isAuthoredBoard,
   isComponentBoard,

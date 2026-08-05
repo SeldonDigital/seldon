@@ -1,4 +1,4 @@
-import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
+import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-lookup"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   getCompoundSubPropertySchema,

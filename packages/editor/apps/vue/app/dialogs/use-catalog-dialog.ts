@@ -1,7 +1,7 @@
 import { computed, ref } from "vue"
 
 import { catalog } from "@seldon/core/components/catalog"
-import { getComponentIcon } from "@seldon/core/icon-registry"
+import { getComponentIcon } from "@seldon/core/icon-lookup"
 
 import type { CatalogDialogCategory, CatalogDialogItem } from "@app/dialogs/types"
 import type { ComponentId } from "@seldon/core/components/constants"

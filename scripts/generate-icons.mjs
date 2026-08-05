@@ -10,7 +10,7 @@
  * touches upstream and an upstream release never changes a build.
  *
  * Usage:
- *   node scripts/generate-icons.mjs material        Regenerate data + category map.
+ *   node scripts/generate-icons.mjs material        Regenerate the data file.
  *   node scripts/generate-icons.mjs --seed material  Refill the manifest from
  *                                                    upstream up to the cap
  *                                                    (deliberate, not part of a
@@ -25,8 +25,6 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 import { getIconData } from "@iconify/utils"
-
-import { writeCategoryMap } from "./generate-category-map.mjs"
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.dirname(scriptDir)
@@ -82,8 +80,11 @@ if (seed) {
 }
 
 /**
- * Reads the manifest, resolves every id upstream, and writes the data file and
- * the category map. Fails listing any id that does not resolve upstream.
+ * Reads the manifest, resolves every id upstream, and writes the data file.
+ * Fails listing any id that does not resolve upstream. Categories live in the
+ * curated `constants/icon-categories.ts` source, so this does not touch them; a
+ * seeded id absent from that source categorizes by the shared keyword table at
+ * lookup time.
  */
 function generate({ prefix, upstream, catalogFolder, style }) {
   const ids = readManifestIds(catalogFolder, prefix)
@@ -117,12 +118,9 @@ function generate({ prefix, upstream, catalogFolder, style }) {
   const outPath = path.join(dataDir, `${setName}.icons.json`)
   fs.writeFileSync(outPath, serialize(data))
 
-  const categoryPath = writeCategoryMap(setName)
-
   console.log(
     `[${setName}] ${ids.length} icons (${style} style) -> ${path.relative(repoRoot, outPath)}`,
   )
-  console.log(`[${setName}] category map -> ${path.relative(repoRoot, categoryPath)}`)
 }
 
 /**

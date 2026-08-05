@@ -23,7 +23,7 @@
     "./components/**/*.*",
     "./font-collections/**/*.*",
     "./helpers/**/*.*",
-    "./icon-registry/**/*.*",
+    "./icon-lookup.ts",
     "./icon-sets/**/*.*",
     "./icon-sets/**/*.json",
     "./properties/**/*.*",

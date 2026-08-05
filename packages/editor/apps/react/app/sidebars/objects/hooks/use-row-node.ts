@@ -12,7 +12,7 @@ import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import { getNodeRowIcon } from "@seldon/core/icon-registry"
+import { getNodeRowIcon } from "@seldon/core/icon-lookup"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import {

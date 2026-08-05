@@ -1,14 +1,15 @@
 /**
  * Shared keyword table for icon categorization.
  *
- * One ordered list maps name tokens to a category path. The icon generator
- * assigns each vendor id a category by this order: a per-vendor entry in
- * `catalog/<vendor>/category-overrides.ts` first, then the first keyword whose
- * token appears in the id, then {@link DEFAULT_CATEGORY_PATH}.
+ * One ordered list maps name tokens to a category path. `getIconCategoryFromId`
+ * uses it as the fallback for a vendor id not listed in the curated
+ * `icon-categories.ts` source: the first keyword whose token appears in the id
+ * wins, else {@link DEFAULT_CATEGORY_PATH}.
  *
- * Adjust categories here once and regenerate every vendor `category-map.ts`.
  * Keep specific tokens above generic ones, because the first match wins.
  */
+import { DEFAULT_CATEGORY_PATH } from "./categories"
+
 import type { IconCategoryPath } from "./categories"
 
 export interface CategoryKeyword {
@@ -44,3 +45,18 @@ export const categoryKeywords: CategoryKeyword[] = [
   { tokens: ["facebook", "twitter", "instagram", "youtube", "linkedin", "github", "social", "reddit", "discord", "tiktok"], path: "social-media/social" },
   { tokens: ["person", "user", "account", "profile", "people", "group", "face"], path: "social-media/user" },
 ]
+
+/**
+ * Categorizes an icon id by the keyword table. Lowercases the id and returns the
+ * first keyword whose token is a substring, else {@link DEFAULT_CATEGORY_PATH}.
+ * Used as the fallback for a vendor id absent from the curated category source.
+ */
+export function matchCategoryKeyword(iconId: string): IconCategoryPath {
+  const haystack = iconId.toLowerCase()
+
+  for (const { tokens, path } of categoryKeywords) {
+    if (tokens.some((token) => haystack.includes(token))) return path
+  }
+
+  return DEFAULT_CATEGORY_PATH
+}

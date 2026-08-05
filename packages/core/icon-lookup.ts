@@ -1,5 +1,5 @@
 /**
- * Icon registry.
+ * Icon lookup.
  *
  * One React-free place that resolves an icon id for anything shown in the
  * objects or properties sidebar: a property row, a property option value, a
@@ -12,23 +12,23 @@
  * user's generated workspace icon set can draw it. A missing id renders as the
  * existing red "missing" symbol at the render layer.
  */
-import { getComponentSchema } from "../components/catalog"
-import { ComponentId } from "../components/types"
+import { getComponentSchema } from "./components/catalog"
+import { ComponentId } from "./components/types"
 import {
   GLOBAL_OPTION_ICONS,
   PROPERTY_ICONS,
   PROPERTY_OPTION_ICONS,
-} from "../properties/schemas/data/property-icons"
-import { getCatalogKeyForPropertyPath } from "../properties/schemas/helpers/property-path"
-import { parseThemeLookRef } from "../themes/looks"
-import { getThemeTokenSchema } from "../themes/schemas/helpers/get-theme-token-schema"
-import { getNodeCatalogId } from "../workspace/helpers/nodes/get-node-catalog-id"
-import { isSandboxNode } from "../workspace/helpers/nodes/sandbox"
-import { isAuthoredBoard, isPlaygroundBoard } from "../workspace/model/components"
-import { typeCheckingService } from "../workspace/services"
+} from "./properties/schemas/data/property-icons"
+import { getCatalogKeyForPropertyPath } from "./properties/schemas/helpers/property-path"
+import { parseThemeLookRef } from "./themes/looks"
+import { getThemeTokenSchema } from "./themes/schemas/helpers/get-theme-token-schema"
+import { getNodeCatalogId } from "./workspace/helpers/nodes/get-node-catalog-id"
+import { isSandboxNode } from "./workspace/helpers/nodes/sandbox"
+import { isAuthoredBoard, isPlaygroundBoard } from "./workspace/model/components"
+import { typeCheckingService } from "./workspace/services"
 
-import type { IconId } from "../icon-sets"
-import type { Board, EntryNode, Workspace } from "../workspace/types"
+import type { IconId } from "./icon-sets"
+import type { Board, EntryNode, Workspace } from "./workspace/types"
 
 /** Generic fallback when a component schema declares no icon. */
 const COMPONENT_ICON_FALLBACK: IconId = "seldon-component"

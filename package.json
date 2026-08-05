@@ -32,6 +32,7 @@
     "coverage": "vitest run --coverage",
     "export:seldon": "npm run export:seldon --workspace @seldon/editor-react",
     "export:seldon:vue": "npm run export:seldon --workspace @seldon/editor-vue",
+    "icons:generate": "node scripts/generate-icons.mjs material && node scripts/generate-icons.mjs carbon && node scripts/generate-icons.mjs lucide",
     "bindings": "npm run bindings --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "bindings:check": "npm run bindings:check --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "notices:thirdparty": "node packages/editor/shared/scripts/generate-third-party-notices.mjs",

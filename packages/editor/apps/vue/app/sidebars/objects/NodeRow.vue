@@ -37,7 +37,7 @@ import {
   VariantId,
   resolveNodeRepeat,
 } from "@seldon/core"
-import { getNodeRowIcon } from "@seldon/core/icon-registry"
+import { getNodeRowIcon } from "@seldon/core/icon-lookup"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import {

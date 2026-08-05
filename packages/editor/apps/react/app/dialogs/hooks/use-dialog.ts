@@ -2,7 +2,7 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useMemo, useState } from "react"
 
 import { catalog } from "@seldon/core/components/catalog"
-import { getComponentIcon } from "@seldon/core/icon-registry"
+import { getComponentIcon } from "@seldon/core/icon-lookup"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
