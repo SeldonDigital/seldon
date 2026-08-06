@@ -22,8 +22,8 @@ for (const font of GOOGLE_FONT_FAMILIES) {
 }
 
 /**
- * The `Google Fonts` collection. Families load from Google Fonts. This collection is not
- * seeded by default. A workspace adds it through `add_font_collection`.
+ * The `Google Fonts` collection. Families load from Google Fonts. This collection is seeded
+ * into new workspaces. A workspace can also add it through `add_font_collection`.
  */
 export const collection: StockFontCollection = {
   metadata: {
@@ -34,4 +34,5 @@ export const collection: StockFontCollection = {
   },
   families,
   defaultEnabledFamilies: [...googleDefaultEnabledFamilies],
+  seededByDefault: true,
 }

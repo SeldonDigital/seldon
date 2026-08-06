@@ -17,6 +17,7 @@ export const iconSet: StockIconSet = {
   // the user turns it on, so default workspaces are not overloaded.
   defaultEnabledCategories: [],
   defaultEnabledIcons: [...materialDefaultEnabledIconIds],
+  seededByDefault: true,
 }
 
 export const defaultIconSet = computeIconSet(iconSet)

@@ -35,11 +35,15 @@ export type FontFamilyTable = Record<string, FontFamilyEntry>
  * Packaged collection schema (`collections/`). `families` lists every family the collection ships.
  * `defaultEnabledFamilies`, when present, names the families enabled by default when the collection
  * is first seeded or added. Every other family starts off. Names match the `name` of a family entry.
+ * `seededByDefault`, when true, seeds this collection into every new workspace alongside the
+ * protected `system` base. The seeder derives its list from this flag, so adding or removing a
+ * collection needs no seeder edit.
  */
 export interface StockFontCollection {
   metadata: FontCollectionMetadata
   families: FontFamilyTable
   defaultEnabledFamilies?: string[]
+  seededByDefault?: boolean
 }
 
 /** Complete collection in memory, including the resolved `id`. */

@@ -1,4 +1,4 @@
-import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
+import { STOCK_FONT_COLLECTIONS, STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { isFontCollectionBoard } from "../../model/components"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
 import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"
@@ -7,7 +7,7 @@ import { getInitialBoardComponentProperties } from "../components/get-initial-bo
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
 import { nextBoardOrder } from "./seedable-workspace"
 
-import type { FontCollectionTemplateId } from "../../../font-collections/types"
+import type { FontCollectionTemplateId, StockFontCollection } from "../../../font-collections/types"
 import type { Board, FontCollectionBoard } from "../../model/components"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import type { SeedableWorkspace } from "./seedable-workspace"
@@ -34,9 +34,8 @@ export function createDefaultFontCollectionEntry(): EntryFontCollection {
  * `add_font_collection` flow: every family the collection declares as default-on is
  * enabled as `All`; every other family is left absent, which means `None`.
  */
-function createStockFontCollectionEntry(
-  catalogId: Exclude<FontCollectionTemplateId, "system">,
-): EntryFontCollection {
+function createStockFontCollectionEntry(stock: StockFontCollection): EntryFontCollection {
+  const catalogId = stock.metadata.id
   const entry: EntryFontCollection = {
     id: `font-collection-${catalogId}-default`,
     type: "default",
@@ -45,7 +44,6 @@ function createStockFontCollectionEntry(
     overrides: {},
   }
 
-  const stock = STOCK_FONT_COLLECTIONS_BY_ID[catalogId]
   const defaultEnabledFamilies = new Set(stock.defaultEnabledFamilies ?? [])
 
   for (const [slot, family] of Object.entries(stock.families)) {
@@ -58,12 +56,12 @@ function createStockFontCollectionEntry(
 }
 
 /**
- * Adds the default System font collection board plus the extra stock collections
- * (`googleFonts` and `fontshare`) when missing.
+ * Adds the default System font collection board plus every stock collection that opts in
+ * with `seededByDefault` when missing.
  *
- * Idempotent per board: skips any font collection board that already exists.
- * Mutates the passed workspace in place. System is the protected base; the
- * extras are deletable like any added stock collection.
+ * Idempotent per board: skips any font collection board that already exists. Mutates the
+ * passed workspace in place. System is the protected base. The seeded list is derived from
+ * the catalog, so adding or removing a stock collection needs no change here.
  */
 export function seedDefaultFontCollectionBoard(workspace: SeedableWorkspace): void {
   if (!workspace.boards) {
@@ -80,8 +78,12 @@ export function seedDefaultFontCollectionBoard(workspace: SeedableWorkspace): vo
     createDefaultFontCollectionEntry(),
   )
 
-  seedFontCollectionBoard(workspace, "googleFonts", createStockFontCollectionEntry("googleFonts"))
-  seedFontCollectionBoard(workspace, "fontshare", createStockFontCollectionEntry("fontshare"))
+  for (const stock of STOCK_FONT_COLLECTIONS) {
+    if (stock.metadata.id === DEFAULT_FONT_COLLECTION_BOARD_KEY) continue
+    if (!stock.seededByDefault) continue
+
+    seedFontCollectionBoard(workspace, stock.metadata.id, createStockFontCollectionEntry(stock))
+  }
 }
 
 /** Seeds one font collection board and its entry when the board is missing. */

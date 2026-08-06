@@ -1,4 +1,4 @@
-import { STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
+import { STOCK_ICON_SETS, STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
 import { isIconSetBoard } from "../../model/components"
 import { formatIconSetCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
@@ -17,9 +17,6 @@ export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const
 
 /** Icon set entry id for the default board's default variant. */
 export const DEFAULT_ICON_SET_ENTRY_ID = "icon-set-seldonIcons-default" as const
-
-/** Extra icon set boards seeded into every new workspace alongside Seldon. Deletable. */
-const ADDITIONAL_ICON_SET_BOARD_KEYS = ["googleSymbols"] as const satisfies IconSetTemplateId[]
 
 /**
  * Builds inclusion overrides that turn on every icon in a set, so each
@@ -50,14 +47,14 @@ function createDefaultIconSetEntry(): EntryIconSet {
 }
 
 /**
- * Adds the default Seldon icon set board plus the extra stock icon sets
- * (`googleSymbols`) when missing.
+ * Adds the default Seldon icon set board plus every stock icon set that opts in with
+ * `seededByDefault` when missing.
  *
- * Idempotent per board: skips any icon set board that already exists. Mutates
- * the passed workspace in place. Seldon is the protected base; the extras are
- * deletable like any added stock icon set. The Seldon entry enables every
- * icon, so all its subcategories start on `all`. The extra entries seed empty
- * and follow their set's default inclusion.
+ * Idempotent per board: skips any icon set board that already exists. Mutates the passed
+ * workspace in place. Seldon is the protected base. The Seldon entry enables every icon, so
+ * all its subcategories start on `all`. Opt-in sets seed with empty overrides so inclusion
+ * follows their curated `defaultEnabledIcons`. The seeded list is derived from the catalog,
+ * so adding or removing a stock icon set needs no change here.
  */
 export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
   if (!workspace.boards) {
@@ -70,9 +67,12 @@ export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
 
   seedIconSetBoard(workspace, DEFAULT_ICON_SET_BOARD_KEY, createDefaultIconSetEntry())
 
-  // Extra sets seed with empty overrides so inclusion falls back to the set's
-  // defaults, such as the curated `defaultEnabledIcons` of `googleSymbols`.
-  for (const boardKey of ADDITIONAL_ICON_SET_BOARD_KEYS) {
+  for (const stock of STOCK_ICON_SETS) {
+    const boardKey = stock.metadata.id
+
+    if (boardKey === DEFAULT_ICON_SET_BOARD_KEY) continue
+    if (!stock.seededByDefault) continue
+
     seedIconSetBoard(workspace, boardKey, {
       id: formatEntryId("icon-set", boardKey, "default"),
       type: "default",

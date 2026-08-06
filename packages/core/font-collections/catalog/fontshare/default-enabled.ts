@@ -1,8 +1,9 @@
 /**
  * Families enabled by default when the Fontshare collection is seeded or added to a
- * workspace. The Fontshare collection is a curated set, so every family is on by
- * default. Names match the `family` field in `FONTSHARE_FONT_FAMILIES`. The Fontshare
- * collection declares this as its `defaultEnabledFamilies`.
+ * workspace. This is a curated subset of the larger available set in
+ * `FONTSHARE_FONT_FAMILIES`, so every other available family starts off and appears
+ * under "View Unused Fonts". Names match the `family` field in `FONTSHARE_FONT_FAMILIES`.
+ * The Fontshare collection declares this as its `defaultEnabledFamilies`.
  */
 export const fontshareDefaultEnabledFamilies: readonly string[] = [
   "Satoshi",

@@ -24,7 +24,7 @@
 import { existsSync, mkdirSync, statSync } from "node:fs"
 import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath, pathToFileURL } from "node:url"
 
 import { GOOGLE_FONT_FAMILIES } from "../packages/core/properties/constants/typography/font-families.ts"
 import { FONTSHARE_FONT_FAMILIES } from "../packages/core/properties/constants/typography/fontshare-font-families.ts"
@@ -291,19 +291,29 @@ async function materializeFontshareFamily(entry) {
   }
 }
 
+/**
+ * Font sources to materialize. Each entry pairs a catalog family list with its
+ * `source` tag and materializer. Add or remove a remote font vendor by editing
+ * this one list; nothing else in the script hardcodes a vendor.
+ */
+const FONT_SOURCES = [
+  { source: "google", families: GOOGLE_FONT_FAMILIES, materialize: materializeGoogleFamily },
+  { source: "fontshare", families: FONTSHARE_FONT_FAMILIES, materialize: materializeFontshareFamily },
+]
+
+const MATERIALIZE_BY_SOURCE = Object.fromEntries(FONT_SOURCES.map((s) => [s.source, s.materialize]))
+
 /** Dispatches to the right source materializer. */
 async function materializeFamily(entry) {
-  return entry.source === "fontshare"
-    ? materializeFontshareFamily(entry)
-    : materializeGoogleFamily(entry)
+  const materialize = MATERIALIZE_BY_SOURCE[entry.source] ?? materializeGoogleFamily
+  return materialize(entry)
 }
 
 async function main() {
   const filter = process.argv.slice(2)
-  const allFamilies = [
-    ...GOOGLE_FONT_FAMILIES.map((f) => ({ ...f, source: "google" })),
-    ...FONTSHARE_FONT_FAMILIES.map((f) => ({ ...f, source: "fontshare" })),
-  ]
+  const allFamilies = FONT_SOURCES.flatMap(({ source, families }) =>
+    families.map((f) => ({ ...f, source })),
+  )
   const families = filter.length
     ? allFamilies.filter((f) => filter.includes(f.family))
     : allFamilies

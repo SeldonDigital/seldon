@@ -35,4 +35,5 @@ export const collection: StockFontCollection = {
   },
   families,
   defaultEnabledFamilies: [...fontshareDefaultEnabledFamilies],
+  seededByDefault: true,
 }
