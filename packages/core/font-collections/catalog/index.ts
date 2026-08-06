@@ -1,4 +1,5 @@
 import { computeFontCollection } from "../helpers/compute-font-collection"
+import { collection as fontshareStock } from "./fontshare/stock"
 import { collection as googleStock } from "./google/stock"
 import { defaultFontCollection, collection as systemStock } from "./system"
 
@@ -6,7 +7,11 @@ import type { ComputedFontCollection, StockFontCollection } from "../types/font-
 import type { FontCollectionTemplateId } from "../types/font-collection-id"
 
 /** Packaged font collection definitions (`catalog/*.ts`), display order. */
-export const STOCK_FONT_COLLECTIONS: StockFontCollection[] = [systemStock, googleStock]
+export const STOCK_FONT_COLLECTIONS: StockFontCollection[] = [
+  systemStock,
+  googleStock,
+  fontshareStock,
+]
 
 export const STOCK_FONT_COLLECTIONS_BY_ID = Object.fromEntries(
   STOCK_FONT_COLLECTIONS.map((c) => [c.metadata.id, c]),

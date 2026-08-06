@@ -10,6 +10,6 @@
  * opaque strings (for example `font-collection-system-default`).
  */
 
-export type FontCollectionTemplateId = "system" | "googleFonts"
+export type FontCollectionTemplateId = "system" | "googleFonts" | "fontshare"
 
 export type FontCollectionInstanceId = FontCollectionTemplateId

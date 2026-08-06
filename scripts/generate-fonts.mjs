@@ -1,9 +1,15 @@
 /**
- * Materializes the Google font woff2 and license files the editor canvas
- * self-hosts. Core keeps only catalog data (`GOOGLE_FONT_FAMILIES`); this script
- * fetches each wanted variant's woff2 from google-webfonts-helper and a
- * redistributable license from the google/fonts GitHub, then writes them into
- * the editor's gitignored public dir. Nothing is committed or shipped.
+ * Materializes the remote font woff2 and license files the editor canvas
+ * self-hosts. Core keeps only catalog data (`GOOGLE_FONT_FAMILIES` and
+ * `FONTSHARE_FONT_FAMILIES`); this script fetches each wanted variant's woff2 and
+ * a license, then writes them into the editor's gitignored public dir. Nothing is
+ * committed or shipped.
+ *
+ * Two sources feed the same output layout:
+ * - Google families fetch woff2 from google-webfonts-helper and a redistributable
+ *   license from the google/fonts GitHub.
+ * - Fontshare families fetch woff2 from the Fontshare CDN and write a license
+ *   pointer for the family's ITF or OFL terms.
  *
  * The output dir doubles as the cache: a family whose woff2 and license already
  * exist is skipped without any network call, so reruns are fast and an offline
@@ -21,6 +27,7 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 import { GOOGLE_FONT_FAMILIES } from "../packages/core/properties/constants/typography/font-families.ts"
+import { FONTSHARE_FONT_FAMILIES } from "../packages/core/properties/constants/typography/fontshare-font-families.ts"
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const repoRoot = dirname(scriptDir)
@@ -30,6 +37,12 @@ const fontLicensesDir = join(editorPublic, "font-licenses")
 
 const GWFH_API = "https://gwfh.mranftl.com/api/fonts"
 const GOOGLE_FONTS_RAW = "https://raw.githubusercontent.com/google/fonts/main"
+
+const FONTSHARE_API = "https://api.fontshare.com/v2/fonts"
+const FONTSHARE_LICENSE_URLS = {
+  itf_ffl: "https://www.fontshare.com/licenses/itf-ffl",
+  ofl: "https://www.fontshare.com/licenses/ofl",
+}
 
 // google-webfonts-helper names weight 400 `regular` and 400 italic `italic`.
 // Some families author those variants as `400`/`400italic`, so map to the gwfh
@@ -115,7 +128,7 @@ function isCached(path) {
   return existsSync(path) && statSync(path).size > 0
 }
 
-async function materializeFamily(entry) {
+async function materializeGoogleFamily(entry) {
   const { family, variants } = entry
   const slug = toSlug(family)
   const subset = SUBSET_BY_FAMILY[family] ?? "latin"
@@ -177,11 +190,123 @@ async function materializeFamily(entry) {
   return { family, status: "materialized", license: license.type, subset, written, missing }
 }
 
+let fontshareCatalogPromise = null
+
+/** Fetches and memoizes the Fontshare family catalog, keyed by slug. */
+async function fetchFontshareCatalog() {
+  if (!fontshareCatalogPromise) {
+    fontshareCatalogPromise = (async () => {
+      const bySlug = new Map()
+      for (let offset = 0; ; offset += 100) {
+        const result = await fetchWithRetry(`${FONTSHARE_API}?limit=100&offset=${offset}`)
+        if (result.status === 404) break
+        const page = JSON.parse(result.body)
+        const items = page.data ?? page.fonts ?? (Array.isArray(page) ? page : [])
+        for (const font of items) bySlug.set(font.slug, font)
+        if (items.length < 100) break
+      }
+      return bySlug
+    })()
+  }
+  return fontshareCatalogPromise
+}
+
+// Fontshare numbers italics as weight plus one (700 upright, 701 italic), so a
+// catalog variant such as `700italic` maps to weight 700 with the italic flag.
+function findFontshareStyle(styles, variant) {
+  const italic = variant.endsWith("italic")
+  const weightPart = italic ? variant.slice(0, -"italic".length) : variant
+  const weight = weightPart === "" || weightPart === "regular" ? 400 : Number(weightPart)
+
+  return (
+    styles.find(
+      (s) =>
+        !s.is_variable &&
+        Boolean(s.is_italic) === italic &&
+        (s.is_italic ? s.weight.number - 1 : s.weight.number) === weight,
+    ) ?? null
+  )
+}
+
+async function materializeFontshareFamily(entry) {
+  const { family, variants } = entry
+  const slug = toSlug(family)
+  const familyDir = join(fontFilesDir, slug)
+  const licensePath = join(fontLicensesDir, `${slug}.txt`)
+
+  const wantedFiles = variants.map((variant) => ({
+    variant,
+    path: join(familyDir, `${slug}-${variant}.woff2`),
+  }))
+  const missingFiles = wantedFiles.filter((f) => !isCached(f.path))
+  const licenseMissing = !isCached(licensePath)
+
+  if (missingFiles.length === 0 && !licenseMissing) {
+    return { family, status: "cached" }
+  }
+
+  const catalog = await fetchFontshareCatalog()
+  const font = catalog.get(slug)
+  if (!font || !Array.isArray(font.styles)) {
+    return { family, status: "skipped", reason: `font not found on Fontshare (slug: ${slug})` }
+  }
+
+  const licenseType = font.license_type ?? "itf_ffl"
+  const licenseUrl = FONTSHARE_LICENSE_URLS[licenseType] ?? FONTSHARE_LICENSE_URLS.itf_ffl
+  const licenseText = `${family}\nFontshare license: ${licenseType.toUpperCase()}\n${licenseUrl}\n`
+
+  const toDownload = []
+  const missing = []
+  for (const { variant, path } of missingFiles) {
+    const style = findFontshareStyle(font.styles, variant)
+    if (style && style.file) toDownload.push({ variant, path, url: `https:${style.file}.woff2` })
+    else missing.push(variant)
+  }
+
+  await mkdir(fontLicensesDir, { recursive: true })
+  await writeFile(licensePath, licenseText, "utf8")
+
+  if (toDownload.length > 0) {
+    await mkdir(familyDir, { recursive: true })
+  }
+
+  let written = 0
+  for (const { variant, path, url } of toDownload) {
+    const file = await fetchWithRetry(url, { binary: true })
+    if (file.status !== 200) {
+      missing.push(variant)
+      continue
+    }
+    await writeFile(path, file.body)
+    written++
+  }
+
+  return {
+    family,
+    status: "materialized",
+    license: licenseType.toUpperCase(),
+    subset: "latin",
+    written,
+    missing,
+  }
+}
+
+/** Dispatches to the right source materializer. */
+async function materializeFamily(entry) {
+  return entry.source === "fontshare"
+    ? materializeFontshareFamily(entry)
+    : materializeGoogleFamily(entry)
+}
+
 async function main() {
   const filter = process.argv.slice(2)
+  const allFamilies = [
+    ...GOOGLE_FONT_FAMILIES.map((f) => ({ ...f, source: "google" })),
+    ...FONTSHARE_FONT_FAMILIES.map((f) => ({ ...f, source: "fontshare" })),
+  ]
   const families = filter.length
-    ? GOOGLE_FONT_FAMILIES.filter((f) => filter.includes(f.family))
-    : GOOGLE_FONT_FAMILIES
+    ? allFamilies.filter((f) => filter.includes(f.family))
+    : allFamilies
 
   if (families.length === 0) {
     console.error("No families matched the filter.")

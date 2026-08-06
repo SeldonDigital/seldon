@@ -30,28 +30,26 @@ export function createDefaultFontCollectionEntry(): EntryFontCollection {
 }
 
 /**
- * Builds the Google Fonts entry seeded into new workspaces. Mirrors the
- * `add_font_collection` flow: every curated family is enabled as `All`; every
- * other family is left absent, which means `None`.
+ * Builds a stock collection's default entry seeded into new workspaces. Mirrors the
+ * `add_font_collection` flow: every family the collection declares as default-on is
+ * enabled as `All`; every other family is left absent, which means `None`.
  */
-function createGoogleFontCollectionEntry(): EntryFontCollection {
+function createStockFontCollectionEntry(
+  catalogId: Exclude<FontCollectionTemplateId, "system">,
+): EntryFontCollection {
   const entry: EntryFontCollection = {
-    id: "font-collection-googleFonts-default",
+    id: `font-collection-${catalogId}-default`,
     type: "default",
     label: "Default",
-    template: formatFontCollectionCatalog("googleFonts"),
+    template: formatFontCollectionCatalog(catalogId),
     overrides: {},
   }
 
-  const stock = STOCK_FONT_COLLECTIONS_BY_ID["googleFonts"]
+  const stock = STOCK_FONT_COLLECTIONS_BY_ID[catalogId]
   const defaultEnabledFamilies = new Set(stock.defaultEnabledFamilies ?? [])
 
   for (const [slot, family] of Object.entries(stock.families)) {
-    if (
-      family.variants &&
-      family.variants.length > 0 &&
-      defaultEnabledFamilies.has(family.name)
-    ) {
+    if (family.variants && family.variants.length > 0 && defaultEnabledFamilies.has(family.name)) {
       setFamilyVariantPreset(entry, slot, "all", family.variants)
     }
   }
@@ -61,7 +59,7 @@ function createGoogleFontCollectionEntry(): EntryFontCollection {
 
 /**
  * Adds the default System font collection board plus the extra stock collections
- * (`googleFonts`) when missing.
+ * (`googleFonts` and `fontshare`) when missing.
  *
  * Idempotent per board: skips any font collection board that already exists.
  * Mutates the passed workspace in place. System is the protected base; the
@@ -82,7 +80,8 @@ export function seedDefaultFontCollectionBoard(workspace: SeedableWorkspace): vo
     createDefaultFontCollectionEntry(),
   )
 
-  seedFontCollectionBoard(workspace, "googleFonts", createGoogleFontCollectionEntry())
+  seedFontCollectionBoard(workspace, "googleFonts", createStockFontCollectionEntry("googleFonts"))
+  seedFontCollectionBoard(workspace, "fontshare", createStockFontCollectionEntry("fontshare"))
 }
 
 /** Seeds one font collection board and its entry when the board is missing. */
