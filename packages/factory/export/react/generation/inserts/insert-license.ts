@@ -23,6 +23,25 @@ export function insertLicense(source: string) {
 }
 
 /**
+ * Inserts the license header inside a single-file component's first `<script>`
+ * block, so Prettier's `vue` parser keeps it as a JS block comment instead of
+ * reflowing a stray comment placed at the top of the file. Idempotent: a source
+ * that already carries the header is returned unchanged. Falls back to a plain
+ * prepend when the source has no `<script>` block.
+ */
+export function insertVueLicense(source: string): string {
+  if (source.includes(LICENSE_HEADER.trim())) return source
+
+  const scriptTag = source.match(/<script\b[^>]*>/)
+
+  if (!scriptTag || scriptTag.index === undefined) return insertLicense(source)
+
+  const insertAt = scriptTag.index + scriptTag[0].length
+
+  return `${source.slice(0, insertAt)}\n${LICENSE_HEADER}${source.slice(insertAt)}`
+}
+
+/**
  * True for files emitted under an `icons/` directory. Icon output is generated
  * glyph data, so it carries no license header. Icon renderers and registries
  * live under other folders and keep the header.
