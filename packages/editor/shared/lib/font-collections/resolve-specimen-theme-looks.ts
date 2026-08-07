@@ -1,7 +1,10 @@
 import { ValueType } from "@seldon/core"
+import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+import { getThemeValueAnnotation } from "@seldon/core/helpers/theme/get-theme-value-annotation"
 import { getTextStyles } from "@seldon/factory/styles/css-properties/get-text-styles"
 
 import type { Properties, Theme } from "@seldon/core"
+import type { ThemeFont } from "@seldon/core/themes/types"
 
 /**
  * One Type Specimen typographic level: the `*Spec` label ref that states the
@@ -108,7 +111,17 @@ export function resolveSpecimenThemeLooks(theme: Theme, scopeClass: string): Spe
     const fontStyle = typeof styles.fontStyle === "string" ? styles.fontStyle : "normal"
     const styleLabel = fontStyle === "normal" ? "Normal" : "Italic"
 
-    specs[level.spec] = `${styleLabel} / ${fontSize} / ${fontWeight} / ${lineHeight}`
+    // The look's size is a `@fontSize.*` token. Read its key so the label reuses
+    // the shared value annotation (`px · rem`), matching every other value
+    // display in the editor. Fall back to the resolved size if the look does not
+    // reference a token.
+    const look = getThemeOption(level.preset, theme) as ThemeFont
+    const sizeToken = look?.parameters?.size
+    const sizeKey =
+      sizeToken && sizeToken.type === ValueType.THEME_ORDINAL ? String(sizeToken.value) : null
+    const sizeLabel = (sizeKey ? getThemeValueAnnotation(sizeKey, theme) : undefined) ?? fontSize
+
+    specs[level.spec] = `${styleLabel} / ${sizeLabel} / ${fontWeight} / ${lineHeight}`
 
     rules.push(
       `.${scopeClass} [data-seldon-ref="${level.preview}"] {
