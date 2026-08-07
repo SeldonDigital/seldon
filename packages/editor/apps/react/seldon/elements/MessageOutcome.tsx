@@ -53,7 +53,7 @@ const sdn: MessageOutcomeProps = {
   },
 
   textDescription: {
-    children: "Button background: primary -&gt; accent",
+    children: "Button background: primary -> accent",
     className: "sdn-text-description sdn-text-description--choa",
     "data-seldon-ref": "hariOutcomeText",
   },

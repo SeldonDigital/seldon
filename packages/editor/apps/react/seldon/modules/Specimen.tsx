@@ -208,7 +208,7 @@ const sdn: SpecimenProps = {
     className: "sdn-frame sdn-frame--g08m",
   },
   textTagline: {
-    children: "Design is so simple, that&#039;s why it is so complicated.",
+    children: "Design is so simple, that's why it is so complicated.",
     htmlElement: "p",
     "aria-hidden": "false",
     className: "sdn-text-tagline sdn-text-title--drqy",
@@ -247,7 +247,7 @@ const sdn: SpecimenProps = {
   },
   textCallout: {
     children:
-      "Design can be art. Design can be aesthetics. Design is so simple, that&#039;s why it is so complicated.",
+      "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h6",
     "aria-hidden": "false",
     className: "sdn-text-callout sdn-text-title--drqy",
@@ -286,7 +286,7 @@ const sdn: SpecimenProps = {
   },
   textSubtitle: {
     children:
-      "Design can be art. Design can be aesthetics. Design is so simple, that&#039;s why it is so complicated.",
+      "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h5",
     "aria-hidden": "false",
     className: "sdn-text-subtitle sdn-text-title--drqy",
@@ -325,7 +325,7 @@ const sdn: SpecimenProps = {
   },
   textTitle: {
     children:
-      "Design can be art. Design can be aesthetics. Design is so simple, that&#039;s why it is so complicated.",
+      "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h4",
     "aria-hidden": "false",
     className: "sdn-text-title sdn-text-title--drqy",
@@ -364,7 +364,7 @@ const sdn: SpecimenProps = {
   },
   textSubheading: {
     children:
-      "Design can be art. Design can be aesthetics. Design is so simple, that&#039;s why it is so complicated.",
+      "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h3",
     "aria-hidden": "false",
     className: "sdn-text-subheading sdn-text-title--drqy",
@@ -403,7 +403,7 @@ const sdn: SpecimenProps = {
   },
   textHeading: {
     children:
-      "Design can be art. Design can be aesthetics. Design is so simple, that&#039;s why it is so complicated.",
+      "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h2",
     "aria-hidden": "false",
     className: "sdn-text-heading sdn-text-display--ejwe",
@@ -442,7 +442,7 @@ const sdn: SpecimenProps = {
   },
   textDisplay: {
     children:
-      "Design can be art. Design can be aesthetics. Design is so simple, that&#039;s why it is so complicated.",
+      "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h1",
     "aria-hidden": "false",
     className: "sdn-text-display sdn-text-display--ejwe",
