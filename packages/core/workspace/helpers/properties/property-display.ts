@@ -1,4 +1,3 @@
-import { Unit, ValueType } from "@seldon/core"
 import { HSLObjectToString, LCHObjectToString, RGBObjectToString } from "@seldon/core/helpers/color"
 import { formatPresetValue } from "@seldon/core/helpers/properties/format-preset-value"
 import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-components"
@@ -7,6 +6,8 @@ import { isHSLObject, isLCHObject, isRGBObject } from "@seldon/core/helpers/type
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
 
+import { Unit } from "../../../properties/constants/shared/units"
+import { ValueType } from "../../../properties/constants/shared/value-types"
 import { matchCompoundPreset } from "./compound-presets"
 import {
   getCompoundLayerValue,

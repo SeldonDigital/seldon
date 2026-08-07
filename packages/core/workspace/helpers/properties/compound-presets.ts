@@ -1,4 +1,3 @@
-import { ValueType } from "@seldon/core"
 import {
   getBuiltInLookSectionForPropertyKey,
   getThemeLookSection,
@@ -8,6 +7,7 @@ import {
   resolveThemeLook,
 } from "@seldon/core/themes/looks"
 
+import { ValueType } from "../../../properties/constants/shared/value-types"
 import {
   applyBoardPreset,
   buildBoardCompoundReset,

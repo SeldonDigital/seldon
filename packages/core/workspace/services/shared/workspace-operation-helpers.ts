@@ -1,4 +1,4 @@
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { ErrorMessages } from "../../constants"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"

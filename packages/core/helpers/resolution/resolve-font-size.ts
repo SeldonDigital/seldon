@@ -1,4 +1,6 @@
-import { Unit, ValueType, invariant } from "../../index"
+import { invariant } from "../../helpers/utils/invariant"
+import { Unit } from "../../properties/constants/shared/units"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"

@@ -471,8 +471,22 @@ if (process.env.NODE_ENV === "development") {
   preReducerMiddlewares.push(debugMiddleware)
 }
 
-export const workspaceReducer = applyMiddleware<WorkspaceAction>(
-  reducer,
-  ...preReducerMiddlewares,
-  ...postReducerMiddlewares.reverse(),
-)
+let composedReducer: ((workspace: Workspace, action: WorkspaceAction) => Workspace) | undefined
+
+/**
+ * Applies one action through the middleware chain and the base reducer. The
+ * composed pipeline is built on first use, not at module load, so a circular
+ * import in a middleware's dependency graph cannot leave a middleware undefined
+ * while this module initializes.
+ */
+export function workspaceReducer(workspace: Workspace, action: WorkspaceAction): Workspace {
+  if (!composedReducer) {
+    composedReducer = applyMiddleware<WorkspaceAction>(
+      reducer,
+      ...preReducerMiddlewares,
+      ...postReducerMiddlewares.reverse(),
+    )
+  }
+
+  return composedReducer(workspace, action)
+}

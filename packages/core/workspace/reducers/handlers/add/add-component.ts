@@ -7,7 +7,7 @@ import { produce } from "immer"
 
 import { getComponentSchema } from "../../../../components/catalog"
 import { isComplexSchema } from "../../../../components/types"
-import { invariant } from "../../../../index"
+import { invariant } from "../../../../helpers/utils/invariant"
 import { rules } from "../../../../rules/config/rules.config"
 import { setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"

@@ -1,4 +1,3 @@
-import { ComponentLevel, ComputedFunction, ValueType } from "@seldon/core"
 import {
   RESERVED_LOOK_IDS,
   getBuiltInLookSectionForPropertyKey,
@@ -9,6 +8,7 @@ import {
 } from "@seldon/core/themes/looks"
 import { resolveThemeTokenEntry } from "@seldon/core/themes/schemas"
 
+import { ComponentLevel } from "../../../components/constants"
 import { HSLObjectToString } from "../../../helpers/color/hsl-object-to-string"
 import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
 import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
@@ -21,6 +21,8 @@ import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "../../../helpers/type-guards/color/is-rgb-object"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "../../../properties/compute"
 import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
+import { ComputedFunction } from "../../../properties/constants/shared/computed"
+import { ValueType } from "../../../properties/constants/shared/value-types"
 import {
   getCatalogKeyForPropertyPath,
   getPresetOptionsAsLabelValue,

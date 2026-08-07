@@ -1,5 +1,5 @@
 import { ComponentId, isComponentId } from "../../../../components/constants"
-import { invariant } from "../../../../index"
+import { invariant } from "../../../../helpers/utils/invariant"
 import { ValueType } from "../../../../properties"
 import { ErrorMessages } from "../../../constants"
 import { isResourceType } from "../../../helpers/components/is-resource-type"

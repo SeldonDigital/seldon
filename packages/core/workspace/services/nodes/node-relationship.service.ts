@@ -1,6 +1,6 @@
 import { findComponentSchema } from "../../../components/catalog"
 import { isComponentId } from "../../../components/constants"
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { ErrorMessages } from "../../constants"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"

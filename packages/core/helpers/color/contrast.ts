@@ -1,6 +1,6 @@
 import chroma from "chroma-js"
 
-import { ValueType } from "../../index"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import { isHSLObject } from "../type-guards/color/is-hsl-object"
 import { isLCHObject } from "../type-guards/color/is-lch-object"
 import { isRGBObject } from "../type-guards/color/is-rgb-object"

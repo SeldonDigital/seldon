@@ -1,5 +1,6 @@
-import { Unit, ValueType } from "../../index"
 import { resolveAutoFitSource } from "../../properties/compute/resolve-auto-fit-source"
+import { Unit } from "../../properties/constants/shared/units"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate, snapRemToPixelGrid } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"

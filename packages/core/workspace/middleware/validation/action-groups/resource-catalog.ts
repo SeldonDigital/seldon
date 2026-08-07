@@ -1,4 +1,4 @@
-import { invariant } from "../../../../index"
+import { invariant } from "../../../../helpers/utils/invariant"
 import { ErrorMessages } from "../../../constants"
 import {
   FONT_COLLECTION_BOARD_CATALOG_IDS,
