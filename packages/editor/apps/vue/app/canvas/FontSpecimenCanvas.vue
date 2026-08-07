@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCssFromProperties, getNodeProperties } from "@app/core"
+import { getCssFromProperties, getCssObjectFromProperties, getNodeProperties } from "@app/core"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import Specimen from "@seldon/components/modules/Specimen.vue"
 import SpecimenSample from "@seldon/components/parts/SpecimenSample.vue"
@@ -19,6 +19,21 @@ import { formatFontFamilyKey } from "../sidebars/objects/font-collection-family-
 import type { Board } from "@seldon/core"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { CSSProperties } from "vue"
+
+// Fallback board layout. The board's own component properties (orientation,
+// align, margin, padding, gap, wrap, clip, background) are resolved to CSS and
+// spread over this, so any LAYOUT control the user sets wins while an unset
+// property keeps this default. `min-height` is canvas-only and always stays.
+const boardLayoutFallback: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+  alignItems: "stretch",
+  gap: "4rem",
+  minHeight: "100%",
+  padding: "2rem",
+}
 
 // Every text slot is opt-in, so each must be enabled with an empty object to
 // render its default sample content. `SpecimenSample` is the family header (name
@@ -100,6 +115,21 @@ const boardCss = computed(() => {
     },
     boardClassName.value,
   )
+})
+
+// Resolve the board's own component properties to CSS and layer them over the
+// fallback, so Direction, Orientation, Align, Margin, Padding, Gap, Wrap, and
+// Clip take effect. Unset properties are absent here and keep the fallback.
+const boardStyle = computed<CSSProperties>(() => {
+  if (!boardProperties.value || !boardTheme.value) return boardLayoutFallback
+
+  const resolved = getCssObjectFromProperties(boardProperties.value, {
+    theme: boardTheme.value,
+    properties: boardProperties.value,
+    parentContext: null,
+  }) as CSSProperties
+
+  return { ...boardLayoutFallback, ...resolved }
 })
 
 const specimens = computed<FontSpecimen[]>(() => {
@@ -266,41 +296,26 @@ const scopedCss = computed(() => {
     </Teleport>
     <div
       class="font-specimen-board"
-      :class="boardClassName"
+      :class="[boardClassName, scopeClass]"
+      :style="boardStyle"
       :data-board-id="boardKey"
       :data-selection-id="boardKey"
       data-selection-kind="board"
     >
-      <div class="font-specimen-stack" :class="scopeClass">
-        <div
-          v-for="item in renderSpecimens"
-          :key="item.key"
-          class="font-specimen-family"
-          :class="item.slotClass"
-        >
-          <SpecimenSample v-bind="SPECIMEN_SAMPLE_SLOTS" :seldon-refs="item.sampleRefs" />
-          <Specimen v-if="!isStacked" v-bind="SPECIMEN_LEVEL_SLOTS" :seldon-refs="levelRefs" />
-        </div>
+      <div
+        v-for="item in renderSpecimens"
+        :key="item.key"
+        class="font-specimen-family"
+        :class="item.slotClass"
+      >
+        <SpecimenSample v-bind="SPECIMEN_SAMPLE_SLOTS" :seldon-refs="item.sampleRefs" />
+        <Specimen v-if="!isStacked" v-bind="SPECIMEN_LEVEL_SLOTS" :seldon-refs="levelRefs" />
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-/* Canvas layout only. Background, border, and corners come from the board's own
-   component properties through `boardCss`, matching the theme board chrome. */
-.font-specimen-board {
-  padding: 2rem;
-}
-
-/* Stacked families (board selected) sit in a column with breathing room; a
-   single family (selected) shows just its own block. */
-.font-specimen-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-}
-
 /* One family's blocks (the sample header, then the level ramp when selected)
    stack tightly; the hr at the end of the sample carries the visual divide. */
 .font-specimen-family {

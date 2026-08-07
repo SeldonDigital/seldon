@@ -10,6 +10,7 @@ import { SpecimenSample } from "@seldon/components/parts/SpecimenSample"
 import { resolveSpecimenThemeLooks } from "@seldon/editor/lib/font-collections/resolve-specimen-theme-looks"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
+import { getCssObjectFromProperties } from "@seldon/factory/styles/css-properties/get-css-object-from-properties"
 import { useMemo } from "react"
 
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
@@ -70,24 +71,20 @@ const SPECIMEN_LEVEL_SLOTS: Partial<SpecimenProps> = {
 // fallback in globals.css so the preview reads in whatever the OS provides.
 const SYSTEM_FONT_STACK = "system-ui, sans-serif"
 
-// Canvas layout only. Background, border, and corners come from the board's own
-// component properties through `boardCss`, matching the theme board chrome.
-const boardLayoutStyle: CSSProperties = {
+// Fallback board layout. The board's own component properties (orientation,
+// align, margin, padding, gap, wrap, clip, background) are resolved to CSS and
+// spread over this, so any LAYOUT control the user sets wins while an unset
+// property keeps this default. `position` and `minHeight` are canvas-only and
+// are not board controls, so they always stay.
+const boardLayoutFallback: CSSProperties = {
   position: "static",
   display: "flex",
   flexDirection: "column",
   flexWrap: "nowrap",
   alignItems: "stretch",
+  gap: "4rem",
   minHeight: "100%",
   padding: "2rem",
-}
-
-// Stacked families (board selected) sit in a column with breathing room; a
-// single family (selected) shows just its own block.
-const stackStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "4rem",
 }
 
 // One family's blocks (the sample header, then the level ramp when selected)
@@ -150,15 +147,18 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
   // preview per family. A family selection shows that one specimen in full.
   const isStacked = !matched
 
-  const boardCss = getCssFromProperties(
+  const styleContext = {
+    theme: boardTheme ?? undefined,
     properties,
-    {
-      theme: boardTheme ?? undefined,
-      properties,
-      parentContext: null,
-    },
-    className,
-  )
+    parentContext: null,
+  }
+  const boardCss = getCssFromProperties(properties, styleContext, className)
+
+  // Resolve the board's own component properties to CSS and layer them over the
+  // fallback, so Direction, Orientation, Align, Margin, Padding, Gap, Wrap, and
+  // Clip take effect. Unset properties are absent here and keep the fallback.
+  const resolvedBoardStyle = getCssObjectFromProperties(properties, styleContext) as CSSProperties
+  const boardStyle: CSSProperties = { ...boardLayoutFallback, ...resolvedBoardStyle }
 
   const scopeClass = `font-specimen-${boardKey}`.replace(/[^a-zA-Z0-9_-]/g, "-")
   const themeLooks = resolveSpecimenThemeLooks(boardTheme, scopeClass)
@@ -235,11 +235,9 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
       <CssPortal>
         <StyleTag css={boardCss} />
       </CssPortal>
-      <Frame data-board-id={boardKey} className={className} style={boardLayoutStyle}>
+      <Frame data-board-id={boardKey} className={`${className} ${scopeClass}`} style={boardStyle}>
         <StyleTag css={css} />
-        <div className={scopeClass} style={stackStyle}>
-          {specimenNodes}
-        </div>
+        {specimenNodes}
       </Frame>
     </>
   )
