@@ -45,9 +45,13 @@ function createMetadataRow(
  * do not. Rows are read-only unless `editable` is set, which authored themes use
  * to let the user edit their own name, description, intent, and author.
  */
-export function buildMetadataProperties(metadata: MetadataInput, editable = false): FlatProperty[] {
+export function buildMetadataProperties(
+  metadata: MetadataInput,
+  editable = false,
+  nameIcon = "material-style",
+): FlatProperty[] {
   const rows: FlatProperty[] = [
-    createMetadataRow("name", "Name", metadata.name, "material-style", editable),
+    createMetadataRow("name", "Name", metadata.name, nameIcon, editable),
     createMetadataRow(
       "description",
       "Description",

@@ -141,6 +141,10 @@ function FontFamilyRow({
 
   const comboboxField = buildFieldStateProps({ selected: isSelected })
 
+  // Families have no actions menu, but the row keeps the actions button slot so
+  // its trailing column lines up with node and board rows. The button is held
+  // invisible and non-interactive, the same way the disclosure icon reserves its
+  // space above.
   const seldonRefs = {
     nodeDisclosureIcon: { style: { opacity: 0 } },
     nodeField: { ...comboboxField, style: { cursor: "pointer" } },
@@ -151,6 +155,7 @@ function FontFamilyRow({
     ),
     nodeDisplay: { ...displayPicker.buttonProps },
     nodeDisplayIcon: displayIcon,
+    nodeActions: { tabIndex: -1, "aria-hidden": true, style: { opacity: 0, pointerEvents: "none" } },
   }
 
   return (
@@ -160,7 +165,7 @@ function FontFamilyRow({
           buttonIconic={{}}
           comboboxField={{}}
           buttonIconic2={{}}
-          buttonIconic3={null}
+          buttonIconic3={{}}
           seldonRefs={seldonRefs}
           onClick={onClick}
           aria-selected={isSelected || undefined}

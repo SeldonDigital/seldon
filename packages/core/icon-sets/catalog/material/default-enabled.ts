@@ -304,6 +304,8 @@ export const materialDefaultEnabledIconIds: readonly IconId[] = [
   "material-alignVerticalTop",
   "material-desktopLandscape",
   "material-desktopPortrait",
+  "material-formatTextdirectionLToR",
+  "material-formatTextdirectionRToL",
   "material-formatTextdirectionVertical",
   "material-codeOff",
   "material-codeXml",

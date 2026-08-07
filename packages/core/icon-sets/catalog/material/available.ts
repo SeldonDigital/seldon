@@ -3808,6 +3808,8 @@ export const materialAvailableIconIds: readonly IconId[] = [
   "material-formatTextClip",
   "material-formatTextOverflow",
   "material-formatTextWrap",
+  "material-formatTextdirectionLToR",
+  "material-formatTextdirectionRToL",
   "material-formatTextdirectionVertical",
   "material-formatUnderlined",
   "material-formatUnderlinedSquiggle",

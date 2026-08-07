@@ -94,6 +94,10 @@ const decoration = computed(() =>
 const seldonRefs = computed(() => {
   const disabledRef = buildDisabledRefProps(decoration.value.isDimmed)
 
+  // Families have no actions menu, but the row keeps the actions button slot so
+  // its trailing column lines up with node and board rows. The button is held
+  // invisible and non-interactive, the same way the disclosure icon reserves its
+  // space above.
   return {
     nodeDisclosureIcon: { style: { opacity: 0 } },
     nodeField: {
@@ -119,6 +123,11 @@ const seldonRefs = computed(() => {
       icon: isExcluded.value ? EXCLUDE_ICON : SHOW_ICON,
       style: props.family.preset === "custom" ? { opacity: 0.5 } : undefined,
     },
+    nodeActions: {
+      tabindex: -1,
+      "aria-hidden": true,
+      style: { opacity: 0, pointerEvents: "none" },
+    },
   }
 })
 </script>
@@ -137,7 +146,7 @@ const seldonRefs = computed(() => {
     :button-iconic="{}"
     :combobox-field="{}"
     :button-iconic2="{}"
-    :button-iconic3="null"
+    :button-iconic3="{}"
     @click="select"
   />
 

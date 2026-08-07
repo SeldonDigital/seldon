@@ -235,11 +235,15 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         // Family and weight selection now lives in the Objects sidebar, so the
         // Properties sidebar keeps only the collection's metadata rows.
         metadataVariantLabel = entry?.label
-        metadataProperties = buildMetadataProperties({
-          name: entry?.label ?? collection.metadata.name,
-          description: collection.metadata.description,
-          intent: collection.metadata.intent,
-        })
+        metadataProperties = buildMetadataProperties(
+          {
+            name: entry?.label ?? collection.metadata.name,
+            description: collection.metadata.description,
+            intent: collection.metadata.intent,
+          },
+          false,
+          "material-fontDownload",
+        )
         fontCollectionEditingContext = {
           isFontCollectionEditing: true,
           updateFontCollectionProperty: (property, value) => {
@@ -264,11 +268,15 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
 
       if (collection && boardEntryId) {
         metadataVariantLabel = entry?.label
-        metadataProperties = buildMetadataProperties({
-          name: entry?.label ?? collection.metadata.name,
-          description: collection.metadata.description,
-          intent: collection.metadata.intent,
-        })
+        metadataProperties = buildMetadataProperties(
+          {
+            name: entry?.label ?? collection.metadata.name,
+            description: collection.metadata.description,
+            intent: collection.metadata.intent,
+          },
+          false,
+          "material-fontDownload",
+        )
         fontCollectionEditingContext = {
           isFontCollectionEditing: true,
           updateFontCollectionProperty: (property, value) => {

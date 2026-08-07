@@ -145,10 +145,6 @@
               "value": 800
             }
           }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
         }
       },
       "variants": [

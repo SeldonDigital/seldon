@@ -40,6 +40,18 @@ const dataDir = path.join(repoRoot, "packages/core/icon-sets/data")
  * bounds how many icons `--seed` writes so a set stays a production-sized
  * subset rather than the full upstream package.
  */
+/**
+ * Upstream names that `camelToKebab` cannot reproduce, keyed by Seldon id suffix.
+ * Upstream joins consecutive short segments with hyphens (`l-to-r`), but a
+ * camelCase suffix collapses them (`LToR` -> `lto-r`), so the computed candidate
+ * misses. An entry here pins the exact upstream base name; the style suffix is
+ * still appended, so the outline variant resolves the same way.
+ */
+const MATERIAL_NAME_ALIASES = {
+  formatTextdirectionLToR: "format-textdirection-l-to-r",
+  formatTextdirectionRToL: "format-textdirection-r-to-l",
+}
+
 const SETS = {
   material: {
     prefix: "material",
@@ -47,6 +59,7 @@ const SETS = {
     catalogFolder: "material",
     style: "outline",
     cap: 5000,
+    aliases: MATERIAL_NAME_ALIASES,
   },
   carbon: {
     prefix: "carbon",
@@ -92,7 +105,7 @@ if (seed) {
  * seeded id absent from that source categorizes by the shared keyword table at
  * lookup time.
  */
-function generate({ prefix, upstream, catalogFolder, style }) {
+function generate({ prefix, upstream, catalogFolder, style, aliases }) {
   const ids = readManifestIds(catalogFolder, prefix)
   const iconSet = loadUpstream(upstream)
 
@@ -101,7 +114,7 @@ function generate({ prefix, upstream, catalogFolder, style }) {
 
   for (const id of ids) {
     const suffix = id.slice(prefix.length + 1)
-    const entry = resolveUpstream(iconSet, suffix, style)
+    const entry = resolveUpstream(iconSet, suffix, style, aliases)
 
     if (entry) {
       data[suffix] = { body: sanitizeBody(entry.body, id), viewBox: entry.viewBox }
@@ -185,8 +198,8 @@ function readManifestIds(catalogFolder, prefix) {
  * Returns the normalized `{ body, viewBox }`, following aliases and inheriting
  * set dimensions.
  */
-function resolveUpstream(iconSet, suffix, style) {
-  const kebab = camelToKebab(suffix)
+function resolveUpstream(iconSet, suffix, style, aliases) {
+  const kebab = aliases?.[suffix] ?? camelToKebab(suffix)
   const base = [kebab, kebab.replace(/-outline$/, ""), kebab.replace(/-filled$/, "")]
   const candidates =
     style === "outline" ? [`${kebab}-outline`, ...base] : [...base, `${kebab}-outline`]

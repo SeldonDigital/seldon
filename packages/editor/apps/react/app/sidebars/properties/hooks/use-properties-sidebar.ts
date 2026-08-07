@@ -349,11 +349,15 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (isFontCollectionEditingMode && editedFontCollection && activeFontCollectionEntryId) {
       const entry = workspace["font-collections"][activeFontCollectionEntryId]
 
-      return buildMetadataProperties({
-        name: entry?.label ?? editedFontCollection.metadata.name,
-        description: editedFontCollection.metadata.description,
-        intent: editedFontCollection.metadata.intent,
-      })
+      return buildMetadataProperties(
+        {
+          name: entry?.label ?? editedFontCollection.metadata.name,
+          description: editedFontCollection.metadata.description,
+          intent: editedFontCollection.metadata.intent,
+        },
+        false,
+        "material-fontDownload",
+      )
     }
 
     if (isIconSetEditingMode && editedIconSet && activeIconSetEntryId) {
