@@ -10,6 +10,9 @@ import type { EntryNode } from "@seldon/core/workspace/types"
 
 type Workspace = Parameters<typeof getComponentName>[1]
 
+/** Export file extension for this editor. Vue emits `.vue` components. */
+const COMPONENT_FILE_EXTENSION = ".vue"
+
 interface NodeLabelOptions {
   showNodeIds: boolean
   showCodeNames: boolean
@@ -19,9 +22,10 @@ interface NodeLabelOptions {
 
 /**
  * Text shown for a node row. Debug "Show Node Ids" wins, then "Show Code Names"
- * swaps in the export component name. Instances fall back to their content text
- * or icon label. Display only; the node label and rename are unchanged. Ported
- * from the React `row-node-label`.
+ * shows the node's ref handle when it has one, else the export component file
+ * name. Instances fall back to their content text or icon label. Display only;
+ * the node label and rename are unchanged. Ported from the React
+ * `row-node-label`.
  */
 export function getNodeLabel(
   node: EntryNode,
@@ -33,7 +37,9 @@ export function getNodeLabel(
   }
 
   if (showCodeNames && nodeExistsInWorkspace) {
-    return getComponentName(node, workspace)
+    if (node.ref) return node.ref
+
+    return `${getComponentName(node, workspace)}${COMPONENT_FILE_EXTENSION}`
   }
 
   if (

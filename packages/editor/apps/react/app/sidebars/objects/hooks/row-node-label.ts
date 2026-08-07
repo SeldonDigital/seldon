@@ -10,6 +10,9 @@ import type { EntryNode } from "@seldon/core/workspace/types"
 
 type Workspace = Parameters<typeof getComponentName>[1]
 
+/** Export file extension for this editor. React emits `.tsx` components. */
+const COMPONENT_FILE_EXTENSION = ".tsx"
+
 interface NodeLabelOptions {
   showNodeIds: boolean
   showCodeNames: boolean
@@ -19,9 +22,9 @@ interface NodeLabelOptions {
 
 /**
  * Resolves the text shown for a node row. Debug "Show Node Ids" wins, then
- * "Show Code Names" swaps in the export component name. Instances fall back to
- * their content text or icon label. Display only; the node label and rename
- * behavior are unchanged.
+ * "Show Code Names" shows the node's ref handle when it has one, else the export
+ * component file name. Instances fall back to their content text or icon label.
+ * Display only; the node label and rename behavior are unchanged.
  */
 export function getNodeLabel(
   node: EntryNode,
@@ -33,7 +36,9 @@ export function getNodeLabel(
   }
 
   if (showCodeNames && nodeExistsInWorkspace) {
-    return getComponentName(node, workspace)
+    if (node.ref) return node.ref
+
+    return `${getComponentName(node, workspace)}${COMPONENT_FILE_EXTENSION}`
   }
 
   if (
