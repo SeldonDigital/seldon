@@ -26,6 +26,7 @@ import {
 import { useMemo } from "react"
 
 import { getComputedTheme } from "@seldon/core/workspace/compute"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isFontCollectionBoard,
@@ -100,18 +101,31 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     [workspace, selectedThemeEntryId],
   )
 
+  // Selecting a font collection board directly (not one of its entries) still
+  // shows the collection's metadata, so it falls back to the board's default
+  // entry. Board component props keep rendering from `selection`.
+  const effectiveFontCollectionEntryId = useMemo(() => {
+    if (selectedFontCollectionEntryId) return selectedFontCollectionEntryId
+
+    if (selection && isBoard(selection) && isFontCollectionBoard(selection)) {
+      return selection.variants[0]?.id ?? null
+    }
+
+    return null
+  }, [selectedFontCollectionEntryId, selection])
+
   const activeFontCollectionEntryId = useMemo(
     () =>
       resolveActiveFontCollectionEntryId({
         workspace,
-        selectedFontCollectionEntryId,
+        selectedFontCollectionEntryId: effectiveFontCollectionEntryId,
       }),
-    [workspace, selectedFontCollectionEntryId],
+    [workspace, effectiveFontCollectionEntryId],
   )
 
   const isFontCollectionEditingMode = useMemo(
-    () => isFontCollectionEditingSelection(workspace, selectedFontCollectionEntryId),
-    [workspace, selectedFontCollectionEntryId],
+    () => isFontCollectionEditingSelection(workspace, effectiveFontCollectionEntryId),
+    [workspace, effectiveFontCollectionEntryId],
   )
 
   const editedFontCollection = useMemo(() => {

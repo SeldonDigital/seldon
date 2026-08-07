@@ -245,6 +245,34 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       }
     }
 
+    // Selecting a font collection board directly still shows the collection's
+    // metadata, so it falls back to the board's default entry. Board component
+    // props already render from the `if (selection)` branch above.
+    if (selection && isBoard(selection) && isFontCollectionBoard(selection)) {
+      const boardEntryId = selection.variants[0]?.id
+      const collection = boardEntryId
+        ? workspaceFontCollectionService.getFontCollection(boardEntryId, ws)
+        : null
+      const entry = boardEntryId ? ws["font-collections"][boardEntryId] : undefined
+
+      if (collection && boardEntryId) {
+        metadataVariantLabel = entry?.label
+        metadataProperties = buildMetadataProperties({
+          name: entry?.label ?? collection.metadata.name,
+          description: collection.metadata.description,
+          intent: collection.metadata.intent,
+        })
+        fontCollectionEditingContext = {
+          isFontCollectionEditing: true,
+          updateFontCollectionProperty: (property, value) => {
+            const action = buildFontCollectionEditAction(boardEntryId, property.key, value)
+
+            if (action) dispatch(action as never)
+          },
+        }
+      }
+    }
+
     // ---- Icon set editing ----
     let iconSetEditingContext: IconSetEditingContext | null = null
 

@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { getCssFromProperties, getNodeProperties } from "@app/core"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import Specimen from "@seldon/components/modules/Specimen.vue"
+import { resolveSpecimenThemeLooks } from "@seldon/editor/lib/font-collections/resolve-specimen-theme-looks"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
-import { computed, watch } from "vue"
+import { computed } from "vue"
 
 import { getEnabledVariants } from "@seldon/core/font-collections"
 import { fontVariantDisplayLabel } from "@seldon/core/helpers/utils/font-variant"
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 
 import { formatFontFamilyKey } from "../sidebars/objects/font-collection-family-rows"
 
@@ -67,6 +70,27 @@ const selection = useSelectionStore()
 const { selectedResourceItemKey } = storeToRefs(selection)
 
 const boardKey = computed(() => getComponentKey(props.board))
+const boardClassName = computed(() => `board-${boardKey.value}`)
+
+const boardProperties = computed(() => getNodeProperties(props.board, props.workspace))
+
+const boardTheme = computed(() =>
+  workspaceThemeService.getObjectTheme(props.board, props.workspace),
+)
+
+const boardCss = computed(() => {
+  if (!boardProperties.value || !boardTheme.value) return ""
+
+  return getCssFromProperties(
+    boardProperties.value,
+    {
+      theme: boardTheme.value,
+      properties: boardProperties.value,
+      parentContext: null,
+    },
+    boardClassName.value,
+  )
+})
 
 const specimens = computed<FontSpecimen[]>(() => {
   const board = props.board
@@ -118,18 +142,6 @@ const matched = computed(() =>
 )
 const active = computed(() => matched.value ?? keyed.value[0])
 
-// Auto-select the collection's first family when nothing under this board is
-// selected, so the tree highlight and the canvas specimen stay in sync.
-watch(
-  [matched, keyed],
-  () => {
-    if (!matched.value && keyed.value[0]) {
-      selection.selectResourceItem(keyed.value[0].key)
-    }
-  },
-  { immediate: true },
-)
-
 const fontValue = computed(() => {
   const family = active.value?.specimen.family
 
@@ -140,6 +152,12 @@ const scopeClass = computed(() =>
   `font-specimen-${boardKey.value}`.replace(/[^a-zA-Z0-9_-]/g, "-"),
 )
 
+// The board's theme owns the look: resolve each level's style, size, weight, and
+// line height, plus the `*Spec` label strings, from the board's theme.
+const themeLooks = computed(() =>
+  resolveSpecimenThemeLooks(boardTheme.value, scopeClass.value),
+)
+
 const scopedCss = computed(
   () => `.${scopeClass.value} [data-seldon-ref$="Preview"],
 .${scopeClass.value} [data-seldon-ref="typeSpecimenName"],
@@ -147,7 +165,8 @@ const scopedCss = computed(
 .${scopeClass.value} [data-seldon-ref="typeSpecimenLowercase"],
 .${scopeClass.value} [data-seldon-ref="typeSpecimenNumbers"] {
   font-family: ${fontValue.value} !important;
-}`,
+}
+${themeLooks.value.previewCss}`,
 )
 
 const seldonRefs = computed(() => {
@@ -163,16 +182,29 @@ const seldonRefs = computed(() => {
     refs.typeSpecimenFamilySizes = { children: specimen.weightsLabel }
   }
 
+  for (const [ref, value] of Object.entries(themeLooks.value.specs)) {
+    refs[ref] = { children: value }
+  }
+
   return refs
 })
 </script>
 
 <template>
-  <section v-if="active" class="canvas-board font-specimen-canvas" :data-board-id="boardKey">
+  <section v-if="active" class="canvas-board font-specimen-canvas">
+    <Teleport to="head">
+      <component :is="'style'">{{ boardCss }}</component>
+    </Teleport>
     <Teleport to="head">
       <component :is="'style'">{{ scopedCss }}</component>
     </Teleport>
-    <div class="font-specimen-board">
+    <div
+      class="font-specimen-board"
+      :class="boardClassName"
+      :data-board-id="boardKey"
+      :data-selection-id="boardKey"
+      data-selection-kind="board"
+    >
       <div :class="scopeClass">
         <Specimen v-bind="SPECIMEN_TEXT_SLOTS" :seldon-refs="seldonRefs" />
       </div>
@@ -181,16 +213,9 @@ const seldonRefs = computed(() => {
 </template>
 
 <style scoped>
-.font-specimen-canvas {
-  padding: 2rem;
-}
-/* The board is a fixed-width framing device only. It carries no selection id, so
-   it never draws a selection overlay and is not a canvas selection target. */
+/* Canvas layout only. Background, border, and corners come from the board's own
+   component properties through `boardCss`, matching the theme board chrome. */
 .font-specimen-board {
-  width: 800px;
-  background: var(--sdn-swatch-white);
-  border: var(--sdn-border-width-small) solid
-    color-mix(in srgb, var(--sdn-swatch-black) 12%, transparent);
   padding: 2rem;
 }
 </style>

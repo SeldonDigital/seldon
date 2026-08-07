@@ -439,10 +439,8 @@ const seldonRefs = computed(() => ({
           v-for="entryId in variantRootIds"
           :key="entryId"
           :workspace="workspace"
-          :config="resourceRowConfig"
           :entry-id="entryId"
           :board-key="boardKey"
-          :parent-is-selected="boardIsActive"
         />
       </template>
       <template v-else-if="resourceRowConfig">

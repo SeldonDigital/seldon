@@ -2,6 +2,7 @@ import { NODE_FIELD_DISPLAY_ORDER } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
+import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { getPropertySections } from "./get-property-sections"
 import { getThemePropertySections } from "./get-theme-property-sections"
@@ -118,8 +119,13 @@ export function buildPropertyTreeLayout({
     }
   }
 
+  // A font collection board carries a theme that drives its specimen look, so it
+  // gets the Theme picker even though resource boards otherwise omit leading
+  // fields. Every other resource board keeps its board component rows only.
   const propertiesWithLeadingFields = isResourceType(node as Board)
-    ? [...properties]
+    ? isBoard(node) && isFontCollectionBoard(node)
+      ? [buildThemeAssignmentProperty(node, workspace), ...properties]
+      : [...properties]
     : [
         ...buildLeadingNodeFieldRows(node, workspace),
         ...injectRepeatRows(properties, node, workspace),

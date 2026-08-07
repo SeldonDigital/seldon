@@ -142,11 +142,9 @@ function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) 
         resourceRowConfig.kind === "fontCollection" ? (
           <FontCollectionEntryRows
             key={entryId}
-            config={resourceRowConfig}
             entryId={entryId}
             boardKey={boardKey}
             show={show}
-            parentIsSelected={boardIsActive}
           />
         ) : (
           <ResourceEntry

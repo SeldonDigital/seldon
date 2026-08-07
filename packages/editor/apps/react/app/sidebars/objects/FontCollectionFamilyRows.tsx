@@ -11,13 +11,11 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { useCallback, useState } from "react"
 
-import { ResourceEntry } from "./ResourceEntry"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { useFontCollectionFamilyRows } from "./hooks/use-font-collection-family-rows"
 import { useRowClick } from "./hooks/use-row-click"
 
 import type { FontFamilyRowModel, FontFamilyWeightRow } from "./hooks/use-font-collection-family-rows"
-import type { ResourceRowConfig } from "./helpers/resource-row-config"
 import type { MouseEvent } from "react"
 
 const RESOURCE_ITEM_SELECTION_KIND = "resourceItem"
@@ -26,22 +24,18 @@ const CHECKED_ICON = "material-checkBox"
 const UNCHECKED_ICON = "material-checkBoxOutlineBlank"
 
 /**
- * A font collection entry row plus its family rows. The entry row keeps the
- * shared `ResourceEntry` behavior (select, rename, actions) and the families
- * render one indentation level below it, each expandable into weight rows.
+ * The font collection's family rows. Font collections have a single default
+ * entry and no variants, so the entry row is not shown. The families render
+ * directly under the board row, each expandable into weight rows.
  */
 export function FontCollectionEntryRows({
-  config,
   entryId,
   boardKey,
   show = true,
-  parentIsSelected = false,
 }: {
-  config: ResourceRowConfig
   entryId: string
   boardKey: string
   show?: boolean
-  parentIsSelected?: boolean
 }) {
   const families = useFontCollectionFamilyRows(entryId)
 
@@ -49,22 +43,9 @@ export function FontCollectionEntryRows({
 
   return (
     <>
-      <ResourceEntry
-        config={config}
-        entryId={entryId}
-        show={show}
-        parentIsSelected={parentIsSelected}
-      />
-      <IndentationLevel>
-        {families.map((family) => (
-          <FontFamilyRow
-            key={family.slot}
-            boardKey={boardKey}
-            entryId={entryId}
-            family={family}
-          />
-        ))}
-      </IndentationLevel>
+      {families.map((family) => (
+        <FontFamilyRow key={family.slot} boardKey={boardKey} entryId={entryId} family={family} />
+      ))}
     </>
   )
 }
