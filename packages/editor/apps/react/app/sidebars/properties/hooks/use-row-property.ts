@@ -42,7 +42,10 @@ import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { useRenameInput } from "../../hooks/use-rename-input"
 import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import { buildPropertyValueTextarea } from "../helpers/build-property-value-textarea"
+import {
+  autosizeTextarea,
+  buildPropertyValueTextarea,
+} from "../helpers/build-property-value-textarea"
 import { usePropertyCardScope } from "./use-property-card-scope"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
@@ -440,6 +443,13 @@ export function useRowProperty({
   }, [isEditingProperty, control.kind, property.multiline])
 
   const valueRef = control.kind === "combobox" ? control.field.inputRef : valueInputRef
+
+  // A multiline row's textarea has no intrinsic auto-height, so grow it to fit
+  // its content after mount and whenever the value or edit mode changes.
+  // Keystroke growth is handled by the textarea's own `onChange`.
+  useEffect(() => {
+    if (property.multiline) autosizeTextarea(valueTextareaRef.current)
+  })
 
   // Keyboard Tab moves edit focus without firing pointer events, so the row the
   // mouse rests on keeps its hover outline. Hand the hover setter to the

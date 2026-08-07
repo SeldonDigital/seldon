@@ -23257,7 +23257,58 @@
       "label": "Textarea",
       "theme": null,
       "template": "catalog:textarea",
-      "overrides": {}
+      "overrides": {},
+      "states": {
+        "activated": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "dragged": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          },
+          "brightness": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": -20
+            }
+          }
+        },
+        "error": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.negative"
+          }
+        },
+        "disabled": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.gray"
+          }
+        },
+        "selected": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "focused": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.punch"
+          }
+        },
+        "checked": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        }
+      }
     },
     "component-message-default": {
       "type": "default",

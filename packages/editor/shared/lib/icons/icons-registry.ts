@@ -116,7 +116,7 @@ const UI_OVERRIDES: PropertyRegistry = {
   altText: { control: "text" },
   ariaLabel: { control: "text" },
   ariaHidden: { control: "menu" },
-  placeholder: { control: "text" },
+  placeholder: { control: "text", multiline: true },
   checked: { control: "menu" },
   inputType: { control: "menu" },
   htmlElement: { label: "HTML Element", control: "menu" },

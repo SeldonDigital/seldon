@@ -29,7 +29,10 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import { buildPropertyValueTextarea } from "../helpers/build-property-value-textarea"
+import {
+  autosizeTextarea,
+  buildPropertyValueTextarea,
+} from "../helpers/build-property-value-textarea"
 import { getPropertyValueForDisplay, shouldShowMenuIcon } from "../helpers/property-control-data"
 import { usePropertyExpansionStore } from "../property-expansion-store"
 import { usePropertyEditNavigation } from "../use-property-edit-navigation"
@@ -615,6 +618,26 @@ export function useRowProperty(input: RowPropertyInput) {
       inputEl.select()
     }
   })
+
+  // A multiline row's textarea has no intrinsic auto-height, so grow it to fit
+  // its content after mount and whenever the value or edit mode changes.
+  // Keystroke growth is handled by the textarea's own `onInput`.
+  watch(
+    [displayValue, isEditing, rowEl],
+    async () => {
+      if (!property.value.multiline) return
+      await nextTick()
+      const el = rowEl.value
+
+      if (!el) return
+      autosizeTextarea(
+        el.querySelector<HTMLTextAreaElement>(
+          'textarea[data-seldon-ref="propertyTextAreaValueLabel"]',
+        ),
+      )
+    },
+    { immediate: true },
+  )
 
   // Register with the edit-navigation coordinator for Tab-between-rows.
   watch(

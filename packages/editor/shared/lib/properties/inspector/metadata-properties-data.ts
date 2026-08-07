@@ -62,7 +62,7 @@ export function buildMetadataProperties(
       editable,
       true,
     ),
-    createMetadataRow("intent", "Intent", metadata.intent, "material-article", editable),
+    createMetadataRow("intent", "Intent", metadata.intent, "material-article", editable, true),
   ]
 
   if (metadata.author) {

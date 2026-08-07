@@ -4,30 +4,28 @@ import type { PropertyControlView } from "../hooks/use-property-control"
 import type { TextareaProps } from "@seldon/components/primitives/Textarea"
 import type { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, Ref } from "react"
 
-/** `field-sizing` is not yet in the React CSS typings. */
-type TextareaStyle = CSSProperties & { fieldSizing?: "content" | "fixed" }
-
 export type ValueTextareaProps = TextareaProps & { ref?: Ref<HTMLTextAreaElement> }
 
 /**
- * The generated `sdn-textarea` value variant is styled like a single-line input
- * (`white-space: nowrap`, ellipsis, `overflow: hidden`). Override it inline so
- * the value wraps and the box auto-grows to its content height (`field-sizing`,
- * Chromium), never showing a scrollbar or resize handle.
+ * Grows a textarea to fit its content: reset to `auto`, then take the scroll
+ * height. `overflow: hidden` (below) keeps the transient scrollbar from
+ * flashing. Called on mount, on value change, and on each keystroke so the box
+ * always matches its rows.
  */
-const TEXTAREA_LAYOUT: TextareaStyle = {
-  whiteSpace: "normal",
-  textOverflow: "clip",
-  overflow: "hidden",
-  resize: "none",
-  fieldSizing: "content",
+export function autosizeTextarea(element: HTMLTextAreaElement | null): void {
+  if (!element) return
+  element.style.height = "auto"
+  element.style.height = `${element.scrollHeight}px`
 }
 
-/** Inert read-only display style, mirroring `buildDisplayInputProps`. */
-const DISPLAY_STYLE: TextareaStyle = { ...TEXTAREA_LAYOUT, pointerEvents: "none" }
-
-/** Editable style: the same wrap/auto-grow layout plus the edit-mode outline. */
-const EDIT_STYLE: TextareaStyle = { ...TEXTAREA_LAYOUT, outline: EDITING_OUTLINE }
+/**
+ * The generated `sdn-textarea` variant already wraps. Suppress the scrollbar;
+ * height is driven by {@link autosizeTextarea}. Only an editable row shows the
+ * resize handle; a read-only (dimmed) row keeps `resize: none`.
+ */
+const TEXTAREA_LAYOUT: CSSProperties = {
+  overflow: "hidden",
+}
 
 interface BuildPropertyValueTextareaArgs {
   control: PropertyControlView
@@ -58,10 +56,19 @@ export function buildPropertyValueTextarea({
   onTabNext,
   onTabPrev,
 }: BuildPropertyValueTextareaArgs): ValueTextareaProps {
+  // An editable row (`field`) shows the resize handle even at rest; a read-only
+  // row (dimmed Description, `none`) never does.
+  const editable = control.kind === "field"
+
   // Display mode: read-only and inert, so row selection, hover, and the
   // field's click-into-edit pass through to the combobox field.
   if (!isEditing || control.kind !== "field") {
-    return { ref: valueRef, value: displayValue, readOnly: true, style: DISPLAY_STYLE }
+    return {
+      ref: valueRef,
+      value: displayValue,
+      readOnly: true,
+      style: { ...TEXTAREA_LAYOUT, resize: editable ? "vertical" : "none", pointerEvents: "none" },
+    }
   }
 
   const field = control.combobox
@@ -70,10 +77,12 @@ export function buildPropertyValueTextarea({
     ref: valueRef,
     value: field.value,
     readOnly: false,
-    style: EDIT_STYLE,
+    style: { ...TEXTAREA_LAYOUT, resize: "vertical", outline: EDITING_OUTLINE },
     autoFocus: field.autoFocus,
-    onChange: (event: ChangeEvent<HTMLTextAreaElement>) =>
-      field.onValueChange(event.currentTarget.value),
+    onChange: (event: ChangeEvent<HTMLTextAreaElement>) => {
+      field.onValueChange(event.currentTarget.value)
+      autosizeTextarea(event.currentTarget)
+    },
     onFocus: (event: FocusEvent<HTMLTextAreaElement>) => event.currentTarget.select(),
     onKeyDown: (event: KeyboardEvent<HTMLTextAreaElement>) => {
       // Cmd/Ctrl+Enter commits; a plain Enter falls through to insert a newline.
