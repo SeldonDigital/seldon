@@ -50,7 +50,7 @@ const sdn: ItemPropertyToggleProps = {
     "data-seldon-ref": "propertyToggleDisclosure",
   },
   icon: {
-    icon: "material-keyboardArrowDown",
+    icon: "material-keyboardArrowRight",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
     "data-seldon-ref": "propertyToggleDisclosureIcon",

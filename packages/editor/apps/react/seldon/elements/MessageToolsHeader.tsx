@@ -45,7 +45,7 @@ const sdn: MessageToolsHeaderProps = {
     "data-seldon-ref": "hariToolsToggle",
   },
   icon: {
-    icon: "material-keyboardArrowDown",
+    icon: "material-keyboardArrowRight",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--bmas",
     "data-seldon-ref": "hariToolsChevron",

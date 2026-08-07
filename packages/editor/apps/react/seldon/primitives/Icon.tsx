@@ -30,6 +30,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-calendarToday"
     | "material-inbox"
     | "material-keyboardArrowDown"
+    | "material-keyboardArrowRight"
     | "seldon-more"
     | "material-unfoldMore"
     | "material-add"
@@ -38,7 +39,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-save"
     | "material-radioButtonChecked"
     | "material-home"
-    | "material-favorite"
+    | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
     | "seldon-plus"
@@ -185,6 +186,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-driveFileMoveOutline"
     | "material-width"
     | "material-bookmark"
+    | "material-favorite"
     | "material-flag"
     | "material-grade"
     | "material-mood"
@@ -254,6 +256,9 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-aspectRatio"
     | "material-autorenew"
     | "material-cancel"
+    | "material-chevronBackward"
+    | "material-chevronForward"
+    | "material-chevronLineUp"
     | "material-circle"
     | "material-cleaningServices"
     | "material-cloudDownload"
@@ -333,8 +338,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-alignHorizontalLeft"
     | "material-alignHorizontalRight"
     | "material-arrowBack"
+    | "material-arrowCircleDown"
+    | "material-arrowCircleLeft"
+    | "material-arrowCircleRight"
+    | "material-arrowCircleUp"
     | "material-arrowDownward"
+    | "material-arrowDropDown"
+    | "material-arrowDropUp"
     | "material-arrowLeft"
+    | "material-arrowOutward"
     | "material-arrowRight"
     | "material-backspace"
     | "material-brightnessAuto"
@@ -342,6 +354,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-brightnessLow"
     | "material-brightnessMedium"
     | "material-chevronLeft"
+    | "material-doubleArrow"
     | "material-event"
     | "material-fastForward"
     | "material-feedback"
@@ -350,10 +363,11 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-group"
     | "material-homeWork"
     | "material-keyboardArrowLeft"
-    | "material-keyboardArrowRight"
     | "material-keyboardArrowUp"
+    | "material-keyboardDoubleArrowDown"
     | "material-keyboardDoubleArrowLeft"
     | "material-keyboardDoubleArrowRight"
+    | "material-keyboardDoubleArrowUp"
     | "material-link"
     | "material-menu"
     | "material-more"
@@ -525,6 +539,7 @@ const iconMap = {
   "material-calendarToday": Icons.IconMaterialCalendarToday,
   "material-inbox": Icons.IconMaterialInbox,
   "material-keyboardArrowDown": Icons.IconMaterialKeyboardArrowDown,
+  "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
   "seldon-more": Icons.IconSeldonMore,
   "material-unfoldMore": Icons.IconMaterialUnfoldMore,
   "material-add": Icons.IconMaterialAdd,
@@ -533,7 +548,7 @@ const iconMap = {
   "material-save": Icons.IconMaterialSave,
   "material-radioButtonChecked": Icons.IconMaterialRadioButtonChecked,
   "material-home": Icons.IconMaterialHome,
-  "material-favorite": Icons.IconMaterialFavorite,
+  "material-favoriteBorder": Icons.IconSeldonMissing,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
   "seldon-plus": Icons.IconSeldonPlus,
@@ -680,6 +695,7 @@ const iconMap = {
   "material-driveFileMoveOutline": Icons.IconMaterialDriveFileMoveOutline,
   "material-width": Icons.IconMaterialWidth,
   "material-bookmark": Icons.IconMaterialBookmark,
+  "material-favorite": Icons.IconMaterialFavorite,
   "material-flag": Icons.IconMaterialFlag,
   "material-grade": Icons.IconMaterialGrade,
   "material-mood": Icons.IconMaterialMood,
@@ -749,6 +765,9 @@ const iconMap = {
   "material-aspectRatio": Icons.IconMaterialAspectRatio,
   "material-autorenew": Icons.IconMaterialAutorenew,
   "material-cancel": Icons.IconMaterialCancel,
+  "material-chevronBackward": Icons.IconMaterialChevronBackward,
+  "material-chevronForward": Icons.IconMaterialChevronForward,
+  "material-chevronLineUp": Icons.IconMaterialChevronLineUp,
   "material-circle": Icons.IconMaterialCircle,
   "material-cleaningServices": Icons.IconMaterialCleaningServices,
   "material-cloudDownload": Icons.IconMaterialCloudDownload,
@@ -828,8 +847,15 @@ const iconMap = {
   "material-alignHorizontalLeft": Icons.IconMaterialAlignHorizontalLeft,
   "material-alignHorizontalRight": Icons.IconMaterialAlignHorizontalRight,
   "material-arrowBack": Icons.IconMaterialArrowBack,
+  "material-arrowCircleDown": Icons.IconMaterialArrowCircleDown,
+  "material-arrowCircleLeft": Icons.IconMaterialArrowCircleLeft,
+  "material-arrowCircleRight": Icons.IconMaterialArrowCircleRight,
+  "material-arrowCircleUp": Icons.IconMaterialArrowCircleUp,
   "material-arrowDownward": Icons.IconMaterialArrowDownward,
+  "material-arrowDropDown": Icons.IconMaterialArrowDropDown,
+  "material-arrowDropUp": Icons.IconMaterialArrowDropUp,
   "material-arrowLeft": Icons.IconMaterialArrowLeft,
+  "material-arrowOutward": Icons.IconMaterialArrowOutward,
   "material-arrowRight": Icons.IconMaterialArrowRight,
   "material-backspace": Icons.IconMaterialBackspace,
   "material-brightnessAuto": Icons.IconMaterialBrightnessAuto,
@@ -837,6 +863,7 @@ const iconMap = {
   "material-brightnessLow": Icons.IconMaterialBrightnessLow,
   "material-brightnessMedium": Icons.IconMaterialBrightnessMedium,
   "material-chevronLeft": Icons.IconMaterialChevronLeft,
+  "material-doubleArrow": Icons.IconMaterialDoubleArrow,
   "material-event": Icons.IconMaterialEvent,
   "material-fastForward": Icons.IconMaterialFastForward,
   "material-feedback": Icons.IconMaterialFeedback,
@@ -845,10 +872,11 @@ const iconMap = {
   "material-group": Icons.IconMaterialGroup,
   "material-homeWork": Icons.IconMaterialHomeWork,
   "material-keyboardArrowLeft": Icons.IconMaterialKeyboardArrowLeft,
-  "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
   "material-keyboardArrowUp": Icons.IconMaterialKeyboardArrowUp,
+  "material-keyboardDoubleArrowDown": Icons.IconMaterialKeyboardDoubleArrowDown,
   "material-keyboardDoubleArrowLeft": Icons.IconMaterialKeyboardDoubleArrowLeft,
   "material-keyboardDoubleArrowRight": Icons.IconMaterialKeyboardDoubleArrowRight,
+  "material-keyboardDoubleArrowUp": Icons.IconMaterialKeyboardDoubleArrowUp,
   "material-link": Icons.IconMaterialLink,
   "material-menu": Icons.IconMaterialMenu,
   "material-more": Icons.IconMaterialMore,

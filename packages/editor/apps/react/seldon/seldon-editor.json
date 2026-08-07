@@ -7406,6 +7406,287 @@
       "__editor": {
         "order": 46
       }
+    },
+    "specimen": {
+      "type": "authored-component",
+      "id": "specimen",
+      "level": "module",
+      "label": "Specimen",
+      "intent": "Specimens for all types of typography, iconography, themes, and design system specs",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 800
+            }
+          }
+        }
+      },
+      "variants": [
+        {
+          "id": "component-specimen-authored",
+          "children": [
+            {
+              "id": "component-specimen-gnQ4cbbE",
+              "children": [
+                {
+                  "id": "component-specimen-ODZo7CJf",
+                  "children": [
+                    {
+                      "id": "component-specimen-xoIlaLQb"
+                    },
+                    {
+                      "id": "component-specimen-Tkcgclsn"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-PMDrra1F",
+                  "children": [
+                    {
+                      "id": "component-specimen-r0mkTyr8"
+                    },
+                    {
+                      "id": "component-specimen-HrZZ2mDy"
+                    },
+                    {
+                      "id": "component-specimen-yVnO6dsd"
+                    },
+                    {
+                      "id": "component-specimen-i3QDmJxC"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-hr-aTZ4hjUv"
+            },
+            {
+              "id": "component-specimen-PiQxGuai",
+              "children": [
+                {
+                  "id": "component-specimen-v1QYJQdl",
+                  "children": [
+                    {
+                      "id": "component-specimen-oUBFDRtw"
+                    },
+                    {
+                      "id": "component-specimen-mYNPmcx3"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-Kpqciu0t",
+                  "children": [
+                    {
+                      "id": "component-specimen-WDmLQSqd"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-xqwJi5Jg",
+              "children": [
+                {
+                  "id": "component-specimen-dowtam98",
+                  "children": [
+                    {
+                      "id": "component-specimen-XRcQox0m"
+                    },
+                    {
+                      "id": "component-specimen-X5TqHybW"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-s1ybj8vL",
+                  "children": [
+                    {
+                      "id": "component-specimen-aEb2KaqC"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-ahkJvy2j",
+              "children": [
+                {
+                  "id": "component-specimen-Tdc0zpfK",
+                  "children": [
+                    {
+                      "id": "component-specimen-p8dbp5n9"
+                    },
+                    {
+                      "id": "component-specimen-Qd8sVx0Q"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-p7RJUrFz",
+                  "children": [
+                    {
+                      "id": "component-text-pxsLILAj"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-uQd5pscL",
+              "children": [
+                {
+                  "id": "component-specimen-ual8BHhZ",
+                  "children": [
+                    {
+                      "id": "component-specimen-T17uayyR"
+                    },
+                    {
+                      "id": "component-specimen-S2Lkt3tM"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-G08mFpWu",
+                  "children": [
+                    {
+                      "id": "component-text-ZnnyeW4n"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-aNDq9HaS",
+              "children": [
+                {
+                  "id": "component-specimen-JBAwBt77",
+                  "children": [
+                    {
+                      "id": "component-specimen-Zm0yqfu0"
+                    },
+                    {
+                      "id": "component-specimen-bK09UY69"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-9J9HZJea",
+                  "children": [
+                    {
+                      "id": "component-specimen-Hb7Vdamn"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-G6ZOHUeX",
+              "children": [
+                {
+                  "id": "component-specimen-O4L4bT0A",
+                  "children": [
+                    {
+                      "id": "component-specimen-M5Dls04j"
+                    },
+                    {
+                      "id": "component-specimen-teYLJUS1"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-hR9jBIXd",
+                  "children": [
+                    {
+                      "id": "component-specimen-oAbDAwzF"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-GEWzkjFx",
+              "children": [
+                {
+                  "id": "component-specimen-oPWEEJf2",
+                  "children": [
+                    {
+                      "id": "component-specimen-s3IeNXFz"
+                    },
+                    {
+                      "id": "component-specimen-i4yXRzai"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-RdfrcRfN",
+                  "children": [
+                    {
+                      "id": "component-specimen-Bxdpn48o"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-lo80abuV",
+              "children": [
+                {
+                  "id": "component-specimen-ufT6BlyP",
+                  "children": [
+                    {
+                      "id": "component-specimen-k0yUSCHu"
+                    },
+                    {
+                      "id": "component-specimen-SNFIBIv8"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-hCnGanvd",
+                  "children": [
+                    {
+                      "id": "component-specimen-dNYXY4qa"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-specimen-nJE5cFpY",
+              "children": [
+                {
+                  "id": "component-specimen-qmQkslsh",
+                  "children": [
+                    {
+                      "id": "component-specimen-MhjW7rWk"
+                    },
+                    {
+                      "id": "component-specimen-XJTkUrjk"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-specimen-cgyM3ViS",
+                  "children": [
+                    {
+                      "id": "component-specimen-EjWEeoXW"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 47
+      }
     }
   },
   "playgrounds": {},
@@ -12752,7 +13033,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-keyboardArrowDown"
+          "value": "material-keyboardArrowRight"
         }
       },
       "origin": "schema"
@@ -13040,7 +13321,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-keyboardArrowDown"
+          "value": "material-keyboardArrowRight"
         }
       },
       "origin": "schema"
@@ -16085,7 +16366,12 @@
       "label": "Combobox",
       "theme": null,
       "template": "catalog:combobox",
-      "overrides": {}
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      }
     },
     "component-comboboxField-z3a0KuTH": {
       "type": "instance",
@@ -16238,7 +16524,12 @@
       "label": "Grouped Combobox",
       "theme": null,
       "template": "node:component-combobox-default",
-      "overrides": {}
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      }
     },
     "component-comboboxField-ssskwKzf": {
       "type": "instance",
@@ -16826,7 +17117,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-favorite"
+          "value": "material-favoriteBorder"
         },
         "size": {
           "type": "theme.ordinal",
@@ -22573,7 +22864,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-keyboardArrowDown"
+          "value": "material-keyboardArrowRight"
         }
       },
       "origin": "schema"
@@ -23399,7 +23690,7 @@
       "overrides": {
         "symbol": {
           "type": "option",
-          "value": "material-keyboardArrowDown"
+          "value": "material-keyboardArrowRight"
         },
         "size": {
           "type": "computed",
@@ -24338,10 +24629,6 @@
       "theme": null,
       "template": "node:component-icon-KzY9lbAe",
       "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-keyboardArrowDown"
-        },
         "size": {
           "type": "computed",
           "value": "autoFit"
@@ -27210,7 +27497,14 @@
               "value": null
             }
           }
-        ]
+        ],
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 600
+          }
+        }
       }
     },
     "component-panel-h3zITesL": {
@@ -43954,6 +44248,1857 @@
         }
       },
       "origin": "user"
+    },
+    "component-specimen-authored": {
+      "type": "authored",
+      "level": "module",
+      "label": "Specimen",
+      "theme": null,
+      "template": "catalog:frame",
+      "overrides": {
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      }
+    },
+    "component-specimen-uQd5pscL": {
+      "ref": "typeSpecimenCallout",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-ual8BHhZ": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-T17uayyR": {
+      "ref": "typeSpecimenCalloutLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Callout · H6"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-G08mFpWu": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "center"
+        }
+      },
+      "origin": "user"
+    },
+    "component-hr-aTZ4hjUv": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Horizontal Rule",
+      "theme": null,
+      "template": "node:component-hr-default",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-specimen-S2Lkt3tM": {
+      "ref": "typeSpecimenCalloutSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Italic / 0.75rem / 300 / 1.33"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-nJE5cFpY": {
+      "ref": "typeSpecimenDisplay",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-qmQkslsh": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-MhjW7rWk": {
+      "ref": "typeSpecimenDisplayLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Display · H1"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-XJTkUrjk": {
+      "ref": "typeSpecimenDisplaySpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Italic / 3rem / 700 / 1.15"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-cgyM3ViS": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "top-left"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-EjWEeoXW": {
+      "ref": "typeSpecimenDisplayPreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Display",
+      "theme": null,
+      "template": "node:component-text-display",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 10
+        },
+        "font": {
+          "style": {
+            "type": "option",
+            "value": "italic"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-lo80abuV": {
+      "ref": "typeSpecimenHeading",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-ufT6BlyP": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-k0yUSCHu": {
+      "ref": "typeSpecimenHeadingLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Heading · H2"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-SNFIBIv8": {
+      "ref": "typeSpecimenHeadingSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Normal / 2rem / 600 / 1.25"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-hCnGanvd": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "top-left"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-dNYXY4qa": {
+      "ref": "typeSpecimenHeadingPreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 10
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-GEWzkjFx": {
+      "ref": "typeSpecimenSubheading",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-oPWEEJf2": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-s3IeNXFz": {
+      "ref": "typeSpecimenSubheadingLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Subheading · H3"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-i4yXRzai": {
+      "ref": "typeSpecimenSubheadingSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Italic / 1.5rem / 500 / 1.25"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-RdfrcRfN": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "top-left"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Bxdpn48o": {
+      "ref": "typeSpecimenSubheadingPreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subheading",
+      "theme": null,
+      "template": "node:component-text-subheading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated."
+        },
+        "font": {
+          "style": {
+            "type": "option",
+            "value": "italic"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-G6ZOHUeX": {
+      "ref": "typeSpecimenTitle",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-O4L4bT0A": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-M5Dls04j": {
+      "ref": "typeSpecimenTitleLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Title · H4"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-teYLJUS1": {
+      "ref": "typeSpecimenTitleSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Normal / 1rem / 500 / 1.25"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-hR9jBIXd": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "top-left"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-oAbDAwzF": {
+      "ref": "typeSpecimenTitlePreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated."
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-aNDq9HaS": {
+      "ref": "typeSpecimenSubtitle",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-JBAwBt77": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Zm0yqfu0": {
+      "ref": "typeSpecimenSubtitleLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Subtitle · H5"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-bK09UY69": {
+      "ref": "typeSpecimenSubtitleSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Normal / 0.875rem / 400 / 1.25"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-9J9HZJea": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "top-left"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Hb7Vdamn": {
+      "ref": "typeSpecimenSubtitlePreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subtitle",
+      "theme": null,
+      "template": "node:component-text-subtitle",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated."
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-ahkJvy2j": {
+      "ref": "typeSpecimenTagline",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Tdc0zpfK": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-p8dbp5n9": {
+      "ref": "typeSpecimenTaglineLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Tagline · P"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Qd8sVx0Q": {
+      "ref": "typeSpecimenTaglineSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Normal / 0.75rem / 500 / 1.25"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-p7RJUrFz": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "center"
+        }
+      },
+      "origin": "user"
+    },
+    "component-text-ZnnyeW4n": {
+      "ref": "typeSpecimenCalloutPreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Callout",
+      "theme": null,
+      "template": "node:component-text-callout",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated."
+        },
+        "font": {
+          "style": {
+            "type": "option",
+            "value": "italic"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-gnQ4cbbE": {
+      "ref": "typeSpecimenPreview",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-ODZo7CJf": {
+      "ref": "typeSpecimenFamily",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-xoIlaLQb": {
+      "ref": "typeSpecimenFamilyLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Font Family"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Tkcgclsn": {
+      "ref": "typeSpecimenFamilySizes",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "100, 200, 300, 400, 500, 600, 700, 100 Italic, 200 Italic, 300 Italic, 400 Italic, 500 Italic, 600 Italic, 700 Italic"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-PMDrra1F": {
+      "ref": "typeSpecimenGlyphs",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-specimen-r0mkTyr8": {
+      "ref": "typeSpecimenName",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "IBM Plex San"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.title"
+          },
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.large"
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-xqwJi5Jg": {
+      "ref": "typeSpecimenLabel",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-dowtam98": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-XRcQox0m": {
+      "ref": "typeSpecimenLabelLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-X5TqHybW": {
+      "ref": "typeSpecimenLabelSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Normal / 0.75rem / 400 / 1.15"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-s1ybj8vL": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "align": {
+          "type": "option",
+          "value": "center"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-aEb2KaqC": {
+      "ref": "typeSpecimenLabelPreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design can be art. Design can be aesthetics."
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-text-pxsLILAj": {
+      "ref": "typeSpecimenTaglinePreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Tagline",
+      "theme": null,
+      "template": "node:component-text-tagline",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Design is so simple, that's why it is so complicated."
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-PiQxGuai": {
+      "ref": "typeSpecimenNormal",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.comfortable"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-v1QYJQdl": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 25
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-oUBFDRtw": {
+      "ref": "typeSpecimenNormalLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          },
+          "textCase": {
+            "type": "option",
+            "value": "uppercase"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Body · P"
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-mYNPmcx3": {
+      "ref": "typeSpecimenNormalSpec",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxsmall"
+          }
+        },
+        "opacity": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 50
+          }
+        },
+        "content": {
+          "type": "exact",
+          "value": "Normal / 0.75rem / 400 / 1.25"
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-Kpqciu0t": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-specimen-WDmLQSqd": {
+      "ref": "typeSpecimenNormalPreview",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Visual communication of any kind, whether persuasive or informative, from billboards to birth announcements, should be seen as the embodiment of form and function: the integration of the beautiful and useful. Copy, art, and typography should be seen as a living entity; each element integrally related, in harmony with the whole, and essential to the execution of an idea."
+        },
+        "font": {
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-HrZZ2mDy": {
+      "ref": "typeSpecimenUppercase",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-specimen-WDmLQSqd",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-yVnO6dsd": {
+      "ref": "typeSpecimenLowercase",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-specimen-WDmLQSqd",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "abcdefghijklmnopqrstuvwxyz"
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-specimen-i3QDmJxC": {
+      "ref": "typeSpecimenNumbers",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-specimen-WDmLQSqd",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "0123456789 ¿ ? ¡ ! & @ ‘ ’ “ ” « » % * ^ # $ £ € ¢ / ( ) [ ] { } . , ® ©"
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          }
+        }
+      },
+      "origin": "user"
     }
   },
   "themes": {
@@ -44548,6 +46693,16 @@
             "700": true,
             "800": true,
             "regular": true
+          },
+          "arimo": {
+            "500": true,
+            "600": true,
+            "700": true,
+            "regular": true,
+            "italic": true,
+            "500italic": true,
+            "600italic": true,
+            "700italic": true
           }
         }
       }

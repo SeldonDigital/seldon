@@ -48,7 +48,7 @@ const sdn: MessageThinkingProps = {
     "data-seldon-ref": "hariReasoningToggle",
   },
   icon: {
-    icon: "material-keyboardArrowDown",
+    icon: "material-keyboardArrowRight",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--kzy9",
     "data-seldon-ref": "hariReasoningChevron",

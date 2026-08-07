@@ -707,7 +707,7 @@ body {
   align-items: start;
   justify-content: center;
   gap: var(--sdn-gaps-tight);
-  align-self: stretch;
+  width: fit-content;
   height: fit-content;
   flex-shrink: 0;
 }
@@ -767,6 +767,20 @@ body {
   flex-direction: column;
   box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
   width: 450px;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: var(--sdn-corners-compact);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 30%, transparent);
+}
+
+.sdn-dialog-export-component {
+  background-color: var(--sdn-swatch-offWhite);
+  overflow: hidden;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
+  width: 600px;
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
@@ -1590,6 +1604,15 @@ body {
   align-self: stretch;
   height: 350px;
   flex-shrink: 0;
+}
+
+.sdn-specimen {
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sdn-gaps-comfortable);
+  align-self: stretch;
+  flex: 1 0 0;
 }
 
 .sdn-text {
@@ -2550,6 +2573,14 @@ body {
   min-height: 0;
 }
 
+.sdn-frame--cgym {
+  align-self: unset;
+  align-items: start;
+  justify-content: start;
+  height: 100%;
+  min-width: 0;
+}
+
 .sdn-frame--cysn {
   background-color: transparent;
   padding: 0;
@@ -2603,6 +2634,14 @@ body {
   min-height: 0;
   padding: 0;
   margin: 0;
+}
+
+.sdn-frame--g08m {
+  align-self: unset;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-width: 0;
 }
 
 .sdn-frame--g9sz {
@@ -2819,6 +2858,18 @@ body {
   gap: var(--sdn-gaps-compact);
 }
 
+.sdn-frame--odzo {
+  align-self: unset;
+  flex: unset;
+  align-items: start;
+  justify-content: start;
+  gap: var(--sdn-gaps-tight);
+  width: 25%;
+  flex-shrink: 0;
+  height: 100%;
+  padding: var(--sdn-paddings-tight);
+}
+
 .sdn-frame--ozrx {
   align-self: unset;
   flex: unset;
@@ -2868,6 +2919,12 @@ body {
   align-self: unset;
   flex-direction: row;
   gap: var(--sdn-gaps-cozy);
+  height: 100%;
+  min-width: 0;
+}
+
+.sdn-frame--pmdr {
+  align-self: unset;
   height: 100%;
   min-width: 0;
 }
@@ -3023,6 +3080,18 @@ body {
   border-radius: var(--sdn-corners-tight);
 }
 
+.sdn-frame--ual8 {
+  align-self: unset;
+  flex: unset;
+  align-items: start;
+  justify-content: center;
+  gap: var(--sdn-gaps-tight);
+  width: 25%;
+  flex-shrink: 0;
+  height: 100%;
+  padding: var(--sdn-paddings-tight);
+}
+
 .sdn-frame--ud2b {
   align-self: unset;
   flex: unset;
@@ -3047,6 +3116,11 @@ body {
   height: fit-content;
   flex-shrink: 0;
   margin: 0;
+}
+
+.sdn-frame--uqd5 {
+  flex-direction: row;
+  gap: var(--sdn-gaps-comfortable);
 }
 
 .sdn-frame--vatw {
@@ -3740,9 +3814,37 @@ body {
   font-size: var(--sdn-font-size-xsmall);
 }
 
+.sdn-text-description--hrzz {
+  color: var(--sdn-hc-on-white);
+  font-family: IBM Plex Sans;
+}
+
+.sdn-text-description--r0mk {
+  color: var(--sdn-hc-on-white);
+  font-weight: var(--sdn-font-weight-medium);
+  font-size: var(--sdn-font-size-large);
+}
+
+.sdn-text-description--wdml {
+  color: var(--sdn-hc-on-white);
+  font-family: IBM Plex Sans;
+  font-size: var(--sdn-font-size-xsmall);
+}
+
 .sdn-text-description--welb {
   color: var(--sdn-hc-on-white);
   font-size: var(--sdn-font-size-xsmall);
+}
+
+.sdn-text-display--ejwe {
+  color: var(--sdn-hc-on-white);
+  font-style: oblique 14deg;
+  max-height: 10lh;
+}
+
+.sdn-text-heading--dnyx {
+  color: var(--sdn-hc-on-white);
+  max-height: 10lh;
 }
 
 .sdn-text-label--4mii {
@@ -3994,6 +4096,15 @@ body {
   font-size: var(--sdn-font-size-xsmall);
 }
 
+.sdn-text-label--s2lk {
+  text-overflow: unset;
+  overflow: unset;
+  color: var(--sdn-hc-on-white);
+  opacity: 0.5;
+  font-size: var(--sdn-font-size-xxsmall);
+  white-space: normal;
+}
+
 .sdn-text-label--sa6t {
   align-self: unset;
   flex-shrink: unset;
@@ -4021,6 +4132,14 @@ body {
   flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
+}
+
+.sdn-text-label--t17u {
+  color: var(--sdn-hc-on-white);
+  opacity: 0.5;
+  font-weight: var(--sdn-font-weight-semibold);
+  font-size: var(--sdn-font-size-xxsmall);
+  text-transform: uppercase;
 }
 
 .sdn-text-label--u1gw {
@@ -4100,6 +4219,11 @@ body {
   min-width: 0;
   font-size: var(--sdn-font-size-xxsmall);
   text-transform: uppercase;
+}
+
+.sdn-text-subheading--bxdp {
+  color: var(--sdn-hc-on-white);
+  font-style: oblique 14deg;
 }
 
 .sdn-text-subtitle--b0xy {

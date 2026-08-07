@@ -813,7 +813,7 @@ export function DialogExportComponent({
   seldonRefs,
   ...props
 }: DialogExportComponentProps) {
-  const dialogExportComponentClassName = combineClassNames("sdn-dialog", className)
+  const dialogExportComponentClassName = combineClassNames("sdn-dialog-export-component", className)
 
   const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
   const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
