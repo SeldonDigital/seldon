@@ -60,6 +60,10 @@ const SPECIMEN_TEXT_SLOTS: Partial<SpecimenProps> = {
   textDisplay: {},
 }
 
+// Platform font for an excluded (not installed) family, matching the app body
+// fallback in globals.css so the preview reads in whatever the OS provides.
+const SYSTEM_FONT_STACK = "system-ui, sans-serif"
+
 // Canvas layout only. Background, border, and corners come from the board's own
 // component properties through `boardCss`, matching the theme board chrome.
 const boardLayoutStyle: CSSProperties = {
@@ -70,6 +74,18 @@ const boardLayoutStyle: CSSProperties = {
   alignItems: "stretch",
   minHeight: "100%",
   padding: "2rem",
+}
+
+// Marks a specimen rendered in the stacked board view, where only the preview
+// block and its hr show. Scoped CSS keys off this class.
+const COMPACT_SPECIMEN_CLASS = "font-specimen-compact"
+
+// Stacked specimens (board selected) sit in a column with breathing room; a
+// single specimen (family selected) is unaffected.
+const stackStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "4rem",
 }
 
 /**
@@ -107,9 +123,22 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
   )
 
   const matched = keyed.find((entry) => entry.key === selectedResourceItemKey)
-  const active = matched ?? keyed[0]
+  const includedEntries = keyed.filter((entry) => entry.specimen.included)
 
-  if (!active) return null
+  // A selected family shows only its own specimen. With the board selected (no
+  // family), stack every included family. Fall back to all entries when none is
+  // included, so the board never renders empty.
+  const activeList = matched
+    ? [matched]
+    : includedEntries.length > 0
+      ? includedEntries
+      : keyed
+
+  if (activeList.length === 0) return null
+
+  // No family selection means the board itself is in view: stack a compact
+  // preview per family. A family selection shows that one specimen in full.
+  const isStacked = !matched
 
   const boardCss = getCssFromProperties(
     properties,
@@ -124,27 +153,81 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
   const scopeClass = `font-specimen-${boardKey}`.replace(/[^a-zA-Z0-9_-]/g, "-")
   const themeLooks = resolveSpecimenThemeLooks(boardTheme, scopeClass)
 
-  const { family, weightsLabel } = active.specimen
-  const fontValue = family.stack ?? family.name
+  const slotClassFor = (slot: string) => `${scopeClass}-${slot}`.replace(/[^a-zA-Z0-9_-]/g, "-")
 
-  const familyCss = `.${scopeClass} [data-seldon-ref$="Preview"],
-.${scopeClass} [data-seldon-ref="typeSpecimenName"],
-.${scopeClass} [data-seldon-ref="typeSpecimenUppercase"],
-.${scopeClass} [data-seldon-ref="typeSpecimenLowercase"],
-.${scopeClass} [data-seldon-ref="typeSpecimenNumbers"] {
+  // Each specimen scopes its own font-family (or the platform font when
+  // excluded) through a per-slot class on its Specimen root. The board theme
+  // still drives every level's size, weight, and line height for all of them.
+  const familyCss = activeList
+    .map(({ specimen }) => {
+      const { family, included } = specimen
+      const fontValue = included ? (family.stack ?? family.name) : SYSTEM_FONT_STACK
+      const slotClass = slotClassFor(specimen.slot)
+
+      return `.${slotClass} [data-seldon-ref$="Preview"],
+.${slotClass} [data-seldon-ref="typeSpecimenName"],
+.${slotClass} [data-seldon-ref="typeSpecimenUppercase"],
+.${slotClass} [data-seldon-ref="typeSpecimenLowercase"],
+.${slotClass} [data-seldon-ref="typeSpecimenNumbers"] {
   font-family: ${fontValue} !important;
 }`
-  const css = `${familyCss}\n${themeLooks.previewCss}`
+    })
+    .join("\n")
 
-  const seldonRefs: SeldonRefs = { typeSpecimenName: { children: family.name } }
+  // The specimen labels are `TextLabel` primitives, which dim to 0.8 on hover
+  // and active. On this static specimen that reads as an interactive affordance,
+  // so hold them at full opacity within the specimen scope.
+  const suppressHoverCss = `.${scopeClass} .sdn-text-label:hover,
+.${scopeClass} .sdn-text-label:active {
+  opacity: 1;
+}`
 
-  if (weightsLabel) {
-    seldonRefs.typeSpecimenFamilySizes = { children: weightsLabel }
+  // With the board selected we stack a compact preview per family: only the
+  // `typeSpecimenPreview` block (name + glyphs) and the `hr` below it. Every
+  // per-level row is a direct child with its own ref, so hiding refed direct
+  // children leaves the preview frame and the ref-less hr in place. A single
+  // selected family keeps the full specimen.
+  const compactCss = isStacked
+    ? `.${scopeClass} .${COMPACT_SPECIMEN_CLASS} > [data-seldon-ref]:not([data-seldon-ref="typeSpecimenPreview"]) {
+  display: none;
+}`
+    : ""
+  const css = `${familyCss}\n${compactCss}\n${suppressHoverCss}\n${themeLooks.previewCss}`
+
+  const buildSpecimenRefs = (specimen: (typeof activeList)[number]["specimen"]): SeldonRefs => {
+    const refs: SeldonRefs = { typeSpecimenName: { children: specimen.family.name } }
+
+    if (!specimen.included) {
+      // The weights line states the family is not installed, in the negative color.
+      refs.typeSpecimenFamilySizes = {
+        children: "Not Included",
+        style: { color: "var(--sdn-swatch-negative)" },
+      }
+    } else if (specimen.weightsLabel) {
+      refs.typeSpecimenFamilySizes = { children: specimen.weightsLabel }
+    }
+
+    for (const [ref, value] of Object.entries(themeLooks.specs)) {
+      refs[ref] = { children: value }
+    }
+
+    return refs
   }
 
-  for (const [ref, value] of Object.entries(themeLooks.specs)) {
-    seldonRefs[ref] = { children: value }
-  }
+  const specimenNodes = activeList.map(({ specimen, key }) => {
+    const specimenClass = isStacked
+      ? `${slotClassFor(specimen.slot)} ${COMPACT_SPECIMEN_CLASS}`
+      : slotClassFor(specimen.slot)
+
+    return (
+      <Specimen
+        key={key}
+        className={specimenClass}
+        {...SPECIMEN_TEXT_SLOTS}
+        seldonRefs={buildSpecimenRefs(specimen)}
+      />
+    )
+  })
 
   return (
     <>
@@ -153,8 +236,8 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
       </CssPortal>
       <Frame data-board-id={boardKey} className={className} style={boardLayoutStyle}>
         <StyleTag css={css} />
-        <div className={scopeClass}>
-          <Specimen {...SPECIMEN_TEXT_SLOTS} seldonRefs={seldonRefs} />
+        <div className={scopeClass} style={stackStyle}>
+          {specimenNodes}
         </div>
       </Frame>
     </>

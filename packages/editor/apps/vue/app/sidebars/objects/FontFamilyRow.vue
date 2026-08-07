@@ -1,15 +1,22 @@
 <script setup lang="ts">
 import ComboboxOptions from "@app/menus/ComboboxOptions.vue"
-import { buildDisplayInputProps, buildFieldStateProps } from "@app/sidebars/state-props"
+import {
+  buildDisabledRefProps,
+  buildDisplayInputProps,
+  buildFieldStateProps,
+  mergeStateProps,
+} from "@app/sidebars/state-props"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 
+import { Display } from "@seldon/core"
 import { PROPERTY_OPTION_ICONS } from "@seldon/core/properties/schemas/data/property-icons"
 
 import { formatFontFamilyKey } from "./font-collection-family-rows"
+import { resolveRowDisplayDecoration } from "./hooks/row-display-style"
 
 import type { FontFamilyRowModel } from "./font-collection-family-rows"
 
@@ -25,15 +32,16 @@ const dispatch = useDispatch()
 const { selectedResourceItemKey } = storeToRefs(selection)
 
 const SHOW_ICON = PROPERTY_OPTION_ICONS.display.show
-const HIDE_ICON = PROPERTY_OPTION_ICONS.display.hide
+const EXCLUDE_ICON = PROPERTY_OPTION_ICONS.display.exclude
 
-// The family's enabled state reuses the node Show/Hide picker: Show enables
-// every weight (`all`), Hide disables them (`none`). A `custom` family (some
-// weights on) reads as Show, dimmed.
-const SHOW_HIDE_OPTIONS = [
+// The family's enabled state reuses the node Display picker: Show enables every
+// weight (`all`), Exclude disables them (`none`). An excluded family takes the
+// same dimmed, italic row presentation an excluded node does. A `custom` family
+// (some weights on) reads as Show, its icon dimmed.
+const SHOW_EXCLUDE_OPTIONS = [
   [
     { value: "show", name: "Show" },
-    { value: "hide", name: "Hide" },
+    { value: "exclude", name: "Exclude" },
   ],
 ]
 
@@ -64,38 +72,55 @@ function onSelectDisplay(value: string): void {
     payload: {
       fontCollectionId: props.entryId,
       slot: props.family.slot,
-      preset: value === "hide" ? "none" : "all",
+      preset: value === "exclude" ? "none" : "all",
     },
   })
   displayOpen.value = false
 }
 
-function resolveShowHideIcon(value: string): string {
-  return value === "hide" ? HIDE_ICON : SHOW_ICON
+function resolveShowExcludeIcon(value: string): string {
+  return value === "exclude" ? EXCLUDE_ICON : SHOW_ICON
 }
 
-const displayValue = computed(() => (props.family.preset === "none" ? "hide" : "show"))
+const isExcluded = computed(() => props.family.preset === "none")
+const displayValue = computed(() => (isExcluded.value ? "exclude" : "show"))
 
-const seldonRefs = computed(() => ({
-  nodeDisclosureIcon: { style: { opacity: 0 } },
-  nodeField: {
-    ...buildFieldStateProps({ selected: isSelected.value }),
-    style: { cursor: "pointer" },
-  },
-  nodeIcon: { icon: "seldon-text" },
-  nodeLabel: buildDisplayInputProps(props.family.name),
-  nodeDisplay: {
-    type: "button",
-    "aria-haspopup": "listbox",
-    "aria-expanded": displayOpen.value,
-    onClick: onDisplayClick,
-    style: { position: "relative", zIndex: 10 },
-  },
-  nodeDisplayIcon: {
-    icon: props.family.preset === "none" ? HIDE_ICON : SHOW_ICON,
-    style: props.family.preset === "custom" ? { opacity: 0.5 } : undefined,
-  },
-}))
+// An excluded family takes the same dimmed, italic row notation as an excluded
+// node, resolved through the shared decoration helper so both stay in sync.
+const decoration = computed(() =>
+  resolveRowDisplayDecoration(isExcluded.value ? [Display.EXCLUDE] : []),
+)
+
+const seldonRefs = computed(() => {
+  const disabledRef = buildDisabledRefProps(decoration.value.isDimmed)
+
+  return {
+    nodeDisclosureIcon: { style: { opacity: 0 } },
+    nodeField: {
+      ...buildFieldStateProps({ selected: isSelected.value }),
+      style: { cursor: "pointer" },
+    },
+    nodeIcon: mergeStateProps({ icon: "seldon-text" }, disabledRef),
+    nodeLabel: mergeStateProps(
+      {
+        ...buildDisplayInputProps(props.family.name),
+        style: { pointerEvents: "none", ...decoration.value.labelStyle },
+      },
+      disabledRef,
+    ),
+    nodeDisplay: {
+      type: "button",
+      "aria-haspopup": "listbox",
+      "aria-expanded": displayOpen.value,
+      onClick: onDisplayClick,
+      style: { position: "relative", zIndex: 10 },
+    },
+    nodeDisplayIcon: {
+      icon: isExcluded.value ? EXCLUDE_ICON : SHOW_ICON,
+      style: props.family.preset === "custom" ? { opacity: 0.5 } : undefined,
+    },
+  }
+})
 </script>
 
 <template>
@@ -103,6 +128,7 @@ const seldonRefs = computed(() => ({
     class="objects-font-family"
     :style="rootStyle"
     :aria-selected="isSelected || undefined"
+    :aria-disabled="decoration.isDimmed || undefined"
     data-testid="objects-sidebar-font-family"
     :data-resource-item-key="selectionKey"
     :data-selection-id="selectionKey"
@@ -118,9 +144,9 @@ const seldonRefs = computed(() => ({
   <ComboboxOptions
     :open="displayOpen"
     :anchor="displayAnchor"
-    :option-groups="SHOW_HIDE_OPTIONS"
+    :option-groups="SHOW_EXCLUDE_OPTIONS"
     :value="displayValue"
-    :resolve-icon="resolveShowHideIcon"
+    :resolve-icon="resolveShowExcludeIcon"
     @select="onSelectDisplay"
     @close="displayOpen = false"
   />

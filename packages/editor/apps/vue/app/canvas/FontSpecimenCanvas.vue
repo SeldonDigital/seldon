@@ -62,7 +62,16 @@ interface FontSpecimen {
   slot: string
   family: FontFamilyEntry
   weightsLabel: string
+  included: boolean
 }
+
+// Platform font for an excluded (not installed) family, matching the app body
+// fallback so the preview reads in whatever the OS provides.
+const SYSTEM_FONT_STACK = "system-ui, sans-serif"
+
+// Marks a specimen rendered in the stacked board view, where only the preview
+// block and its hr show. Scoped CSS keys off this class.
+const COMPACT_SPECIMEN_CLASS = "font-specimen-compact"
 
 const props = defineProps<{ workspace: Workspace; board: Board }>()
 
@@ -107,16 +116,20 @@ const specimens = computed<FontSpecimen[]>(() => {
       props.workspace,
     )
 
-    return Object.entries(collection.families).flatMap(([slot, family]) => {
+    return Object.entries(collection.families).flatMap(([slot, family]): FontSpecimen[] => {
       const variants = family.variants ?? []
 
       if (variants.length === 0) {
-        return [{ entryId: variant.id, slot, family, weightsLabel: "" }]
+        return [{ entryId: variant.id, slot, family, weightsLabel: "", included: true }]
       }
 
       const enabled = getEnabledVariants(selectionMap[slot], variants)
 
-      if (enabled.length === 0) return []
+      // An excluded family (no enabled weights) still produces a specimen so
+      // selecting it previews the design, but it is flagged not included.
+      if (enabled.length === 0) {
+        return [{ entryId: variant.id, slot, family, weightsLabel: "", included: false }]
+      }
 
       return [
         {
@@ -124,6 +137,7 @@ const specimens = computed<FontSpecimen[]>(() => {
           slot,
           family,
           weightsLabel: enabled.map(fontVariantDisplayLabel).join(", "),
+          included: true,
         },
       ]
     })
@@ -140,17 +154,30 @@ const keyed = computed(() =>
 const matched = computed(() =>
   keyed.value.find((entry) => entry.key === selectedResourceItemKey.value),
 )
-const active = computed(() => matched.value ?? keyed.value[0])
+const includedEntries = computed(() =>
+  keyed.value.filter((entry) => entry.specimen.included),
+)
 
-const fontValue = computed(() => {
-  const family = active.value?.specimen.family
+// A selected family shows only its own specimen. With the board selected (no
+// family), stack every included family. Fall back to all entries when none is
+// included, so the board never renders empty.
+const activeList = computed(() => {
+  if (matched.value) return [matched.value]
 
-  return family ? (family.stack ?? family.name) : ""
+  return includedEntries.value.length > 0 ? includedEntries.value : keyed.value
 })
+
+// No family selection means the board itself is in view: stack a compact preview
+// per family. A family selection shows that one specimen in full.
+const isStacked = computed(() => !matched.value)
 
 const scopeClass = computed(() =>
   `font-specimen-${boardKey.value}`.replace(/[^a-zA-Z0-9_-]/g, "-"),
 )
+
+function slotClassFor(slot: string): string {
+  return `${scopeClass.value}-${slot}`.replace(/[^a-zA-Z0-9_-]/g, "-")
+}
 
 // The board's theme owns the look: resolve each level's style, size, weight, and
 // line height, plus the `*Spec` label strings, from the board's theme.
@@ -158,27 +185,18 @@ const themeLooks = computed(() =>
   resolveSpecimenThemeLooks(boardTheme.value, scopeClass.value),
 )
 
-const scopedCss = computed(
-  () => `.${scopeClass.value} [data-seldon-ref$="Preview"],
-.${scopeClass.value} [data-seldon-ref="typeSpecimenName"],
-.${scopeClass.value} [data-seldon-ref="typeSpecimenUppercase"],
-.${scopeClass.value} [data-seldon-ref="typeSpecimenLowercase"],
-.${scopeClass.value} [data-seldon-ref="typeSpecimenNumbers"] {
-  font-family: ${fontValue.value} !important;
-}
-${themeLooks.value.previewCss}`,
-)
-
-const seldonRefs = computed(() => {
-  const specimen = active.value?.specimen
-
-  if (!specimen) return {}
-
+function buildSpecimenRefs(specimen: FontSpecimen): Record<string, Record<string, unknown>> {
   const refs: Record<string, Record<string, unknown>> = {
     typeSpecimenName: { children: specimen.family.name },
   }
 
-  if (specimen.weightsLabel) {
+  if (!specimen.included) {
+    // The weights line states the family is not installed, in the negative color.
+    refs.typeSpecimenFamilySizes = {
+      children: "Not Included",
+      style: { color: "var(--sdn-swatch-negative)" },
+    }
+  } else if (specimen.weightsLabel) {
     refs.typeSpecimenFamilySizes = { children: specimen.weightsLabel }
   }
 
@@ -187,11 +205,59 @@ const seldonRefs = computed(() => {
   }
 
   return refs
+}
+
+// Each specimen scopes its own font-family (or the platform font when excluded)
+// through a per-slot class on its Specimen root. The board theme still drives
+// every level's size, weight, and line height for all of them.
+const renderSpecimens = computed(() =>
+  activeList.value.map(({ specimen, key }) => ({
+    key,
+    slotClass: isStacked.value
+      ? `${slotClassFor(specimen.slot)} ${COMPACT_SPECIMEN_CLASS}`
+      : slotClassFor(specimen.slot),
+    refs: buildSpecimenRefs(specimen),
+  })),
+)
+
+const scopedCss = computed(() => {
+  const familyCss = activeList.value
+    .map(({ specimen }) => {
+      const fontValue = specimen.included
+        ? (specimen.family.stack ?? specimen.family.name)
+        : SYSTEM_FONT_STACK
+      const slotClass = slotClassFor(specimen.slot)
+
+      return `.${slotClass} [data-seldon-ref$="Preview"],
+.${slotClass} [data-seldon-ref="typeSpecimenName"],
+.${slotClass} [data-seldon-ref="typeSpecimenUppercase"],
+.${slotClass} [data-seldon-ref="typeSpecimenLowercase"],
+.${slotClass} [data-seldon-ref="typeSpecimenNumbers"] {
+  font-family: ${fontValue} !important;
+}`
+    })
+    .join("\n")
+
+  const suppressHoverCss = `.${scopeClass.value} .sdn-text-label:hover,
+.${scopeClass.value} .sdn-text-label:active {
+  opacity: 1;
+}`
+
+  // In the stacked board view, show only the `typeSpecimenPreview` block and its
+  // hr per family. Every per-level row is a refed direct child, so hiding refed
+  // direct children leaves the preview frame and the ref-less hr in place.
+  const compactCss = isStacked.value
+    ? `.${scopeClass.value} .${COMPACT_SPECIMEN_CLASS} > [data-seldon-ref]:not([data-seldon-ref="typeSpecimenPreview"]) {
+  display: none;
+}`
+    : ""
+
+  return `${familyCss}\n${compactCss}\n${suppressHoverCss}\n${themeLooks.value.previewCss}`
 })
 </script>
 
 <template>
-  <section v-if="active" class="canvas-board font-specimen-canvas">
+  <section v-if="activeList.length" class="canvas-board font-specimen-canvas">
     <Teleport to="head">
       <component :is="'style'">{{ boardCss }}</component>
     </Teleport>
@@ -205,8 +271,14 @@ const seldonRefs = computed(() => {
       :data-selection-id="boardKey"
       data-selection-kind="board"
     >
-      <div :class="scopeClass">
-        <Specimen v-bind="SPECIMEN_TEXT_SLOTS" :seldon-refs="seldonRefs" />
+      <div class="font-specimen-stack" :class="scopeClass">
+        <Specimen
+          v-for="item in renderSpecimens"
+          :key="item.key"
+          :class="item.slotClass"
+          v-bind="SPECIMEN_TEXT_SLOTS"
+          :seldon-refs="item.refs"
+        />
       </div>
     </div>
   </section>
@@ -217,5 +289,13 @@ const seldonRefs = computed(() => {
    component properties through `boardCss`, matching the theme board chrome. */
 .font-specimen-board {
   padding: 2rem;
+}
+
+/* Stacked specimens (board selected) sit in a column with breathing room; a
+   single specimen (family selected) is unaffected. */
+.font-specimen-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }
 </style>

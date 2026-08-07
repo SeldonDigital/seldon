@@ -32,16 +32,21 @@ export function useFontCollectionBoardSpecimens(board: Board) {
         // Families without weight variants (local/system) always show and have
         // no weights line.
         if (variants.length === 0) {
-          return [{ entryId, slot, family, weightsLabel: "" }]
+          return [{ entryId, slot, family, weightsLabel: "", included: true }]
         }
 
         const enabled = getEnabledVariants(selection[slot], variants)
 
-        // A family shows only when at least one weight is enabled.
-        if (enabled.length === 0) return []
+        // An excluded family (no enabled weights) still produces a specimen so
+        // selecting it previews the design, but it is flagged not included: the
+        // canvas renders it in the platform font and marks its weights line.
+        if (enabled.length === 0) {
+          return [{ entryId, slot, family, weightsLabel: "", included: false }]
+        }
+
         const weightsLabel = enabled.map(fontVariantDisplayLabel).join(", ")
 
-        return [{ entryId, slot, family, weightsLabel }]
+        return [{ entryId, slot, family, weightsLabel, included: true }]
       })
     })
   }, [board, workspace])

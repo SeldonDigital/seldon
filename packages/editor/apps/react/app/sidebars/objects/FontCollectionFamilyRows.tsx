@@ -1,6 +1,6 @@
 import { ComboboxOptions } from "@app/menus"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { buildFieldStateProps } from "@app/views/state-props"
+import { buildDisabledRefProps, buildFieldStateProps, mergeStateProps } from "@app/views/state-props"
 import {
   useSelectionActions,
   useStore as useSelectionStore,
@@ -10,9 +10,11 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { useCallback } from "react"
 
+import { Display } from "@seldon/core"
 import { PROPERTY_OPTION_ICONS } from "@seldon/core/properties/schemas/data/property-icons"
 
 import { RowSelectionTarget } from "./RowSelectionTarget"
+import { resolveRowDisplayDecoration } from "./hooks/row-display-style"
 import { useFontCollectionFamilyRows } from "./hooks/use-font-collection-family-rows"
 import { useRowClick } from "./hooks/use-row-click"
 import { useRowDisplayPicker } from "./hooks/use-row-display-picker"
@@ -23,20 +25,21 @@ import type { OptionIconRender } from "@app/menus"
 const RESOURCE_ITEM_SELECTION_KIND = "resourceItem"
 
 const SHOW_ICON = PROPERTY_OPTION_ICONS.display.show
-const HIDE_ICON = PROPERTY_OPTION_ICONS.display.hide
+const EXCLUDE_ICON = PROPERTY_OPTION_ICONS.display.exclude
 
-// The family's enabled state reuses the node Show/Hide picker: Show enables
-// every weight (`all`), Hide disables them (`none`). A `custom` family (some
-// weights on) reads as Show, dimmed.
-const SHOW_HIDE_OPTIONS = [
+// The family's enabled state reuses the node Display picker: Show enables every
+// weight (`all`), Exclude disables them (`none`). An excluded family takes the
+// same dimmed, italic row presentation an excluded node does. A `custom` family
+// (some weights on) reads as Show, its icon dimmed.
+const SHOW_EXCLUDE_OPTIONS = [
   [
     { value: "show", name: "Show" },
-    { value: "hide", name: "Hide" },
+    { value: "exclude", name: "Exclude" },
   ],
 ]
 
-function resolveShowHideIcon(option?: { value: string; name: string }): OptionIconRender {
-  return { kind: "iconId", icon: option?.value === "hide" ? HIDE_ICON : SHOW_ICON }
+function resolveShowExcludeIcon(option?: { value: string; name: string }): OptionIconRender {
+  return { kind: "iconId", icon: option?.value === "exclude" ? EXCLUDE_ICON : SHOW_ICON }
 }
 
 /**
@@ -105,25 +108,35 @@ function FontFamilyRow({
         payload: {
           fontCollectionId: entryId,
           slot: family.slot,
-          preset: value === "hide" ? "none" : "all",
+          preset: value === "exclude" ? "none" : "all",
         },
       })
     },
     [dispatch, entryId, family.slot],
   )
 
-  const displayValue = family.preset === "none" ? "hide" : "show"
+  const isExcluded = family.preset === "none"
+  const displayValue = isExcluded ? "exclude" : "show"
 
   const displayPicker = useRowDisplayPicker({
-    optionGroups: SHOW_HIDE_OPTIONS,
+    optionGroups: SHOW_EXCLUDE_OPTIONS,
     value: displayValue,
     onSelect: selectDisplay,
-    resolveIcon: resolveShowHideIcon,
+    resolveIcon: resolveShowExcludeIcon,
   })
 
   const displayIcon = {
-    icon: family.preset === "none" ? HIDE_ICON : SHOW_ICON,
+    icon: isExcluded ? EXCLUDE_ICON : SHOW_ICON,
     style: family.preset === "custom" ? { opacity: 0.5 } : undefined,
+  }
+
+  // An excluded family takes the same dimmed, italic row notation as an excluded
+  // node, resolved through the shared decoration helper so both stay in sync.
+  const decoration = resolveRowDisplayDecoration(isExcluded ? [Display.EXCLUDE] : [])
+  const disabledRef = buildDisabledRefProps(decoration.isDimmed)
+  const labelStyle = {
+    pointerEvents: "none" as const,
+    ...decoration.labelStyle,
   }
 
   const comboboxField = buildFieldStateProps({ selected: isSelected })
@@ -131,8 +144,11 @@ function FontFamilyRow({
   const seldonRefs = {
     nodeDisclosureIcon: { style: { opacity: 0 } },
     nodeField: { ...comboboxField, style: { cursor: "pointer" } },
-    nodeIcon: { icon: "seldon-text" },
-    nodeLabel: { value: family.name, readOnly: true, style: { pointerEvents: "none" } },
+    nodeIcon: mergeStateProps({ icon: "seldon-text" }, disabledRef),
+    nodeLabel: mergeStateProps(
+      { value: family.name, readOnly: true, style: labelStyle },
+      disabledRef,
+    ),
     nodeDisplay: { ...displayPicker.buttonProps },
     nodeDisplayIcon: displayIcon,
   }
@@ -148,6 +164,7 @@ function FontFamilyRow({
           seldonRefs={seldonRefs}
           onClick={onClick}
           aria-selected={isSelected || undefined}
+          aria-disabled={decoration.isDimmed || undefined}
           data-testid="objects-sidebar-font-family"
           data-resource-item-key={selectionKey}
         />
