@@ -6,6 +6,7 @@ import { useToolStore } from "@app/editor/tool-store"
 import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
+import { isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
 import { storeToRefs } from "pinia"
 import { computed, watch } from "vue"
 
@@ -34,7 +35,18 @@ function shouldShow(schema: ComponentSchema): boolean {
   return validation.isValid
 }
 
-const { categories, query } = useCatalogDialog(shouldShow)
+// Authored components have no catalog schema, so validate them as a variant
+// instantiation into the target, matching the drag-drop insertion path.
+function shouldShowAuthored(variantRootId: VariantId): boolean {
+  const current = target.value
+  if (!current) return false
+  const targetNode = workspace.value.nodes[current.nodeId as VariantId | InstanceId]
+  const subject = workspace.value.nodes[variantRootId]
+  if (!targetNode || !subject) return false
+  return isValidDropTarget(targetNode, subject, "inside", workspace.value)
+}
+
+const { categories, query } = useCatalogDialog(shouldShow, shouldShowAuthored)
 
 watch(isOpen, (open) => {
   if (open) query.value = ""
@@ -47,6 +59,24 @@ function setQuery(next: string): void {
 async function pick(item: CatalogItem): Promise<void> {
   const current = target.value
   if (!current) return
+
+  // Authored components already exist as a board, so insert their variant root
+  // as an instance rather than creating a catalog board.
+  if (item.variantId) {
+    dispatchWithAutoSelect({
+      type: "insert_variant_instance",
+      payload: {
+        variantId: item.variantId,
+        target: {
+          parentId: current.nodeId as VariantId | InstanceId,
+          index: current.index,
+        },
+      },
+    })
+    tool.setActiveTool("select")
+    return
+  }
+
   const variantFallbacks = await confirmMissingSchemaVariants(item.componentId)
   if (variantFallbacks === null) return
 

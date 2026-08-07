@@ -2732,6 +2732,12 @@ body {
   border: var(--hairline) dashed color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
 }
 
+.sdn-frame--kpqc {
+  align-self: unset;
+  height: 100%;
+  min-width: 0;
+}
+
 .sdn-frame--l9hu {
   align-self: unset;
   flex: unset;
@@ -2845,18 +2851,6 @@ body {
   gap: var(--sdn-gaps-compact);
 }
 
-.sdn-frame--odzo {
-  align-self: unset;
-  flex: unset;
-  align-items: start;
-  justify-content: start;
-  gap: var(--sdn-gaps-tight);
-  width: 25%;
-  flex-shrink: 0;
-  height: 100%;
-  padding: var(--sdn-paddings-tight);
-}
-
 .sdn-frame--ozrx {
   align-self: unset;
   flex: unset;
@@ -2906,12 +2900,6 @@ body {
   align-self: unset;
   flex-direction: row;
   gap: var(--sdn-gaps-cozy);
-  height: 100%;
-  min-width: 0;
-}
-
-.sdn-frame--pmdr {
-  align-self: unset;
   height: 100%;
   min-width: 0;
 }
@@ -3123,6 +3111,18 @@ body {
 
 .sdn-frame--vs4l {
   gap: var(--sdn-gaps-tight);
+}
+
+.sdn-frame--vxea {
+  align-self: unset;
+  flex: unset;
+  align-items: start;
+  justify-content: start;
+  gap: var(--sdn-gaps-tight);
+  width: 25%;
+  flex-shrink: 0;
+  height: 100%;
+  padding: var(--sdn-paddings-tight);
 }
 
 .sdn-frame--x6r3 {
@@ -3801,12 +3801,12 @@ body {
   font-size: var(--sdn-font-size-xsmall);
 }
 
-.sdn-text-description--hrzz {
+.sdn-text-description--i3zd {
   color: var(--sdn-hc-on-white);
   font-family: IBM Plex Sans;
 }
 
-.sdn-text-description--r0mk {
+.sdn-text-description--tnd9 {
   color: var(--sdn-hc-on-white);
   font-weight: var(--sdn-font-weight-medium);
   font-size: var(--sdn-font-size-large);
@@ -3824,12 +3824,6 @@ body {
 }
 
 .sdn-text-display--ejwe {
-  color: var(--sdn-hc-on-white);
-  font-style: oblique 14deg;
-  max-height: 10lh;
-}
-
-.sdn-text-heading--dnyx {
   color: var(--sdn-hc-on-white);
   max-height: 10lh;
 }
@@ -4206,11 +4200,6 @@ body {
   min-width: 0;
   font-size: var(--sdn-font-size-xxsmall);
   text-transform: uppercase;
-}
-
-.sdn-text-subheading--bxdp {
-  color: var(--sdn-hc-on-white);
-  font-style: oblique 14deg;
 }
 
 .sdn-text-subtitle--b0xy {

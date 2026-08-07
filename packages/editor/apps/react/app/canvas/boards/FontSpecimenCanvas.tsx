@@ -6,6 +6,7 @@ import { useStore as useSelectionStore } from "@app/workspace/hooks/use-selectio
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Specimen } from "@seldon/components/modules/Specimen"
+import { SpecimenSample } from "@seldon/components/parts/SpecimenSample"
 import { resolveSpecimenThemeLooks } from "@seldon/editor/lib/font-collections/resolve-specimen-theme-looks"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
@@ -18,45 +19,50 @@ import { StyleTag } from "../StyleTag.bespoke"
 import { useFontCollectionBoardSpecimens } from "../hooks/use-font-collection-board-specimens"
 
 import type { SpecimenProps } from "@seldon/components/modules/Specimen"
+import type { SpecimenSampleProps } from "@seldon/components/parts/SpecimenSample"
 import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
 import type { Board } from "@seldon/core"
 import type { CSSProperties } from "react"
 
-// Every Specimen text slot is opt-in (`mergeOptionalSlot`), so each must be
-// enabled with an empty object to render its default sample content.
-const SPECIMEN_TEXT_SLOTS: Partial<SpecimenProps> = {
+// Every text slot is opt-in (`mergeOptionalSlot`), so each must be enabled with
+// an empty object to render its default sample content. `SpecimenSample` is the
+// family header (name + weights + glyph block); `Specimen` is the per-level ramp.
+const SPECIMEN_SAMPLE_SLOTS: Partial<SpecimenSampleProps> = {
   textLabel: {},
   textLabel2: {},
   textDescription: {},
   textDescription2: {},
   textDescription3: {},
   textDescription4: {},
+}
+
+const SPECIMEN_LEVEL_SLOTS: Partial<SpecimenProps> = {
+  textLabel: {},
+  textLabel2: {},
+  textDescription: {},
   textLabel3: {},
   textLabel4: {},
-  textDescription5: {},
   textLabel5: {},
   textLabel6: {},
   textLabel7: {},
+  textTagline: {},
   textLabel8: {},
   textLabel9: {},
-  textTagline: {},
+  textCallout: {},
   textLabel10: {},
   textLabel11: {},
-  textCallout: {},
+  textSubtitle: {},
   textLabel12: {},
   textLabel13: {},
-  textSubtitle: {},
+  textTitle: {},
   textLabel14: {},
   textLabel15: {},
-  textTitle: {},
+  textSubheading: {},
   textLabel16: {},
   textLabel17: {},
-  textSubheading: {},
+  textHeading: {},
   textLabel18: {},
   textLabel19: {},
-  textHeading: {},
-  textLabel20: {},
-  textLabel21: {},
   textDisplay: {},
 }
 
@@ -76,16 +82,20 @@ const boardLayoutStyle: CSSProperties = {
   padding: "2rem",
 }
 
-// Marks a specimen rendered in the stacked board view, where only the preview
-// block and its hr show. Scoped CSS keys off this class.
-const COMPACT_SPECIMEN_CLASS = "font-specimen-compact"
-
-// Stacked specimens (board selected) sit in a column with breathing room; a
-// single specimen (family selected) is unaffected.
+// Stacked families (board selected) sit in a column with breathing room; a
+// single family (selected) shows just its own block.
 const stackStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   gap: "4rem",
+}
+
+// One family's blocks (the sample header, then the level ramp when selected)
+// stack tightly; the hr at the end of the sample carries the visual divide.
+const familyStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "2rem",
 }
 
 /**
@@ -174,58 +184,48 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
     })
     .join("\n")
 
-  // The specimen labels are `TextLabel` primitives, which dim to 0.8 on hover
-  // and active. On this static specimen that reads as an interactive affordance,
-  // so hold them at full opacity within the specimen scope.
+  // The sample labels are `TextLabel` primitives, which dim to 0.8 on hover and
+  // active. On this static specimen that reads as an interactive affordance, so
+  // hold them at full opacity within the specimen scope.
   const suppressHoverCss = `.${scopeClass} .sdn-text-label:hover,
 .${scopeClass} .sdn-text-label:active {
   opacity: 1;
 }`
+  const css = `${familyCss}\n${suppressHoverCss}\n${themeLooks.previewCss}`
 
-  // With the board selected we stack a compact preview per family: only the
-  // `typeSpecimenPreview` block (name + glyphs) and the `hr` below it. Every
-  // per-level row is a direct child with its own ref, so hiding refed direct
-  // children leaves the preview frame and the ref-less hr in place. A single
-  // selected family keeps the full specimen.
-  const compactCss = isStacked
-    ? `.${scopeClass} .${COMPACT_SPECIMEN_CLASS} > [data-seldon-ref]:not([data-seldon-ref="typeSpecimenPreview"]) {
-  display: none;
-}`
-    : ""
-  const css = `${familyCss}\n${compactCss}\n${suppressHoverCss}\n${themeLooks.previewCss}`
-
-  const buildSpecimenRefs = (specimen: (typeof activeList)[number]["specimen"]): SeldonRefs => {
+  // The family header (name + weights). Selecting an excluded family states it is
+  // not installed in the negative color, matching the platform-font preview.
+  const buildSampleRefs = (specimen: (typeof activeList)[number]["specimen"]): SeldonRefs => {
     const refs: SeldonRefs = { typeSpecimenName: { children: specimen.family.name } }
 
     if (!specimen.included) {
-      // The weights line states the family is not installed, in the negative color.
-      refs.typeSpecimenFamilySizes = {
+      refs.typeSpecimenFamilyWeights = {
         children: "Not Included",
         style: { color: "var(--sdn-swatch-negative)" },
       }
     } else if (specimen.weightsLabel) {
-      refs.typeSpecimenFamilySizes = { children: specimen.weightsLabel }
-    }
-
-    for (const [ref, value] of Object.entries(themeLooks.specs)) {
-      refs[ref] = { children: value }
+      refs.typeSpecimenFamilyWeights = { children: specimen.weightsLabel }
     }
 
     return refs
   }
 
+  // The per-level ramp reads its style, size, weight, and line height from the
+  // board theme, and each level's `*Spec` label states those resolved values.
+  const levelRefs: SeldonRefs = {}
+
+  for (const [ref, value] of Object.entries(themeLooks.specs)) {
+    levelRefs[ref] = { children: value }
+  }
+
   const specimenNodes = activeList.map(({ specimen, key }) => {
-    const specimenClass = isStacked
-      ? `${slotClassFor(specimen.slot)} ${COMPACT_SPECIMEN_CLASS}`
-      : slotClassFor(specimen.slot)
+    const slotClass = slotClassFor(specimen.slot)
 
     return (
-      <Specimen
-        key={key}
-        className={specimenClass}
-        {...SPECIMEN_TEXT_SLOTS}
-        seldonRefs={buildSpecimenRefs(specimen)}
-      />
+      <div key={key} className={slotClass} style={familyStyle}>
+        <SpecimenSample {...SPECIMEN_SAMPLE_SLOTS} seldonRefs={buildSampleRefs(specimen)} />
+        {isStacked ? null : <Specimen {...SPECIMEN_LEVEL_SLOTS} seldonRefs={levelRefs} />}
+      </div>
     )
   })
 

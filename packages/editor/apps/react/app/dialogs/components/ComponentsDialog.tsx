@@ -5,6 +5,7 @@ import { useTool } from "@app/editor/hooks/use-tool"
 import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
+import { isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
 import { useCallback } from "react"
 
 import { invariant } from "@seldon/core"
@@ -41,8 +42,24 @@ export function ComponentsDialog() {
     [target, workspace],
   )
 
+  // Authored components have no catalog schema, so validate them as a variant
+  // instantiation into the target, matching the drag-drop insertion path.
+  const shouldShowAuthored = useCallback(
+    (variantRootId: VariantId) => {
+      if (!target) return false
+      const targetNode = workspace.nodes[target.nodeId as VariantId | InstanceId]
+      const subject = workspace.nodes[variantRootId]
+
+      if (!targetNode || !subject) return false
+
+      return isValidDropTarget(targetNode, subject, "inside", workspace)
+    },
+    [target, workspace],
+  )
+
   const { categories, query, setQuery } = useDialog({
     shouldShowComponent,
+    shouldShowAuthored,
   })
 
   const handlePick = useCallback(

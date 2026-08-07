@@ -201,7 +201,7 @@ export type SeldonRef =
   | "typeSpecimenDisplaySpec"
   | "typeSpecimenFamily"
   | "typeSpecimenFamilyLabel"
-  | "typeSpecimenFamilySizes"
+  | "typeSpecimenFamilyWeights"
   | "typeSpecimenGlyphs"
   | "typeSpecimenHeading"
   | "typeSpecimenHeadingLabel"
@@ -2772,7 +2772,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame13",
+        slot: "frame10",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -2786,7 +2786,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel10",
+        slot: "textLabel8",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2795,7 +2795,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenCalloutPreview: {
     component: "TextCallout",
     nodeId: "component-text-ZnnyeW4n",
-    className: "sdn-text-callout sdn-text-subheading--bxdp",
+    className: "sdn-text-callout sdn-text-title--drqy",
     views: [
       {
         component: "Specimen",
@@ -2814,7 +2814,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel11",
+        slot: "textLabel9",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2828,7 +2828,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame28",
+        slot: "frame25",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -2842,7 +2842,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel20",
+        slot: "textLabel18",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2870,7 +2870,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel21",
+        slot: "textLabel19",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2878,12 +2878,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenFamily: {
     component: "Frame",
-    nodeId: "component-specimen-ODZo7CJf",
-    className: "sdn-frame sdn-frame--odzo",
+    nodeId: "component-frame-VxEaGoCn",
+    className: "sdn-frame sdn-frame--vxea",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "frame2",
         type: "FrameProps",
         rendersWhen: "unless-null",
@@ -2892,26 +2892,26 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenFamilyLabel: {
     component: "TextLabel",
-    nodeId: "component-specimen-xoIlaLQb",
+    nodeId: "component-text-ILSXpQ06",
     className: "sdn-text-label sdn-text-label--t17u",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "textLabel",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
   },
-  typeSpecimenFamilySizes: {
+  typeSpecimenFamilyWeights: {
     component: "TextLabel",
-    nodeId: "component-specimen-Tkcgclsn",
+    nodeId: "component-text-tHksq1jM",
     className: "sdn-text-label sdn-text-label--s2lk",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "textLabel2",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
@@ -2920,12 +2920,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenGlyphs: {
     component: "Frame",
-    nodeId: "component-specimen-PMDrra1F",
-    className: "sdn-frame sdn-frame--pmdr",
+    nodeId: "component-frame-PV51gLSs",
+    className: "sdn-frame sdn-frame--kpqc",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "frame3",
         type: "FrameProps",
         rendersWhen: "unless-null",
@@ -2940,7 +2940,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame25",
+        slot: "frame22",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -2954,7 +2954,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel18",
+        slot: "textLabel16",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2963,7 +2963,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenHeadingPreview: {
     component: "TextHeading",
     nodeId: "component-specimen-dNYXY4qa",
-    className: "sdn-text-heading sdn-text-heading--dnyx",
+    className: "sdn-text-heading sdn-text-display--ejwe",
     views: [
       {
         component: "Specimen",
@@ -2982,7 +2982,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel19",
+        slot: "textLabel17",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2996,7 +2996,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame7",
+        slot: "frame4",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -3010,7 +3010,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel5",
+        slot: "textLabel3",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3024,7 +3024,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel7",
+        slot: "textLabel5",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3038,7 +3038,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel6",
+        slot: "textLabel4",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3046,12 +3046,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenLowercase: {
     component: "TextDescription",
-    nodeId: "component-specimen-yVnO6dsd",
-    className: "sdn-text-description sdn-text-description--hrzz",
+    nodeId: "component-text-BLpAXQqK",
+    className: "sdn-text-description sdn-text-description--i3zd",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "textDescription3",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",
@@ -3060,12 +3060,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenName: {
     component: "TextDescription",
-    nodeId: "component-specimen-r0mkTyr8",
-    className: "sdn-text-description sdn-text-description--r0mk",
+    nodeId: "component-text-TNd98THr",
+    className: "sdn-text-description sdn-text-description--tnd9",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "textDescription",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",
@@ -3080,7 +3080,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame4",
+        slot: "frame",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -3094,7 +3094,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel3",
+        slot: "textLabel",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3108,7 +3108,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textDescription5",
+        slot: "textDescription",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",
       },
@@ -3122,7 +3122,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel4",
+        slot: "textLabel2",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3130,12 +3130,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenNumbers: {
     component: "TextDescription",
-    nodeId: "component-specimen-i3QDmJxC",
-    className: "sdn-text-description sdn-text-description--hrzz",
+    nodeId: "component-text-i3zDyJ8f",
+    className: "sdn-text-description sdn-text-description--i3zd",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "textDescription4",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",
@@ -3144,12 +3144,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenPreview: {
     component: "Frame",
-    nodeId: "component-specimen-gnQ4cbbE",
+    nodeId: "component-frame-y8FgLBfQ",
     className: "sdn-frame sdn-frame--uqd5",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "frame",
         type: "FrameProps",
         rendersWhen: "unless-null",
@@ -3164,7 +3164,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame22",
+        slot: "frame19",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -3178,7 +3178,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel16",
+        slot: "textLabel14",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3187,7 +3187,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenSubheadingPreview: {
     component: "TextSubheading",
     nodeId: "component-specimen-Bxdpn48o",
-    className: "sdn-text-subheading sdn-text-subheading--bxdp",
+    className: "sdn-text-subheading sdn-text-title--drqy",
     views: [
       {
         component: "Specimen",
@@ -3206,7 +3206,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel17",
+        slot: "textLabel15",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3220,7 +3220,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame16",
+        slot: "frame13",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -3234,7 +3234,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel12",
+        slot: "textLabel10",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3262,7 +3262,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel13",
+        slot: "textLabel11",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3276,7 +3276,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame10",
+        slot: "frame7",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -3290,7 +3290,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel8",
+        slot: "textLabel6",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3318,7 +3318,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel9",
+        slot: "textLabel7",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3332,7 +3332,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "frame19",
+        slot: "frame16",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -3346,7 +3346,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel14",
+        slot: "textLabel12",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3374,7 +3374,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "Specimen",
         file: "modules/Specimen.vue",
-        slot: "textLabel15",
+        slot: "textLabel13",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3382,12 +3382,12 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   typeSpecimenUppercase: {
     component: "TextDescription",
-    nodeId: "component-specimen-HrZZ2mDy",
-    className: "sdn-text-description sdn-text-description--hrzz",
+    nodeId: "component-text-VjsLW4lk",
+    className: "sdn-text-description sdn-text-description--i3zd",
     views: [
       {
-        component: "Specimen",
-        file: "modules/Specimen.vue",
+        component: "SpecimenSample",
+        file: "parts/SpecimenSample.vue",
         slot: "textDescription2",
         type: "TextDescriptionProps",
         rendersWhen: "when-passed",

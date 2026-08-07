@@ -2,6 +2,7 @@
 import { getCssFromProperties, getNodeProperties } from "@app/core"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import Specimen from "@seldon/components/modules/Specimen.vue"
+import SpecimenSample from "@seldon/components/parts/SpecimenSample.vue"
 import { resolveSpecimenThemeLooks } from "@seldon/editor/lib/font-collections/resolve-specimen-theme-looks"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
@@ -19,41 +20,45 @@ import type { Board } from "@seldon/core"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
 import type { Workspace } from "@seldon/core/workspace/types"
 
-// Every Specimen text slot is opt-in, so each must be enabled with an empty
-// object to render its default sample content.
-const SPECIMEN_TEXT_SLOTS: Record<string, Record<string, unknown>> = {
+// Every text slot is opt-in, so each must be enabled with an empty object to
+// render its default sample content. `SpecimenSample` is the family header (name
+// + weights + glyph block); `Specimen` is the per-level ramp.
+const SPECIMEN_SAMPLE_SLOTS: Record<string, Record<string, unknown>> = {
   textLabel: {},
   textLabel2: {},
   textDescription: {},
   textDescription2: {},
   textDescription3: {},
   textDescription4: {},
+}
+
+const SPECIMEN_LEVEL_SLOTS: Record<string, Record<string, unknown>> = {
+  textLabel: {},
+  textLabel2: {},
+  textDescription: {},
   textLabel3: {},
   textLabel4: {},
-  textDescription5: {},
   textLabel5: {},
   textLabel6: {},
   textLabel7: {},
+  textTagline: {},
   textLabel8: {},
   textLabel9: {},
-  textTagline: {},
+  textCallout: {},
   textLabel10: {},
   textLabel11: {},
-  textCallout: {},
+  textSubtitle: {},
   textLabel12: {},
   textLabel13: {},
-  textSubtitle: {},
+  textTitle: {},
   textLabel14: {},
   textLabel15: {},
-  textTitle: {},
+  textSubheading: {},
   textLabel16: {},
   textLabel17: {},
-  textSubheading: {},
+  textHeading: {},
   textLabel18: {},
   textLabel19: {},
-  textHeading: {},
-  textLabel20: {},
-  textLabel21: {},
   textDisplay: {},
 }
 
@@ -68,10 +73,6 @@ interface FontSpecimen {
 // Platform font for an excluded (not installed) family, matching the app body
 // fallback so the preview reads in whatever the OS provides.
 const SYSTEM_FONT_STACK = "system-ui, sans-serif"
-
-// Marks a specimen rendered in the stacked board view, where only the preview
-// block and its hr show. Scoped CSS keys off this class.
-const COMPACT_SPECIMEN_CLASS = "font-specimen-compact"
 
 const props = defineProps<{ workspace: Workspace; board: Board }>()
 
@@ -185,38 +186,42 @@ const themeLooks = computed(() =>
   resolveSpecimenThemeLooks(boardTheme.value, scopeClass.value),
 )
 
-function buildSpecimenRefs(specimen: FontSpecimen): Record<string, Record<string, unknown>> {
+// The family header (name + weights). Selecting an excluded family states it is
+// not installed in the negative color, matching the platform-font preview.
+function buildSampleRefs(specimen: FontSpecimen): Record<string, Record<string, unknown>> {
   const refs: Record<string, Record<string, unknown>> = {
     typeSpecimenName: { children: specimen.family.name },
   }
 
   if (!specimen.included) {
-    // The weights line states the family is not installed, in the negative color.
-    refs.typeSpecimenFamilySizes = {
+    refs.typeSpecimenFamilyWeights = {
       children: "Not Included",
       style: { color: "var(--sdn-swatch-negative)" },
     }
   } else if (specimen.weightsLabel) {
-    refs.typeSpecimenFamilySizes = { children: specimen.weightsLabel }
+    refs.typeSpecimenFamilyWeights = { children: specimen.weightsLabel }
   }
+
+  return refs
+}
+
+// The per-level ramp reads its style, size, weight, and line height from the
+// board theme, and each level's `*Spec` label states those resolved values.
+const levelRefs = computed(() => {
+  const refs: Record<string, Record<string, unknown>> = {}
 
   for (const [ref, value] of Object.entries(themeLooks.value.specs)) {
     refs[ref] = { children: value }
   }
 
   return refs
-}
+})
 
-// Each specimen scopes its own font-family (or the platform font when excluded)
-// through a per-slot class on its Specimen root. The board theme still drives
-// every level's size, weight, and line height for all of them.
 const renderSpecimens = computed(() =>
   activeList.value.map(({ specimen, key }) => ({
     key,
-    slotClass: isStacked.value
-      ? `${slotClassFor(specimen.slot)} ${COMPACT_SPECIMEN_CLASS}`
-      : slotClassFor(specimen.slot),
-    refs: buildSpecimenRefs(specimen),
+    slotClass: slotClassFor(specimen.slot),
+    sampleRefs: buildSampleRefs(specimen),
   })),
 )
 
@@ -243,16 +248,7 @@ const scopedCss = computed(() => {
   opacity: 1;
 }`
 
-  // In the stacked board view, show only the `typeSpecimenPreview` block and its
-  // hr per family. Every per-level row is a refed direct child, so hiding refed
-  // direct children leaves the preview frame and the ref-less hr in place.
-  const compactCss = isStacked.value
-    ? `.${scopeClass.value} .${COMPACT_SPECIMEN_CLASS} > [data-seldon-ref]:not([data-seldon-ref="typeSpecimenPreview"]) {
-  display: none;
-}`
-    : ""
-
-  return `${familyCss}\n${compactCss}\n${suppressHoverCss}\n${themeLooks.value.previewCss}`
+  return `${familyCss}\n${suppressHoverCss}\n${themeLooks.value.previewCss}`
 })
 </script>
 
@@ -272,13 +268,15 @@ const scopedCss = computed(() => {
       data-selection-kind="board"
     >
       <div class="font-specimen-stack" :class="scopeClass">
-        <Specimen
+        <div
           v-for="item in renderSpecimens"
           :key="item.key"
+          class="font-specimen-family"
           :class="item.slotClass"
-          v-bind="SPECIMEN_TEXT_SLOTS"
-          :seldon-refs="item.refs"
-        />
+        >
+          <SpecimenSample v-bind="SPECIMEN_SAMPLE_SLOTS" :seldon-refs="item.sampleRefs" />
+          <Specimen v-if="!isStacked" v-bind="SPECIMEN_LEVEL_SLOTS" :seldon-refs="levelRefs" />
+        </div>
       </div>
     </div>
   </section>
@@ -291,11 +289,19 @@ const scopedCss = computed(() => {
   padding: 2rem;
 }
 
-/* Stacked specimens (board selected) sit in a column with breathing room; a
-   single specimen (family selected) is unaffected. */
+/* Stacked families (board selected) sit in a column with breathing room; a
+   single family (selected) shows just its own block. */
 .font-specimen-stack {
   display: flex;
   flex-direction: column;
   gap: 4rem;
+}
+
+/* One family's blocks (the sample header, then the level ramp when selected)
+   stack tightly; the hr at the end of the sample carries the visual divide. */
+.font-specimen-family {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 </style>
