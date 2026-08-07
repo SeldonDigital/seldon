@@ -8153,6 +8153,7 @@ const iconLabelOverrides: Record<string, string> = {
  */
 export function getIconLabel(iconId: string): string {
   const override = iconLabelOverrides[iconId]
+
   if (override) return override
 
   const dash = iconId.indexOf("-")

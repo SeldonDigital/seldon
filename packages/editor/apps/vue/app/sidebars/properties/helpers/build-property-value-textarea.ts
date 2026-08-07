@@ -68,6 +68,7 @@ export function buildPropertyValueTextarea({
     style: { ...TEXTAREA_LAYOUT, resize: "vertical", outline: EDITING_OUTLINE },
     onInput: (event: Event) => {
       const target = event.target as HTMLTextAreaElement
+
       control.fieldDraft.value = target.value
       autosizeTextarea(target)
     },

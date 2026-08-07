@@ -298,7 +298,11 @@ async function materializeFontshareFamily(entry) {
  */
 const FONT_SOURCES = [
   { source: "google", families: GOOGLE_FONT_FAMILIES, materialize: materializeGoogleFamily },
-  { source: "fontshare", families: FONTSHARE_FONT_FAMILIES, materialize: materializeFontshareFamily },
+  {
+    source: "fontshare",
+    families: FONTSHARE_FONT_FAMILIES,
+    materialize: materializeFontshareFamily,
+  },
 ]
 
 const MATERIALIZE_BY_SOURCE = Object.fromEntries(FONT_SOURCES.map((s) => [s.source, s.materialize]))

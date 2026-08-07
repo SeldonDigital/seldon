@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "vue",
-  "scannedFiles": 189,
+  "scannedFiles": 194,
   "refs": {
     "boardState": [
       {
@@ -4924,14 +4924,14 @@
       {
         "file": "app/sidebars/objects/BoardRow.vue",
         "component": "BoardRow",
-        "line": 400,
+        "line": 401,
         "conditional": false,
         "expression": "actionsButton.value",
         "inputs": [
           {
             "name": "actionsButton",
             "declaredAt": {
-              "line": 353,
+              "line": 354,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -4942,7 +4942,7 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 450,
+        "line": 478,
         "conditional": false,
         "expression": "actionsButton.value",
         "inputs": [
@@ -4980,14 +4980,14 @@
       {
         "file": "app/sidebars/objects/BoardRow.vue",
         "component": "BoardRow",
-        "line": 395,
+        "line": 396,
         "conditional": false,
         "expression": "toggleButtonSlot.value",
         "inputs": [
           {
             "name": "toggleButtonSlot",
             "declaredAt": {
-              "line": 368,
+              "line": 369,
               "kind": "const",
               "via": "computed"
             }
@@ -4998,14 +4998,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 443,
+        "line": 471,
         "conditional": false,
         "expression": "toggleButtonSlot.value",
         "inputs": [
           {
             "name": "toggleButtonSlot",
             "declaredAt": {
-              "line": 372,
+              "line": 400,
               "kind": "const",
               "via": "computed"
             }
@@ -5018,14 +5018,14 @@
       {
         "file": "app/sidebars/objects/BoardRow.vue",
         "component": "BoardRow",
-        "line": 396,
+        "line": 397,
         "conditional": false,
         "expression": "toggleIconSlot.value",
         "inputs": [
           {
             "name": "toggleIconSlot",
             "declaredAt": {
-              "line": 373,
+              "line": 374,
               "kind": "const",
               "via": "computed"
             }
@@ -5036,14 +5036,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 444,
+        "line": 472,
         "conditional": false,
         "expression": "toggleIconSlot.value",
         "inputs": [
           {
             "name": "toggleIconSlot",
             "declaredAt": {
-              "line": 377,
+              "line": 405,
               "kind": "const",
               "via": "computed"
             }
@@ -5073,14 +5073,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 448,
+        "line": 476,
         "conditional": false,
         "expression": "displayButtonProps.value",
         "inputs": [
           {
             "name": "displayButtonProps",
             "declaredAt": {
-              "line": 423,
+              "line": 451,
               "kind": "const",
               "via": "computed"
             }
@@ -5093,14 +5093,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 449,
+        "line": 477,
         "conditional": false,
         "expression": "displayIconSlot.value",
         "inputs": [
           {
             "name": "displayIconSlot",
             "declaredAt": {
-              "line": 422,
+              "line": 450,
               "kind": "const",
               "via": "computed"
             }
@@ -5113,14 +5113,14 @@
       {
         "file": "app/sidebars/objects/BoardRow.vue",
         "component": "BoardRow",
-        "line": 397,
+        "line": 398,
         "conditional": false,
         "expression": "fieldSlot.value",
         "inputs": [
           {
             "name": "fieldSlot",
             "declaredAt": {
-              "line": 384,
+              "line": 385,
               "kind": "const",
               "via": "computed"
             }
@@ -5131,14 +5131,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 445,
+        "line": 473,
         "conditional": false,
         "expression": "fieldSlot.value",
         "inputs": [
           {
             "name": "fieldSlot",
             "declaredAt": {
-              "line": 393,
+              "line": 421,
               "kind": "const",
               "via": "computed"
             }
@@ -5169,14 +5169,14 @@
       {
         "file": "app/sidebars/objects/BoardRow.vue",
         "component": "BoardRow",
-        "line": 398,
+        "line": 399,
         "conditional": false,
         "expression": "boardIconSlot.value",
         "inputs": [
           {
             "name": "boardIconSlot",
             "declaredAt": {
-              "line": 385,
+              "line": 386,
               "kind": "const",
               "via": "computed"
             }
@@ -5187,14 +5187,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 446,
+        "line": 474,
         "conditional": false,
         "expression": "nodeIconSlot.value",
         "inputs": [
           {
             "name": "nodeIconSlot",
             "declaredAt": {
-              "line": 399,
+              "line": 427,
               "kind": "const",
               "via": "computed"
             }
@@ -5225,14 +5225,14 @@
       {
         "file": "app/sidebars/objects/BoardRow.vue",
         "component": "BoardRow",
-        "line": 399,
+        "line": 400,
         "conditional": false,
         "expression": "labelSlot.value",
         "inputs": [
           {
             "name": "labelSlot",
             "declaredAt": {
-              "line": 386,
+              "line": 387,
               "kind": "const",
               "via": "computed"
             }
@@ -5243,14 +5243,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 447,
+        "line": 475,
         "conditional": false,
         "expression": "labelSlot.value",
         "inputs": [
           {
             "name": "labelSlot",
             "declaredAt": {
-              "line": 410,
+              "line": 438,
               "kind": "const",
               "via": "computed"
             }
@@ -6477,14 +6477,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 136,
+        "line": 151,
         "conditional": false,
         "expression": "actionsMenu.buttonIconic.value",
         "inputs": [
           {
             "name": "actionsMenu",
             "declaredAt": {
-              "line": 85,
+              "line": 87,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -6497,14 +6497,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 128,
+        "line": 143,
         "conditional": false,
         "expression": "view.listItemProps.value.buttonIconic",
         "inputs": [
           {
             "name": "view",
             "declaredAt": {
-              "line": 48,
+              "line": 49,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -6517,14 +6517,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 129,
+        "line": 144,
         "conditional": false,
         "expression": "view.listItemProps.value.icon",
         "inputs": [
           {
             "name": "view",
             "declaredAt": {
-              "line": 48,
+              "line": 49,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -6597,14 +6597,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 130,
+        "line": 145,
         "conditional": false,
         "expression": "nameLabelSlot.value",
         "inputs": [
           {
             "name": "nameLabelSlot",
             "declaredAt": {
-              "line": 93,
+              "line": 95,
               "kind": "const",
               "via": "computed"
             }
@@ -6896,18 +6896,158 @@
         ]
       }
     ],
-    "propertyToggleActions": [
+    "propertyTextAreaActions": [
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 171,
+        "line": 164,
         "conditional": false,
         "expression": "actionsMenu.buttonIconic.value",
         "inputs": [
           {
             "name": "actionsMenu",
             "declaredAt": {
-              "line": 85,
+              "line": 87,
+              "kind": "const",
+              "via": "useRowActionsMenu"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaDisclosure": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 158,
+        "conditional": false,
+        "expression": "view.listItemProps.value.buttonIconic",
+        "inputs": [
+          {
+            "name": "view",
+            "declaredAt": {
+              "line": 49,
+              "kind": "const",
+              "via": "useRowProperty"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaDisclosureIcon": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 159,
+        "conditional": false,
+        "expression": "view.listItemProps.value.icon",
+        "inputs": [
+          {
+            "name": "view",
+            "declaredAt": {
+              "line": 49,
+              "kind": "const",
+              "via": "useRowProperty"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaIcon": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 162,
+        "conditional": false,
+        "expression": "valueIconProps.value ?? {}",
+        "inputs": [
+          {
+            "name": "valueIconProps",
+            "declaredAt": {
+              "line": 102,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaLabel": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 160,
+        "conditional": false,
+        "expression": "nameLabelSlot.value",
+        "inputs": [
+          {
+            "name": "nameLabelSlot",
+            "declaredAt": {
+              "line": 95,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaValueField": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 161,
+        "conditional": false,
+        "expression": "comboboxFieldProps.value",
+        "inputs": [
+          {
+            "name": "comboboxFieldProps",
+            "declaredAt": {
+              "line": 123,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaValueLabel": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 163,
+        "conditional": false,
+        "expression": "valueLabelProps.value",
+        "inputs": [
+          {
+            "name": "valueLabelProps",
+            "declaredAt": {
+              "line": 107,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleActions": [
+      {
+        "file": "app/sidebars/properties/Property.vue",
+        "component": "Property",
+        "line": 199,
+        "conditional": false,
+        "expression": "actionsMenu.buttonIconic.value",
+        "inputs": [
+          {
+            "name": "actionsMenu",
+            "declaredAt": {
+              "line": 87,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -6920,14 +7060,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 166,
+        "line": 194,
         "conditional": false,
         "expression": "view.listItemProps.value.buttonIconic",
         "inputs": [
           {
             "name": "view",
             "declaredAt": {
-              "line": 48,
+              "line": 49,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -6940,14 +7080,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 167,
+        "line": 195,
         "conditional": false,
         "expression": "view.listItemProps.value.icon",
         "inputs": [
           {
             "name": "view",
             "declaredAt": {
-              "line": 48,
+              "line": 49,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -6960,14 +7100,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 169,
+        "line": 197,
         "conditional": false,
         "expression": "toggleIconProps.value ?? {}",
         "inputs": [
           {
             "name": "toggleIconProps",
             "declaredAt": {
-              "line": 140,
+              "line": 168,
               "kind": "const",
               "via": "computed"
             }
@@ -6980,14 +7120,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 168,
+        "line": 196,
         "conditional": false,
         "expression": "nameProps.value",
         "inputs": [
           {
             "name": "nameProps",
             "declaredAt": {
-              "line": 90,
+              "line": 92,
               "kind": "const",
               "via": "computed"
             }
@@ -7067,14 +7207,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 170,
+        "line": 198,
         "conditional": false,
         "expression": "toggleSwitchProps.value",
         "inputs": [
           {
             "name": "toggleSwitchProps",
             "declaredAt": {
-              "line": 145,
+              "line": 173,
               "kind": "const",
               "via": "computed"
             }
@@ -7087,14 +7227,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 131,
+        "line": 146,
         "conditional": false,
         "expression": "comboboxFieldProps.value",
         "inputs": [
           {
             "name": "comboboxFieldProps",
             "declaredAt": {
-              "line": 112,
+              "line": 123,
               "kind": "const",
               "via": "computed"
             }
@@ -7107,14 +7247,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 132,
+        "line": 147,
         "conditional": false,
         "expression": "valueIconProps.value ?? {}",
         "inputs": [
           {
             "name": "valueIconProps",
             "declaredAt": {
-              "line": 100,
+              "line": 102,
               "kind": "const",
               "via": "computed"
             }
@@ -7127,14 +7267,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 133,
+        "line": 148,
         "conditional": false,
         "expression": "valueLabelProps.value",
         "inputs": [
           {
             "name": "valueLabelProps",
             "declaredAt": {
-              "line": 105,
+              "line": 107,
               "kind": "const",
               "via": "computed"
             }
@@ -7147,14 +7287,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 134,
+        "line": 149,
         "conditional": false,
         "expression": "view.listItemProps.value.buttonIconic2",
         "inputs": [
           {
             "name": "view",
             "declaredAt": {
-              "line": 48,
+              "line": 49,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -7167,14 +7307,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 135,
+        "line": 150,
         "conditional": false,
         "expression": "view.listItemProps.value.icon3",
         "inputs": [
           {
             "name": "view",
             "declaredAt": {
-              "line": 48,
+              "line": 49,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -11090,7 +11230,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 558,
+          "line": 586,
           "expression": "\"\"",
           "inputs": [],
           "spread": false
@@ -11263,9 +11403,26 @@
     "ItemNode": {
       "ariaDisabled": [
         {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 140,
+          "expression": "decoration.isDimmed || undefined",
+          "inputs": [
+            {
+              "name": "decoration",
+              "declaredAt": {
+                "line": 90,
+                "kind": "const",
+                "via": "computed"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 500,
+          "line": 528,
           "expression": "isDimmed || undefined",
           "inputs": [
             {
@@ -11292,7 +11449,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 501,
+          "line": 529,
           "expression": "isDuplicateLabel || undefined",
           "inputs": [
             {
@@ -11311,13 +11468,30 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 408,
+          "line": 409,
           "expression": "isBoardSelected || undefined",
           "inputs": [
             {
               "name": "isBoardSelected",
               "declaredAt": {
-                "line": 88,
+                "line": 89,
+                "kind": "const",
+                "via": "computed"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 139,
+          "expression": "isSelected || undefined",
+          "inputs": [
+            {
+              "name": "isSelected",
+              "declaredAt": {
+                "line": 51,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11328,7 +11502,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 499,
+          "line": 527,
           "expression": "isSelected || undefined",
           "inputs": [
             {
@@ -11364,7 +11538,15 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 416,
+          "line": 417,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 146,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11372,7 +11554,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 512,
+          "line": 540,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11398,21 +11580,29 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 418,
+          "line": 419,
           "expression": "null",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 148,
+          "expression": "{}",
           "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 514,
+          "line": 542,
           "expression": "displayButtonSlot",
           "inputs": [
             {
               "name": "displayButtonSlot",
               "declaredAt": {
-                "line": 435,
+                "line": 463,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11441,7 +11631,15 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 419,
+          "line": 420,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 149,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11449,7 +11647,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 515,
+          "line": 543,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11475,7 +11673,15 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 417,
+          "line": 418,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 147,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11483,7 +11689,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 513,
+          "line": 541,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11509,13 +11715,13 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 409,
+          "line": 410,
           "expression": "isActivated || undefined",
           "inputs": [
             {
               "name": "isActivated",
               "declaredAt": {
-                "line": 115,
+                "line": 116,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11528,13 +11734,13 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 412,
+          "line": 413,
           "expression": "boardIsActive || undefined",
           "inputs": [
             {
               "name": "boardIsActive",
               "declaredAt": {
-                "line": 109,
+                "line": 110,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11545,7 +11751,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 509,
+          "line": 537,
           "expression": "parentIsSelected || undefined",
           "inputs": [
             {
@@ -11577,13 +11783,13 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 411,
+          "line": 412,
           "expression": "boardKey",
           "inputs": [
             {
               "name": "boardKey",
               "declaredAt": {
-                "line": 68,
+                "line": 69,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11596,13 +11802,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 505,
+          "line": 533,
           "expression": "dataDisplay",
           "inputs": [
             {
               "name": "dataDisplay",
               "declaredAt": {
-                "line": 454,
+                "line": 482,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11615,7 +11821,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 506,
+          "line": 534,
           "expression": "isDisplayExportConflict || undefined",
           "inputs": [
             {
@@ -11634,7 +11840,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 507,
+          "line": 535,
           "expression": "isDisplayExportConflictSourceNode || undefined",
           "inputs": [
             {
@@ -11653,7 +11859,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 508,
+          "line": 536,
           "expression": "drag.draggingNodeId === nodeId || undefined",
           "inputs": [
             {
@@ -11676,7 +11882,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 504,
+          "line": 532,
           "expression": "entityType",
           "inputs": [
             {
@@ -11695,7 +11901,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 503,
+          "line": 531,
           "expression": "nodeId",
           "inputs": [
             {
@@ -11721,6 +11927,25 @@
           "spread": false
         }
       ],
+      "dataResourceItemKey": [
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 142,
+          "expression": "selectionKey",
+          "inputs": [
+            {
+              "name": "selectionKey",
+              "declaredAt": {
+                "line": 48,
+                "kind": "const",
+                "via": "computed"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
       "dataResourceKind": [
         {
           "file": "app/sidebars/objects/ResourceEntry.vue",
@@ -11740,13 +11965,30 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 413,
+          "line": 414,
           "expression": "boardKey",
           "inputs": [
             {
               "name": "boardKey",
               "declaredAt": {
-                "line": 68,
+                "line": 69,
+                "kind": "const",
+                "via": "computed"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 143,
+          "expression": "selectionKey",
+          "inputs": [
+            {
+              "name": "selectionKey",
+              "declaredAt": {
+                "line": 48,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11759,8 +12001,16 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 414,
+          "line": 415,
           "expression": "\"board\"",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 144,
+          "expression": "\"resourceItem\"",
           "inputs": [],
           "spread": false
         }
@@ -11769,15 +12019,23 @@
         {
           "file": "app/sidebars/objects/BoardRow.vue",
           "component": "BoardRow",
-          "line": 410,
+          "line": 411,
           "expression": "\"objects-sidebar-board\"",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontFamilyRow.vue",
+          "component": "FontFamilyRow",
+          "line": 141,
+          "expression": "\"objects-sidebar-font-family\"",
           "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 502,
+          "line": 530,
           "expression": "`object-panel-node-${nodeId}`",
           "inputs": [
             {
@@ -11813,13 +12071,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 510,
+          "line": 538,
           "expression": "draggable",
           "inputs": [
             {
               "name": "draggable",
               "declaredAt": {
-                "line": 262,
+                "line": 290,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11844,13 +12102,13 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 294,
+          "line": 338,
           "expression": "hideDisclosure ? null : undefined",
           "inputs": [
             {
               "name": "hideDisclosure",
               "declaredAt": {
-                "line": 70,
+                "line": 72,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11863,13 +12121,13 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 292,
+          "line": 336,
           "expression": "isDraggable",
           "inputs": [
             {
               "name": "isDraggable",
               "declaredAt": {
-                "line": 206,
+                "line": 234,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11882,7 +12140,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 284,
+          "line": 328,
           "expression": "\"\"",
           "inputs": [],
           "spread": false
@@ -11892,13 +12150,13 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 296,
+          "line": 340,
           "expression": "valueIconSlot",
           "inputs": [
             {
               "name": "valueIconSlot",
               "declaredAt": {
-                "line": 121,
+                "line": 136,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11911,7 +12169,87 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 295,
+          "line": 339,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ]
+    },
+    "ItemPropertyTextArea": {
+      "buttonIconic": [
+        {
+          "file": "app/sidebars/properties/Property.vue",
+          "component": "Property",
+          "line": 317,
+          "expression": "hideDisclosure ? null : {}",
+          "inputs": [
+            {
+              "name": "hideDisclosure",
+              "declaredAt": {
+                "line": 72,
+                "kind": "const",
+                "via": "computed"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "buttonIconic2": [
+        {
+          "file": "app/sidebars/properties/Property.vue",
+          "component": "Property",
+          "line": 322,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "formControlCombobox": [
+        {
+          "file": "app/sidebars/properties/Property.vue",
+          "component": "Property",
+          "line": 318,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "icon2": [
+        {
+          "file": "app/sidebars/properties/Property.vue",
+          "component": "Property",
+          "line": 320,
+          "expression": "valueIconSlot",
+          "inputs": [
+            {
+              "name": "valueIconSlot",
+              "declaredAt": {
+                "line": 136,
+                "kind": "const",
+                "via": "computed"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "input": [
+        {
+          "file": "app/sidebars/properties/Property.vue",
+          "component": "Property",
+          "line": 319,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "textarea": [
+        {
+          "file": "app/sidebars/properties/Property.vue",
+          "component": "Property",
+          "line": 321,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11923,7 +12261,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 273,
+          "line": 301,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11933,7 +12271,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 278,
+          "line": 306,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11943,7 +12281,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 274,
+          "line": 302,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11953,7 +12291,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 276,
+          "line": 304,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11963,7 +12301,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 275,
+          "line": 303,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11973,7 +12311,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 277,
+          "line": 305,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -13512,6 +13850,340 @@
           "expression": "{}",
           "inputs": [],
           "spread": false
+        }
+      ]
+    },
+    "Specimen": {
+      "textCallout": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 62,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 53,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDisplay": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 77,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textHeading": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 74,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 51,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel10": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 63,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel11": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 64,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel12": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 66,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel13": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 67,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel14": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 69,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel15": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 70,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel16": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 72,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel17": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 73,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel18": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 75,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel19": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 76,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 52,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel3": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 54,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel4": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 55,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel5": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 56,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel6": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 57,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel7": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 58,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel8": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 60,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel9": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 61,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textSubheading": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 71,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textSubtitle": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 65,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textTagline": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 59,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textTitle": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 68,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ]
+    },
+    "SpecimenSample": {
+      "textDescription": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 44,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription2": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 45,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription3": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 46,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription4": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 47,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 42,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/canvas/FontSpecimenCanvas.vue",
+          "component": "FontSpecimenCanvas",
+          "line": 43,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ]
     }

@@ -26,14 +26,17 @@ export function resolveIconComponent(iconId: IconId, options: ExportOptions): Re
   }
 
   const data = getDataBackedIcon(iconId)
+
   if (data) {
     return { componentName: data.componentName, relativePath: data.relativePath }
   }
 
   const fromReader = options.assetReader?.resolveIconExport?.(iconId)
+
   if (fromReader) return fromReader
 
   const resolved = resolveIconExport(iconId, options.rootDirectory)
+
   if (resolved) return resolved
 
   return resolveMissingIcon(options)
@@ -42,9 +45,11 @@ export function resolveIconComponent(iconId: IconId, options: ExportOptions): Re
 /** Resolves the `seldon-missing` glyph, the fallback for an unresolvable id. */
 export function resolveMissingIcon(options: ExportOptions): ResolvedIconExport {
   const fromReader = options.assetReader?.resolveIconExport?.(MISSING_ICON_ID)
+
   if (fromReader) return fromReader
 
   const resolved = resolveIconExport(MISSING_ICON_ID, options.rootDirectory)
+
   if (resolved) return resolved
 
   // seldon-missing ships as a source glyph and should always resolve; the

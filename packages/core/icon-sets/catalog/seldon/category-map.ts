@@ -5,9 +5,8 @@
  *
  * Last generated: 2026-08-05T23:24:30.907Z
  */
-import type { IconId } from "@seldon/core/icon-sets"
-
 import type { IconCategoryPath } from "../../constants/categories"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "seldon-iconSocialDiscord": "social-media/social" as IconCategoryPath,

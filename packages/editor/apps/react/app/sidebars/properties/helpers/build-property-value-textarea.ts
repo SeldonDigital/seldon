@@ -2,7 +2,7 @@ import { EDITING_OUTLINE } from "@app/views/state-props"
 
 import type { PropertyControlView } from "../hooks/use-property-control"
 import type { TextareaProps } from "@seldon/components/primitives/Textarea"
-import type { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, Ref } from "react"
+import type { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent, Ref } from "react"
 
 export type ValueTextareaProps = TextareaProps & { ref?: Ref<HTMLTextAreaElement> }
 

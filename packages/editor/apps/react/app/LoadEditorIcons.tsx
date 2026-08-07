@@ -1,8 +1,8 @@
 import { IconDefault, IconSeldonMissing as IconMissing } from "@seldon/components/icons"
 
-import { getIconData } from "@seldon/core/icon-sets/data"
 import * as SeldonIcons from "@seldon/core/icon-sets/catalog/seldon"
 import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/available"
+import { getIconData } from "@seldon/core/icon-sets/data"
 
 import type { IconId } from "@seldon/core/icon-sets"
 import type { SVGAttributes } from "react"

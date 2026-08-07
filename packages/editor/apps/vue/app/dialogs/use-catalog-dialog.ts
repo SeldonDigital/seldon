@@ -49,7 +49,10 @@ const AUTHORED_LEVEL_CATEGORY: Partial<Record<EntryNodeLevel, string>> = {
  * `shouldShowAuthored` is supplied, authored component boards join their declared
  * level's category as insertable variant instances.
  */
-export function useCatalogDialog(shouldShow: CatalogPredicate, shouldShowAuthored?: AuthoredPredicate) {
+export function useCatalogDialog(
+  shouldShow: CatalogPredicate,
+  shouldShowAuthored?: AuthoredPredicate,
+) {
   const query = ref("")
   const { workspace } = useWorkspace()
 

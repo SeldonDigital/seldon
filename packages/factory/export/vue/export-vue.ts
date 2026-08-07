@@ -12,7 +12,11 @@ import { replaceImagesWithRelativePaths } from "../react/assets/transform-image-
 import { assertUniqueVariantNames } from "../react/discovery/assert-unique-variant-names"
 import { getUsedIconIds } from "../react/discovery/get-used-icon-ids"
 import { format } from "../react/format"
-import { insertLicense, insertVueLicense, isIconExportPath } from "../react/generation/inserts/insert-license"
+import {
+  insertLicense,
+  insertVueLicense,
+  isIconExportPath,
+} from "../react/generation/inserts/insert-license"
 import { generateRefsRegistry } from "../shared/generate-refs-registry"
 import { generateFrameComponent } from "./assets/generate-frame"
 import { getVueIcons } from "./assets/get-vue-icons"
@@ -150,9 +154,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
       if (typeof file.content !== "string") return
 
       if (isSingleFileComponent(file.path)) {
-        const licensed = isIconExportPath(file.path)
-          ? file.content
-          : insertVueLicense(file.content)
+        const licensed = isIconExportPath(file.path) ? file.content : insertVueLicense(file.content)
 
         file.content = await formatVue(licensed, options)
 

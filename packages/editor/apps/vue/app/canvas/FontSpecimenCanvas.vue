@@ -185,9 +185,7 @@ const keyed = computed(() =>
 const matched = computed(() =>
   keyed.value.find((entry) => entry.key === selectedResourceItemKey.value),
 )
-const includedEntries = computed(() =>
-  keyed.value.filter((entry) => entry.specimen.included),
-)
+const includedEntries = computed(() => keyed.value.filter((entry) => entry.specimen.included))
 
 // A selected family shows only its own specimen. With the board selected (no
 // family), stack every included family. Fall back to all entries when none is
@@ -202,9 +200,7 @@ const activeList = computed(() => {
 // per family. A family selection shows that one specimen in full.
 const isStacked = computed(() => !matched.value)
 
-const scopeClass = computed(() =>
-  `font-specimen-${boardKey.value}`.replace(/[^a-zA-Z0-9_-]/g, "-"),
-)
+const scopeClass = computed(() => `font-specimen-${boardKey.value}`.replace(/[^a-zA-Z0-9_-]/g, "-"))
 
 function slotClassFor(slot: string): string {
   return `${scopeClass.value}-${slot}`.replace(/[^a-zA-Z0-9_-]/g, "-")
@@ -212,9 +208,7 @@ function slotClassFor(slot: string): string {
 
 // The board's theme owns the look: resolve each level's style, size, weight, and
 // line height, plus the `*Spec` label strings, from the board's theme.
-const themeLooks = computed(() =>
-  resolveSpecimenThemeLooks(boardTheme.value, scopeClass.value),
-)
+const themeLooks = computed(() => resolveSpecimenThemeLooks(boardTheme.value, scopeClass.value))
 
 // The family header (name + weights). Selecting an excluded family states it is
 // not installed in the negative color, matching the platform-font preview.

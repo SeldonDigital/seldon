@@ -1,8 +1,10 @@
 "use client"
 
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
-import { formatResourceItemKey } from "@app/workspace/hooks/use-selection"
-import { useStore as useSelectionStore } from "@app/workspace/hooks/use-selection"
+import {
+  formatResourceItemKey,
+  useStore as useSelectionStore,
+} from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Specimen } from "@seldon/components/modules/Specimen"
@@ -135,11 +137,7 @@ export function FontSpecimenCanvas({ board }: { board: Board }) {
   // A selected family shows only its own specimen. With the board selected (no
   // family), stack every included family. Fall back to all entries when none is
   // included, so the board never renders empty.
-  const activeList = matched
-    ? [matched]
-    : includedEntries.length > 0
-      ? includedEntries
-      : keyed
+  const activeList = matched ? [matched] : includedEntries.length > 0 ? includedEntries : keyed
 
   if (activeList.length === 0) return null
 

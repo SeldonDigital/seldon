@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 294,
+  "scannedFiles": 297,
   "refs": {
     "boardState": [
       {
@@ -5131,14 +5131,14 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 193,
+        "line": 203,
         "conditional": false,
         "expression": "{ ...actionsMenu.buttonIconic }",
         "inputs": [
           {
             "name": "actionsMenu",
             "declaredAt": {
-              "line": 107,
+              "line": 108,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -5147,16 +5147,41 @@
         "props": []
       },
       {
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 162,
+        "conditional": false,
+        "expression": "{ tabIndex: -1, \"aria-hidden\": true, style: { opacity: 0, pointerEvents: \"none\" }, }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "tabIndex",
+            "expression": "-1",
+            "inputs": []
+          },
+          {
+            "key": "aria-hidden",
+            "expression": "true",
+            "inputs": []
+          },
+          {
+            "key": "style",
+            "expression": "{ opacity: 0, pointerEvents: \"none\" }",
+            "inputs": []
+          }
+        ]
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 311,
+        "line": 313,
         "conditional": false,
         "expression": "{ ...actionsMenu.buttonIconic }",
         "inputs": [
           {
             "name": "actionsMenu",
             "declaredAt": {
-              "line": 117,
+              "line": 118,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -5187,14 +5212,14 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 188,
+        "line": 198,
         "conditional": false,
         "expression": "{ ...buttonIconic }",
         "inputs": [
           {
             "name": "buttonIconic",
             "declaredAt": {
-              "line": 69,
+              "line": 70,
               "kind": "const",
               "via": "useRowBoard"
             }
@@ -5205,7 +5230,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 288,
+        "line": 290,
         "conditional": false,
         "expression": "{ ...buttonIconic }",
         "inputs": [
@@ -5225,14 +5250,14 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 189,
+        "line": 199,
         "conditional": false,
         "expression": "{ ...toggleIcon }",
         "inputs": [
           {
             "name": "toggleIcon",
             "declaredAt": {
-              "line": 168,
+              "line": 178,
               "kind": "const"
             }
           }
@@ -5240,9 +5265,24 @@
         "props": []
       },
       {
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 153,
+        "conditional": false,
+        "expression": "{ style: { opacity: 0 } }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "style",
+            "expression": "{ opacity: 0 }",
+            "inputs": []
+          }
+        ]
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 289,
+        "line": 291,
         "conditional": false,
         "expression": "mergeStateProps(toggleIcon, disabledRef)",
         "inputs": [
@@ -5257,14 +5297,14 @@
           {
             "name": "toggleIcon",
             "declaredAt": {
-              "line": 209,
+              "line": 211,
               "kind": "const"
             }
           },
           {
             "name": "disabledRef",
             "declaredAt": {
-              "line": 228,
+              "line": 230,
               "kind": "const",
               "via": "buildDisabledRefProps"
             }
@@ -5290,16 +5330,34 @@
     ],
     "nodeDisplay": [
       {
-        "file": "app/sidebars/objects/NodeController.tsx",
-        "component": "NodeInner",
-        "line": 309,
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 160,
         "conditional": false,
         "expression": "{ ...displayPicker.buttonProps }",
         "inputs": [
           {
             "name": "displayPicker",
             "declaredAt": {
-              "line": 124,
+              "line": 125,
+              "kind": "const",
+              "via": "useRowDisplayPicker"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/objects/NodeController.tsx",
+        "component": "NodeInner",
+        "line": 311,
+        "conditional": false,
+        "expression": "{ ...displayPicker.buttonProps }",
+        "inputs": [
+          {
+            "name": "displayPicker",
+            "declaredAt": {
+              "line": 125,
               "kind": "const",
               "via": "useRowDisplayPicker"
             }
@@ -5310,9 +5368,26 @@
     ],
     "nodeDisplayIcon": [
       {
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 161,
+        "conditional": false,
+        "expression": "displayIcon",
+        "inputs": [
+          {
+            "name": "displayIcon",
+            "declaredAt": {
+              "line": 132,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 310,
+        "line": 312,
         "conditional": false,
         "expression": "{ ...displayIcon }",
         "inputs": [
@@ -5332,14 +5407,14 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 190,
+        "line": 200,
         "conditional": false,
         "expression": "{ ...comboboxField }",
         "inputs": [
           {
             "name": "comboboxField",
             "declaredAt": {
-              "line": 182,
+              "line": 192,
               "kind": "const",
               "via": "buildFieldStateProps"
             }
@@ -5348,16 +5423,40 @@
         "props": []
       },
       {
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 154,
+        "conditional": false,
+        "expression": "{ ...comboboxField, style: { cursor: \"pointer\" } }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "buildFieldStateProps"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "{ cursor: \"pointer\" }",
+            "inputs": []
+          }
+        ]
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 290,
+        "line": 292,
         "conditional": false,
         "expression": "{ ...comboboxField }",
         "inputs": [
           {
             "name": "comboboxField",
             "declaredAt": {
-              "line": 273,
+              "line": 275,
               "kind": "const"
             }
           }
@@ -5387,7 +5486,7 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 191,
+        "line": 201,
         "conditional": false,
         "expression": "mergeStateProps(icon2, activatedRef)",
         "inputs": [
@@ -5402,7 +5501,7 @@
           {
             "name": "icon2",
             "declaredAt": {
-              "line": 69,
+              "line": 70,
               "kind": "const",
               "via": "useRowBoard"
             }
@@ -5410,7 +5509,7 @@
           {
             "name": "activatedRef",
             "declaredAt": {
-              "line": 178,
+              "line": 188,
               "kind": "const",
               "via": "buildActivatedRefProps"
             }
@@ -5419,9 +5518,35 @@
         "props": []
       },
       {
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 155,
+        "conditional": false,
+        "expression": "mergeStateProps({ icon: \"seldon-text\" }, disabledRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "disabledRef",
+            "declaredAt": {
+              "line": 140,
+              "kind": "const",
+              "via": "buildDisabledRefProps"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 291,
+        "line": 293,
         "conditional": false,
         "expression": "mergeStateProps( icon2, disabledRef, dimRef, nodeTypeStyle, conflictRef, conflictSourceRef, invalidRef, )",
         "inputs": [
@@ -5444,7 +5569,7 @@
           {
             "name": "disabledRef",
             "declaredAt": {
-              "line": 228,
+              "line": 230,
               "kind": "const",
               "via": "buildDisabledRefProps"
             }
@@ -5452,35 +5577,35 @@
           {
             "name": "dimRef",
             "declaredAt": {
-              "line": 232,
+              "line": 234,
               "kind": "const"
             }
           },
           {
             "name": "nodeTypeStyle",
             "declaredAt": {
-              "line": 251,
+              "line": 253,
               "kind": "const"
             }
           },
           {
             "name": "conflictRef",
             "declaredAt": {
-              "line": 241,
+              "line": 243,
               "kind": "const"
             }
           },
           {
             "name": "conflictSourceRef",
             "declaredAt": {
-              "line": 244,
+              "line": 246,
               "kind": "const"
             }
           },
           {
             "name": "invalidRef",
             "declaredAt": {
-              "line": 236,
+              "line": 238,
               "kind": "const",
               "via": "buildInvalidRefProps"
             }
@@ -5510,14 +5635,14 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardEmpty",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "expression": "{ value: label, readOnly: true }",
         "inputs": [
           {
             "name": "label",
             "declaredAt": {
-              "line": 46,
+              "line": 47,
               "kind": "parameter"
             }
           }
@@ -5530,7 +5655,7 @@
               {
                 "name": "label",
                 "declaredAt": {
-                  "line": 46,
+                  "line": 47,
                   "kind": "parameter"
                 }
               }
@@ -5546,7 +5671,7 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 192,
+        "line": 202,
         "conditional": false,
         "expression": "mergeStateProps(nameInput, activatedRef)",
         "inputs": [
@@ -5561,7 +5686,7 @@
           {
             "name": "nameInput",
             "declaredAt": {
-              "line": 127,
+              "line": 128,
               "kind": "const",
               "via": "useRenameInput"
             }
@@ -5569,7 +5694,7 @@
           {
             "name": "activatedRef",
             "declaredAt": {
-              "line": 178,
+              "line": 188,
               "kind": "const",
               "via": "buildActivatedRefProps"
             }
@@ -5578,9 +5703,49 @@
         "props": []
       },
       {
+        "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+        "component": "FontFamilyRow",
+        "line": 156,
+        "conditional": false,
+        "expression": "mergeStateProps( { value: family.name, readOnly: true, style: labelStyle }, disabledRef, )",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "family",
+            "declaredAt": {
+              "line": 70,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "labelStyle",
+            "declaredAt": {
+              "line": 141,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "disabledRef",
+            "declaredAt": {
+              "line": 140,
+              "kind": "const",
+              "via": "buildDisabledRefProps"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 300,
+        "line": 302,
         "conditional": false,
         "expression": "mergeStateProps( nodeLabel, disabledRef, dimRef, nodeTypeStyle, conflictRef, conflictSourceRef, invalidRef, )",
         "inputs": [
@@ -5595,14 +5760,14 @@
           {
             "name": "nodeLabel",
             "declaredAt": {
-              "line": 223,
+              "line": 225,
               "kind": "const"
             }
           },
           {
             "name": "disabledRef",
             "declaredAt": {
-              "line": 228,
+              "line": 230,
               "kind": "const",
               "via": "buildDisabledRefProps"
             }
@@ -5610,35 +5775,35 @@
           {
             "name": "dimRef",
             "declaredAt": {
-              "line": 232,
+              "line": 234,
               "kind": "const"
             }
           },
           {
             "name": "nodeTypeStyle",
             "declaredAt": {
-              "line": 251,
+              "line": 253,
               "kind": "const"
             }
           },
           {
             "name": "conflictRef",
             "declaredAt": {
-              "line": 241,
+              "line": 243,
               "kind": "const"
             }
           },
           {
             "name": "conflictSourceRef",
             "declaredAt": {
-              "line": 244,
+              "line": 246,
               "kind": "const"
             }
           },
           {
             "name": "invalidRef",
             "declaredAt": {
-              "line": 236,
+              "line": 238,
               "kind": "const",
               "via": "buildInvalidRefProps"
             }
@@ -6934,14 +7099,14 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 200,
+        "line": 211,
         "conditional": false,
         "expression": "{ ...optionsMenu.buttonIconic }",
         "inputs": [
           {
             "name": "optionsMenu",
             "declaredAt": {
-              "line": 47,
+              "line": 48,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -6954,14 +7119,14 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 186,
+        "line": 197,
         "conditional": false,
         "expression": "{ ...listItemProps.buttonIconic }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           }
@@ -6973,14 +7138,14 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 187,
+        "line": 198,
         "conditional": false,
         "expression": "{ ...listItemProps.icon }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           }
@@ -7106,7 +7271,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 188,
+        "line": 199,
         "conditional": false,
         "expression": "mergeStateProps(view.nameLabelProps, stateRef, labelHideProps)",
         "inputs": [
@@ -7121,7 +7286,7 @@
           {
             "name": "view",
             "declaredAt": {
-              "line": 45,
+              "line": 46,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -7129,14 +7294,14 @@
           {
             "name": "stateRef",
             "declaredAt": {
-              "line": 67,
+              "line": 68,
               "kind": "const"
             }
           },
           {
             "name": "labelHideProps",
             "declaredAt": {
-              "line": 57,
+              "line": 58,
               "kind": "const"
             }
           }
@@ -7403,18 +7568,18 @@
         ]
       }
     ],
-    "propertyToggleActions": [
+    "propertyTextAreaActions": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 125,
+        "line": 236,
         "conditional": false,
         "expression": "{ ...optionsMenu.buttonIconic }",
         "inputs": [
           {
             "name": "optionsMenu",
             "declaredAt": {
-              "line": 47,
+              "line": 48,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -7423,18 +7588,18 @@
         "props": []
       }
     ],
-    "propertyToggleDisclosure": [
+    "propertyTextAreaDisclosure": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 122,
+        "line": 231,
         "conditional": false,
         "expression": "{ ...listItemProps.buttonIconic }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           }
@@ -7442,18 +7607,18 @@
         "props": []
       }
     ],
-    "propertyToggleDisclosureIcon": [
+    "propertyTextAreaDisclosureIcon": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 123,
+        "line": 232,
         "conditional": false,
         "expression": "{ ...listItemProps.icon }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           }
@@ -7461,11 +7626,11 @@
         "props": []
       }
     ],
-    "propertyToggleIcon": [
+    "propertyTextAreaIcon": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 138,
+        "line": 240,
         "conditional": true,
         "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
         "inputs": [
@@ -7480,14 +7645,202 @@
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           },
           {
             "name": "stateRef",
             "declaredAt": {
-              "line": 67,
+              "line": 68,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaLabel": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 233,
+        "conditional": false,
+        "expression": "mergeStateProps(view.nameLabelProps, stateRef, labelHideProps)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "view",
+            "declaredAt": {
+              "line": 46,
+              "kind": "const",
+              "via": "useRowProperty"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 68,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "labelHideProps",
+            "declaredAt": {
+              "line": 58,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaValueField": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 234,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 180,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyTextAreaValueLabel": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 235,
+        "conditional": false,
+        "expression": "mergeStateProps(view.valueLabelProps, stateRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "view",
+            "declaredAt": {
+              "line": 46,
+              "kind": "const",
+              "via": "useRowProperty"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 68,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleActions": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 126,
+        "conditional": false,
+        "expression": "{ ...optionsMenu.buttonIconic }",
+        "inputs": [
+          {
+            "name": "optionsMenu",
+            "declaredAt": {
+              "line": 48,
+              "kind": "const",
+              "via": "useRowActionsMenu"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleDisclosure": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 123,
+        "conditional": false,
+        "expression": "{ ...listItemProps.buttonIconic }",
+        "inputs": [
+          {
+            "name": "listItemProps",
+            "declaredAt": {
+              "line": 61,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleDisclosureIcon": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 124,
+        "conditional": false,
+        "expression": "{ ...listItemProps.icon }",
+        "inputs": [
+          {
+            "name": "listItemProps",
+            "declaredAt": {
+              "line": 61,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleIcon": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 139,
+        "conditional": true,
+        "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "listItemProps",
+            "declaredAt": {
+              "line": 61,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 68,
               "kind": "const"
             }
           }
@@ -7499,7 +7852,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 124,
+        "line": 125,
         "conditional": false,
         "expression": "mergeStateProps(view.nameLabelProps, stateRef)",
         "inputs": [
@@ -7514,7 +7867,7 @@
           {
             "name": "view",
             "declaredAt": {
-              "line": 45,
+              "line": 46,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -7522,7 +7875,7 @@
           {
             "name": "stateRef",
             "declaredAt": {
-              "line": 67,
+              "line": 68,
               "kind": "const"
             }
           }
@@ -7666,7 +8019,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 126,
+        "line": 127,
         "conditional": false,
         "expression": "mergeStateProps( { checked: switchControl.checked, \"aria-checked\": toggleAriaChecked, ref: toggleSwitchRef, onChange: onToggleSwitchChange, }, toggleStateRef, )",
         "inputs": [
@@ -7681,21 +8034,21 @@
           {
             "name": "switchControl",
             "declaredAt": {
-              "line": 61,
+              "line": 62,
               "kind": "const"
             }
           },
           {
             "name": "toggleAriaChecked",
             "declaredAt": {
-              "line": 87,
+              "line": 88,
               "kind": "const"
             }
           },
           {
             "name": "toggleSwitchRef",
             "declaredAt": {
-              "line": 71,
+              "line": 72,
               "kind": "const",
               "via": "useCallback"
             }
@@ -7703,7 +8056,7 @@
           {
             "name": "onToggleSwitchChange",
             "declaredAt": {
-              "line": 80,
+              "line": 81,
               "kind": "const",
               "via": "useCallback"
             }
@@ -7711,7 +8064,7 @@
           {
             "name": "toggleStateRef",
             "declaredAt": {
-              "line": 120,
+              "line": 121,
               "kind": "const"
             }
           }
@@ -7723,14 +8076,14 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 189,
+        "line": 200,
         "conditional": false,
         "expression": "{ ...comboboxField }",
         "inputs": [
           {
             "name": "comboboxField",
             "declaredAt": {
-              "line": 170,
+              "line": 180,
               "kind": "const"
             }
           }
@@ -7742,7 +8095,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 204,
+        "line": 215,
         "conditional": true,
         "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
         "inputs": [
@@ -7757,14 +8110,14 @@
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           },
           {
             "name": "stateRef",
             "declaredAt": {
-              "line": 67,
+              "line": 68,
               "kind": "const"
             }
           }
@@ -7776,7 +8129,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 193,
+        "line": 204,
         "conditional": false,
         "expression": "mergeStateProps( view.valueLabelProps, props.property.isLookParent ? { placeholder: \"\" } : undefined, stateRef, )",
         "inputs": [
@@ -7791,7 +8144,7 @@
           {
             "name": "view",
             "declaredAt": {
-              "line": 45,
+              "line": 46,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -7799,14 +8152,14 @@
           {
             "name": "props",
             "declaredAt": {
-              "line": 44,
+              "line": 45,
               "kind": "parameter"
             }
           },
           {
             "name": "stateRef",
             "declaredAt": {
-              "line": 67,
+              "line": 68,
               "kind": "const"
             }
           }
@@ -7818,14 +8171,14 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 198,
+        "line": 209,
         "conditional": false,
         "expression": "{ ...listItemProps.buttonIconic2 }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           }
@@ -7837,14 +8190,14 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 199,
+        "line": 210,
         "conditional": false,
         "expression": "{ ...listItemProps.icon3 }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 60,
+              "line": 61,
               "kind": "const"
             }
           }
@@ -11510,13 +11863,13 @@
         {
           "file": "app/canvas/boards/ThemeBoard.tsx",
           "component": "ThemeVariantPreview",
-          "line": 392,
+          "line": 399,
           "expression": "handlePreviewClick",
           "inputs": [
             {
               "name": "handlePreviewClick",
               "declaredAt": {
-                "line": 342,
+                "line": 349,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -12705,7 +13058,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 318,
+          "line": 320,
           "expression": "isDimmed || undefined",
           "inputs": [
             {
@@ -12724,7 +13077,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 319,
+          "line": 321,
           "expression": "isDuplicateLabel || undefined",
           "inputs": [
             {
@@ -12743,13 +13096,13 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 198,
+          "line": 208,
           "expression": "isBoardSelected || undefined",
           "inputs": [
             {
               "name": "isBoardSelected",
               "declaredAt": {
-                "line": 69,
+                "line": 70,
                 "kind": "const",
                 "via": "useRowBoard"
               }
@@ -12760,7 +13113,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 317,
+          "line": 319,
           "expression": "isSelected || undefined",
           "inputs": [
             {
@@ -12795,7 +13148,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
-          "line": 51,
+          "line": 52,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -12803,7 +13156,15 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 209,
+          "line": 219,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+          "component": "FontFamilyRow",
+          "line": 173,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12811,7 +13172,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 339,
+          "line": 341,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12829,7 +13190,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
-          "line": 54,
+          "line": 55,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -12837,21 +13198,29 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 211,
+          "line": 221,
           "expression": "null",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+          "component": "FontFamilyRow",
+          "line": 175,
+          "expression": "{}",
           "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 341,
+          "line": 343,
           "expression": "displayButtonSlot",
           "inputs": [
             {
               "name": "displayButtonSlot",
               "declaredAt": {
-                "line": 282,
+                "line": 284,
                 "kind": "const"
               }
             }
@@ -12871,7 +13240,15 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 212,
+          "line": 222,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+          "component": "FontFamilyRow",
+          "line": 176,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12879,7 +13256,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 342,
+          "line": 344,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12897,7 +13274,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
-          "line": 52,
+          "line": 53,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12905,7 +13282,15 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 210,
+          "line": 220,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+          "component": "FontFamilyRow",
+          "line": 174,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12913,7 +13298,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 340,
+          "line": 342,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12931,13 +13316,13 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 199,
+          "line": 209,
           "expression": "isActivated || undefined",
           "inputs": [
             {
               "name": "isActivated",
               "declaredAt": {
-                "line": 89,
+                "line": 90,
                 "kind": "const"
               }
             }
@@ -12949,7 +13334,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
-          "line": 53,
+          "line": 54,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -12959,13 +13344,13 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 214,
+          "line": 224,
           "expression": "onClick",
           "inputs": [
             {
               "name": "onClick",
               "declaredAt": {
-                "line": 69,
+                "line": 70,
                 "kind": "const",
                 "via": "useRowBoard"
               }
@@ -12974,9 +13359,26 @@
           "spread": false
         },
         {
+          "file": "app/sidebars/objects/FontCollectionFamilyRows.tsx",
+          "component": "FontFamilyRow",
+          "line": 178,
+          "expression": "onClick",
+          "inputs": [
+            {
+              "name": "onClick",
+              "declaredAt": {
+                "line": 103,
+                "kind": "const",
+                "via": "useRowClick"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 344,
+          "line": 346,
           "expression": "onClick",
           "inputs": [
             {
@@ -13012,13 +13414,13 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 215,
+          "line": 225,
           "expression": "onDoubleClick",
           "inputs": [
             {
               "name": "onDoubleClick",
               "declaredAt": {
-                "line": 69,
+                "line": 70,
                 "kind": "const",
                 "via": "useRowBoard"
               }
@@ -13029,7 +13431,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 345,
+          "line": 347,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -13065,13 +13467,13 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 216,
+          "line": 226,
           "expression": "handleRowMouseEnter",
           "inputs": [
             {
               "name": "handleRowMouseEnter",
               "declaredAt": {
-                "line": 117,
+                "line": 118,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -13082,13 +13484,13 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 346,
+          "line": 348,
           "expression": "handleCanvasTrackingEnter",
           "inputs": [
             {
               "name": "handleCanvasTrackingEnter",
               "declaredAt": {
-                "line": 131,
+                "line": 132,
                 "kind": "const",
                 "via": "useSidebarCanvasTracking"
               }
@@ -13101,13 +13503,13 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 217,
+          "line": 227,
           "expression": "handleRowMouseLeave",
           "inputs": [
             {
               "name": "handleRowMouseLeave",
               "declaredAt": {
-                "line": 123,
+                "line": 124,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -13118,13 +13520,13 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 347,
+          "line": 349,
           "expression": "handleCanvasTrackingLeave",
           "inputs": [
             {
               "name": "handleCanvasTrackingLeave",
               "declaredAt": {
-                "line": 131,
+                "line": 132,
                 "kind": "const",
                 "via": "useSidebarCanvasTracking"
               }
@@ -13139,13 +13541,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 223,
+          "line": 272,
           "expression": "hideDisclosure ? null : undefined",
           "inputs": [
             {
               "name": "hideDisclosure",
               "declaredAt": {
-                "line": 58,
+                "line": 59,
                 "kind": "const"
               }
             }
@@ -13157,13 +13559,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 222,
+          "line": 271,
           "expression": "valueIconSlot",
           "inputs": [
             {
               "name": "valueIconSlot",
               "declaredAt": {
-                "line": 211,
+                "line": 222,
                 "kind": "const"
               }
             }
@@ -13175,7 +13577,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 221,
+          "line": 270,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -13185,13 +13587,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 225,
+          "line": 274,
           "expression": "view.onRowClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 45,
+                "line": 46,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -13204,13 +13606,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 226,
+          "line": 275,
           "expression": "view.onRowDoubleClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 45,
+                "line": 46,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -13220,14 +13622,22 @@
         }
       ]
     },
-    "ItemPropertyToggle": {
+    "ItemPropertyTextArea": {
       "buttonIconic": [
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 144,
-          "expression": "{}",
-          "inputs": [],
+          "line": 246,
+          "expression": "hideDisclosure ? null : {}",
+          "inputs": [
+            {
+              "name": "hideDisclosure",
+              "declaredAt": {
+                "line": 59,
+                "kind": "const"
+              }
+            }
+          ],
           "spread": false
         }
       ],
@@ -13235,7 +13645,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 149,
+          "line": 251,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -13245,7 +13655,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 145,
+          "line": 247,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -13255,9 +13665,17 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 147,
-          "expression": "{}",
-          "inputs": [],
+          "line": 249,
+          "expression": "valueIconSlot",
+          "inputs": [
+            {
+              "name": "valueIconSlot",
+              "declaredAt": {
+                "line": 222,
+                "kind": "const"
+              }
+            }
+          ],
           "spread": false
         }
       ],
@@ -13265,7 +13683,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 146,
+          "line": 248,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -13275,13 +13693,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 151,
+          "line": 253,
           "expression": "view.onRowClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 45,
+                "line": 46,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -13294,13 +13712,113 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 152,
+          "line": 254,
           "expression": "view.onRowDoubleClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 45,
+                "line": 46,
+                "kind": "const",
+                "via": "useRowProperty"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "textarea": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 250,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ]
+    },
+    "ItemPropertyToggle": {
+      "buttonIconic": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 145,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "buttonIconic2": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 150,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "formControlCombobox": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 146,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "icon2": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 148,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "input": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 147,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "onClick": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 152,
+          "expression": "view.onRowClick",
+          "inputs": [
+            {
+              "name": "view",
+              "declaredAt": {
+                "line": 46,
+                "kind": "const",
+                "via": "useRowProperty"
+              }
+            }
+          ],
+          "spread": false
+        }
+      ],
+      "onDoubleClick": [
+        {
+          "file": "app/sidebars/properties/Property.tsx",
+          "component": "PropertyInner",
+          "line": 153,
+          "expression": "view.onRowDoubleClick",
+          "inputs": [
+            {
+              "name": "view",
+              "declaredAt": {
+                "line": 46,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -13313,7 +13831,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 148,
+          "line": 149,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -15113,6 +15631,340 @@
           "expression": "{}",
           "inputs": [],
           "spread": false
+        }
+      ]
+    },
+    "Specimen": {
+      "textCallout": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 54,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 45,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDisplay": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 69,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textHeading": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 66,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 43,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel10": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 55,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel11": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 56,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel12": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 58,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel13": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 59,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel14": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 61,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel15": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 62,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel16": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 64,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel17": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 65,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel18": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 67,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel19": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 68,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 44,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel3": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 46,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel4": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 47,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel5": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 48,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel6": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 49,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel7": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 50,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel8": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 52,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel9": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 53,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textSubheading": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 63,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textSubtitle": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 57,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textTagline": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 51,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textTitle": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 60,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ]
+    },
+    "SpecimenSample": {
+      "textDescription": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 36,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription2": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 37,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription3": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 38,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textDescription4": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 39,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 34,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
+        }
+      ],
+      "textLabel2": [
+        {
+          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "component": "FontSpecimenCanvas",
+          "line": 35,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ]
     },

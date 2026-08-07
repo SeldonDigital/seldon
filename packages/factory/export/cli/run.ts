@@ -6,10 +6,10 @@ import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 import { exportWorkspace } from "../export-workspace"
 import { PLATFORMS } from "../platforms/registry"
 import { createResolvedExportAssetReader } from "../resolved-asset-reader"
-import { EXPORT_PRESET_IDS, EXPORT_PRESETS } from "./presets"
+import { EXPORT_PRESETS, EXPORT_PRESET_IDS } from "./presets"
 
-import type { ExportPresetId } from "./presets"
 import type { PlatformId } from "../types"
+import type { ExportPresetId } from "./presets"
 
 const PLATFORM_IDS = Object.keys(PLATFORMS) as PlatformId[]
 

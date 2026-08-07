@@ -1,4 +1,7 @@
-import { STOCK_FONT_COLLECTIONS, STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
+import {
+  STOCK_FONT_COLLECTIONS,
+  STOCK_FONT_COLLECTIONS_BY_ID,
+} from "../../../font-collections/catalog"
 import { isFontCollectionBoard } from "../../model/components"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
 import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"

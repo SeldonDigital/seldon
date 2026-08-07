@@ -1,7 +1,7 @@
+import { getTextStyles } from "@seldon/factory/styles/css-properties/get-text-styles"
 import { ValueType } from "@seldon/core"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { getThemeValueAnnotation } from "@seldon/core/helpers/theme/get-theme-value-annotation"
-import { getTextStyles } from "@seldon/factory/styles/css-properties/get-text-styles"
 
 import type { Properties, Theme } from "@seldon/core"
 import type { ThemeFont } from "@seldon/core/themes/types"

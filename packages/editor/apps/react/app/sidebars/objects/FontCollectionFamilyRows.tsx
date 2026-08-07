@@ -1,11 +1,15 @@
-import { ComboboxOptions } from "@app/menus"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { buildDisabledRefProps, buildFieldStateProps, mergeStateProps } from "@app/views/state-props"
+import { ComboboxOptions } from "@app/menus"
 import {
+  buildDisabledRefProps,
+  buildFieldStateProps,
+  mergeStateProps,
+} from "@app/views/state-props"
+import {
+  formatResourceItemKey,
   useSelectionActions,
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
-import { formatResourceItemKey } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { useCallback } from "react"
@@ -155,7 +159,11 @@ function FontFamilyRow({
     ),
     nodeDisplay: { ...displayPicker.buttonProps },
     nodeDisplayIcon: displayIcon,
-    nodeActions: { tabIndex: -1, "aria-hidden": true, style: { opacity: 0, pointerEvents: "none" } },
+    nodeActions: {
+      tabIndex: -1,
+      "aria-hidden": true,
+      style: { opacity: 0, pointerEvents: "none" },
+    },
   }
 
   return (
