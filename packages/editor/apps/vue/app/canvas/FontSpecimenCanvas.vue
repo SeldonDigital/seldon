@@ -196,7 +196,7 @@ function buildSampleRefs(specimen: FontSpecimen): Record<string, Record<string, 
   if (!specimen.included) {
     refs.typeSpecimenFamilyWeights = {
       children: "Not Included",
-      style: { color: "var(--sdn-swatch-negative)" },
+      style: { color: "var(--sdn-swatch-negative)", opacity: 1 },
     }
   } else if (specimen.weightsLabel) {
     refs.typeSpecimenFamilyWeights = { children: specimen.weightsLabel }
@@ -243,9 +243,13 @@ const scopedCss = computed(() => {
     })
     .join("\n")
 
+  // The specimen labels rest at 0.5 opacity, but the `TextLabel` base rule bumps
+  // them to 0.8 on hover and active, which brightens them and reads as an
+  // interactive affordance on this static specimen. Hold them at their resting
+  // 0.5 within the specimen scope so hover and active make no change.
   const suppressHoverCss = `.${scopeClass.value} .sdn-text-label:hover,
 .${scopeClass.value} .sdn-text-label:active {
-  opacity: 1;
+  opacity: 0.5;
 }`
 
   return `${familyCss}\n${suppressHoverCss}\n${themeLooks.value.previewCss}`
