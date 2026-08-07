@@ -4,6 +4,7 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { getPropertySections } from "./get-property-sections"
 import { getThemePropertySections } from "./get-theme-property-sections"
 import { getIconRowCategory, titleCase } from "./icon-set-properties-data"
@@ -133,10 +134,27 @@ export function buildPropertyTreeLayout({
 
   const regularSections = getPropertySections(propertiesWithLeadingFields, node, workspace)
 
-  const allSections: Array<PropertySection | ThemePropertySection> = [
-    ...(metadataSection ? [metadataSection] : []),
-    ...regularSections,
-  ]
+  // A font collection board leads with its board attributes section (name,
+  // theme, size), then the collection metadata, then the remaining board sections
+  // (layout, appearance, effects). Every other tree keeps metadata first.
+  const isFontCollectionBoardNode = isBoard(node) && isFontCollectionBoard(node)
+
+  let allSections: Array<PropertySection | ThemePropertySection>
+
+  if (isFontCollectionBoardNode) {
+    const attributesIndex = regularSections.findIndex(
+      (section) => section.category === PropertyDisplayCategory.ATTRIBUTES,
+    )
+    const insertAt = attributesIndex >= 0 ? attributesIndex + 1 : 0
+
+    allSections = [...regularSections]
+
+    if (metadataSection) {
+      allSections.splice(insertAt, 0, metadataSection)
+    }
+  } else {
+    allSections = [...(metadataSection ? [metadataSection] : []), ...regularSections]
+  }
 
   if (familiesSection) {
     allSections.push(familiesSection)
