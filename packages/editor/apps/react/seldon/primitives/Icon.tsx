@@ -457,6 +457,8 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-formatLetterSpacing"
     | "material-formatLineSpacing"
     | "material-formatSize"
+    | "material-formatTextdirectionLToR"
+    | "material-formatTextdirectionRToL"
     | "material-formatTextdirectionVertical"
     | "material-formatUnderlined"
     | "material-lineEndCircle"
@@ -966,6 +968,8 @@ const iconMap = {
   "material-formatLetterSpacing": Icons.IconMaterialFormatLetterSpacing,
   "material-formatLineSpacing": Icons.IconMaterialFormatLineSpacing,
   "material-formatSize": Icons.IconMaterialFormatSize,
+  "material-formatTextdirectionLToR": Icons.IconMaterialFormatTextdirectionLtoR,
+  "material-formatTextdirectionRToL": Icons.IconMaterialFormatTextdirectionRtoL,
   "material-formatTextdirectionVertical": Icons.IconMaterialFormatTextdirectionVertical,
   "material-formatUnderlined": Icons.IconMaterialFormatUnderlined,
   "material-lineEndCircle": Icons.IconMaterialLineEndCircle,

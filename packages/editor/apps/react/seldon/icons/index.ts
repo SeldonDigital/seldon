@@ -187,6 +187,8 @@ export { IconMaterialFormatBold } from "./material/user-interface/text/IconMater
 export { IconMaterialFormatLetterSpacing } from "./material/user-interface/text/IconMaterialFormatLetterSpacing"
 export { IconMaterialFormatLineSpacing } from "./material/user-interface/text/IconMaterialFormatLineSpacing"
 export { IconMaterialFormatSize } from "./material/user-interface/text/IconMaterialFormatSize"
+export { IconMaterialFormatTextdirectionLtoR } from "./material/user-interface/text/IconMaterialFormatTextdirectionLtoR"
+export { IconMaterialFormatTextdirectionRtoL } from "./material/user-interface/text/IconMaterialFormatTextdirectionRtoL"
 export { IconMaterialFormatTextdirectionVertical } from "./material/user-interface/text/IconMaterialFormatTextdirectionVertical"
 export { IconMaterialFormatUnderlined } from "./material/user-interface/text/IconMaterialFormatUnderlined"
 export { IconMaterialForum } from "./material/user-interface/actions/IconMaterialForum"

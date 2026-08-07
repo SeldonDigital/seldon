@@ -48,7 +48,7 @@ export const PROPERTY_ICONS: Record<string, string> = {
   boardHeight: "material-height",
 
   // Layout
-  direction: "material-formatTextdirectionRToL",
+  direction: "material-formatTextdirectionLToR",
   orientation: "material-desktopLandscape",
   align: "seldon-positionCenter",
   cellAlign: "seldon-align",

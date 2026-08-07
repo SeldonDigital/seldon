@@ -98,7 +98,7 @@ const sdn: SpecimenSampleProps = {
     "data-seldon-ref": "typeSpecimenLowercase",
   },
   textDescription4: {
-    children: "0123456789 ¿ ? ¡ ! &amp; @ ‘ ’ “ ” « » % * ^ # $ £ € ¢ / ( ) [ ] { } . , ® ©",
+    children: "0123456789 ¿ ? ¡ ! & @ ‘ ’ “ ” « » % * ^ # $ £ € ¢ / ( ) [ ] { } . , ® ©",
     htmlElement: "p",
     "aria-hidden": "false",
     className: "sdn-text-description sdn-text-description--i3zd",
