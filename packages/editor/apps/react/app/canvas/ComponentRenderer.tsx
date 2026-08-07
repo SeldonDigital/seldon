@@ -1,6 +1,6 @@
 "use client"
 
-import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons.bespoke"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import React, { useMemo } from "react"

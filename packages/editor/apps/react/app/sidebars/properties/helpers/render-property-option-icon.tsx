@@ -1,4 +1,4 @@
-import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons.bespoke"
 import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
 import { type OptionIconRender } from "@app/menus"
 import { IconSeldonMissing } from "@seldon/components/icons"

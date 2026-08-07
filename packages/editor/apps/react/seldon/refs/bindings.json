@@ -15637,7 +15637,7 @@
     "Specimen": {
       "textCallout": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 54,
           "expression": "{}",
@@ -15647,7 +15647,7 @@
       ],
       "textDescription": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 45,
           "expression": "{}",
@@ -15657,7 +15657,7 @@
       ],
       "textDisplay": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 69,
           "expression": "{}",
@@ -15667,7 +15667,7 @@
       ],
       "textHeading": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 66,
           "expression": "{}",
@@ -15677,7 +15677,7 @@
       ],
       "textLabel": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 43,
           "expression": "{}",
@@ -15687,7 +15687,7 @@
       ],
       "textLabel10": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 55,
           "expression": "{}",
@@ -15697,7 +15697,7 @@
       ],
       "textLabel11": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 56,
           "expression": "{}",
@@ -15707,7 +15707,7 @@
       ],
       "textLabel12": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 58,
           "expression": "{}",
@@ -15717,7 +15717,7 @@
       ],
       "textLabel13": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 59,
           "expression": "{}",
@@ -15727,7 +15727,7 @@
       ],
       "textLabel14": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 61,
           "expression": "{}",
@@ -15737,7 +15737,7 @@
       ],
       "textLabel15": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 62,
           "expression": "{}",
@@ -15747,7 +15747,7 @@
       ],
       "textLabel16": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 64,
           "expression": "{}",
@@ -15757,7 +15757,7 @@
       ],
       "textLabel17": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 65,
           "expression": "{}",
@@ -15767,7 +15767,7 @@
       ],
       "textLabel18": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 67,
           "expression": "{}",
@@ -15777,7 +15777,7 @@
       ],
       "textLabel19": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 68,
           "expression": "{}",
@@ -15787,7 +15787,7 @@
       ],
       "textLabel2": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 44,
           "expression": "{}",
@@ -15797,7 +15797,7 @@
       ],
       "textLabel3": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 46,
           "expression": "{}",
@@ -15807,7 +15807,7 @@
       ],
       "textLabel4": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 47,
           "expression": "{}",
@@ -15817,7 +15817,7 @@
       ],
       "textLabel5": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 48,
           "expression": "{}",
@@ -15827,7 +15827,7 @@
       ],
       "textLabel6": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 49,
           "expression": "{}",
@@ -15837,7 +15837,7 @@
       ],
       "textLabel7": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 50,
           "expression": "{}",
@@ -15847,7 +15847,7 @@
       ],
       "textLabel8": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 52,
           "expression": "{}",
@@ -15857,7 +15857,7 @@
       ],
       "textLabel9": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 53,
           "expression": "{}",
@@ -15867,7 +15867,7 @@
       ],
       "textSubheading": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 63,
           "expression": "{}",
@@ -15877,7 +15877,7 @@
       ],
       "textSubtitle": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 57,
           "expression": "{}",
@@ -15887,7 +15887,7 @@
       ],
       "textTagline": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 51,
           "expression": "{}",
@@ -15897,7 +15897,7 @@
       ],
       "textTitle": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 60,
           "expression": "{}",
@@ -15909,7 +15909,7 @@
     "SpecimenSample": {
       "textDescription": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 36,
           "expression": "{}",
@@ -15919,7 +15919,7 @@
       ],
       "textDescription2": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 37,
           "expression": "{}",
@@ -15929,7 +15929,7 @@
       ],
       "textDescription3": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 38,
           "expression": "{}",
@@ -15939,7 +15939,7 @@
       ],
       "textDescription4": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 39,
           "expression": "{}",
@@ -15949,7 +15949,7 @@
       ],
       "textLabel": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 34,
           "expression": "{}",
@@ -15959,7 +15959,7 @@
       ],
       "textLabel2": [
         {
-          "file": "app/canvas/boards/FontSpecimenCanvas.tsx",
+          "file": "app/canvas/boards/FontSpecimenCanvas.bespoke.tsx",
           "component": "FontSpecimenCanvas",
           "line": 35,
           "expression": "{}",
