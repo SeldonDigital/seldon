@@ -150,6 +150,14 @@ export type SeldonRef =
   | "propertyState"
   | "propertyStateIcon"
   | "propertyStateLabel"
+  | "propertyTextAreaActions"
+  | "propertyTextAreaDisclosure"
+  | "propertyTextAreaDisclosureIcon"
+  | "propertyTextAreaIcon"
+  | "propertyTextAreaLabel"
+  | "propertyTextAreaRow"
+  | "propertyTextAreaValueField"
+  | "propertyTextAreaValueLabel"
   | "propertyToggleActions"
   | "propertyToggleControl"
   | "propertyToggleDisclosure"
@@ -2186,6 +2194,118 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "parts/BarState.tsx",
         slot: "textLabel",
         type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTextAreaActions: {
+    component: "ButtonIconic",
+    nodeId: "component-item-fdGPm2wL",
+    className: "sdn-button-iconic sdn-button-iconic--fdgp",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "buttonIconic2",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTextAreaDisclosure: {
+    component: "ButtonIconic",
+    nodeId: "component-item-RRxJrOOT",
+    className: "sdn-button-iconic sdn-button-iconic--rrxj",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTextAreaDisclosureIcon: {
+    component: "Icon",
+    nodeId: "component-item-bBTseYch",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyTextAreaIcon: {
+    component: "Icon",
+    nodeId: "component-item-6L44nihh",
+    className: "sdn-icon sdn-icon--6l44",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyTextAreaLabel: {
+    component: "Input",
+    nodeId: "component-item-eLwb0TL3",
+    className: "sdn-input sdn-input--elwb",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "input",
+        type: "InputProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTextAreaRow: {
+    component: "FormControlCombobox",
+    nodeId: "component-item-sR37LdyX",
+    className: "sdn-form-control sdn-form-control-combobox--sr37",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "formControlCombobox",
+        type: "FormControlComboboxProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyTextAreaValueField: {
+    component: "ComboboxField",
+    nodeId: "component-item-KsRmYhYX",
+    className: "sdn-combobox-field sdn-combobox-field--ksrm",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "comboboxField",
+        type: "ComboboxFieldProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyTextAreaValueLabel: {
+    component: "Textarea",
+    nodeId: "component-textarea-NUYGpIZ4",
+    className: "sdn-textarea sdn-textarea--nuyg",
+    views: [
+      {
+        component: "ItemPropertyTextArea",
+        file: "elements/ItemPropertyTextArea.tsx",
+        slot: "textarea",
+        type: "TextareaProps",
         rendersWhen: "when-passed",
       },
     ],

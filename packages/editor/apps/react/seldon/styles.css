@@ -1066,6 +1066,28 @@ body {
   border: var(--hairline) solid transparent;
 }
 
+.sdn-item-property-text-area {
+  cursor: pointer;
+  overflow: hidden;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-inline-end: var(--sdn-paddings-tight);
+  padding-bottom: 0;
+  padding-inline-start: var(--sdn-paddings-tight);
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: var(--sdn-corners-tight);
+  border: var(--hairline) solid transparent;
+}
+
 .sdn-item-section {
   background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 8%, transparent);
   cursor: pointer;
@@ -2122,6 +2144,10 @@ body {
   padding: 0;
 }
 
+.sdn-button-iconic--fdgp {
+  margin-top: var(--sdn-margins-tight);
+}
+
 .sdn-button-iconic--gbhl {
   background-color: var(--sdn-swatch-primary);
   font-size: var(--sdn-font-size-small);
@@ -2130,6 +2156,10 @@ body {
 
 .sdn-button-iconic--iklu {
   font-size: var(--sdn-font-size-xsmall);
+}
+
+.sdn-button-iconic--rrxj {
+  margin-top: 0.325rem;
 }
 
 .sdn-button-iconic--sdjv {
@@ -2287,6 +2317,14 @@ body {
   min-width: 0;
 }
 
+.sdn-combobox-field--ksrm {
+  align-self: unset;
+  flex-shrink: unset;
+  align-items: start;
+  flex: 1 0 0;
+  min-width: 0;
+}
+
 .sdn-combobox-field--lmje {
   padding-top: unset;
   padding-inline-end: unset;
@@ -2387,6 +2425,15 @@ body {
 .sdn-form-control-combobox--qmop {
   align-self: unset;
   flex-shrink: unset;
+  margin-inline-start: var(--sdn-margins-tight);
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.sdn-form-control-combobox--sr37 {
+  align-self: unset;
+  flex-shrink: unset;
+  align-items: start;
   margin-inline-start: var(--sdn-margins-tight);
   flex: 1 0 0;
   min-width: 0;
@@ -3263,6 +3310,11 @@ body {
   font-size: var(--sdn-sizes-small);
 }
 
+.sdn-icon--6l44 {
+  margin-top: 0.325rem;
+  font-size: var(--sdn-sizes-small);
+}
+
 .sdn-icon--7mzg {
   transform: rotate(90deg);
   font-size: var(--sdn-sizes-small);
@@ -3541,6 +3593,14 @@ body {
   color: var(--sdn-hc-on-white);
   flex: 1 0 0;
   min-width: 0;
+}
+
+.sdn-input--elwb {
+  align-self: unset;
+  margin-top: var(--sdn-margins-tight);
+  width: 35%;
+  min-width: 0;
+  padding: var(--sdn-paddings-tight);
 }
 
 .sdn-input--iocq {
@@ -4293,6 +4353,18 @@ body {
   min-width: 0;
 }
 
+.sdn-textarea--nuyg {
+  background-color: unset;
+  align-self: unset;
+  flex-shrink: unset;
+  color: var(--sdn-hc-on-offWhite);
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: var(--sdn-font-size-xsmall);
+  padding: var(--sdn-paddings-tight);
+  border: var(--sdn-border-width-xsmall) solid transparent;
+}
+
 .sdn-textarea--tyvc {
   background-color: var(--sdn-swatch-offWhite);
   color: var(--sdn-hc-on-offWhite);
@@ -4922,6 +4994,10 @@ body {
   color: var(--sdn-swatch-active);
 }
 
+.sdn-combobox-field[aria-selected="true"] .sdn-icon--6l44 {
+  color: var(--sdn-swatch-active);
+}
+
 .sdn-combobox-field:hover {
   border: var(--hairline) solid var(--sdn-swatch-primary-b50);
 }
@@ -4982,6 +5058,10 @@ body {
   opacity: 0.8;
 }
 
+.sdn-combobox-field:hover .sdn-icon--6l44 {
+  opacity: 0.8;
+}
+
 .sdn-combobox-field:active {
   border: var(--hairline) solid var(--sdn-swatch-primary-b50);
 }
@@ -5039,6 +5119,10 @@ body {
 }
 
 .sdn-combobox-field:active .sdn-input--krby {
+  opacity: 0.8;
+}
+
+.sdn-combobox-field:active .sdn-icon--6l44 {
   opacity: 0.8;
 }
 

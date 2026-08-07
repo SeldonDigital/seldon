@@ -42,6 +42,7 @@ import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { useRenameInput } from "../../hooks/use-rename-input"
 import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
+import { buildPropertyValueTextarea } from "../helpers/build-property-value-textarea"
 import { usePropertyCardScope } from "./use-property-card-scope"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
@@ -141,6 +142,7 @@ export function useRowProperty({
 
   const frameRef = useRef<HTMLDivElement>(null)
   const valueInputRef = useRef<HTMLInputElement>(null)
+  const valueTextareaRef = useRef<HTMLTextAreaElement>(null)
   const [isEditingProperty, setIsEditingProperty] = useState(false)
   const [isRenaming, setIsRenaming] = useState(false)
   const addToast = useAddToast()
@@ -425,16 +427,17 @@ export function useRowProperty({
 
   // The combobox controller owns its own input ref (focus/select/anchoring); a
   // text/number field has none, so focus it here when the row enters edit mode.
+  // A multiline row focuses its textarea slot instead of the single-line input.
   useEffect(() => {
     if (isEditingProperty && control.kind === "field") {
-      const input = valueInputRef.current
+      const field = property.multiline ? valueTextareaRef.current : valueInputRef.current
 
-      if (input) {
-        input.focus()
-        input.select()
+      if (field) {
+        field.focus()
+        field.select()
       }
     }
-  }, [isEditingProperty, control.kind])
+  }, [isEditingProperty, control.kind, property.multiline])
 
   const valueRef = control.kind === "combobox" ? control.field.inputRef : valueInputRef
 
@@ -508,15 +511,25 @@ export function useRowProperty({
     ],
   )
 
-  const valueLabelProps = buildPropertyValueInput({
-    control,
-    isEditing: isEditingProperty,
-    displayValue: value,
-    valueRef,
-    endEdit,
-    onTabNext: handleTabNext,
-    onTabPrev: handleTabPrev,
-  })
+  const valueLabelProps = property.multiline
+    ? buildPropertyValueTextarea({
+        control,
+        isEditing: isEditingProperty,
+        displayValue: value,
+        valueRef: valueTextareaRef,
+        endEdit,
+        onTabNext: handleTabNext,
+        onTabPrev: handleTabPrev,
+      })
+    : buildPropertyValueInput({
+        control,
+        isEditing: isEditingProperty,
+        displayValue: value,
+        valueRef,
+        endEdit,
+        onTabNext: handleTabNext,
+        onTabPrev: handleTabPrev,
+      })
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement

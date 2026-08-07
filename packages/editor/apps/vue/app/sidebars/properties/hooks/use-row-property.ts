@@ -29,6 +29,7 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
+import { buildPropertyValueTextarea } from "../helpers/build-property-value-textarea"
 import { getPropertyValueForDisplay, shouldShowMenuIcon } from "../helpers/property-control-data"
 import { usePropertyExpansionStore } from "../property-expansion-store"
 import { usePropertyEditNavigation } from "../use-property-edit-navigation"
@@ -566,14 +567,23 @@ export function useRowProperty(input: RowPropertyInput) {
   )
 
   const valueLabelProps = computed(() =>
-    buildPropertyValueInput({
-      control,
-      isEditing: isEditing.value,
-      displayValue: displayValue.value,
-      endEdit,
-      onTabNext: handleTabNext,
-      onTabPrev: handleTabPrev,
-    }),
+    property.value.multiline
+      ? buildPropertyValueTextarea({
+          control,
+          isEditing: isEditing.value,
+          displayValue: displayValue.value,
+          endEdit,
+          onTabNext: handleTabNext,
+          onTabPrev: handleTabPrev,
+        })
+      : buildPropertyValueInput({
+          control,
+          isEditing: isEditing.value,
+          displayValue: displayValue.value,
+          endEdit,
+          onTabNext: handleTabNext,
+          onTabPrev: handleTabPrev,
+        }),
   )
 
   const layerDrag = computed(() =>
@@ -593,10 +603,12 @@ export function useRowProperty(input: RowPropertyInput) {
     if (!el) return
     // Each View names its own label slot, so renaming matches either: a value
     // row renders `ItemProperty`, a boolean row `ItemPropertyToggle`. Only the
-    // value row owns a value input.
-    const refs = renaming ? ["propertyLabel", "propertyToggleLabel"] : ["propertyValueLabel"]
-    const selector = refs.map((ref) => `input[data-seldon-ref="${ref}"]`).join(", ")
-    const inputEl = el.querySelector<HTMLInputElement>(selector)
+    // value row owns a value input. A multiline row (`ItemPropertyTextArea`)
+    // carries its value in a `textarea` under `propertyTextAreaValueLabel`.
+    const selector = renaming
+      ? `input[data-seldon-ref="propertyLabel"], input[data-seldon-ref="propertyToggleLabel"]`
+      : `input[data-seldon-ref="propertyValueLabel"], textarea[data-seldon-ref="propertyTextAreaValueLabel"]`
+    const inputEl = el.querySelector<HTMLInputElement | HTMLTextAreaElement>(selector)
 
     if (inputEl) {
       inputEl.focus()

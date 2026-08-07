@@ -331,6 +331,7 @@ export function createFlatProperty(
     actualValue,
     valueType: getValueType(propertyValue),
     controlType: usesCompoundPresetPicker ? "combo" : registryEntry?.control,
+    multiline: registryEntry?.multiline,
     isCompound,
     isShorthand,
     isSubProperty: propertyKey.includes(".") && !isCompound && !isShorthand,

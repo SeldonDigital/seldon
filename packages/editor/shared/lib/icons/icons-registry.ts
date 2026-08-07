@@ -26,6 +26,8 @@ export interface PropertyRegistryEntry {
   /** Option value is itself an icon id and renders as that glyph. */
   renderValueAsIcon?: boolean
   control?: ControlType
+  /** Render the value cell as a multi-line textarea instead of a single-line field. */
+  multiline?: boolean
   subProperties?: {
     [subPropertyKey: string]: PropertyRegistryEntry
   }
@@ -110,7 +112,7 @@ function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
  */
 const UI_OVERRIDES: PropertyRegistry = {
   // 1. ATTRIBUTES
-  content: { control: "text" },
+  content: { control: "text", multiline: true },
   altText: { control: "text" },
   ariaLabel: { control: "text" },
   ariaHidden: { control: "menu" },
@@ -330,6 +332,7 @@ function mergeEntry(
     icon: override.icon ?? base.icon,
     renderValueAsIcon: override.renderValueAsIcon ?? base.renderValueAsIcon,
     control: override.hasOwnProperty("control") ? override.control : base.control,
+    multiline: override.multiline ?? base.multiline,
   }
 
   if (base.subProperties || override.subProperties) {

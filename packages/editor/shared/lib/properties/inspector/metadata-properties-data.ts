@@ -20,6 +20,7 @@ function createMetadataRow(
   value: string,
   icon: string,
   editable: boolean,
+  multiline = false,
 ): FlatProperty {
   return {
     key: `metadata.${key}`,
@@ -30,6 +31,7 @@ function createMetadataRow(
     actualValue: value,
     valueType: ValueType.EXACT,
     controlType: editable ? "text" : undefined,
+    multiline,
     isCompound: false,
     isShorthand: false,
     isSubProperty: false,
@@ -58,6 +60,7 @@ export function buildMetadataProperties(
       metadata.description,
       "material-article",
       editable,
+      true,
     ),
     createMetadataRow("intent", "Intent", metadata.intent, "material-article", editable),
   ]
@@ -113,6 +116,7 @@ export function buildFontFamilyMetadataProperties(
         metadata.description,
         "material-article",
         false,
+        true,
       ),
     )
   }

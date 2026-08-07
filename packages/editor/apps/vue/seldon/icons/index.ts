@@ -1841,6 +1841,14 @@ export const ICONS: Record<string, IconGeometry> = {
     viewBox: "0 0 24 24",
     body: '<path fill="currentColor" d="M14 20V7H9V4h13v3h-5v13zm-9 0v-8H2V9h9v3H8v8z"/>',
   },
+  "material-formatTextdirectionLToR": {
+    viewBox: "0 0 24 24",
+    body: '<path fill="currentColor" d="M9 15v-5q-1.65 0-2.825-1.175T5 6t1.175-2.825T9 2h8v2h-2v11h-2V4h-2v11zm0-7V4q-.825 0-1.412.588T7 6t.588 1.413T9 8m8 14l-1.4-1.4l1.6-1.6H3v-2h14.2l-1.6-1.6L17 14l4 4z"/>',
+  },
+  "material-formatTextdirectionRToL": {
+    viewBox: "0 0 24 24",
+    body: '<path fill="currentColor" d="M9 15v-5q-1.65 0-2.825-1.175T5 6t1.175-2.825T9 2h8v2h-2v11h-2V4h-2v11zm-2.2 4l1.6 1.6L7 22l-4-4l4-4l1.4 1.4L6.8 17H21v2zM9 8V4q-.825 0-1.412.588T7 6t.588 1.413T9 8m0-2"/>',
+  },
   "material-formatTextdirectionVertical": {
     viewBox: "0 0 24 24",
     body: '<path fill="currentColor" d="M6 18v-5q-1.65 0-2.825-1.175T2 9t1.175-2.825T6 5h8v2h-2v11h-2V7H8v11zm12 2l-4-4l1.4-1.4l1.6 1.575V5h2v11.175l1.6-1.6L22 16zM6 11V7q-.825 0-1.412.588T4 9t.588 1.413T6 11m0-2"/>',

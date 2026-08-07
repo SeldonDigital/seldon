@@ -6,6 +6,7 @@ import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import { mergeStateProps } from "@app/sidebars/state-props"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import ItemProperty from "@seldon/components/elements/ItemProperty.vue"
+import ItemPropertyTextArea from "@seldon/components/elements/ItemPropertyTextArea.vue"
 import ItemPropertyToggle from "@seldon/components/elements/ItemPropertyToggle.vue"
 import { computed, nextTick, ref, watch } from "vue"
 
@@ -59,6 +60,7 @@ const view = useRowProperty({
 const control = view.control
 const isLookParent = computed(() => Boolean(props.property.isLookParent))
 const isSwitch = computed(() => control.kind.value === "switch")
+const isMultiline = computed(() => Boolean(props.property.multiline))
 
 // Token-card chrome. The top row drops its name, since the card names the token. Every
 // leaf in the card drops its disclosure, so a facet sits flush at the card's left edge
@@ -147,6 +149,19 @@ const seldonRefs = computed(() => ({
   propertyValueMenu: view.listItemProps.value.buttonIconic2,
   propertyValueMenuIcon: view.listItemProps.value.icon3,
   propertyActions: actionsMenu.buttonIconic.value,
+}))
+
+// ---- ItemPropertyTextArea (multiline rows) ----
+// Mirrors the value-row slots but carries the value through a `Textarea`
+// (`propertyTextAreaValueLabel`) and owns no value-menu chevron.
+const textAreaRefs = computed(() => ({
+  propertyTextAreaDisclosure: view.listItemProps.value.buttonIconic,
+  propertyTextAreaDisclosureIcon: view.listItemProps.value.icon,
+  propertyTextAreaLabel: nameLabelSlot.value,
+  propertyTextAreaValueField: comboboxFieldProps.value,
+  propertyTextAreaIcon: valueIconProps.value ?? {},
+  propertyTextAreaValueLabel: valueLabelProps.value,
+  propertyTextAreaActions: actionsMenu.buttonIconic.value,
 }))
 
 // ---- ItemPropertyToggle (switch rows) ----
@@ -288,6 +303,22 @@ function onDrop(event: DragEvent): void {
     :input="{}"
     :icon2="{}"
     :toggle-switch="{}"
+    :button-iconic2="{}"
+    @click="view.onRowClick"
+    @dblclick="view.onRowDoubleClick"
+  />
+
+  <ItemPropertyTextArea
+    v-else-if="isMultiline"
+    :ref="(el: any) => (view.rowRef.value = el)"
+    class="properties-row"
+    :style="rowStyle"
+    :seldon-refs="textAreaRefs"
+    :button-iconic="hideDisclosure ? null : {}"
+    :form-control-combobox="{}"
+    :input="{}"
+    :icon2="valueIconSlot"
+    :textarea="{}"
     :button-iconic2="{}"
     @click="view.onRowClick"
     @dblclick="view.onRowDoubleClick"
