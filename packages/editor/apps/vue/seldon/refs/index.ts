@@ -191,6 +191,51 @@ export type SeldonRef =
   | "tokenChipIcon"
   | "tokenChipName"
   | "tokenChipValue"
+  | "typeSpecimenCallout"
+  | "typeSpecimenCalloutLabel"
+  | "typeSpecimenCalloutPreview"
+  | "typeSpecimenCalloutSpec"
+  | "typeSpecimenDisplay"
+  | "typeSpecimenDisplayLabel"
+  | "typeSpecimenDisplayPreview"
+  | "typeSpecimenDisplaySpec"
+  | "typeSpecimenFamily"
+  | "typeSpecimenFamilyLabel"
+  | "typeSpecimenFamilySizes"
+  | "typeSpecimenGlyphs"
+  | "typeSpecimenHeading"
+  | "typeSpecimenHeadingLabel"
+  | "typeSpecimenHeadingPreview"
+  | "typeSpecimenHeadingSpec"
+  | "typeSpecimenLabel"
+  | "typeSpecimenLabelLabel"
+  | "typeSpecimenLabelPreview"
+  | "typeSpecimenLabelSpec"
+  | "typeSpecimenLowercase"
+  | "typeSpecimenName"
+  | "typeSpecimenNormal"
+  | "typeSpecimenNormalLabel"
+  | "typeSpecimenNormalPreview"
+  | "typeSpecimenNormalSpec"
+  | "typeSpecimenNumbers"
+  | "typeSpecimenPreview"
+  | "typeSpecimenSubheading"
+  | "typeSpecimenSubheadingLabel"
+  | "typeSpecimenSubheadingPreview"
+  | "typeSpecimenSubheadingSpec"
+  | "typeSpecimenSubtitle"
+  | "typeSpecimenSubtitleLabel"
+  | "typeSpecimenSubtitlePreview"
+  | "typeSpecimenSubtitleSpec"
+  | "typeSpecimenTagline"
+  | "typeSpecimenTaglineLabel"
+  | "typeSpecimenTaglinePreview"
+  | "typeSpecimenTaglineSpec"
+  | "typeSpecimenTitle"
+  | "typeSpecimenTitleLabel"
+  | "typeSpecimenTitlePreview"
+  | "typeSpecimenTitleSpec"
+  | "typeSpecimenUppercase"
   | "workspaceField"
   | "workspaceIcon"
   | "workspaceName"
@@ -1294,7 +1339,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   hariToolIcon: {
     component: "Icon",
     nodeId: "component-message-GL7BdSOW",
-    className: "sdn-icon sdn-icon--gl7b",
+    className: "sdn-icon sdn-icon--rdh1",
     views: [
       {
         component: "MessageToolsUsed",
@@ -1798,7 +1843,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   optionIcon: {
     component: "Icon",
     nodeId: "component-icon-3QOuNmn2",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "MenuItemOption",
@@ -2715,6 +2760,636 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/PanelToken.vue",
         slot: "textLabel2",
         type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenCallout: {
+    component: "Frame",
+    nodeId: "component-specimen-uQd5pscL",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame13",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenCalloutLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-T17uayyR",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel10",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenCalloutPreview: {
+    component: "TextCallout",
+    nodeId: "component-text-ZnnyeW4n",
+    className: "sdn-text-callout sdn-text-subheading--bxdp",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textCallout",
+        type: "TextCalloutProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenCalloutSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-S2Lkt3tM",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel11",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenDisplay: {
+    component: "Frame",
+    nodeId: "component-specimen-nJE5cFpY",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame28",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenDisplayLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-MhjW7rWk",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel20",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenDisplayPreview: {
+    component: "TextDisplay",
+    nodeId: "component-specimen-EjWEeoXW",
+    className: "sdn-text-display sdn-text-display--ejwe",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textDisplay",
+        type: "TextDisplayProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenDisplaySpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-XJTkUrjk",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel21",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenFamily: {
+    component: "Frame",
+    nodeId: "component-specimen-ODZo7CJf",
+    className: "sdn-frame sdn-frame--odzo",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame2",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenFamilyLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-xoIlaLQb",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenFamilySizes: {
+    component: "TextLabel",
+    nodeId: "component-specimen-Tkcgclsn",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel2",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenGlyphs: {
+    component: "Frame",
+    nodeId: "component-specimen-PMDrra1F",
+    className: "sdn-frame sdn-frame--pmdr",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame3",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenHeading: {
+    component: "Frame",
+    nodeId: "component-specimen-lo80abuV",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame25",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenHeadingLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-k0yUSCHu",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel18",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenHeadingPreview: {
+    component: "TextHeading",
+    nodeId: "component-specimen-dNYXY4qa",
+    className: "sdn-text-heading sdn-text-heading--dnyx",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textHeading",
+        type: "TextHeadingProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenHeadingSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-SNFIBIv8",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel19",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenLabel: {
+    component: "Frame",
+    nodeId: "component-specimen-xqwJi5Jg",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame7",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenLabelLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-XRcQox0m",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel5",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenLabelPreview: {
+    component: "TextLabel",
+    nodeId: "component-specimen-aEb2KaqC",
+    className: "sdn-text-label sdn-text-description--welb",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel7",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenLabelSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-X5TqHybW",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel6",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenLowercase: {
+    component: "TextDescription",
+    nodeId: "component-specimen-yVnO6dsd",
+    className: "sdn-text-description sdn-text-description--hrzz",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textDescription3",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenName: {
+    component: "TextDescription",
+    nodeId: "component-specimen-r0mkTyr8",
+    className: "sdn-text-description sdn-text-description--r0mk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenNormal: {
+    component: "Frame",
+    nodeId: "component-specimen-PiQxGuai",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame4",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenNormalLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-oUBFDRtw",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel3",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenNormalPreview: {
+    component: "TextDescription",
+    nodeId: "component-specimen-WDmLQSqd",
+    className: "sdn-text-description sdn-text-description--wdml",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textDescription5",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenNormalSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-mYNPmcx3",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel4",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenNumbers: {
+    component: "TextDescription",
+    nodeId: "component-specimen-i3QDmJxC",
+    className: "sdn-text-description sdn-text-description--hrzz",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textDescription4",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenPreview: {
+    component: "Frame",
+    nodeId: "component-specimen-gnQ4cbbE",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenSubheading: {
+    component: "Frame",
+    nodeId: "component-specimen-GEWzkjFx",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame22",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenSubheadingLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-s3IeNXFz",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel16",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenSubheadingPreview: {
+    component: "TextSubheading",
+    nodeId: "component-specimen-Bxdpn48o",
+    className: "sdn-text-subheading sdn-text-subheading--bxdp",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textSubheading",
+        type: "TextSubheadingProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenSubheadingSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-i4yXRzai",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel17",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenSubtitle: {
+    component: "Frame",
+    nodeId: "component-specimen-aNDq9HaS",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame16",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenSubtitleLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-Zm0yqfu0",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel12",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenSubtitlePreview: {
+    component: "TextSubtitle",
+    nodeId: "component-specimen-Hb7Vdamn",
+    className: "sdn-text-subtitle sdn-text-title--drqy",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textSubtitle",
+        type: "TextSubtitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenSubtitleSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-bK09UY69",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel13",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenTagline: {
+    component: "Frame",
+    nodeId: "component-specimen-ahkJvy2j",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame10",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenTaglineLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-p8dbp5n9",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel8",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenTaglinePreview: {
+    component: "TextTagline",
+    nodeId: "component-text-pxsLILAj",
+    className: "sdn-text-tagline sdn-text-title--drqy",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textTagline",
+        type: "TextTaglineProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenTaglineSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-Qd8sVx0Q",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel9",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenTitle: {
+    component: "Frame",
+    nodeId: "component-specimen-G6ZOHUeX",
+    className: "sdn-frame sdn-frame--uqd5",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "frame19",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  typeSpecimenTitleLabel: {
+    component: "TextLabel",
+    nodeId: "component-specimen-M5Dls04j",
+    className: "sdn-text-label sdn-text-label--t17u",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel14",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenTitlePreview: {
+    component: "TextTitle",
+    nodeId: "component-specimen-oAbDAwzF",
+    className: "sdn-text-title sdn-text-title--drqy",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textTitle",
+        type: "TextTitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenTitleSpec: {
+    component: "TextLabel",
+    nodeId: "component-specimen-teYLJUS1",
+    className: "sdn-text-label sdn-text-label--s2lk",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textLabel15",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  typeSpecimenUppercase: {
+    component: "TextDescription",
+    nodeId: "component-specimen-HrZZ2mDy",
+    className: "sdn-text-description sdn-text-description--hrzz",
+    views: [
+      {
+        component: "Specimen",
+        file: "modules/Specimen.vue",
+        slot: "textDescription2",
+        type: "TextDescriptionProps",
         rendersWhen: "when-passed",
       },
     ],

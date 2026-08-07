@@ -11,7 +11,6 @@ import {
   resolveActiveIconSetEntryId,
 } from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
 import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
@@ -85,7 +84,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     useSelection()
   const selectedNodeRootId = useSelectedNodeRootId()
   const { workspace } = useWorkspace({ usePreview: false })
-  const { showUnusedProperties, showUnusedFonts, showUnusedIcons } = useEditorConfig()
+  const { showUnusedProperties, showUnusedIcons } = useEditorConfig()
 
   const activeThemeEntryId = useMemo(
     () =>
@@ -356,24 +355,10 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     workspace,
   ])
 
-  const fontVariantSelection = useMemo(() => {
-    if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) return {}
-
-    return workspaceFontCollectionService.getVariantSelection(
-      activeFontCollectionEntryId,
-      workspace,
-    )
-  }, [isFontCollectionEditingMode, activeFontCollectionEntryId, workspace])
-
-  const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
-    if (!isFontCollectionEditingMode || !editedFontCollection) return undefined
-
-    return flattenFontCollectionFamilies(
-      editedFontCollection,
-      fontVariantSelection,
-      showUnusedFonts,
-    )
-  }, [isFontCollectionEditingMode, editedFontCollection, fontVariantSelection, showUnusedFonts])
+  // Font families now live in the Objects sidebar, so the Properties sidebar no
+  // longer builds a families section. Collection-level properties (Name,
+  // Description, Font) still render from `metadataProperties`.
+  const familyProperties: FlatProperty[] | undefined = undefined
 
   const { updateFontCollectionProperty } = useFontCollectionProperties(activeFontCollectionEntryId)
 

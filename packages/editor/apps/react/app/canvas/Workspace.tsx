@@ -16,7 +16,7 @@ import {
 } from "@seldon/core/workspace/model/components"
 
 import { ComponentBoard } from "./boards/ComponentBoard"
-import { FontCollectionBoard } from "./boards/FontCollectionBoard"
+import { FontSpecimenCanvas } from "./boards/FontSpecimenCanvas"
 import { IconSetBoard } from "./boards/IconSetBoard"
 import { IsolationBoards } from "./boards/IsolationBoards"
 import { SandboxCanvas } from "./boards/SandboxCanvas"
@@ -68,7 +68,7 @@ function renderBoard(board: Board) {
     }
 
     if (isFontCollectionBoard(board)) {
-      return <FontCollectionBoard board={board} />
+      return <FontSpecimenCanvas board={board} />
     }
   }
 

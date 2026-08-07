@@ -58,7 +58,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   icon: {
     icon: "seldon-component",
-    className: "sdn-icon sdn-icon--3qou",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
     children: "Menu Item",

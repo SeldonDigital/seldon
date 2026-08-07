@@ -78,7 +78,7 @@ const sdn: Record<string, any> = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--33uo",
+    className: "sdn-frame sdn-frame--pgac",
   },
   formControlRadioButtonControl: {
     className: "sdn-form-control sdn-form-control-radio-button-control--0acl",

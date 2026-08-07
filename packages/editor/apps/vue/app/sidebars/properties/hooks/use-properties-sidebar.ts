@@ -4,7 +4,6 @@ import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
 import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
@@ -130,7 +129,7 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
     let theme: Theme | undefined
     let metadataProperties: FlatProperty[] | undefined
     let metadataVariantLabel: string | undefined
-    let familyProperties: FlatProperty[] | undefined
+    const familyProperties: FlatProperty[] | undefined = undefined
     let iconProperties: FlatProperty[] | undefined
     let node: Variant | Instance | Board | null = selection
 
@@ -226,13 +225,8 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       const entry = ws["font-collections"][fontEntryId]
 
       if (collection) {
-        const selectionMap = workspaceFontCollectionService.getVariantSelection(fontEntryId, ws)
-
-        familyProperties = flattenFontCollectionFamilies(
-          collection,
-          selectionMap,
-          config.showUnusedFonts,
-        )
+        // Family and weight selection now lives in the Objects sidebar, so the
+        // Properties sidebar keeps only the collection's metadata rows.
         metadataVariantLabel = entry?.label
         metadataProperties = buildMetadataProperties({
           name: entry?.label ?? collection.metadata.name,

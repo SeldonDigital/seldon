@@ -78,7 +78,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "hariOutcomeLabel",
   },
   textDescription: {
-    children: "Button background: primary -&gt; accent",
+    children: "Button background: primary -> accent",
     className: "sdn-text-description sdn-text-description--choa",
     "data-seldon-ref": "hariOutcomeText",
   },

@@ -35,6 +35,7 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 
+import FontCollectionEntryRows from "./FontCollectionEntryRows.vue"
 import NodeRow from "./NodeRow.vue"
 import ResourceEntry from "./ResourceEntry.vue"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
@@ -433,7 +434,18 @@ const seldonRefs = computed(() => ({
     />
 
     <FramerExpandable :is-expanded="isExpanded">
-      <template v-if="resourceRowConfig">
+      <template v-if="resourceRowConfig && resourceRowConfig.kind === 'fontCollection'">
+        <FontCollectionEntryRows
+          v-for="entryId in variantRootIds"
+          :key="entryId"
+          :workspace="workspace"
+          :config="resourceRowConfig"
+          :entry-id="entryId"
+          :board-key="boardKey"
+          :parent-is-selected="boardIsActive"
+        />
+      </template>
+      <template v-else-if="resourceRowConfig">
         <ResourceEntry
           v-for="entryId in variantRootIds"
           :key="entryId"

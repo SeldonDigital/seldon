@@ -48,6 +48,10 @@ export const ICONS: Record<string, IconGeometry> = {
     viewBox: "0 0 24 24",
     body: '<path fill="currentColor" d="m12 15.4l-6-6L7.4 8l4.6 4.6L16.6 8L18 9.4z"/>',
   },
+  "material-keyboardArrowRight": {
+    viewBox: "0 0 24 24",
+    body: '<path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"/>',
+  },
   "seldon-more": {
     viewBox: "0 0 24 24",
     fill: "currentColor",
@@ -81,9 +85,10 @@ export const ICONS: Record<string, IconGeometry> = {
     viewBox: "0 0 24 24",
     body: '<path fill="currentColor" d="M6 19h3v-6h6v6h3v-9l-6-4.5L6 10zm-2 2V9l8-6l8 6v12h-7v-6h-2v6zm8-8.75"/>',
   },
-  "material-favorite": {
-    viewBox: "0 0 24 24",
-    body: '<path fill="currentColor" d="m12 21l-1.45-1.3q-2.525-2.275-4.175-3.925T3.75 12.812T2.388 10.4T2 8.15Q2 5.8 3.575 4.225T7.5 2.65q1.3 0 2.475.55T12 4.75q.85-1 2.025-1.55t2.475-.55q2.35 0 3.925 1.575T22 8.15q0 1.15-.387 2.25t-1.363 2.412t-2.625 2.963T13.45 19.7zm0-2.7q2.4-2.15 3.95-3.687t2.45-2.675t1.25-2.026T20 8.15q0-1.5-1-2.5t-2.5-1q-1.175 0-2.175.662T12.95 7h-1.9q-.375-1.025-1.375-1.687T7.5 4.65q-1.5 0-2.5 1t-1 2.5q0 .875.35 1.763t1.25 2.025t2.45 2.675T12 18.3m0-6.825"/>',
+  "material-favoriteBorder": {
+    viewBox: "0 -960 960 960",
+    fill: "red",
+    body: '<path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q54 0 104-17.5t92-50.5L228-676q-33 42-50.5 92T160-480q0 134 93 227t227 93Zm252-124q33-42 50.5-92T800-480q0-134-93-227t-227-93q-54 0-104 17.5T284-732l448 448Z"/>',
   },
   "material-accountCircle": {
     viewBox: "0 0 24 24",
@@ -751,6 +756,10 @@ export const ICONS: Record<string, IconGeometry> = {
   "material-bookmark": {
     viewBox: "0 0 24 24",
     body: '<path fill="currentColor" d="M5 21V5q0-.825.588-1.412T7 3h10q.825 0 1.413.588T19 5v16l-7-3zm2-3.05l5-2.15l5 2.15V5H7zM7 5h10z"/>',
+  },
+  "material-favorite": {
+    viewBox: "0 0 24 24",
+    body: '<path fill="currentColor" d="m12 21l-1.45-1.3q-2.525-2.275-4.175-3.925T3.75 12.812T2.388 10.4T2 8.15Q2 5.8 3.575 4.225T7.5 2.65q1.3 0 2.475.55T12 4.75q.85-1 2.025-1.55t2.475-.55q2.35 0 3.925 1.575T22 8.15q0 1.15-.387 2.25t-1.363 2.412t-2.625 2.963T13.45 19.7zm0-2.7q2.4-2.15 3.95-3.687t2.45-2.675t1.25-2.026T20 8.15q0-1.5-1-2.5t-2.5-1q-1.175 0-2.175.662T12.95 7h-1.9q-.375-1.025-1.375-1.687T7.5 4.65q-1.5 0-2.5 1t-1 2.5q0 .875.35 1.763t1.25 2.025t2.45 2.675T12 18.3m0-6.825"/>',
   },
   "material-flag": {
     viewBox: "0 0 24 24",
@@ -1455,10 +1464,6 @@ export const ICONS: Record<string, IconGeometry> = {
   "material-keyboardArrowLeft": {
     viewBox: "0 0 24 24",
     body: '<path fill="currentColor" d="m14 18l-6-6l6-6l1.4 1.4l-4.6 4.6l4.6 4.6z"/>',
-  },
-  "material-keyboardArrowRight": {
-    viewBox: "0 0 24 24",
-    body: '<path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"/>',
   },
   "material-keyboardArrowUp": {
     viewBox: "0 0 24 24",

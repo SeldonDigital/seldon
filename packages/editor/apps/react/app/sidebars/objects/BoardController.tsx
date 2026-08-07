@@ -12,6 +12,7 @@ import { memo, useCallback, useEffect, useRef } from "react"
 import { useSidebarCanvasTrackingBoard } from "../../overlays/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
+import { FontCollectionEntryRows } from "./FontCollectionFamilyRows"
 import { NodeController } from "./NodeController"
 import { ResourceEntry } from "./ResourceEntry"
 import { RowSelectionTarget } from "./RowSelectionTarget"
@@ -137,15 +138,26 @@ function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) 
 
   const resourceRowConfig = getBoardResourceRowConfig(board)
   const childRows = resourceRowConfig
-    ? variants.map((entryId) => (
-        <ResourceEntry
-          key={entryId}
-          config={resourceRowConfig}
-          entryId={entryId}
-          show={show}
-          parentIsSelected={boardIsActive}
-        />
-      ))
+    ? variants.map((entryId) =>
+        resourceRowConfig.kind === "fontCollection" ? (
+          <FontCollectionEntryRows
+            key={entryId}
+            config={resourceRowConfig}
+            entryId={entryId}
+            boardKey={boardKey}
+            show={show}
+            parentIsSelected={boardIsActive}
+          />
+        ) : (
+          <ResourceEntry
+            key={entryId}
+            config={resourceRowConfig}
+            entryId={entryId}
+            show={show}
+            parentIsSelected={boardIsActive}
+          />
+        ),
+      )
     : variants.map((variantId, index) => {
         const disableReordering = index === 0
 
