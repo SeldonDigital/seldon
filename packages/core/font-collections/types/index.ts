@@ -11,6 +11,7 @@ export type {
   FontCollectionMetadata,
   FontCollectionPipelineInput,
   FontFamilyEntry,
+  FontFamilyMeta,
   FontFamilyTable,
   StockFontCollection,
 } from "./font-collection"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
+import ComboboxOptions from "@app/menus/ComboboxOptions.vue"
 import { buildDisplayInputProps, buildFieldStateProps } from "@app/sidebars/state-props"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
@@ -7,7 +7,8 @@ import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 
-import FontWeightRow from "./FontWeightRow.vue"
+import { PROPERTY_OPTION_ICONS } from "@seldon/core/properties/schemas/data/property-icons"
+
 import { formatFontFamilyKey } from "./font-collection-family-rows"
 
 import type { FontFamilyRowModel } from "./font-collection-family-rows"
@@ -23,59 +24,75 @@ const selection = useSelectionStore()
 const dispatch = useDispatch()
 const { selectedResourceItemKey } = storeToRefs(selection)
 
+const SHOW_ICON = PROPERTY_OPTION_ICONS.display.show
+const HIDE_ICON = PROPERTY_OPTION_ICONS.display.hide
+
+// The family's enabled state reuses the node Show/Hide picker: Show enables
+// every weight (`all`), Hide disables them (`none`). A `custom` family (some
+// weights on) reads as Show, dimmed.
+const SHOW_HIDE_OPTIONS = [
+  [
+    { value: "show", name: "Show" },
+    { value: "hide", name: "Hide" },
+  ],
+]
+
 const selectionKey = computed(() =>
   formatFontFamilyKey(props.boardKey, props.entryId, props.family.slot),
 )
 const isSelected = computed(() => selectedResourceItemKey.value === selectionKey.value)
-const hasWeights = computed(() => props.family.weights.length > 0)
 
-const weightsExpanded = ref(false)
+const rootStyle = computed(() => ({ paddingLeft: `${props.depth * 12}px` }))
 
 function select(event: MouseEvent): void {
   if ((event.target as HTMLElement).closest("button")) return
   selection.selectResourceItem(selectionKey.value)
 }
 
-function onToggleWeights(event: MouseEvent): void {
+const displayOpen = ref(false)
+const displayAnchor = ref<HTMLElement | null>(null)
+
+function onDisplayClick(event: MouseEvent): void {
   event.stopPropagation()
-  if (hasWeights.value) weightsExpanded.value = !weightsExpanded.value
+  displayAnchor.value = event.currentTarget as HTMLElement
+  displayOpen.value = !displayOpen.value
 }
 
-function onTogglePreset(event: MouseEvent): void {
-  event.stopPropagation()
+function onSelectDisplay(value: string): void {
   dispatch({
     type: "set_font_collection_family_preset",
     payload: {
       fontCollectionId: props.entryId,
       slot: props.family.slot,
-      preset: props.family.preset === "all" ? "none" : "all",
+      preset: value === "hide" ? "none" : "all",
     },
   })
+  displayOpen.value = false
 }
 
-const rootStyle = computed(() => ({ paddingLeft: `${props.depth * 12}px` }))
-const presetIcon = computed(() =>
-  props.family.preset === "none" ? "material-checkBoxOutlineBlank" : "material-checkBox",
-)
+function resolveShowHideIcon(value: string): string {
+  return value === "hide" ? HIDE_ICON : SHOW_ICON
+}
+
+const displayValue = computed(() => (props.family.preset === "none" ? "hide" : "show"))
 
 const seldonRefs = computed(() => ({
-  nodeDisclosure: { onClick: onToggleWeights },
-  nodeDisclosureIcon: {
-    style: {
-      transition: "transform 0.2s ease",
-      ...(hasWeights.value
-        ? weightsExpanded.value
-          ? { transform: "rotate(90deg)" }
-          : {}
-        : { opacity: 0 }),
-    },
+  nodeDisclosureIcon: { style: { opacity: 0 } },
+  nodeField: {
+    ...buildFieldStateProps({ selected: isSelected.value }),
+    style: { cursor: "pointer" },
   },
-  nodeField: { ...buildFieldStateProps({ selected: isSelected.value }), style: { cursor: "pointer" } },
   nodeIcon: { icon: "seldon-text" },
   nodeLabel: buildDisplayInputProps(props.family.name),
-  nodeDisplay: { onClick: onTogglePreset, title: `Weights: ${props.family.preset}` },
+  nodeDisplay: {
+    type: "button",
+    "aria-haspopup": "listbox",
+    "aria-expanded": displayOpen.value,
+    onClick: onDisplayClick,
+    style: { position: "relative", zIndex: 10 },
+  },
   nodeDisplayIcon: {
-    icon: presetIcon.value,
+    icon: props.family.preset === "none" ? HIDE_ICON : SHOW_ICON,
     style: props.family.preset === "custom" ? { opacity: 0.5 } : undefined,
   },
 }))
@@ -98,14 +115,13 @@ const seldonRefs = computed(() => ({
     @click="select"
   />
 
-  <FramerExpandable v-if="hasWeights" :is-expanded="weightsExpanded">
-    <FontWeightRow
-      v-for="weight in family.weights"
-      :key="weight.variant"
-      :entry-id="entryId"
-      :slot-id="family.slot"
-      :weight="weight"
-      :depth="depth + 1"
-    />
-  </FramerExpandable>
+  <ComboboxOptions
+    :open="displayOpen"
+    :anchor="displayAnchor"
+    :option-groups="SHOW_HIDE_OPTIONS"
+    :value="displayValue"
+    :resolve-icon="resolveShowHideIcon"
+    @select="onSelectDisplay"
+    @close="displayOpen = false"
+  />
 </template>

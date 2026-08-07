@@ -1,10 +1,10 @@
 import { NODE_FIELD_DISPLAY_ORDER } from "@seldon/core"
+import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { getPropertySections } from "./get-property-sections"
 import { getThemePropertySections } from "./get-theme-property-sections"
 import { getIconRowCategory, titleCase } from "./icon-set-properties-data"
@@ -100,14 +100,27 @@ export function buildPropertyTreeLayout({
         }
       : null
 
+  // A selected font family lists its weights and styles here as On/Off switches.
+  // The section keeps the internal `families` category so both editors route its
+  // rows through the font collection editing context.
   const familiesSection: PropertySection | null =
     familyProperties && familyProperties.length > 0
       ? {
-          label: "Families",
+          label: "Font Weights & Styles",
           category: "families",
           properties: familyProperties.filter((p) => !p.isSubProperty),
         }
       : null
+
+  // A selected font family focuses the tree on its own metadata and weights, so
+  // the board's Theme picker and component sections drop away. `familyProperties`
+  // is only ever set for a family selection, so this never affects a board tree.
+  if (familiesSection) {
+    return {
+      sections: [...(metadataSection ? [metadataSection] : []), familiesSection],
+      allProperties: [...(metadataProperties ?? []), ...(familyProperties ?? [])],
+    }
+  }
 
   if (themeEditingContext?.isThemeEditing) {
     const themeSections = getThemePropertySections(properties, theme)
@@ -154,10 +167,6 @@ export function buildPropertyTreeLayout({
     }
   } else {
     allSections = [...(metadataSection ? [metadataSection] : []), ...regularSections]
-  }
-
-  if (familiesSection) {
-    allSections.push(familiesSection)
   }
 
   if (iconProperties && iconProperties.length > 0) {

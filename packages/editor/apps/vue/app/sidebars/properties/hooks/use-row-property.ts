@@ -382,6 +382,15 @@ export function useRowProperty(input: RowPropertyInput) {
   }
 
   function handleValueFieldClick(event: MouseEvent): void {
+    // A link row (Source, License) has no editor; clicking its value opens the
+    // external page in a new tab.
+    if (property.value.linkHref) {
+      event.stopPropagation()
+      window.open(property.value.linkHref, "_blank", "noopener,noreferrer")
+
+      return
+    }
+
     if (!property.value.isDimmed && property.value.controlType) {
       event.stopPropagation()
       setEditing(true)

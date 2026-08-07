@@ -1,6 +1,5 @@
+import { ComboboxOptions } from "@app/menus"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
-import { IndentationLevel } from "@app/sidebars/hooks/use-indentation"
 import { buildFieldStateProps } from "@app/views/state-props"
 import {
   useSelectionActions,
@@ -9,24 +8,42 @@ import {
 import { formatResourceItemKey } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
+
+import { PROPERTY_OPTION_ICONS } from "@seldon/core/properties/schemas/data/property-icons"
 
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { useFontCollectionFamilyRows } from "./hooks/use-font-collection-family-rows"
 import { useRowClick } from "./hooks/use-row-click"
+import { useRowDisplayPicker } from "./hooks/use-row-display-picker"
 
-import type { FontFamilyRowModel, FontFamilyWeightRow } from "./hooks/use-font-collection-family-rows"
-import type { MouseEvent } from "react"
+import type { FontFamilyRowModel } from "./hooks/use-font-collection-family-rows"
+import type { OptionIconRender } from "@app/menus"
 
 const RESOURCE_ITEM_SELECTION_KIND = "resourceItem"
 
-const CHECKED_ICON = "material-checkBox"
-const UNCHECKED_ICON = "material-checkBoxOutlineBlank"
+const SHOW_ICON = PROPERTY_OPTION_ICONS.display.show
+const HIDE_ICON = PROPERTY_OPTION_ICONS.display.hide
+
+// The family's enabled state reuses the node Show/Hide picker: Show enables
+// every weight (`all`), Hide disables them (`none`). A `custom` family (some
+// weights on) reads as Show, dimmed.
+const SHOW_HIDE_OPTIONS = [
+  [
+    { value: "show", name: "Show" },
+    { value: "hide", name: "Hide" },
+  ],
+]
+
+function resolveShowHideIcon(option?: { value: string; name: string }): OptionIconRender {
+  return { kind: "iconId", icon: option?.value === "hide" ? HIDE_ICON : SHOW_ICON }
+}
 
 /**
  * The font collection's family rows. Font collections have a single default
  * entry and no variants, so the entry row is not shown. The families render
- * directly under the board row, each expandable into weight rows.
+ * directly under the board row as leaf rows; their installed weights are edited
+ * in the Properties sidebar when a family is selected.
  */
 export function FontCollectionEntryRows({
   entryId,
@@ -51,9 +68,9 @@ export function FontCollectionEntryRows({
 }
 
 /**
- * One selectable font family row. Selecting it drives the canvas specimen; its
- * inline toggle flips the family's All/None preset, and its chevron expands the
- * per-weight On/Off rows.
+ * One selectable font family leaf row. Selecting it drives the canvas specimen
+ * and opens its installed font sizes in the Properties sidebar. Its Show/Hide
+ * picker flips the family's All/None preset with the same control nodes use.
  */
 function FontFamilyRow({
   boardKey,
@@ -76,66 +93,49 @@ function FontFamilyRow({
   })
   const isSelected = useSelectionStore((state) => state.selectedResourceItemKey === selectionKey)
 
-  const hasWeights = family.weights.length > 0
-  const [weightsExpanded, setWeightsExpanded] = useState(false)
-
   const onClick = useRowClick({
     activeTool,
     onSelect: () => selectResourceItem(selectionKey),
   })
 
-  const onToggleWeights = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      if (hasWeights) setWeightsExpanded((value) => !value)
-    },
-    [hasWeights],
-  )
-
-  const onTogglePreset = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
+  const selectDisplay = useCallback(
+    (value: string) => {
       dispatch({
         type: "set_font_collection_family_preset",
         payload: {
           fontCollectionId: entryId,
           slot: family.slot,
-          preset: family.preset === "all" ? "none" : "all",
+          preset: value === "hide" ? "none" : "all",
         },
       })
     },
-    [dispatch, entryId, family.slot, family.preset],
+    [dispatch, entryId, family.slot],
   )
 
-  const presetIcon = family.preset === "none" ? UNCHECKED_ICON : CHECKED_ICON
-  const presetIconStyle = family.preset === "custom" ? { opacity: 0.5 } : undefined
+  const displayValue = family.preset === "none" ? "hide" : "show"
+
+  const displayPicker = useRowDisplayPicker({
+    optionGroups: SHOW_HIDE_OPTIONS,
+    value: displayValue,
+    onSelect: selectDisplay,
+    resolveIcon: resolveShowHideIcon,
+  })
+
+  const displayIcon = {
+    icon: family.preset === "none" ? HIDE_ICON : SHOW_ICON,
+    style: family.preset === "custom" ? { opacity: 0.5 } : undefined,
+  }
 
   const comboboxField = buildFieldStateProps({ selected: isSelected })
 
   const seldonRefs = {
-    nodeDisclosure: { onClick: onToggleWeights },
-    nodeDisclosureIcon: {
-      style: {
-        transition: "transform 0.2s ease",
-        ...(hasWeights ? (weightsExpanded ? { transform: "rotate(90deg)" } : {}) : { opacity: 0 }),
-      },
-    },
+    nodeDisclosureIcon: { style: { opacity: 0 } },
     nodeField: { ...comboboxField, style: { cursor: "pointer" } },
     nodeIcon: { icon: "seldon-text" },
     nodeLabel: { value: family.name, readOnly: true, style: { pointerEvents: "none" } },
-    nodeDisplay: { onClick: onTogglePreset, title: `Weights: ${family.preset}` },
-    nodeDisplayIcon: { icon: presetIcon, style: presetIconStyle },
+    nodeDisplay: { ...displayPicker.buttonProps },
+    nodeDisplayIcon: displayIcon,
   }
-
-  const weightRows = hasWeights ? (
-    <FramerExpandable isExpanded={weightsExpanded}>
-      <IndentationLevel>
-        {family.weights.map((weight) => (
-          <FontWeightRow key={weight.variant} entryId={entryId} slot={family.slot} weight={weight} />
-        ))}
-      </IndentationLevel>
-    </FramerExpandable>
-  ) : null
 
   return (
     <>
@@ -152,59 +152,7 @@ function FontFamilyRow({
           data-resource-item-key={selectionKey}
         />
       </RowSelectionTarget>
-      {weightRows}
+      <ComboboxOptions {...displayPicker.options} />
     </>
-  )
-}
-
-/** One font weight row with an inline On/Off toggle. */
-function FontWeightRow({
-  entryId,
-  slot,
-  weight,
-}: {
-  entryId: string
-  slot: string
-  weight: FontFamilyWeightRow
-}) {
-  const { dispatch } = useWorkspace({ usePreview: false })
-
-  const onToggle = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      dispatch({
-        type: "set_font_collection_family_variant",
-        payload: {
-          fontCollectionId: entryId,
-          slot,
-          variant: weight.variant,
-          enabled: !weight.enabled,
-        },
-      })
-    },
-    [dispatch, entryId, slot, weight.variant, weight.enabled],
-  )
-
-  const seldonRefs = {
-    nodeDisclosureIcon: { style: { opacity: 0 } },
-    nodeField: { style: { cursor: "pointer" } },
-    nodeIcon: { style: { opacity: 0 } },
-    nodeLabel: { value: weight.label, readOnly: true, style: { pointerEvents: "none" } },
-    nodeDisplay: { onClick: onToggle },
-    nodeDisplayIcon: { icon: weight.enabled ? CHECKED_ICON : UNCHECKED_ICON },
-  }
-
-  return (
-    <ItemNode
-      buttonIconic={{}}
-      comboboxField={{}}
-      buttonIconic2={{}}
-      buttonIconic3={null}
-      seldonRefs={seldonRefs}
-      onClick={onToggle}
-      aria-checked={weight.enabled}
-      data-testid="objects-sidebar-font-weight"
-      data-font-weight={weight.variant}
-    />
   )
 }

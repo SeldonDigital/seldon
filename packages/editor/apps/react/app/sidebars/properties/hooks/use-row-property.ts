@@ -477,6 +477,15 @@ export function useRowProperty({
   // the options-menu button never reaches here.
   const handleValueFieldClick = useCallback(
     (event: React.MouseEvent) => {
+      // A link row (Source, License) has no editor; clicking its value opens the
+      // external page in a new tab.
+      if (property.linkHref) {
+        event.stopPropagation()
+        window.open(property.linkHref, "_blank", "noopener,noreferrer")
+
+        return
+      }
+
       if (isStateReadOnly) {
         event.stopPropagation()
         addToast(INSTANCE_STATE_EDIT_MESSAGE)
@@ -489,7 +498,14 @@ export function useRowProperty({
         setEditing(true)
       }
     },
-    [isStateReadOnly, addToast, property.isDimmed, property.controlType, setEditing],
+    [
+      property.linkHref,
+      isStateReadOnly,
+      addToast,
+      property.isDimmed,
+      property.controlType,
+      setEditing,
+    ],
   )
 
   const valueLabelProps = buildPropertyValueInput({

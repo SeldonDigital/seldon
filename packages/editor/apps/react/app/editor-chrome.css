@@ -117,6 +117,26 @@ html:not(.sdn-show-focus)
 }
 
 /*
+ * Read-only property rows (metadata: Name, Vendor, Description, Source, ...)
+ * cannot be edited, so their value field drops the editable affordances: no
+ * hover outline and a default cursor. A link row keeps the pointer cursor since
+ * its value still opens an external page on click. Both selectors out-specify
+ * the generated resting and hover border rules.
+ */
+.sdn-combobox-field.sdn-field-readonly,
+.sdn-combobox-field.sdn-field-readonly:hover {
+  border-color: transparent;
+  cursor: default;
+}
+.sdn-combobox-field.sdn-field-link,
+.sdn-combobox-field.sdn-field-link:hover {
+  cursor: pointer;
+}
+.sdn-combobox-field.sdn-field-link .sdn-input {
+  color: var(--sdn-swatch-primary);
+}
+
+/*
  * The Export Components dialog authors a resting border on its fields, so
  * blanking the border above would drop it for as long as the field holds focus.
  * Restore the resting color instead, the way the menu rules do.

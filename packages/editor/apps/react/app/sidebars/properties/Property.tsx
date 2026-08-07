@@ -167,6 +167,15 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
   // aligned, but disable it: `aria-disabled` marks the state, and
   // `pointerEvents: none` stops both the hover styling and click-into-edit, so
   // the row body's own click still toggles the disclosure.
+  // A dimmed row is read-only, so its value field drops the editable hover
+  // outline. A link row (Source) keeps a pointer cursor since its value still
+  // opens an external page on click.
+  const readOnlyFieldClass = props.property.isDimmed
+    ? props.property.linkHref
+      ? "sdn-field-readonly sdn-field-link"
+      : "sdn-field-readonly"
+    : undefined
+
   const comboboxField = props.property.isLookParent
     ? ({
         "aria-disabled": true,
@@ -175,6 +184,7 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
     : ({
         ref: view.setValueFieldRef,
         onClick: view.onValueFieldClick,
+        className: readOnlyFieldClass,
       } as ComboboxFieldProps)
 
   // Drive each slot through its stable workspace ref. The value `input` slot is

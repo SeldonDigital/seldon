@@ -1,5 +1,6 @@
 import { GOOGLE_FONT_FAMILIES } from "../../../properties/constants/typography/font-families"
 import { googleDefaultEnabledFamilies } from "./default-enabled"
+import { googleFontMetadata } from "./metadata"
 
 import type { FontFamilyEntry, StockFontCollection } from "../../types/font-collection"
 
@@ -14,10 +15,13 @@ function slugify(family: string): string {
 const families: Record<string, FontFamilyEntry> = {}
 
 for (const font of GOOGLE_FONT_FAMILIES) {
-  families[slugify(font.family)] = {
+  const slug = slugify(font.family)
+
+  families[slug] = {
     name: font.family,
     origin: "remote",
     variants: font.variants,
+    ...googleFontMetadata[slug],
   }
 }
 

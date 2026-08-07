@@ -109,10 +109,23 @@ const valueLabelProps = computed(() =>
     view.stateRef.value,
   ),
 )
+// A dimmed row is read-only, so its value field drops the editable hover
+// outline. A link row (Source) keeps a pointer cursor since its value still
+// opens an external page on click.
+const readOnlyFieldClass = computed(() => {
+  if (!props.property.isDimmed) return undefined
+
+  return props.property.linkHref ? "sdn-field-readonly sdn-field-link" : "sdn-field-readonly"
+})
+
 const comboboxFieldProps = computed(() =>
   isLookParent.value
     ? { "aria-disabled": true, style: { pointerEvents: "none" } }
-    : { onClick: view.onValueFieldClick, "data-frame-ref": "true" },
+    : {
+        onClick: view.onValueFieldClick,
+        "data-frame-ref": "true",
+        className: readOnlyFieldClass.value,
+      },
 )
 
 // Positional enabler: suppress `icon2` with `null` when the value icon is hidden;

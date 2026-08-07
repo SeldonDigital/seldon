@@ -35,6 +35,7 @@
     "export:seldon:vue": "npm run export:seldon --workspace @seldon/editor-vue",
     "icons": "node scripts/generate-icons.mjs",
     "fonts": "node scripts/generate-fonts.mjs",
+    "fonts:meta": "node scripts/generate-font-metadata.mjs",
     "bindings": "npm run bindings --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "bindings:check": "npm run bindings:check --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "notices:thirdparty": "node packages/editor/shared/scripts/generate-third-party-notices.mjs",

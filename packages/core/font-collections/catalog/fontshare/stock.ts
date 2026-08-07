@@ -1,5 +1,6 @@
 import { FONTSHARE_FONT_FAMILIES } from "../../../properties/constants/typography/fontshare-font-families"
 import { fontshareDefaultEnabledFamilies } from "./default-enabled"
+import { fontshareFontMetadata } from "./metadata"
 
 import type { FontFamilyEntry, StockFontCollection } from "../../types/font-collection"
 
@@ -14,10 +15,13 @@ function slugify(family: string): string {
 const families: Record<string, FontFamilyEntry> = {}
 
 for (const font of FONTSHARE_FONT_FAMILIES) {
-  families[slugify(font.family)] = {
+  const slug = slugify(font.family)
+
+  families[slug] = {
     name: font.family,
     origin: "fontshare",
     variants: font.variants,
+    ...fontshareFontMetadata[slug],
   }
 }
 
