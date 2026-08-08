@@ -4,12 +4,20 @@ import { persist } from "zustand/middleware"
 import type { PlatformId } from "@seldon/factory/export/types"
 
 /**
+ * Target project layout for the export. `none` keeps the generated library at
+ * the output root; the others match a framework's expected folders. The
+ * framework-to-layout mapping is applied where the export runs, not here.
+ */
+export type FrameworkId = "none" | "vite" | "next"
+
+/**
  * The Export Components dialog's target platform and scope toggles. Held apart
  * from the dialog view-model and persisted, so reopening the dialog restores the
  * last-used selections instead of snapping back to defaults each time.
  */
 interface ExportOptionsState {
   platform: PlatformId
+  framework: FrameworkId
   includeHidden: boolean
   allThemes: boolean
   allFonts: boolean
@@ -19,6 +27,7 @@ interface ExportOptionsState {
   includeScripts: boolean
 
   setPlatform: (value: PlatformId) => void
+  setFramework: (value: FrameworkId) => void
   setIncludeHidden: (value: boolean) => void
   setAllThemes: (value: boolean) => void
   setAllFonts: (value: boolean) => void
@@ -32,6 +41,7 @@ export const useExportOptions = create<ExportOptionsState>()(
   persist(
     (set) => ({
       platform: "react",
+      framework: "none",
       includeHidden: false,
       allThemes: false,
       allFonts: false,
@@ -41,6 +51,7 @@ export const useExportOptions = create<ExportOptionsState>()(
       includeScripts: true,
 
       setPlatform: (value) => set({ platform: value }),
+      setFramework: (value) => set({ framework: value }),
       setIncludeHidden: (value) => set({ includeHidden: value }),
       setAllThemes: (value) => set({ allThemes: value }),
       setAllFonts: (value) => set({ allFonts: value }),

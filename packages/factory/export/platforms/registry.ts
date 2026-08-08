@@ -36,6 +36,12 @@ export const PLATFORMS: Record<PlatformId, PlatformDefinition> = {
     styles: "css-properties",
     export: exportReact,
   },
+  svelte: {
+    id: "svelte",
+    label: "Svelte",
+    status: "planned",
+    styles: "css-properties",
+  },
   swift: {
     id: "swift",
     label: "Swift",
@@ -48,12 +54,6 @@ export const PLATFORMS: Record<PlatformId, PlatformDefinition> = {
     status: "available",
     styles: "css-properties",
     export: exportVue,
-  },
-  svelte: {
-    id: "svelte",
-    label: "Svelte",
-    status: "planned",
-    styles: "css-properties",
   },
 }
 

@@ -5,8 +5,16 @@ import type { PlatformId } from "@seldon/factory/export/types"
 
 const STORAGE_KEY = "export-options"
 
+/**
+ * Target project layout for the export. `none` keeps the generated library at
+ * the output root; the others match a framework's expected folders. The
+ * framework-to-layout mapping is applied where the export runs, not here.
+ */
+export type FrameworkId = "none" | "vite" | "next"
+
 interface PersistedExportOptions {
   platform: PlatformId
+  framework: FrameworkId
   includeHidden: boolean
   allThemes: boolean
   allFonts: boolean
@@ -38,6 +46,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
   const persisted = loadPersisted()
 
   const platform = ref<PlatformId>(persisted.platform ?? "vue")
+  const framework = ref<FrameworkId>(persisted.framework ?? "none")
   const includeHidden = ref(persisted.includeHidden ?? false)
   const allThemes = ref(persisted.allThemes ?? false)
   const allFonts = ref(persisted.allFonts ?? false)
@@ -49,6 +58,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
   watch(
     [
       platform,
+      framework,
       includeHidden,
       allThemes,
       allFonts,
@@ -61,6 +71,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
       if (typeof localStorage === "undefined") return
       const snapshot: PersistedExportOptions = {
         platform: platform.value,
+        framework: framework.value,
         includeHidden: includeHidden.value,
         allThemes: allThemes.value,
         allFonts: allFonts.value,
@@ -77,6 +88,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
 
   return {
     platform,
+    framework,
     includeHidden,
     allThemes,
     allFonts,

@@ -80,7 +80,9 @@ export function mergeSlot<T extends object>(
 
 /**
  * The opt-in form of `mergeSlot`, for a slot the component does not render by
- * default. It returns `null` unless the caller passes props for the slot.
+ * default. It stays hidden until a caller opts it in, either by passing props
+ * for the slot or by addressing it through a matching `seldonRefs` entry. A
+ * caller that passes `null` suppresses the slot even when a ref exists.
  *
  * @param base - The slot's baked default props from `sdn`
  * @param override - The caller's props for this slot
@@ -91,7 +93,10 @@ export function mergeOptionalSlot<T extends object>(
   override: T | null | undefined,
   refs?: SeldonRefs,
 ): T | null {
-  if (override === null || override === undefined) return null
+  const refOverride = readRefOverride(base, refs)
 
-  return layer(base, override, readRefOverride(base, refs))
+  if (override === null) return null
+  if (override === undefined && refOverride === undefined) return null
+
+  return layer(base, override, refOverride)
 }

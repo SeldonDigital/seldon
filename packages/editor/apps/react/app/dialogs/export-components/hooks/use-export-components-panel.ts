@@ -10,6 +10,8 @@ import { useCallback, useEffect, useState } from "react"
 
 import { useExportOptions } from "./use-export-options"
 
+import type { FrameworkId } from "./use-export-options"
+
 /** Upper bound on a workspace name, matching the inline title rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
 
@@ -19,6 +21,18 @@ export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
   label: platform.label,
   available: platform.status === "available",
 }))
+
+/**
+ * Project layouts shown in the dialog picker. `none` writes to the output root;
+ * the others match a framework's folder layout. Selection persists now; mapping
+ * it to the export's output paths is wired separately.
+ */
+export const EXPORT_FRAMEWORK_OPTIONS: Array<{ id: FrameworkId; label: string; available: boolean }> =
+  [
+    { id: "none", label: "None", available: true },
+    { id: "vite", label: "Vite", available: true },
+    { id: "next", label: "Next.js", available: true },
+  ]
 
 /**
  * View-model for the Export Components dialog. Holds the target platform, the
@@ -46,6 +60,8 @@ export function useExportComponentsPanel() {
   const {
     platform,
     setPlatform,
+    framework,
+    setFramework,
     includeHidden,
     setIncludeHidden,
     allThemes,
@@ -180,6 +196,8 @@ export function useExportComponentsPanel() {
     commitWorkspaceName,
     platform,
     setPlatform,
+    framework,
+    setFramework,
     includeHidden,
     setIncludeHidden,
     allThemes,

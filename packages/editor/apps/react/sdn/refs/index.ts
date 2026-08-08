@@ -35,25 +35,91 @@ export type SeldonRef =
   | "dialogSearchField"
   | "dialogSearchIcon"
   | "dialogTitle"
+  | "exportAllFonts"
+  | "exportAllFontsLabel"
   | "exportAllFontsNo"
+  | "exportAllFontsNoInput"
+  | "exportAllFontsNoText"
+  | "exportAllFontsRadios"
   | "exportAllFontsYes"
+  | "exportAllFontsYesInput"
+  | "exportAllFontsYesText"
+  | "exportAllIcons"
+  | "exportAllIconsLabel"
   | "exportAllIconsNo"
+  | "exportAllIconsNoInput"
+  | "exportAllIconsNoText"
+  | "exportAllIconsRadios"
   | "exportAllIconsYes"
+  | "exportAllIconsYesInput"
+  | "exportAllIconsYesText"
+  | "exportAllThemes"
+  | "exportAllThemesLabel"
   | "exportAllThemesNo"
+  | "exportAllThemesNoInput"
+  | "exportAllThemesNoText"
+  | "exportAllThemesRadios"
   | "exportAllThemesYes"
+  | "exportAllThemesYesInput"
+  | "exportAllThemesYesText"
   | "exportCancel"
+  | "exportCancelLabel"
+  | "exportComponentsOptions"
   | "exportConfirm"
+  | "exportConfirmLabel"
+  | "exportFieldset"
+  | "exportFieldsetLabel"
+  | "exportFontLinks"
+  | "exportFontLinksLabel"
   | "exportFontLinksNo"
+  | "exportFontLinksNoInput"
+  | "exportFontLinksNoText"
+  | "exportFontLinksRadios"
   | "exportFontLinksYes"
+  | "exportFontLinksYesInput"
+  | "exportFontLinksYesText"
+  | "exportFramework"
+  | "exportFrameworkCombobox"
+  | "exportFrameworkField"
+  | "exportFrameworkLabel"
+  | "exportHidden"
+  | "exportHiddenLabel"
   | "exportHiddenNo"
+  | "exportHiddenNoInput"
+  | "exportHiddenNoText"
+  | "exportHiddenRadios"
   | "exportHiddenYes"
+  | "exportHiddenYesInput"
+  | "exportHiddenYesText"
   | "exportPlatform"
-  | "exportRootPath"
-  | "exportSavedWorkspaceNo"
-  | "exportSavedWorkspaceYes"
+  | "exportPlatformCombobox"
+  | "exportPlatformField"
+  | "exportPlatformLabel"
+  | "exportProjectFolder"
+  | "exportProjectFolderField"
+  | "exportProjectFolderLabel"
+  | "exportScripts"
+  | "exportScriptsLabel"
   | "exportScriptsNo"
+  | "exportScriptsNoInput"
+  | "exportScriptsNoText"
+  | "exportScriptsRadios"
   | "exportScriptsYes"
+  | "exportScriptsYesInput"
+  | "exportScriptsYesText"
+  | "exportTitle"
+  | "exportWorkspace"
+  | "exportWorkspaceLabel"
   | "exportWorkspaceName"
+  | "exportWorkspaceNameField"
+  | "exportWorkspaceNameLabel"
+  | "exportWorkspaceNo"
+  | "exportWorkspaceNoInput"
+  | "exportWorkspaceNoText"
+  | "exportWorkspaceRadios"
+  | "exportWorkspaceYes"
+  | "exportWorkspaceYesInput"
+  | "exportWorkspaceYesText"
   | "filterField"
   | "filterFieldClear"
   | "filterFieldClearIcon"
@@ -588,6 +654,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportAllFonts: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-UvbzIVHJ",
+    className: "sdn-form-control sdn-form-control-radio--9dpd",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadio4",
+        type: "FormControlRadioProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllFontsLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-f2oHl8l5",
+    className: "sdn-text-label sdn-text-label--s1qr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel14",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   exportAllFontsNo: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-MVEPprzo",
@@ -602,6 +696,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportAllFontsNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-7HovkJam",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton8",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllFontsNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-uh44tvdo",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel16",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllFontsRadios: {
+    component: "Frame",
+    nodeId: "component-panel-dLnCtI4z",
+    className: "sdn-frame sdn-frame--pwes",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame5",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportAllFontsYes: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-S3RSoVPE",
@@ -612,6 +748,62 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/DialogExportComponent.tsx",
         slot: "formControlRadioButtonControl7",
         type: "FormControlRadioButtonControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllFontsYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-Nz7GrI51",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton7",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllFontsYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-4Ys1Hi5r",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel15",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllIcons: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-KkUmZjBn",
+    className: "sdn-form-control sdn-form-control-radio--9dpd",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadio5",
+        type: "FormControlRadioProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllIconsLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-YjT3B6kJ",
+    className: "sdn-text-label sdn-text-label--s1qr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel17",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -630,6 +822,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportAllIconsNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-qwLNTV3L",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton10",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllIconsNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-0UP9E1i3",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel19",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllIconsRadios: {
+    component: "Frame",
+    nodeId: "component-panel-0L3esXEi",
+    className: "sdn-frame sdn-frame--pwes",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame6",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportAllIconsYes: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-zIRqlgi1",
@@ -640,6 +874,62 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/DialogExportComponent.tsx",
         slot: "formControlRadioButtonControl9",
         type: "FormControlRadioButtonControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllIconsYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-fW6effKc",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton9",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllIconsYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-r8Dy47lC",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel18",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllThemes: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-LDoNfyNl",
+    className: "sdn-form-control sdn-form-control-radio--9dpd",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadio3",
+        type: "FormControlRadioProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportAllThemesLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-0GGGLiz6",
+    className: "sdn-text-label sdn-text-label--s1qr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel11",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -658,6 +948,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportAllThemesNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-Io2Lt5ko",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton6",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllThemesNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-kmvYVk2r",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel13",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllThemesRadios: {
+    component: "Frame",
+    nodeId: "component-panel-TyqHmA9t",
+    className: "sdn-frame sdn-frame--pwes",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame4",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportAllThemesYes: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-kEYPyGPc",
@@ -668,6 +1000,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/DialogExportComponent.tsx",
         slot: "formControlRadioButtonControl5",
         type: "FormControlRadioButtonControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllThemesYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-nC9cqrjI",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton5",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportAllThemesYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-rlRPa543",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel12",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -686,6 +1046,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportCancelLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-yQrrsfVr",
+    className: "sdn-text-label sdn-text-label--wxqf",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel26",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportComponentsOptions: {
+    component: "Frame",
+    nodeId: "component-panel-wwvDjgGM",
+    className: "sdn-frame sdn-frame--q7m7",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportConfirm: {
     component: "Button",
     nodeId: "component-panel-Zd52I5RB",
@@ -697,6 +1085,76 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "button2",
         type: "ButtonProps",
         rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportConfirmLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-oYUMImJS",
+    className: "sdn-text-label sdn-text-label--wxqf",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel27",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFieldset: {
+    component: "Fieldset",
+    nodeId: "component-fieldset-6N0cR2l4",
+    className: "sdn-fieldset sdn-fieldset--6n0c",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "fieldset",
+        type: "FieldsetProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFieldsetLabel: {
+    component: "Legend",
+    nodeId: "component-fieldset-bTym0xh9",
+    className: "sdn-legend sdn-legend--btym",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "legend",
+        type: "LegendProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportFontLinks: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-4PTSuHoi",
+    className: "sdn-form-control sdn-form-control-radio--4pts",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadio",
+        type: "FormControlRadioProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFontLinksLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-tPfI3gZQ",
+    className: "sdn-text-label sdn-text-label--l6fl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel5",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
       },
     ],
   },
@@ -714,6 +1172,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportFontLinksNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-O2ZyyJhM",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton2",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFontLinksNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-GnaOguGA",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel7",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFontLinksRadios: {
+    component: "Frame",
+    nodeId: "component-panel-sCN7yai0",
+    className: "sdn-frame sdn-frame--scn7",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame2",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportFontLinksYes: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-e2r4Cxh5",
@@ -724,6 +1224,118 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/DialogExportComponent.tsx",
         slot: "formControlRadioButtonControl",
         type: "FormControlRadioButtonControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFontLinksYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-ZjpBZGUM",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFontLinksYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-w0PSar1N",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel6",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFramework: {
+    component: "FormControl",
+    nodeId: "component-panel-aJ9Qe4V9",
+    className: "sdn-form-control sdn-form-control--vmxp",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControl2",
+        type: "FormControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFrameworkCombobox: {
+    component: "ComboboxField",
+    nodeId: "component-panel-V8k5JS1m",
+    className: "sdn-combobox-field sdn-combobox-field--zfi3",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "comboboxField",
+        type: "ComboboxFieldProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportFrameworkField: {
+    component: "Input",
+    nodeId: "component-panel-Tvbh8ypr",
+    className: "sdn-input sdn-input--pzcf",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "input2",
+        type: "InputProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportFrameworkLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-BP9YnICE",
+    className: "sdn-text-label sdn-text-label--l6fl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel2",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportHidden: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-9DpDq8KT",
+    className: "sdn-form-control sdn-form-control-radio--9dpd",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadio2",
+        type: "FormControlRadioProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportHiddenLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-S1QRLOFw",
+    className: "sdn-text-label sdn-text-label--s1qr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel8",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -742,6 +1354,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportHiddenNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-txlNct0T",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton4",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportHiddenNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-tSDwm2Gl",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel10",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportHiddenRadios: {
+    component: "Frame",
+    nodeId: "component-panel-PwEsxnYz",
+    className: "sdn-frame sdn-frame--pwes",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame3",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportHiddenYes: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-g8TxAT2z",
@@ -756,7 +1410,63 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportHiddenYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-InGP5efz",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton3",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportHiddenYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-9VznN7o5",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel9",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   exportPlatform: {
+    component: "FormControl",
+    nodeId: "component-panel-v5j9ARUH",
+    className: "sdn-form-control sdn-form-control--vmxp",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControl3",
+        type: "FormControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportPlatformCombobox: {
+    component: "ComboboxField",
+    nodeId: "component-comboboxField-ZfI32rEV",
+    className: "sdn-combobox-field sdn-combobox-field--zfi3",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "comboboxField2",
+        type: "ComboboxFieldProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportPlatformField: {
     component: "Input",
     nodeId: "component-comboboxField-kbxUrlMi",
     className: "sdn-input sdn-input--pzcf",
@@ -770,44 +1480,86 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  exportRootPath: {
+  exportPlatformLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-nrBJ9rh4",
+    className: "sdn-text-label sdn-text-label--l6fl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel3",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportProjectFolder: {
+    component: "FormControl",
+    nodeId: "component-panel-BLsB3Hcc",
+    className: "sdn-form-control sdn-form-control--vmxp",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControl4",
+        type: "FormControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportProjectFolderField: {
     component: "Input",
-    nodeId: "component-panel-brFiKeXr",
+    nodeId: "component-panel-kaa60LYJ",
     className: "sdn-input sdn-input--j1ro",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "input2",
+        slot: "input4",
         type: "InputProps",
         rendersWhen: "unless-null",
       },
     ],
   },
-  exportSavedWorkspaceNo: {
-    component: "FormControlRadioButtonControl",
-    nodeId: "component-formControl-VLJbSASU",
-    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
+  exportProjectFolderLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-sVgadj6c",
+    className: "sdn-text-label sdn-text-label--l6fl",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "formControlRadioButtonControl12",
-        type: "FormControlRadioButtonControlProps",
+        slot: "textLabel4",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
   },
-  exportSavedWorkspaceYes: {
-    component: "FormControlRadioButtonControl",
-    nodeId: "component-formControl-vcsfDcEC",
-    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
+  exportScripts: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-tzMtcq9e",
+    className: "sdn-form-control sdn-form-control-radio--9dpd",
     views: [
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "formControlRadioButtonControl11",
-        type: "FormControlRadioButtonControlProps",
+        slot: "formControlRadio7",
+        type: "FormControlRadioProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportScriptsLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-hEYKmBWF",
+    className: "sdn-text-label sdn-text-label--s1qr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel23",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -826,6 +1578,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportScriptsNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-OgPZgrfP",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton14",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportScriptsNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-K7Hriu83",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel25",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportScriptsRadios: {
+    component: "Frame",
+    nodeId: "component-panel-nNvv46jx",
+    className: "sdn-frame sdn-frame--pwes",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame8",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   exportScriptsYes: {
     component: "FormControlRadioButtonControl",
     nodeId: "component-formControl-l1Ymraon",
@@ -840,7 +1634,91 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  exportScriptsYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-WfkmeFK9",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton13",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportScriptsYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-QozmVoPW",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel24",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportTitle: {
+    component: "TextTitle",
+    nodeId: "component-panel-Mt5jv86Z",
+    className: "sdn-text-title sdn-text-title--j8d9",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textTitle",
+        type: "TextTitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspace: {
+    component: "FormControlRadio",
+    nodeId: "component-panel-dnGAAl9e",
+    className: "sdn-form-control sdn-form-control-radio--9dpd",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadio6",
+        type: "FormControlRadioProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-Qd2TNOmw",
+    className: "sdn-text-label sdn-text-label--s1qr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel20",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   exportWorkspaceName: {
+    component: "FormControl",
+    nodeId: "component-formControl-VMxpUQed",
+    className: "sdn-form-control sdn-form-control--vmxp",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControl",
+        type: "FormControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceNameField: {
     component: "Input",
     nodeId: "component-formControl-j1rONFyf",
     className: "sdn-input sdn-input--j1ro",
@@ -851,6 +1729,118 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "input",
         type: "InputProps",
         rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportWorkspaceNameLabel: {
+    component: "TextLabel",
+    nodeId: "component-formControl-L6FLeZP8",
+    className: "sdn-text-label sdn-text-label--l6fl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceNo: {
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-VLJbSASU",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadioButtonControl12",
+        type: "FormControlRadioButtonControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceNoInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-YftmbWCc",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton12",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceNoText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-OccxCFxM",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel22",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceRadios: {
+    component: "Frame",
+    nodeId: "component-panel-0b5v1CXw",
+    className: "sdn-frame sdn-frame--pwes",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "frame7",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportWorkspaceYes: {
+    component: "FormControlRadioButtonControl",
+    nodeId: "component-formControl-vcsfDcEC",
+    className: "sdn-form-control sdn-form-control-radio-button-control--0acl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControlRadioButtonControl11",
+        type: "FormControlRadioButtonControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceYesInput: {
+    component: "InputRadioButton",
+    nodeId: "component-formControl-5NSIpgEj",
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "inputRadioButton11",
+        type: "InputRadioButtonProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportWorkspaceYesText: {
+    component: "TextLabel",
+    nodeId: "component-formControl-hj4brArR",
+    className: "sdn-text-label sdn-text-label--uqg6",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel21",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
       },
     ],
   },
