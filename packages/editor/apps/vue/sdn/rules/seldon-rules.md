@@ -5,7 +5,7 @@ are for the assistant in your IDE, so it works with the generated components the
 way Seldon expects. They do nothing on their own. Copy the ones you want into
 your own repo.
 
-This export targets **React**.
+This export targets **Vue**.
 
 ## Install
 
@@ -25,17 +25,20 @@ Pick the place your assistant reads:
 - `AGENTS.md`: paste the contents under a heading in your `AGENTS.md`.
 
 Keep them in your own tree, not inside `sdn`. This folder is
-regenerated on every export, so anything left here is overwritten.
+regenerated on every export, so anything left here is overwritten. Each file is
+prefixed with `seldon-`, so it stays separate from your own rules once copied.
 
 ## Files
 
-- `using-seldon-components.md` how to render and customize the components.
-- `editing-exported-components.md` why `sdn` is generated output and
+- `seldon-using-components.md` how to render and customize the presentational
+  components.
+- `seldon-editing-components.md` why `sdn` is generated output and
   what to change instead.
-- `framework-target.md` the framework this export targets and when to warn about a
-  mismatch.
-- `controllers-and-refs.md` how a controller drives component data through refs.
-- `css-variables-and-tokens.md` how to use the Seldon CSS variables and tokens.
+- `seldon-framework-target.md` the framework this export targets and when to warn
+  about a mismatch.
+- `seldon-driving-components.md` where the code that drives the components lives in
+  your app, and how to wire nested nodes by ref name.
+- `seldon-css-tokens.md` how to use the Seldon CSS variables and tokens.
 
 ## Refreshing
 

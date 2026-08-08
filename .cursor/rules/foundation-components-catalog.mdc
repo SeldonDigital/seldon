@@ -1,11 +1,11 @@
 ---
-description: Sync the components catalog index, constants, and component id from component schema files. Use when invoking @components-catalog or when asked to sync or verify the component catalog.
+description: Sync the components catalog index, constants, and component id from component schema files. Use when invoking @foundation-components-catalog or when asked to sync or verify the component catalog.
 alwaysApply: false
 ---
 
 # Components Catalog
 
-Use this rule only when the user explicitly invokes `@components-catalog` or asks to sync or verify the component catalog.
+Use this rule only when the user explicitly invokes `@foundation-components-catalog` or asks to sync or verify the component catalog.
 
 - Treat all `.schema.ts` files under `packages/core/components/catalog/` as the source of truth.
 - Sync `packages/core/components/catalog/index.ts`, the `packages/core/components/constants/` index, and `packages/core/components/types/component-id.ts` to match the schema files under `catalog/`, namely `boards/`, `screens/`, `modules/`, `parts/`, `elements/`, `primitives/`, and `frames/`.

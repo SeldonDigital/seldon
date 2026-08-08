@@ -1,5 +1,3 @@
-import { kebabCase } from "change-case"
-
 import { PLATFORMS, PLATFORM_LIST } from "../platforms/registry"
 
 import type { ExportOptions, FileToExport, PlatformId } from "../types"
@@ -16,7 +14,6 @@ interface RulesContext {
   frameworkLabel: string
   isVue: boolean
   componentExtension: string
-  workspaceSourcePath: string
   availableLabels: string[]
   availableList: string
 }
@@ -24,37 +21,39 @@ interface RulesContext {
 /**
  * Emits the copyable rule set into `<components>/rules/`. The documents guide an
  * IDE assistant working in the consuming repo: how to use the components, why
- * the folder is generated output, which framework the export targets, how a
- * controller drives data through refs, and how to use the CSS tokens.
+ * the folder is generated output, which framework the export targets, where the
+ * code that drives the components lives, and how to use the CSS tokens.
  *
  * Rules ship with the scripts export, so `export-workspace` calls this from the
  * same `includeScripts` block. They are documentation the user copies and edits,
  * so they stay out of `scripts/INTEGRITY.json`.
  */
-export function generateRules(options: ExportOptions, workspaceLabel?: string): FileToExport[] {
-  const context = buildContext(options, workspaceLabel)
+export function generateRules(options: ExportOptions): FileToExport[] {
+  const context = buildContext(options)
   const folder = `${context.componentsFolder}/rules`
 
+  // File names are prefixed with `seldon-` so they stay namespaced once copied
+  // into a shared rules folder such as `.cursor/rules/`, where generic names
+  // would collide with the user's own rules.
   return [
-    { path: `${folder}/README.md`, content: rulesReadme(context) },
-    { path: `${folder}/using-seldon-components.md`, content: usingSeldonComponents(context) },
+    { path: `${folder}/seldon-rules.md`, content: rulesReadme(context) },
+    { path: `${folder}/seldon-using-components.md`, content: usingSeldonComponents(context) },
     {
-      path: `${folder}/editing-exported-components.md`,
+      path: `${folder}/seldon-editing-components.md`,
       content: editingExportedComponents(context),
     },
-    { path: `${folder}/framework-target.md`, content: frameworkTarget(context) },
-    { path: `${folder}/controllers-and-refs.md`, content: controllersAndRefs(context) },
-    { path: `${folder}/css-variables-and-tokens.md`, content: cssVariablesAndTokens(context) },
+    { path: `${folder}/seldon-framework-target.md`, content: frameworkTarget(context) },
+    { path: `${folder}/seldon-driving-components.md`, content: controllersAndRefs(context) },
+    { path: `${folder}/seldon-css-tokens.md`, content: cssVariablesAndTokens(context) },
   ]
 }
 
-function buildContext(options: ExportOptions, workspaceLabel?: string): RulesContext {
+function buildContext(options: ExportOptions): RulesContext {
   const framework = options.target.framework
   const isVue = framework === "vue"
   const availableLabels = PLATFORM_LIST.filter((platform) => platform.status === "available").map(
     (platform) => platform.label,
   )
-  const sourceBase = kebabCase(workspaceLabel ?? "") || "workspace"
 
   return {
     componentsFolder: options.output.componentsFolder,
@@ -62,7 +61,6 @@ function buildContext(options: ExportOptions, workspaceLabel?: string): RulesCon
     frameworkLabel: PLATFORMS[framework]?.label ?? framework,
     isVue,
     componentExtension: isVue ? "vue" : "tsx",
-    workspaceSourcePath: `.seldon/${sourceBase}.${framework}.json`,
     availableLabels,
     availableList: formatList(availableLabels),
   }
@@ -109,17 +107,20 @@ Pick the place your assistant reads:
 - \`AGENTS.md\`: paste the contents under a heading in your \`AGENTS.md\`.
 
 Keep them in your own tree, not inside \`${componentsFolder}\`. This folder is
-regenerated on every export, so anything left here is overwritten.
+regenerated on every export, so anything left here is overwritten. Each file is
+prefixed with \`seldon-\`, so it stays separate from your own rules once copied.
 
 ## Files
 
-- \`using-seldon-components.md\` how to render and customize the components.
-- \`editing-exported-components.md\` why \`${componentsFolder}\` is generated output and
+- \`seldon-using-components.md\` how to render and customize the presentational
+  components.
+- \`seldon-editing-components.md\` why \`${componentsFolder}\` is generated output and
   what to change instead.
-- \`framework-target.md\` the framework this export targets and when to warn about a
-  mismatch.
-- \`controllers-and-refs.md\` how a controller drives component data through refs.
-- \`css-variables-and-tokens.md\` how to use the Seldon CSS variables and tokens.
+- \`seldon-framework-target.md\` the framework this export targets and when to warn
+  about a mismatch.
+- \`seldon-driving-components.md\` where the code that drives the components lives in
+  your app, and how to wire nested nodes by ref name.
+- \`seldon-css-tokens.md\` how to use the Seldon CSS variables and tokens.
 
 ## Refreshing
 
@@ -159,10 +160,11 @@ function usingSeldonComponents(context: RulesContext): string {
 
   return `# Using Seldon Components
 
-The components in \`${componentsFolder}\` are ${frameworkLabel} views. They are
+The components in \`${componentsFolder}\` are the ${frameworkLabel} view layer. They are
 presentational. Seldon bakes every piece of content, every icon, and the full
-structure into each component as its \`sdn\` defaults. Your app supplies behavior
-and data, not layout.
+structure into each component as its \`sdn\` defaults. They hold no application
+state, no data fetching, and no side effects. Your own code supplies behavior and
+data, not layout. See \`seldon-driving-components.md\` for where that code lives.
 
 ## Render and customize
 
@@ -193,29 +195,33 @@ Import from the level folder, not from a deep path inside a component.
 
 ## Accessibility
 
-Keep \`role\` and \`aria*\` values coming from your controller. The view exposes
-them as props. Do not hardcode accessibility values inside the generated tree.
+Keep \`role\` and \`aria*\` values coming from the code that drives the view. The
+view exposes them as props. Do not hardcode accessibility values inside the
+generated tree.
 
 See the generated \`${componentsFolder}/README.md\` for the full prop reference.
 `
 }
 
 function editingExportedComponents(context: RulesContext): string {
-  const { componentsFolder, framework, workspaceSourcePath } = context
+  const { componentsFolder, framework } = context
 
   return `# Editing Exported Components
 
 Treat \`${componentsFolder}\` as generated output. Seldon rewrites this whole folder
-on every export. Any hand edit here is lost the next time the user exports.
+on every export, so any hand edit here is lost the next time these components are
+exported. This is true of the view files too, so behavior and data belong in your
+own code, not inside the generated tree.
 
 ## Warn before editing
 
-Before you change any file under \`${componentsFolder}\`, warn the user:
+Before you change any file under \`${componentsFolder}\`, tell the user:
 
-- The change is overwritten on the next export.
-- The durable fix is to change the design in the Seldon Editor, then re-export.
-- When a local Seldon MCP server is available, use it to change the workspace,
-  then re-export. It applies the same typed actions the Editor uses.
+- The change is overwritten the next time these components are exported.
+- The durable fix is to change the design in Seldon, then re-export.
+- Who can do that depends on the project. If you have the Seldon Editor or a
+  Seldon MCP server, use it. If you only have these generated files, ask whoever
+  owns the design source to make the change.
 
 Only edit inside \`${componentsFolder}\` when the user understands and accepts that
 the edit is temporary.
@@ -224,29 +230,29 @@ the edit is temporary.
 
 - \`refs/index.ts\` and \`refs/registry.json\`. Seldon generates the ref registry.
 - \`styles.css\` and \`styles/\`. Seldon generates the stylesheets from the theme.
-- The generated component files. Change the schema in Seldon, not the output.
+- The generated component files. Change the design in Seldon, not the output.
 
-## The design source lives outside this folder
+## Where the design comes from
 
-The editable source is \`${workspaceSourcePath}\` in your repo. The name is the
-workspace label with the export target appended. The Editor writes it on every
-export, so it always matches the design you just exported. Change it only through
-Seldon, the Editor or a Seldon MCP server, never by patching the JSON. Regenerate
-the components from it:
+These components come from a Seldon workspace, a JSON file that holds the design.
+How a project handles that file varies. Some keep it in the repo and re-export
+from it. Others install the components from a package such as \`@seldon/terminus\`
+and never see it. Either way, the design changes in Seldon, not by editing this
+folder.
+
+A workspace changes only through Seldon's typed actions, whether an editor or a
+Seldon MCP server sends them. That is why a hand-patched JSON, or a hand-edited
+file here, drifts from the design. Do not reproduce a design change that way.
+Make the change in Seldon if you can, or ask whoever owns the source.
+
+## Re-export when you own the source
+
+If your project keeps the workspace JSON and has the Seldon CLI, regenerate the
+components by pointing the exporter at that file:
 
 \`\`\`sh
-npx seldon-export --input ${workspaceSourcePath} --platform ${framework}
+npx seldon-export --input path/to/workspace.json --platform ${framework}
 \`\`\`
-
-Commit \`${workspaceSourcePath}\` as the design source, and ignore the Editor's
-local state so backups and any live store stay out of the repo:
-
-\`\`\`gitignore
-.seldon/workspaces/
-.seldon/*.bak
-\`\`\`
-
-## Set up a repeatable export
 
 The \`seldon-export\` CLI ships with \`@seldon/factory\`, and \`@seldon/terminus\` and
 \`@seldon/hari\` pull it in. Install one so the command is available:
@@ -255,24 +261,25 @@ The \`seldon-export\` CLI ships with \`@seldon/factory\`, and \`@seldon/terminus
 npm i -D @seldon/factory
 \`\`\`
 
-Then add a script to \`package.json\` so a re-export is one command. Add
-\`--framework vite\` or \`--framework next\` if your project uses that layout:
+Add a script so a re-export is one command. Add \`--framework vite\` or
+\`--framework next\` if your project uses that layout:
 
 \`\`\`json
 {
   "scripts": {
-    "seldon:export": "seldon-export --input ${workspaceSourcePath} --platform ${framework}"
+    "seldon:export": "seldon-export --input path/to/workspace.json --platform ${framework}"
   }
 }
 \`\`\`
 
-Run it with \`npm run seldon:export\` after every design change.
+Commit the workspace JSON if you keep it in the repo. If you run the Seldon Editor
+locally, ignore its scratch store so backups and the live store stay out of the
+repo:
 
-## The workspace contract
-
-A Seldon workspace changes only through typed actions. The Editor sends actions,
-a reducer applies them, and the result serializes to JSON. An MCP server follows
-the same contract. Do not patch the workspace maps by hand outside that path.
+\`\`\`gitignore
+.seldon/workspaces/
+.seldon/*.bak
+\`\`\`
 
 ## Generated scripts
 
@@ -303,7 +310,9 @@ Seldon exports these frameworks today: ${availableList}.
 
 ## Warn on a mismatch
 
-Check the framework of the app you are working in, then compare it to the target.
+A framework mismatch is different from an architecture question. The view layer
+is framework-specific, so check the framework of the app you are working in and
+compare it to the target.
 
 - If the app is not ${frameworkLabel}, warn the user. ${frameworkLabel} components do
   not run in a different framework's app. Do not try to convert the generated
@@ -321,7 +330,7 @@ function controllersAndRefs(context: RulesContext): string {
   const controllerExample = isVue
     ? `\`\`\`vue
 <script setup lang="ts">
-// The controller owns state and data
+// Whatever owns state in your app, here a thin wrapper
 const workspaceName = ref("")
 function save() { /* ... */ }
 
@@ -337,8 +346,8 @@ const exportRefs = computed(() => ({
 </template>
 \`\`\``
     : `\`\`\`tsx
-// The controller owns state and data
-export function ExportController() {
+// Whatever owns state in your app, here a container component
+export function ExportContainer() {
   const [workspaceName, setName] = useState("")
   const save = () => { /* ... */ }
 
@@ -355,28 +364,71 @@ export function ExportController() {
 }
 \`\`\``
 
-  return `# Controllers and Refs
+  const readableExample = isVue ? `computed(() => ({ ... }))` : `useMemo(() => ({ ... }), deps)`
 
-Seldon components are views. Drive them with a controller. Seldon expects an
-MVC or MVVM shape: a \`*Controller.${componentExtension}\` file owns state and data,
-then renders the generated view and feeds it values.
+  return `# Driving Seldon Components
 
-If the app does not use an MVC or MVVM approach, warn the user. Seldon expects a
-controller to drive the data. Without one, the view has no place to receive
-state and events, and the ref wiring below has nowhere to live.
+Seldon generates the view layer. The components in \`${componentsFolder}\` are
+presentational. They bake in content and structure and receive behavior and data
+through props and a \`seldonRefs\` map. They own no state, no data, and no effects.
+
+Give that ownership to the code in your app that already holds state and renders
+the view. Seldon's own dialogs put it in a \`*Controller.${componentExtension}\` file,
+so these rules call that role the controller. Your app may name it something else.
+The requirement is only that the Seldon component stays presentational and gets
+its data from whatever owns state in your app.
+
+## Where this role lives
+
+Use the place your app already keeps state. Common homes:
+
+- A container or parent component that holds the state and renders the view.
+- A hook or composable that owns the state, with a thin component that renders the
+  view from it.
+- A route or page loader that owns the data, with a client component that wires
+  the view.
+- A store such as Redux, Zustand, or Pinia, read through a wrapper that feeds the
+  view.
+- An MVC controller or an MVVM view model, when the app is built that way.
+
+Do not tell the user to adopt MVC. Find where this app owns state, and drive the
+view from there.
+
+## When logic and views are mixed today
+
+Keep the Seldon component itself presentational. You cannot add state or data
+fetching inside the generated tree, because Seldon rewrites it on every export.
+Put that logic in the nearest owner the app already has, and pass values in. A
+small wrapper beside the view is enough. Do not fork the generated files to hold
+state.
 
 ## Refs over prop order
 
 A composed component nests many slots. Addressing them by position is brittle.
-Drive any node by its stable ref name through a single \`seldonRefs\` map instead.
-Each referenced node carries a \`data-seldon-ref\` name, and the matching entry in
-the map wins over the baked default and any positional prop.
+Drive any node by its stable ref name through a single \`seldonRefs\` map. Each
+referenced node carries a \`data-seldon-ref\` name, and the matching entry in the
+map wins over the baked default and any positional prop.
 
 ${controllerExample}
 
 The view exposes \`seldonRefs\` when it has children. The names come from the
 workspace and appear in \`${componentsFolder}/refs/index.ts\`. Prefer this map over
 matching the nested slot order.
+
+## Author the map so it can be read
+
+The bindings scanner in \`${componentsFolder}/scripts/\` reads your \`seldonRefs\` map
+from source without running it. Write the map so a static read sees every key:
+
+- Author it as a plain object with fixed string keys. A \`useMemo\` or a Vue
+  \`computed\` works only when its callback returns one object directly, as in
+  \`${readableExample}\`.
+- Do not build the map in a block body that returns a variable, in a loop, or with
+  a computed key such as \`refs[name + "Confirm"]\`. Do not spread another object
+  into it.
+- Spell out every key. A key the scanner cannot read leaves that node unlinked in
+  the bindings map, with no error, so the miss is silent.
+- Values may be dynamic and may call a helper. Only the keys must be fixed.
 
 ## Naming a refs map
 
@@ -392,8 +444,8 @@ returns the row object. That keeps each row's values resolvable by the scanner.
 
 ## Record the bindings
 
-After you wire controllers, regenerate the bindings manifest so the ref-to-code
-map stays current:
+After you wire the views, regenerate the bindings manifest so the ref-to-code map
+stays current:
 
 \`\`\`sh
 node ${componentsFolder}/scripts/generate-bindings.mjs
@@ -417,8 +469,9 @@ these variables. Never hardcode a raw value.
 ## Do not hardcode
 
 Do not write a literal color, spacing, radius, border width, font size, or line
-height. Use the matching \`--sdn-*\` variable, or a Seldon class that already reads
-it. Pick the nearest step on a scale rather than inventing a new value.
+height. This holds in your own components too, not only in the generated tree.
+Use the matching \`--sdn-*\` variable, or a Seldon class that already reads it. Pick
+the nearest step on a scale rather than inventing a new value.
 
 ## Token families
 

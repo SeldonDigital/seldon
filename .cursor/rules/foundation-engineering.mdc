@@ -17,8 +17,8 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 - All comments should be about current behavior, not legacy, deprecated, past behavior, or anything that is not relevant going forward. 
 - Do not add comments that are obvious or referential to markdown files. 
 - Add JSDocs as needed.
-- Declare required members before optional ones in every `interface` and object `type`. Put each `field?:` after the required fields. ESLint `@typescript-eslint/member-ordering` enforces this and has no autofix, so `npm run lint:fix` will not repair it. Author the order by hand. See `.cursor/rules/code-formatting.mdc`.
-- In `*.schema.ts` files, inline every property and `overrides` object literal at its child. Do not hoist shared schema values into a module `const` and reuse it. The only module-level values are the `schema` export and its `exportConfig`. See `.cursor/rules/components.mdc`.
+- Declare required members before optional ones in every `interface` and object `type`. Put each `field?:` after the required fields. ESLint `@typescript-eslint/member-ordering` enforces this and has no autofix, so `npm run lint:fix` will not repair it. Author the order by hand. See `.cursor/rules/foundation-code-formatting.mdc`.
+- In `*.schema.ts` files, inline every property and `overrides` object literal at its child. Do not hoist shared schema values into a module `const` and reuse it. The only module-level values are the `schema` export and its `exportConfig`. See `.cursor/rules/foundation-components.mdc`.
 
 ### Naming
 
@@ -96,10 +96,10 @@ Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this globa
 
 ### JSX Authoring (Always Enforced)
 
-Important: When you edit any `.tsx` or `.vue` file under `packages/editor/`, you MUST follow `.cursor/rules/editor-jsx.mdc`. The core rule, repeated here so it is always in scope:
+Important: When you edit any `.tsx` or `.vue` file under `packages/editor/`, you MUST follow `.cursor/rules/foundation-editor-jsx.mdc`. The core rule, repeated here so it is always in scope:
 
 - Returned JSX holds element tags and identifier references only. Compute nothing inside the returned JSX.
 - No expressions in returned JSX. This covers ternaries, `&&`, `||`, comparisons, computed objects or arrays, inline `style` objects, template literals, inline arrow or function handlers, and helper or function calls that build a value, such as `comboboxField={buildFieldStateProps({ selected })}`.
 - Hoist every JSX value into a named `const`, `useMemo`, or `useCallback` above the `return`, then reference the identifier. Write `const comboboxField = buildFieldStateProps({ selected })`, then `comboboxField={comboboxField}`.
 - Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that only turns a slot on or off carries no logic.
-- Author a `seldonRefs` map as a hoisted object literal with static string keys, or a concise-body `useMemo`/`computed` that returns one literal. Never build it in a block-bodied callback, a loop, or with computed keys. The bindings scanner reads it statically, so an unreadable map silently reports its refs as unconnected. See `.cursor/rules/editor-jsx.mdc`.
+- Author a `seldonRefs` map as a hoisted object literal with static string keys, or a concise-body `useMemo`/`computed` that returns one literal. Never build it in a block-bodied callback, a loop, or with computed keys. The bindings scanner reads it statically, so an unreadable map silently reports its refs as unconnected. See `.cursor/rules/foundation-editor-jsx.mdc`.

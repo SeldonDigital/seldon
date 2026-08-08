@@ -88,9 +88,8 @@ export async function exportWorkspace(
     }
 
     // Rules ship with the scripts export. They are docs the user copies and
-    // edits, so they stay out of the scripts integrity hashes. The workspace
-    // label names the source file the rules point at, `.seldon/<label>.<fw>.json`.
-    files.push(...generateRules(options, workspace.metadata.label))
+    // edits, so they stay out of the scripts integrity hashes.
+    files.push(...generateRules(options))
   }
 
   // Emitted last so it records every other file. It marks which workspace owns

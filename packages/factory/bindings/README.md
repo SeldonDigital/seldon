@@ -94,7 +94,7 @@ The scan does not run the code, so it reads a map only in a few shapes:
 - Static `name.key = value` additions after the literal, marked `conditional` when behind a branch.
 - A helper call or a row property, for a repeated row, as above.
 
-It cannot read a map built any other way. A block-bodied callback such as `() => { const refs = {}; return refs }`, a loop, a computed key such as `refs[prefix + "Yes"]`, or a spread all read as empty. The scan records nothing for that map and emits no error, so its refs show as unconnected on the canvas while the component still exports. Author the map as a flat literal with every key spelled out. Editor controllers follow this in `.cursor/rules/editor-jsx.mdc`.
+It cannot read a map built any other way. A block-bodied callback such as `() => { const refs = {}; return refs }`, a loop, a computed key such as `refs[prefix + "Yes"]`, or a spread all read as empty. The scan records nothing for that map and emits no error, so its refs show as unconnected on the canvas while the component still exports. Author the map as a flat literal with every key spelled out. Editor controllers follow this in `.cursor/rules/foundation-editor-jsx.mdc`.
 
 ### Ambiguous Names
 

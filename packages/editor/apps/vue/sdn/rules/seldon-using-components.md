@@ -1,9 +1,10 @@
 # Using Seldon Components
 
-The components in `sdn` are Vue views. They are
+The components in `sdn` are the Vue view layer. They are
 presentational. Seldon bakes every piece of content, every icon, and the full
-structure into each component as its `sdn` defaults. Your app supplies behavior
-and data, not layout.
+structure into each component as its `sdn` defaults. They hold no application
+state, no data fetching, and no side effects. Your own code supplies behavior and
+data, not layout. See `seldon-driving-components.md` for where that code lives.
 
 ## Render and customize
 
@@ -46,7 +47,8 @@ Import from the level folder, not from a deep path inside a component.
 
 ## Accessibility
 
-Keep `role` and `aria*` values coming from your controller. The view exposes
-them as props. Do not hardcode accessibility values inside the generated tree.
+Keep `role` and `aria*` values coming from the code that drives the view. The
+view exposes them as props. Do not hardcode accessibility values inside the
+generated tree.
 
 See the generated `sdn/README.md` for the full prop reference.

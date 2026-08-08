@@ -7,7 +7,9 @@ Seldon exports these frameworks today: React and Vue.
 
 ## Warn on a mismatch
 
-Check the framework of the app you are working in, then compare it to the target.
+A framework mismatch is different from an architecture question. The view layer
+is framework-specific, so check the framework of the app you are working in and
+compare it to the target.
 
 - If the app is not React, warn the user. React components do
   not run in a different framework's app. Do not try to convert the generated

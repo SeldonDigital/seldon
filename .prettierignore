@@ -2,7 +2,7 @@
 .*/**
 .*/
 
-# Markdown is hand-formatted per .cursor/rules/markdown.mdc, not Prettier
+# Markdown is hand-formatted per .cursor/rules/foundation-markdown.mdc, not Prettier
 *.md
 
 dist/

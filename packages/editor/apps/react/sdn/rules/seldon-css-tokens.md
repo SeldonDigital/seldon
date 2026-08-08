@@ -7,8 +7,9 @@ these variables. Never hardcode a raw value.
 ## Do not hardcode
 
 Do not write a literal color, spacing, radius, border width, font size, or line
-height. Use the matching `--sdn-*` variable, or a Seldon class that already reads
-it. Pick the nearest step on a scale rather than inventing a new value.
+height. This holds in your own components too, not only in the generated tree.
+Use the matching `--sdn-*` variable, or a Seldon class that already reads it. Pick
+the nearest step on a scale rather than inventing a new value.
 
 ## Token families
 

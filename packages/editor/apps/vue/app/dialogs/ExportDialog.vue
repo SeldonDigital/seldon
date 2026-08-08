@@ -304,7 +304,7 @@ const barHandle = computed(() => ({
 // The dialog addresses every slot by its `data-seldon-ref` name rather than a
 // positional prop, so adding or reordering fields cannot silently drop a control.
 // Authored as one flat literal with static keys, never a loop or computed keys,
-// so the bindings scanner reads every ref; see `.cursor/rules/editor-jsx.mdc`.
+// so the bindings scanner reads every ref; see `.cursor/rules/foundation-editor-jsx.mdc`.
 // Display-only slots turn on with an empty object; behavior rides in per ref.
 const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
   exportTitle: {},

@@ -436,7 +436,7 @@ Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../propert
 
 After editing a schema, sync [`catalog/index.ts`](./catalog/index.ts), `constants/index.ts`, and `types/component-id.ts` so the imports, catalog arrays, export config map, and `ComponentId` values stay aligned with the schema files.
 
-Invoke `@components-catalog`.
+Invoke `@foundation-components-catalog`.
 
 **5. Wire downstream consumers**
 

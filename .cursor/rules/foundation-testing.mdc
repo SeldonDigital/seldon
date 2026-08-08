@@ -37,4 +37,4 @@ The package Vitest configs alias `@seldon/core` to the package source. Node-styl
 
 ### Adding Tests Is Opt-In
 
-Follow `engineering.mdc`. Do not add or update tests unless the task explicitly asks for it.
+Follow `foundation-engineering.mdc`. Do not add or update tests unless the task explicitly asks for it.

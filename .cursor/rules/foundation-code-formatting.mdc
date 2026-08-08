@@ -5,7 +5,7 @@ alwaysApply: true
 
 ## Code Formatting
 
-Companion to `engineering.mdc`. Readability comes from consistency, not compactness.
+Companion to `foundation-engineering.mdc`. Readability comes from consistency, not compactness.
 
 Write the code consistently first. Prettier only normalizes width, quotes, semicolons, and commas afterward. Do not lean on Prettier to make inconsistent code look uniform, and do not hand-wrap what Prettier will re-wrap. Compact to a single line only when the statement is truly singular.
 

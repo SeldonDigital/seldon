@@ -1,0 +1,20 @@
+---
+description: The sdn/ folders in editor apps are generated output
+globs: packages/editor/apps/*/sdn/**
+alwaysApply: false
+---
+
+## Generated Components (`sdn/`)
+
+`packages/editor/apps/react/sdn/` and `packages/editor/apps/vue/sdn/` are generated
+by the Seldon exporter. A re-export rewrites the whole folder, so any hand edit
+here is lost.
+
+- Do not hand-edit files under `sdn/`, including component views, `refs/`,
+  `styles/`, `styles.css`, and `scripts/`.
+- To change a generated component, edit the design in the editor, then re-export
+  with `npm run export:seldon` (React) or `npm run export:seldon:vue` (Vue).
+- After wiring refs in app code, refresh the binding manifest with `npm run bindings`.
+- The files under `sdn/rules/` are the copyable consumer rules Seldon emits, not
+  this repo's rules. Change them in the generator at
+  `packages/factory/export/shared/generate-rules.ts`, then re-export.

@@ -171,7 +171,7 @@ function ExportComponentsDialog({
   // positional prop, so adding or reordering fields cannot silently drop a
   // control. Authored as a flat object literal with static keys, never a loop or
   // computed keys, so the bindings scanner reads every ref; see
-  // `.cursor/rules/editor-jsx.mdc`. Display-only slots turn on with an empty
+  // `.cursor/rules/foundation-editor-jsx.mdc`. Display-only slots turn on with an empty
   // object; behavior rides in per ref.
   const seldonRefs: SeldonRefs = {
     exportTitle: {},
