@@ -91,6 +91,12 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
+  "optionalDependencies": {
+    "@rolldown/binding-darwin-arm64": "1.0.3",
+    "@rolldown/binding-darwin-x64": "1.0.3",
+    "@rolldown/binding-linux-x64-gnu": "1.0.3",
+    "@rolldown/binding-win32-x64-msvc": "1.0.3"
+  },
   "volta": {
     "node": "22.23.1"
   }
