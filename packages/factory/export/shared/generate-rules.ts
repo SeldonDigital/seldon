@@ -230,12 +230,21 @@ The workspace copy at \`${componentsFolder}/<label>.${framework}.json\` is a
 snapshot, rewritten on every export. The framework suffix marks it as generated
 output so it never reads as the file you edit.
 
-Keep the editable source at \`.seldon/workspace.json\` in your repo. Change it only
-through Seldon, the Editor or a Seldon MCP server, never by patching the JSON.
-Regenerate the components from it:
+The editable source lives at \`.seldon/workspace.json\` in your repo. The Editor
+writes it on every export to this folder, so it always matches the design you
+just exported. Change it only through Seldon, the Editor or a Seldon MCP server,
+never by patching the JSON. Regenerate the components from it:
 
 \`\`\`sh
 npx seldon-export --input .seldon/workspace.json --platform ${framework}
+\`\`\`
+
+Commit \`.seldon/workspace.json\` as the design source, and ignore the Editor's
+local state so backups and any live store stay out of the repo:
+
+\`\`\`gitignore
+.seldon/workspaces/
+.seldon/*.bak
 \`\`\`
 
 ## Set up a repeatable export

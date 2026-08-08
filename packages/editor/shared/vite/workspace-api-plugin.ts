@@ -65,14 +65,17 @@ async function getWorkspace(id: string): Promise<StoredWorkspace | undefined> {
   }
 }
 
-const BACKUP_SLOTS = 3
+const BACKUP_SLOTS = 1
 
 /**
- * Rotates the file a save is about to replace into numbered backups, newest at
- * `.1.bak`. A workspace the editor overwrites with the wrong state is therefore
- * still on disk, and several saves have to pass before the last good copy ages
- * out. Backups do not end in `.json`, so the listing never offers them as
- * workspaces.
+ * Keeps one backup of the file a save is about to replace, at `.1.bak`. A
+ * workspace the editor overwrites with the wrong state is therefore still on
+ * disk for the next save. The backup is capped at one file so `.seldon` never
+ * fills with old copies. Backups do not end in `.json`, so the listing never
+ * offers them as workspaces.
+ *
+ * Any higher-numbered backups left by an earlier, deeper rotation are pruned, so
+ * a store written before the cap dropped cleans itself up on the next save.
  */
 async function backupExisting(target: string): Promise<void> {
   try {
@@ -90,6 +93,18 @@ async function backupExisting(target: string): Promise<void> {
   }
 
   await fs.copyFile(target, `${target}.1.bak`)
+  await pruneStaleBackups(target)
+}
+
+/** Removes numbered backups past the cap, cleaning up a deeper old rotation. */
+async function pruneStaleBackups(target: string): Promise<void> {
+  for (let slot = BACKUP_SLOTS + 1; slot <= 9; slot++) {
+    try {
+      await fs.rm(`${target}.${slot}.bak`)
+    } catch {
+      // That slot does not exist, which is the normal case.
+    }
+  }
 }
 
 async function saveWorkspace(record: StoredWorkspace): Promise<void> {

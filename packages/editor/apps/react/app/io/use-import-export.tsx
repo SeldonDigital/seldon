@@ -11,6 +11,7 @@ import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
+import { writeWorkspaceSource } from "@seldon/editor/lib/export/write-workspace-source"
 import { triggerDownload } from "@seldon/editor/lib/helpers/trigger-download"
 import {
   buildDefaultSnippet,
@@ -151,6 +152,11 @@ export function useImportExport() {
         }
 
         addToast(`Exported ${count} files`)
+
+        // Always write the editable design source at the project root, so a later
+        // `seldon-export --input .seldon/workspace.json` regenerates from the same
+        // design the editor just exported.
+        await writeWorkspaceSource(directory, workspace)
 
         // Remember where this workspace landed, so the editor can read back what
         // the project reports about its own use of the generated components, and
