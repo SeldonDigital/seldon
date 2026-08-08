@@ -225,4 +225,20 @@ export async function runExportCli(argv: string[]): Promise<void> {
   console.log(
     `Exported ${files.length} files (${config.platform}, ${config.preset} preset) into ${outRoot}`,
   )
+
+  printRepeatableExportTip(config)
+}
+
+/**
+ * Prints a one-time setup hint for a repeatable export. It only reads back the
+ * flags this run used, so a user can copy a `package.json` script that reruns the
+ * same export. It writes nothing outside the export output, since the CLI must
+ * not touch a consumer's files beyond the components folder.
+ */
+function printRepeatableExportTip(config: CliConfig): void {
+  const command = `seldon-export --input ${config.input} --platform ${config.platform} --preset ${config.preset}`
+
+  console.log(
+    `\nTo make this repeatable, add a script to package.json:\n  "seldon:export": "${command}"\nThen rerun with: npm run seldon:export`,
+  )
 }

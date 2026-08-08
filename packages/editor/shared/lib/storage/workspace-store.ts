@@ -63,9 +63,7 @@ function readRecord(record: StoredWorkspaceOnDisk): StoredWorkspace {
   // Seed identity from the record key for a file written before metadata carried
   // an id, so a live record keeps its existing identity instead of minting a new
   // one when it next loads through Core.
-  const withId = base.metadata.id
-    ? base
-    : { ...base, metadata: { ...base.metadata, id: rest.id } }
+  const withId = base.metadata.id ? base : { ...base, metadata: { ...base.metadata, id: rest.id } }
 
   const workspace =
     !withId.metadata.label && name ? setWorkspaceLabel({ value: name }, withId) : withId
@@ -114,6 +112,68 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
 
 export async function deleteStoredWorkspace(id: string): Promise<void> {
   await fetch(`${BASE}/${encodeURIComponent(id)}`, { method: "DELETE" })
+}
+
+/**
+ * What an imported workspace resolves to against the live store, matched by
+ * `metadata.id`. Undefined from {@link findImportMatch} means no stored record
+ * shares the id, so the import is a new workspace and the caller creates it.
+ */
+export interface ImportMatch {
+  existing: StoredWorkspace
+  labelChanged: boolean
+  importIsOlder: boolean
+}
+
+/**
+ * Finds the stored record an imported workspace would overwrite.
+ *
+ * Identity is `metadata.id`, so a workspace exported from the editor resolves
+ * back to the record it came from. `labelChanged` flags a rename against that
+ * record, and `importIsOlder` compares edit times so a caller can guard against
+ * an older copy clobbering newer work. A missing id, or an id no record carries,
+ * returns undefined: the import is a distinct workspace.
+ */
+export async function findImportMatch(workspace: Workspace): Promise<ImportMatch | undefined> {
+  const id = workspace.metadata.id
+
+  if (!id) return undefined
+  const existing = await getStoredWorkspace(id)
+
+  if (!existing) return undefined
+
+  const existingLabel = existing.workspace.metadata.label ?? ""
+  const importedLabel = workspace.metadata.label ?? ""
+
+  return {
+    existing,
+    labelChanged: existingLabel !== importedLabel,
+    importIsOlder: isOlderThan(workspace, existing),
+  }
+}
+
+/**
+ * True only when both edit times are known and the import predates the stored
+ * record. Unknown times return false, so a missing timestamp never blocks an
+ * import; it only removes the extra guard.
+ */
+function isOlderThan(imported: Workspace, existing: StoredWorkspace): boolean {
+  const importedAt = imported.metadata.lastUpdate
+  const existingAt = existing.workspace.metadata.lastUpdate ?? existing.updatedAt
+
+  if (!importedAt || !existingAt) return false
+
+  return importedAt < existingAt
+}
+
+/**
+ * Returns a copy carrying a fresh `metadata.id`, so importing a workspace as a
+ * separate entry cannot overwrite the record it shares an id with. Used when a
+ * user declines to overwrite a matched record and keeps the import as its own
+ * workspace.
+ */
+export function withFreshWorkspaceId(workspace: Workspace): Workspace {
+  return { ...workspace, metadata: { ...workspace.metadata, id: crypto.randomUUID() } }
 }
 
 /** Creates a record for a workspace. The name travels in `metadata.label`. */

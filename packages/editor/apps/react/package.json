@@ -5,7 +5,7 @@
   "scripts": {
     "fonts": "node ../../../../scripts/generate-fonts.mjs",
     "notices:thirdparty": "node ../../shared/scripts/generate-third-party-notices.mjs",
-    "export:seldon": "node scripts/export-seldon.mjs",
+    "export:seldon": "node ../../shared/scripts/export-seldon.mjs --platform react",
     "bindings": "node seldon/scripts/bindings/generate-bindings.mjs",
     "bindings:check": "node seldon/scripts/bindings/generate-bindings.mjs --check",
     "dev": "node ../../../../scripts/generate-fonts.mjs && node ../../../ai/scripts/ensure-ollama.mjs && vite",

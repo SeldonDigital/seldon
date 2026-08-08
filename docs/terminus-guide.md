@@ -24,7 +24,7 @@ import { exportWorkspace, loadWorkspace, workspaceReducer } from "@seldon/termin
 import type { WorkspaceAction } from "@seldon/terminus"
 
 // 1. Load the workspace the Seldon editor saved.
-const workspace = loadWorkspace(fs.readFileSync("seldon-editor.json", "utf8"))
+const workspace = loadWorkspace(fs.readFileSync(".seldon/workspace.json", "utf8"))
 
 // 2. Drive edits from your own code as typed actions.
 const action = {
@@ -59,7 +59,7 @@ For a plain export with no code, use the `seldon-export` CLI that ships with the
 factory:
 
 ```bash
-npx seldon-export --input seldon-editor.json --preset vite
+npx seldon-export --input .seldon/workspace.json --preset vite
 ```
 
 `--preset` picks the project layout (`vite`, `next`, `plain`) and `--platform`

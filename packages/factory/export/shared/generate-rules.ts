@@ -196,7 +196,7 @@ See the generated \`${componentsFolder}/README.md\` for the full prop reference.
 }
 
 function editingExportedComponents(context: RulesContext): string {
-  const { componentsFolder } = context
+  const { componentsFolder, framework } = context
 
   return `# Editing Exported Components
 
@@ -217,11 +217,48 @@ the edit is temporary.
 
 ## Never hand-edit these
 
-- The workspace \`.json\` copy at the root of \`${componentsFolder}\`. It is the design
-  source. Change it only through Seldon actions, never by patching the JSON.
+- The workspace snapshot \`${componentsFolder}/<label>.${framework}.json\`, named
+  from the workspace label. It is generated output, not the design source. See
+  below.
 - \`refs/index.ts\` and \`refs/registry.json\`. Seldon generates the ref registry.
 - \`styles.css\` and \`styles/\`. Seldon generates the stylesheets from the theme.
 - The generated component files. Change the schema in Seldon, not the output.
+
+## The design source lives outside this folder
+
+The workspace copy at \`${componentsFolder}/<label>.${framework}.json\` is a
+snapshot, rewritten on every export. The framework suffix marks it as generated
+output so it never reads as the file you edit.
+
+Keep the editable source at \`.seldon/workspace.json\` in your repo. Change it only
+through Seldon, the Editor or a Seldon MCP server, never by patching the JSON.
+Regenerate the components from it:
+
+\`\`\`sh
+npx seldon-export --input .seldon/workspace.json --platform ${framework}
+\`\`\`
+
+## Set up a repeatable export
+
+The \`seldon-export\` CLI ships with \`@seldon/factory\`, and \`@seldon/terminus\` and
+\`@seldon/hari\` pull it in. Install one so the command is available:
+
+\`\`\`sh
+npm i -D @seldon/factory
+\`\`\`
+
+Then add a script to \`package.json\` so a re-export is one command. Add
+\`--preset vite\` or \`--preset next\` if your project uses that layout:
+
+\`\`\`json
+{
+  "scripts": {
+    "seldon:export": "seldon-export --input .seldon/workspace.json --platform ${framework}"
+  }
+}
+\`\`\`
+
+Run it with \`npm run seldon:export\` after every design change.
 
 ## The workspace contract
 

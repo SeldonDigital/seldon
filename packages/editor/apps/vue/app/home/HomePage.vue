@@ -4,7 +4,9 @@ import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
   createStoredWorkspace,
   deleteStoredWorkspace,
+  findImportMatch,
   listStoredWorkspaces,
+  withFreshWorkspaceId,
 } from "@seldon/editor/lib/storage/workspace-store"
 import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
@@ -82,6 +84,47 @@ async function onImportFile(event: Event): Promise<void> {
     const named = workspace.metadata.label
       ? workspace
       : setWorkspaceLabel({ value: name }, workspace)
+
+    // A file exported from the editor keeps its `metadata.id`, so it resolves
+    // back to the record it came from instead of duplicating. A rename is
+    // confirmed, an import older than the stored copy is confirmed again, and
+    // declining a rename keeps the import as its own workspace under a fresh id.
+    const match = await findImportMatch(named)
+
+    if (!match) {
+      const record = await createStoredWorkspace(named)
+
+      router.push(`/${record.id}`)
+
+      return
+    }
+
+    const existingLabel =
+      match.existing.workspace.metadata.label || HOME_CONTENT.defaultWorkspaceName
+    const importedLabel = named.metadata.label || HOME_CONTENT.defaultWorkspaceName
+
+    if (match.labelChanged) {
+      const overwrite = confirm(
+        `"${existingLabel}" is already stored as this workspace. Overwrite it with the imported "${importedLabel}"? Cancel keeps the import as a separate workspace.`,
+      )
+
+      if (!overwrite) {
+        const record = await createStoredWorkspace(withFreshWorkspaceId(named))
+
+        router.push(`/${record.id}`)
+
+        return
+      }
+    }
+
+    if (match.importIsOlder) {
+      const proceed = confirm(
+        `The imported copy of "${importedLabel}" is older than the stored workspace. Overwrite the newer version anyway?`,
+      )
+
+      if (!proceed) return
+    }
+
     const record = await createStoredWorkspace(named)
 
     router.push(`/${record.id}`)
