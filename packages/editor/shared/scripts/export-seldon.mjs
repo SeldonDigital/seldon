@@ -15,13 +15,13 @@ import { build } from "esbuild"
  * shared `.seldon` store, matched by the committed snapshot's `metadata.id`, so
  * edits made in the running editor export without a manual save step. When no
  * live copy exists, such as a fresh clone or CI, it falls back to the committed
- * snapshot at `<app>/seldon/seldon-editor.<platform>.json` after a confirm. Pass
+ * snapshot at `<app>/sdn/seldon-editor.<platform>.json` after a confirm. Pass
  * `--use-committed` (or run non-interactively) to skip the prompt and always use
  * the committed snapshot.
  *
  * It runs the same factory export the editor's Export dialog runs and writes the
- * generated components into the app's `seldon/`. The export re-emits the snapshot
- * as `seldon/seldon-editor.<platform>.json`, so the committed fallback stays
+ * generated components into the app's `sdn/`. The export re-emits the snapshot
+ * as `sdn/seldon-editor.<platform>.json`, so the committed fallback stays
  * current. The React and Vue snapshots share one `metadata.id`, so a single live
  * workspace drives both exports; export both after a change.
  *
@@ -53,7 +53,7 @@ const handlerEntry = path.join(sharedRoot, "vite/export-handler.ts")
 const liveWorkspacesDir = path.join(repoRoot, ".seldon", "workspaces")
 
 /** Output folder that keeps each editor's generated library self-contained. */
-const COMPONENTS_FOLDER = "seldon"
+const COMPONENTS_FOLDER = "sdn"
 
 /** Editor apps this script can export, each a folder under `apps/`. */
 const PLATFORMS = ["react", "vue"]
@@ -110,7 +110,7 @@ function resolveEditor(platform) {
 
   return {
     editorRoot,
-    workspaceFile: path.join(editorRoot, `seldon/seldon-editor.${platform}.json`),
+    workspaceFile: path.join(editorRoot, `${COMPONENTS_FOLDER}/seldon-editor.${platform}.json`),
   }
 }
 
@@ -263,8 +263,8 @@ async function main() {
     options: {
       target: { framework: platform, styles: "css-properties" },
       output: {
-        // Asset paths default to nest under this folder (`seldon/assets`),
-        // keeping the generated library self-contained.
+        // Asset paths default to nest under this folder (`sdn/assets`), keeping
+        // the generated library self-contained.
         componentsFolder: COMPONENTS_FOLDER,
       },
 
@@ -277,7 +277,7 @@ async function main() {
 
       // With `includeScripts` on, this editor keeps the bindings scanner it
       // hands to any other project. `npm run bindings` runs it to write
-      // `seldon/refs/bindings.json`, which the connections overlay reads.
+      // `sdn/refs/bindings.json`, which the connections overlay reads.
       includeScripts: config.includeScripts,
     },
   })
@@ -296,7 +296,7 @@ async function main() {
     )
   }
 
-  console.log(`Exported ${files.length} files into ${path.join(editorRoot, "seldon")}`)
+  console.log(`Exported ${files.length} files into ${path.join(editorRoot, COMPONENTS_FOLDER)}`)
 }
 
 main().catch((error) => {

@@ -3,8 +3,8 @@
  * class rules first so the generated chrome components render with their design.
  * Mirrors the React editor's globals.css.
  */
-@import "../seldon/styles/seldon.css";
-@import "../seldon/styles.css";
+@import "../sdn/styles/seldon.css";
+@import "../sdn/styles.css";
 @import "./editor-chrome.css";
 
 * {

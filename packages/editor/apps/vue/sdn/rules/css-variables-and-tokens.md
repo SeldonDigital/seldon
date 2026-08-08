@@ -27,13 +27,13 @@ The variables group into families:
 
 ## Switching themes
 
-Each theme ships as `seldon/styles/{slug}.css` and answers a
+Each theme ships as `sdn/styles/{slug}.css` and answers a
 `[data-theme]` selector. Switch themes by setting the `data-theme` attribute on a
 container, not by editing a generated stylesheet. The default `seldon` theme also
 answers `:root`.
 
 ## Where the values live
 
-Read `seldon/styles/` to see the variable names a theme defines. Do
+Read `sdn/styles/` to see the variable names a theme defines. Do
 not redefine a `--sdn-*` variable in your own CSS. Set the theme attribute and let
 the generated stylesheet supply the values.

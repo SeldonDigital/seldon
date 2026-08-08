@@ -138,8 +138,14 @@ export function useImportExport() {
         setExporting(true)
         setCancelExport(() => controller.abort())
 
+        // The dialog's "Save workspace source" choice arrives as `includeWorkspace`.
+        // It gates the `.seldon/` source below, not the factory's beside-components
+        // copy, which the editor never emits: the source at the root supersedes it.
+        const saveSource = options?.includeWorkspace ?? true
+        const framework = options?.target?.framework ?? "react"
+
         const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
-        const files = await runLocalExport(workspace, options)
+        const files = await runLocalExport(workspace, { ...options, includeWorkspace: false })
         const count = await writeExportToDirectory(directory, files, controller.signal)
 
         // Nothing is rolled back, so the count is the whole story: it says how far
@@ -153,10 +159,12 @@ export function useImportExport() {
 
         addToast(`Exported ${count} files`)
 
-        // Always write the editable design source at the project root, so a later
-        // `seldon-export --input .seldon/workspace.json` regenerates from the same
-        // design the editor just exported.
-        await writeWorkspaceSource(directory, workspace)
+        // Write the editable design source at the project root, so a later
+        // `seldon-export --input .seldon/<name>.<framework>.json` regenerates from
+        // the same design the editor just exported.
+        if (saveSource) {
+          await writeWorkspaceSource(directory, workspace, framework)
+        }
 
         // Remember where this workspace landed, so the editor can read back what
         // the project reports about its own use of the generated components, and

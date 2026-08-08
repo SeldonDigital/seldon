@@ -15,23 +15,23 @@ export interface ExportPreset {
 export type ExportPresetId = "plain" | "vite" | "next"
 
 /**
- * `plain` keeps the library self-contained under `seldon/`, matching the
- * factory default. `vite` and `next` split components from assets so assets sit
- * in the folder each dev server serves at the site root (`public/`).
+ * `plain` keeps the library self-contained under `sdn/`, matching the factory
+ * default. `vite` and `next` split components from assets so assets sit in the
+ * folder each dev server serves at the site root (`public/`).
  */
 export const EXPORT_PRESETS: Record<ExportPresetId, ExportPreset> = {
   plain: {
-    componentsFolder: "seldon",
+    componentsFolder: "sdn",
   },
   vite: {
-    componentsFolder: "src/seldon",
-    assetsFolder: "public/seldon",
-    assetPublicPath: "/seldon",
+    componentsFolder: "src/sdn",
+    assetsFolder: "public/sdn",
+    assetPublicPath: "/sdn",
   },
   next: {
-    componentsFolder: "components/seldon",
-    assetsFolder: "public/seldon",
-    assetPublicPath: "/seldon",
+    componentsFolder: "components/sdn",
+    assetsFolder: "public/sdn",
+    assetPublicPath: "/sdn",
   },
 }
 

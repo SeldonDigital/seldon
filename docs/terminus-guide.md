@@ -24,7 +24,7 @@ import { exportWorkspace, loadWorkspace, workspaceReducer } from "@seldon/termin
 import type { WorkspaceAction } from "@seldon/terminus"
 
 // 1. Load the workspace the Seldon editor saved.
-const workspace = loadWorkspace(fs.readFileSync(".seldon/workspace.json", "utf8"))
+const workspace = loadWorkspace(fs.readFileSync(".seldon/my-app.react.json", "utf8"))
 
 // 2. Drive edits from your own code as typed actions.
 const action = {
@@ -37,7 +37,7 @@ const edited = workspaceReducer(workspace, action)
 const files = await exportWorkspace(edited, {
   rootDirectory: process.cwd(),
   target: { framework: "react", styles: "css-properties" },
-  output: { componentsFolder: "src/seldon" },
+  output: { componentsFolder: "src/sdn" },
 })
 
 // 4. Write the files where you want them.
@@ -59,7 +59,7 @@ For a plain export with no code, use the `seldon-export` CLI that ships with the
 factory:
 
 ```bash
-npx seldon-export --input .seldon/workspace.json --preset vite
+npx seldon-export --input .seldon/my-app.react.json --preset vite
 ```
 
 `--preset` picks the project layout (`vite`, `next`, `plain`) and `--platform`

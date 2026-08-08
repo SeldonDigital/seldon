@@ -16,7 +16,7 @@
     "paths": {
       "@app/*": ["./app/*"],
       "@seldon/editor/lib/*": ["../../shared/lib/*"],
-      "@seldon/components/*": ["./seldon/*"],
+      "@seldon/components/*": ["./sdn/*"],
       "@seldon/core/*": ["../../../core/*"],
       "@seldon/factory/*": ["../../../factory/*"],
       "@seldon/ai": ["../../../ai/index.ts"],

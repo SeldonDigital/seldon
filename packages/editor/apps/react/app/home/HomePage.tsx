@@ -1,4 +1,5 @@
 import { selectFile } from "@seldon/editor/lib/helpers/select-file"
+import { stripPlatformSuffix } from "@seldon/editor/lib/helpers/strip-platform-suffix"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
   createStoredWorkspace,
@@ -59,7 +60,7 @@ export default function HomePage() {
     const { file } = result
     const text = await file.text()
     const parsed = parseWorkspace(text)
-    const fileName = file.name.replace(/\.json$/i, "") || "Imported workspace"
+    const fileName = stripPlatformSuffix(file.name.replace(/\.json$/i, "")) || "Imported workspace"
     const workspace = parsed.metadata.label
       ? parsed
       : setWorkspaceLabel({ value: fileName }, parsed)

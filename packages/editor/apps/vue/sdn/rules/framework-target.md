@@ -1,6 +1,6 @@
 # Framework Target
 
-This export targets **Vue**. The components in `seldon` are
+This export targets **Vue**. The components in `sdn` are
 Vue components.
 
 Seldon exports these frameworks today: React and Vue.

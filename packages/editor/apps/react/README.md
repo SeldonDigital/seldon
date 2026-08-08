@@ -47,9 +47,9 @@ This app owns the React interface: components, hooks, and runtime state. It impo
 | `themes/`, `icons/`, `fonts/` | Theme, icon, and font view-models |
 | `io/`, `home/`, `overlays/`, `views/` | Import and export, home page, overlays, screen views |
 
-### `seldon/` — generated View library
+### `sdn/` — generated View library
 
-`seldon/` holds the generated design components the app binds to. Raw markup comes from `seldon/native-react/`. These files are generated, so do not hand-edit them. Regenerate with `npm run export:seldon`. See [seldon/README.md](./seldon/README.md) for component usage.
+`sdn/` holds the generated design components the app binds to. Raw markup comes from `sdn/native-react/`. These files are generated, so do not hand-edit them. Regenerate with `npm run export:seldon`. See [sdn/README.md](./sdn/README.md) for component usage.
 
 ### `scripts/`
 

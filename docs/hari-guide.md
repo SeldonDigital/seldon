@@ -47,7 +47,7 @@ import { chatToActions, loadWorkspace, workspaceReducer } from "@seldon/hari"
 
 import type { WorkspaceAction } from "@seldon/hari"
 
-let workspace = loadWorkspace(fs.readFileSync(".seldon/workspace.json", "utf8"))
+let workspace = loadWorkspace(fs.readFileSync(".seldon/my-app.react.json", "utf8"))
 
 const result = await chatToActions({
   workspace,
@@ -67,7 +67,7 @@ if (result.rejected.length > 0) {
 }
 
 // Persist the new JSON, or export it with the factory.
-fs.writeFileSync(".seldon/workspace.json", JSON.stringify(workspace, null, 2))
+fs.writeFileSync(".seldon/my-app.react.json", JSON.stringify(workspace, null, 2))
 ```
 
 From here, export the adopted workspace with `exportWorkspace` or the

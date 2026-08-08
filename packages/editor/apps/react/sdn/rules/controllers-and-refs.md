@@ -35,7 +35,7 @@ export function ExportController() {
 ```
 
 The view exposes `seldonRefs` when it has children. The names come from the
-workspace and appear in `seldon/refs/index.ts`. Prefer this map over
+workspace and appear in `sdn/refs/index.ts`. Prefer this map over
 matching the nested slot order.
 
 ## Naming a refs map
@@ -56,9 +56,9 @@ After you wire controllers, regenerate the bindings manifest so the ref-to-code
 map stays current:
 
 ```sh
-node seldon/scripts/generate-bindings.mjs
+node sdn/scripts/generate-bindings.mjs
 ```
 
 Run it with `--check` in continuous integration to fail on a stale manifest. See
-`seldon/scripts/README.md` for the flags. This export baked in
+`sdn/scripts/README.md` for the flags. This export baked in
 React, so the script scans a React project.

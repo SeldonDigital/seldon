@@ -1,6 +1,6 @@
 # Using Seldon Components
 
-The components in `seldon` are Vue views. They are
+The components in `sdn` are Vue views. They are
 presentational. Seldon bakes every piece of content, every icon, and the full
 structure into each component as its `sdn` defaults. Your app supplies behavior
 and data, not layout.
@@ -40,7 +40,7 @@ you want, such as `{ icon: "material-star" }`. Do not import raw SVG files.
 
 ## Imports
 
-Components live under their level folder inside `seldon`:
+Components live under their level folder inside `sdn`:
 `primitives/`, `elements/`, `parts/`, `modules/`, `frames/`, and `screens/`.
 Import from the level folder, not from a deep path inside a component.
 
@@ -49,4 +49,4 @@ Import from the level folder, not from a deep path inside a component.
 Keep `role` and `aria*` values coming from your controller. The view exposes
 them as props. Do not hardcode accessibility values inside the generated tree.
 
-See the generated `seldon/README.md` for the full prop reference.
+See the generated `sdn/README.md` for the full prop reference.

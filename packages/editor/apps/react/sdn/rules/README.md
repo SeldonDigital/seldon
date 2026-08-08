@@ -1,6 +1,6 @@
 # Seldon Rules
 
-Seldon generated these rules alongside the components in `seldon`. They
+Seldon generated these rules alongside the components in `sdn`. They
 are for the assistant in your IDE, so it works with the generated components the
 way Seldon expects. They do nothing on their own. Copy the ones you want into
 your own repo.
@@ -24,13 +24,13 @@ Pick the place your assistant reads:
 
 - `AGENTS.md`: paste the contents under a heading in your `AGENTS.md`.
 
-Keep them in your own tree, not inside `seldon`. This folder is
+Keep them in your own tree, not inside `sdn`. This folder is
 regenerated on every export, so anything left here is overwritten.
 
 ## Files
 
 - `using-seldon-components.md` how to render and customize the components.
-- `editing-exported-components.md` why `seldon` is generated output and
+- `editing-exported-components.md` why `sdn` is generated output and
   what to change instead.
 - `framework-target.md` the framework this export targets and when to warn about a
   mismatch.

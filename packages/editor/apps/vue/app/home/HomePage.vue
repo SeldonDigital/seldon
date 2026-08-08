@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useToastStore } from "@app/toaster/toast-store"
+import { stripPlatformSuffix } from "@seldon/editor/lib/helpers/strip-platform-suffix"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
   createStoredWorkspace,
@@ -80,7 +81,7 @@ async function onImportFile(event: Event): Promise<void> {
     // An imported workspace carries its own name. A record file written before
     // the name moved into the label still has one, and the file name fills in.
     const legacyName = (parsed as { name?: string }).name
-    const name = legacyName ?? file.name.replace(/\.json$/i, "")
+    const name = legacyName ?? stripPlatformSuffix(file.name.replace(/\.json$/i, ""))
     const named = workspace.metadata.label
       ? workspace
       : setWorkspaceLabel({ value: name }, workspace)

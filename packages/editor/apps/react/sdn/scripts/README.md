@@ -1,7 +1,7 @@
 # Seldon Scripts
 
 The Seldon factory generated these scripts alongside the components in
-`seldon`. They are for you to run in your own project. Seldon never runs them.
+`sdn`. They are for you to run in your own project. Seldon never runs them.
 
 Each script lives in its own folder, holding its entry and the `lib/` it imports.
 The shared `README.md` and `INTEGRITY.json` at the `scripts/` root cover them all.
@@ -9,24 +9,24 @@ The shared `README.md` and `INTEGRITY.json` at the `scripts/` root cover them al
 ## bindings/generate-bindings.mjs
 
 Records which code in this project drives which ref and slot on the generated
-components, and writes `seldon/refs/bindings.json`.
+components, and writes `sdn/refs/bindings.json`.
 
 ```sh
-node seldon/scripts/bindings/generate-bindings.mjs
+node sdn/scripts/bindings/generate-bindings.mjs
 ```
 
 The script reads source files under the project root and writes that one file. It
-skips `seldon` itself, so the generated tree never reports itself as a consumer of
+skips `sdn` itself, so the generated tree never reports itself as a consumer of
 its own refs. It makes no network requests.
 
 Run `--check` in continuous integration to fail on a stale manifest:
 
 ```sh
-node seldon/scripts/bindings/generate-bindings.mjs --check
+node sdn/scripts/bindings/generate-bindings.mjs --check
 ```
 
 Use `--root`, `--components`, and `--out` when your project moved any of those.
-This export baked in `react` and `seldon`. The framework takes no flag, because
+This export baked in `react` and `sdn`. The framework takes no flag, because
 this export emitted only the front ends a react project reaches. Re-export to
 change it.
 
@@ -35,7 +35,7 @@ change it.
 `refs` is keyed by ref name and `slots` by component name then slot name. Each
 consumer records the file, the line, the enclosing component, the expression
 behind the value, and where the identifiers in that expression were declared.
-Join it to the `views` in `seldon/refs/index.ts` to see a ref from the workspace
+Join it to the `views` in `sdn/refs/index.ts` to see a ref from the workspace
 node that declares it through to the code that sets it.
 
 ## Dependencies
@@ -63,7 +63,7 @@ report whatever hash it likes. Treat the check as external:
 - Or hash the files yourself and compare against `INTEGRITY.json`:
 
 ```sh
-shasum -a 256 seldon/scripts/bindings/generate-bindings.mjs
+shasum -a 256 sdn/scripts/bindings/generate-bindings.mjs
 ```
 
 Do not run a script that was edited by hand. Change the factory and re-export

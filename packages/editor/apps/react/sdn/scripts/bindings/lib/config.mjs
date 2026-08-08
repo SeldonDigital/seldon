@@ -11,7 +11,7 @@
  *
  *****/
 
-const DEFAULT_COMPONENTS_FOLDER = "seldon"
+const DEFAULT_COMPONENTS_FOLDER = "sdn"
 const DEFAULT_COMPONENT_IMPORT_PREFIX = "@seldon/components/"
 /**
  * Extensions each framework's consumers are written in. A React scan leaves

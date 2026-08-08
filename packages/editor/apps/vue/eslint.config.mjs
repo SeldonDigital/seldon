@@ -3,7 +3,7 @@ import { defineConfig, globalIgnores } from "eslint/config"
 import { seldonBase } from "../../../../eslint.config.base.mjs"
 
 export default defineConfig([
-  globalIgnores(["seldon/**", "dist/**", "node_modules/**"]),
+  globalIgnores(["sdn/**", "dist/**", "node_modules/**"]),
   ...seldonBase,
   {
     files: ["**/*.{ts,tsx}"],

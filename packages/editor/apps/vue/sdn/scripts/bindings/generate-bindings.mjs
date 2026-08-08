@@ -17,7 +17,7 @@
  * What it does
  *   Walks this project's source files and records which code drives which ref
  *   and which slot on the generated Seldon components. Read it alongside the
- *   `views` in `seldon/refs/index.ts` to follow a ref end to end, from the
+ *   `views` in `sdn/refs/index.ts` to follow a ref end to end, from the
  *   workspace node that declares it to the code that sets it.
  *
  * What it reads
@@ -26,7 +26,7 @@
  *   the project root.
  *
  * What it writes
- *   One file, `seldon/refs/bindings.json`. It creates and changes nothing else.
+ *   One file, `sdn/refs/bindings.json`. It creates and changes nothing else.
  *
  * What it needs
  *   `typescript` and `@vue/compiler-sfc` for the full scan, resolved
@@ -38,13 +38,13 @@
  *
  * Before you run it
  *   The Seldon factory generated this file. Do not run a copy that was edited by
- *   hand. See `seldon/scripts/README.md` for how to check it.
+ *   hand. See `sdn/scripts/README.md` for how to check it.
  *
  * Usage
- *   node seldon/scripts/bindings/generate-bindings.mjs [options]
+ *   node sdn/scripts/bindings/generate-bindings.mjs [options]
  *
  *   --root <path>        Project root to scan. Defaults to the folder holding
- *                        `seldon`.
+ *                        `sdn`.
  *   --components <path>  Generated components folder, relative to the root.
  *   --out <path>         Manifest path, relative to the root.
  *   --check              Compare against the manifest on disk and exit 1 on any
@@ -56,7 +56,7 @@ import process from "node:process"
 import { fileURLToPath } from "node:url"
 
 const FRAMEWORK = "vue"
-const COMPONENTS_FOLDER = "seldon"
+const COMPONENTS_FOLDER = "sdn"
 
 /**
  * Parsers the full scan needs. This export emitted the vue front ends only,

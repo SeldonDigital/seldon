@@ -14,11 +14,11 @@ import type { ChromeTheme } from "@seldon/editor/lib/chrome/chrome-themes"
  * variables.
  *
  * The glob is resolved relative to this file, so it must live in the editor
- * package that owns the generated `seldon/styles` folder, not in the shared
+ * package that owns the generated `sdn/styles` folder, not in the shared
  * framework-neutral lib. The slugs it discovers feed the shared label/sort
  * builder.
  */
-const themeStylesheets = import.meta.glob("../../seldon/styles/*.css", {
+const themeStylesheets = import.meta.glob("../../sdn/styles/*.css", {
   eager: true,
 })
 

@@ -12,11 +12,13 @@ import type { Workspace } from "@seldon/core"
  *
  * The file is named `<label>.<framework>.json`, the workspace label kebab-cased
  * with the export target appended, such as `seldon-editor.react.json`. The label
- * keeps the copy recognizable, and the framework suffix marks it as generated
- * output, keeps it distinct from the editable source a project keeps at
- * `.seldon/workspace.json`, and lets a React and a Vue export sit side by side
- * without overwriting each other. A workspace with no label falls back to
- * `workspace.<framework>.json`.
+ * keeps the copy recognizable, and the framework suffix lets a React and a Vue
+ * export sit side by side without overwriting each other. A workspace with no
+ * label falls back to `workspace.<framework>.json`.
+ *
+ * This copy is for headless `seldon-export` runs. The interactive Editor export
+ * skips it and writes the editable source to `.seldon/<label>.<framework>.json`
+ * instead, so a folder export keeps one workspace file.
  *
  * The workspace is ordered with `orderWorkspaceNodeKeys`, the same helper the
  * editor uses when it writes a workspace, so the file stays stable across
