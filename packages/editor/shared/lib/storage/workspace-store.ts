@@ -58,11 +58,19 @@ export function configureWorkspaceStore(editor: EditorId): void {
  */
 function readRecord(record: StoredWorkspaceOnDisk): StoredWorkspace {
   const { name, ...rest } = record
-  const workspace = restoreWorkspaceNodeIds(rest.workspace)
+  const base = restoreWorkspaceNodeIds(rest.workspace)
 
-  if (workspace.metadata.label || !name) return { ...rest, workspace }
+  // Seed identity from the record key for a file written before metadata carried
+  // an id, so a live record keeps its existing identity instead of minting a new
+  // one when it next loads through Core.
+  const withId = base.metadata.id
+    ? base
+    : { ...base, metadata: { ...base.metadata, id: rest.id } }
 
-  return { ...rest, workspace: setWorkspaceLabel({ value: name }, workspace) }
+  const workspace =
+    !withId.metadata.label && name ? setWorkspaceLabel({ value: name }, withId) : withId
+
+  return { ...rest, workspace }
 }
 
 export async function listStoredWorkspaces(): Promise<StoredWorkspace[]> {
@@ -84,13 +92,20 @@ export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | 
 }
 
 export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void> {
+  const workspace = orderWorkspaceNodeKeys(record.workspace)
+  // The record key mirrors the workspace's own identity, so the file name and
+  // metadata.id never drift. A record seeded on read already agrees, so this is
+  // a no-op there and only realigns a record that arrived without one.
+  const id = workspace.metadata.id ?? record.id
+
   const stamped: StoredWorkspace = {
     ...record,
-    workspace: orderWorkspaceNodeKeys(record.workspace),
+    id,
+    workspace,
     lastEditor: currentEditor,
   }
 
-  await fetch(`${BASE}/${encodeURIComponent(record.id)}`, {
+  await fetch(`${BASE}/${encodeURIComponent(id)}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(stamped),
@@ -103,9 +118,14 @@ export async function deleteStoredWorkspace(id: string): Promise<void> {
 
 /** Creates a record for a workspace. The name travels in `metadata.label`. */
 export async function createStoredWorkspace(workspace: Workspace): Promise<StoredWorkspace> {
+  // Reuse an incoming identity, such as an imported workspace, or mint one, then
+  // stamp it into metadata so the workspace, the record key, and any exported
+  // copy all resolve to the same id.
+  const id = workspace.metadata.id ?? crypto.randomUUID()
+
   const record: StoredWorkspace = {
-    id: crypto.randomUUID(),
-    workspace,
+    id,
+    workspace: { ...workspace, metadata: { ...workspace.metadata, id } },
     updatedAt: new Date().toISOString(),
     lastEditor: currentEditor,
   }

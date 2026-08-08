@@ -17,12 +17,13 @@ import { migrateV16LayeredOverrideLength } from "./steps/migrate-00016-layered-o
 import { migrateV17DropInitialOverrides } from "./steps/migrate-00017-drop-initial-overrides"
 import { migrateV18UniqueNodeRefs } from "./steps/migrate-00018-unique-node-refs"
 import { migrateV19ListboxToMenu } from "./steps/migrate-00019-listbox-to-menu"
+import { migrateV20WorkspaceId } from "./steps/migrate-00020-workspace-id"
 import { repairBoardOrder } from "./steps/repair-board-order"
 
 import type { Workspace } from "../../model/workspace"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 19
+export const CURRENT_WORKSPACE_VERSION = 20
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -46,6 +47,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   17: migrateV17DropInitialOverrides,
   18: migrateV18UniqueNodeRefs,
   19: migrateV19ListboxToMenu,
+  20: migrateV20WorkspaceId,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
@@ -75,6 +77,10 @@ if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
  * still opens. `migrateV19ListboxToMenu` runs here for the same reason: a file
  * stamped at the current version can still arrive holding `catalog:listbox`,
  * which no catalog id resolves.
+ *
+ * `migrateV20WorkspaceId` runs here too so a file already at the current version
+ * but lacking `metadata.id`, including a freshly created workspace, still gains
+ * one. It only mints when the id is absent, so a re-run never changes it.
  */
 const REPAIR_STEPS: MigrationStep[] = [
   migrateV3ThemeRenames,
@@ -82,6 +88,7 @@ const REPAIR_STEPS: MigrationStep[] = [
   migrateV12DialogToPanels,
   migrateV18UniqueNodeRefs,
   migrateV19ListboxToMenu,
+  migrateV20WorkspaceId,
   repairBoardOrder,
 ]
 
