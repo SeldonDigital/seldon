@@ -780,7 +780,7 @@ body {
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 0.5rem 0.1875rem rgb(0 0 0 / 15%);
-  width: 600px;
+  width: 480px;
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
