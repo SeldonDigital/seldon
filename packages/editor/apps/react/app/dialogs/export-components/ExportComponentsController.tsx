@@ -32,15 +32,6 @@ export function ExportComponentsController() {
 
 type ExportComponentsDialogProps = ReturnType<typeof useExportComponentsPanel>
 
-/** One Yes/No scope group, wired to the toggle it drives. */
-interface ScopeGroup {
-  ref: string
-  label: string
-  name: string
-  value: boolean
-  setValue: (value: boolean) => void
-}
-
 /**
  * View-model for the Export Components dialog. Renders the authored
  * `DialogExportComponent`, which supplies all copy, icons, and placeholders as
@@ -176,167 +167,140 @@ function ExportComponentsDialog({
     [startDrag],
   )
 
-  const scopeGroups = useMemo<ScopeGroup[]>(
-    () => [
-      {
-        ref: "exportFontLinks",
-        label: "Generate Google Font API Links",
-        name: "export-font-links",
-        value: fontLinks,
-        setValue: setFontLinks,
-      },
-      {
-        ref: "exportHidden",
-        label: "Hidden Components",
-        name: "export-hidden",
-        value: includeHidden,
-        setValue: setIncludeHidden,
-      },
-      {
-        ref: "exportAllThemes",
-        label: "All Themes",
-        name: "export-all-themes",
-        value: allThemes,
-        setValue: setAllThemes,
-      },
-      {
-        ref: "exportAllFonts",
-        label: "All Enabled Fonts",
-        name: "export-all-fonts",
-        value: allFonts,
-        setValue: setAllFonts,
-      },
-      {
-        ref: "exportAllIcons",
-        label: "All Enabled Icons",
-        name: "export-all-icons",
-        value: allIcons,
-        setValue: setAllIcons,
-      },
-      {
-        ref: "exportWorkspace",
-        label: "Workspace File",
-        name: "export-saved-workspace",
-        value: savedWorkspace,
-        setValue: setSavedWorkspace,
-      },
-      {
-        ref: "exportScripts",
-        label: "CLI Utility Scripts",
-        name: "export-scripts",
-        value: includeScripts,
-        setValue: setIncludeScripts,
-      },
-    ],
-    [
-      fontLinks,
-      setFontLinks,
-      includeHidden,
-      setIncludeHidden,
-      allThemes,
-      setAllThemes,
-      allFonts,
-      setAllFonts,
-      allIcons,
-      setAllIcons,
-      savedWorkspace,
-      setSavedWorkspace,
-      includeScripts,
-      setIncludeScripts,
-    ],
-  )
+  // The dialog addresses every slot by its `data-seldon-ref` name rather than a
+  // positional prop, so adding or reordering fields cannot silently drop a
+  // control. Authored as a flat object literal with static keys, never a loop or
+  // computed keys, so the bindings scanner reads every ref; see
+  // `.cursor/rules/editor-jsx.mdc`. Display-only slots turn on with an empty
+  // object; behavior rides in per ref.
+  const seldonRefs: SeldonRefs = {
+    exportTitle: {},
 
-  const seldonRefs = useMemo<SeldonRefs>(() => {
-    const refs: SeldonRefs = {
-      exportTitle: {},
+    exportWorkspaceName: {},
+    exportWorkspaceNameLabel: {},
+    exportWorkspaceNameField: {
+      value: workspaceName,
+      placeholder: "Untitled workspace",
+      onChange: changeWorkspaceName,
+      onBlur: commitWorkspaceName,
+      onKeyDown: commitNameOnEnter,
+      style: styles.opaque,
+    },
 
-      exportWorkspaceName: {},
-      exportWorkspaceNameLabel: {},
-      exportWorkspaceNameField: {
-        value: workspaceName,
-        placeholder: "Untitled workspace",
-        onChange: changeWorkspaceName,
-        onBlur: commitWorkspaceName,
-        onKeyDown: commitNameOnEnter,
-        style: styles.opaque,
-      },
+    exportFramework: {},
+    exportFrameworkLabel: {},
+    exportFrameworkCombobox: {},
+    exportFrameworkField: {
+      value: frameworkLabel,
+      readOnly: true,
+      onClick: openFramework,
+      "aria-expanded": frameworkOpen,
+      style: styles.opaquePointer,
+    },
 
-      exportFramework: {},
-      exportFrameworkLabel: {},
-      exportFrameworkCombobox: {},
-      exportFrameworkField: {
-        value: frameworkLabel,
-        readOnly: true,
-        onClick: openFramework,
-        "aria-expanded": frameworkOpen,
-        style: styles.opaquePointer,
-      },
+    exportPlatform: {},
+    exportPlatformLabel: {},
+    exportPlatformCombobox: {},
+    exportPlatformField: {
+      value: platformLabel,
+      readOnly: true,
+      onClick: openPlatform,
+      "aria-expanded": platformOpen,
+      style: styles.opaquePointer,
+    },
 
-      exportPlatform: {},
-      exportPlatformLabel: {},
-      exportPlatformCombobox: {},
-      exportPlatformField: {
-        value: platformLabel,
-        readOnly: true,
-        onClick: openPlatform,
-        "aria-expanded": platformOpen,
-        style: styles.opaquePointer,
-      },
+    exportProjectFolder: {},
+    exportProjectFolderLabel: {},
+    exportProjectFolderField: {
+      value: directoryLabel,
+      placeholder: "Choose a folder…",
+      readOnly: true,
+      onClick: chooseDirectory,
+      style: styles.opaquePointer,
+    },
 
-      exportProjectFolder: {},
-      exportProjectFolderLabel: {},
-      exportProjectFolderField: {
-        value: directoryLabel,
-        placeholder: "Choose a folder…",
-        readOnly: true,
-        onClick: chooseDirectory,
-        style: styles.opaquePointer,
-      },
+    exportFieldset: {},
 
-      exportFieldset: {},
+    // Scope groups. Every key is spelled out, never built in a loop, so the
+    // bindings scanner records each ref. The container holds the radiogroup role,
+    // each row widens the hit area, and each native input holds the group name
+    // plus checked state.
+    exportFontLinks: { role: "radiogroup", "aria-label": "Generate Google Font API Links" },
+    exportFontLinksLabel: {},
+    exportFontLinksYes: radioRow(() => setFontLinks(true)),
+    exportFontLinksYesInput: radioInput("export-font-links", fontLinks, () => setFontLinks(true)),
+    exportFontLinksYesText: {},
+    exportFontLinksNo: radioRow(() => setFontLinks(false)),
+    exportFontLinksNoInput: radioInput("export-font-links", !fontLinks, () => setFontLinks(false)),
+    exportFontLinksNoText: {},
 
-      exportCancel: { onClick: cancel },
-      exportCancelLabel: {},
-      exportConfirm: { onClick: save, "aria-disabled": exporting, style: confirmStyle },
-      exportConfirmLabel: {},
-    }
+    exportHidden: { role: "radiogroup", "aria-label": "Hidden Components" },
+    exportHiddenLabel: {},
+    exportHiddenYes: radioRow(() => setIncludeHidden(true)),
+    exportHiddenYesInput: radioInput("export-hidden", includeHidden, () => setIncludeHidden(true)),
+    exportHiddenYesText: {},
+    exportHiddenNo: radioRow(() => setIncludeHidden(false)),
+    exportHiddenNoInput: radioInput("export-hidden", !includeHidden, () => setIncludeHidden(false)),
+    exportHiddenNoText: {},
 
-    // Each scope group renders a title and a Yes/No pair. The group carries the
-    // radiogroup role, each row widens the hit area, and each native input holds
-    // the group name plus checked state.
-    for (const group of scopeGroups) {
-      refs[group.ref] = { role: "radiogroup", "aria-label": group.label }
-      refs[`${group.ref}Label`] = {}
-      refs[`${group.ref}Yes`] = radioRow(() => group.setValue(true))
-      refs[`${group.ref}YesInput`] = radioInput(group.name, group.value, () => group.setValue(true))
-      refs[`${group.ref}YesText`] = {}
-      refs[`${group.ref}No`] = radioRow(() => group.setValue(false))
-      refs[`${group.ref}NoInput`] = radioInput(group.name, !group.value, () =>
-        group.setValue(false),
-      )
-      refs[`${group.ref}NoText`] = {}
-    }
+    exportAllThemes: { role: "radiogroup", "aria-label": "All Themes" },
+    exportAllThemesLabel: {},
+    exportAllThemesYes: radioRow(() => setAllThemes(true)),
+    exportAllThemesYesInput: radioInput("export-all-themes", allThemes, () => setAllThemes(true)),
+    exportAllThemesYesText: {},
+    exportAllThemesNo: radioRow(() => setAllThemes(false)),
+    exportAllThemesNoInput: radioInput("export-all-themes", !allThemes, () => setAllThemes(false)),
+    exportAllThemesNoText: {},
 
-    return refs
-  }, [
-    workspaceName,
-    changeWorkspaceName,
-    commitWorkspaceName,
-    commitNameOnEnter,
-    frameworkLabel,
-    openFramework,
-    frameworkOpen,
-    platformLabel,
-    openPlatform,
-    platformOpen,
-    directoryLabel,
-    chooseDirectory,
-    cancel,
-    save,
-    exporting,
-    confirmStyle,
-    scopeGroups,
-  ])
+    exportAllFonts: { role: "radiogroup", "aria-label": "All Enabled Fonts" },
+    exportAllFontsLabel: {},
+    exportAllFontsYes: radioRow(() => setAllFonts(true)),
+    exportAllFontsYesInput: radioInput("export-all-fonts", allFonts, () => setAllFonts(true)),
+    exportAllFontsYesText: {},
+    exportAllFontsNo: radioRow(() => setAllFonts(false)),
+    exportAllFontsNoInput: radioInput("export-all-fonts", !allFonts, () => setAllFonts(false)),
+    exportAllFontsNoText: {},
+
+    exportAllIcons: { role: "radiogroup", "aria-label": "All Enabled Icons" },
+    exportAllIconsLabel: {},
+    exportAllIconsYes: radioRow(() => setAllIcons(true)),
+    exportAllIconsYesInput: radioInput("export-all-icons", allIcons, () => setAllIcons(true)),
+    exportAllIconsYesText: {},
+    exportAllIconsNo: radioRow(() => setAllIcons(false)),
+    exportAllIconsNoInput: radioInput("export-all-icons", !allIcons, () => setAllIcons(false)),
+    exportAllIconsNoText: {},
+
+    exportWorkspace: { role: "radiogroup", "aria-label": "Workspace File" },
+    exportWorkspaceLabel: {},
+    exportWorkspaceYes: radioRow(() => setSavedWorkspace(true)),
+    exportWorkspaceYesInput: radioInput("export-saved-workspace", savedWorkspace, () =>
+      setSavedWorkspace(true),
+    ),
+    exportWorkspaceYesText: {},
+    exportWorkspaceNo: radioRow(() => setSavedWorkspace(false)),
+    exportWorkspaceNoInput: radioInput("export-saved-workspace", !savedWorkspace, () =>
+      setSavedWorkspace(false),
+    ),
+    exportWorkspaceNoText: {},
+
+    exportScripts: { role: "radiogroup", "aria-label": "CLI Utility Scripts" },
+    exportScriptsLabel: {},
+    exportScriptsYes: radioRow(() => setIncludeScripts(true)),
+    exportScriptsYesInput: radioInput("export-scripts", includeScripts, () =>
+      setIncludeScripts(true),
+    ),
+    exportScriptsYesText: {},
+    exportScriptsNo: radioRow(() => setIncludeScripts(false)),
+    exportScriptsNoInput: radioInput("export-scripts", !includeScripts, () =>
+      setIncludeScripts(false),
+    ),
+    exportScriptsNoText: {},
+
+    exportCancel: { onClick: cancel },
+    exportCancelLabel: {},
+    exportConfirm: { onClick: save, "aria-disabled": exporting, style: confirmStyle },
+    exportConfirmLabel: {},
+  }
 
   return (
     <WindowSurface

@@ -1217,6 +1217,1890 @@
         ]
       }
     ],
+    "exportAllFonts": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 255,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"All Enabled Fonts\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"All Enabled Fonts\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportAllFontsLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 256,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllFontsNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 260,
+        "conditional": false,
+        "expression": "radioRow(() => setAllFonts(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setAllFonts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllFontsNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 261,
+        "conditional": false,
+        "expression": "radioInput(\"export-all-fonts\", !allFonts, () => setAllFonts(false))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "allFonts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setAllFonts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllFontsNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 262,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllFontsYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 257,
+        "conditional": false,
+        "expression": "radioRow(() => setAllFonts(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setAllFonts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllFontsYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 258,
+        "conditional": false,
+        "expression": "radioInput(\"export-all-fonts\", allFonts, () => setAllFonts(true))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "allFonts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setAllFonts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllFontsYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 259,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllIcons": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 264,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"All Enabled Icons\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"All Enabled Icons\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportAllIconsLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 265,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllIconsNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 269,
+        "conditional": false,
+        "expression": "radioRow(() => setAllIcons(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setAllIcons",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllIconsNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 270,
+        "conditional": false,
+        "expression": "radioInput(\"export-all-icons\", !allIcons, () => setAllIcons(false))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "allIcons",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setAllIcons",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllIconsNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 271,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllIconsYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 266,
+        "conditional": false,
+        "expression": "radioRow(() => setAllIcons(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setAllIcons",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllIconsYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 267,
+        "conditional": false,
+        "expression": "radioInput(\"export-all-icons\", allIcons, () => setAllIcons(true))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "allIcons",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setAllIcons",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllIconsYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 268,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllThemes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 246,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"All Themes\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"All Themes\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportAllThemesLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 247,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllThemesNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 251,
+        "conditional": false,
+        "expression": "radioRow(() => setAllThemes(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setAllThemes",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllThemesNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 252,
+        "conditional": false,
+        "expression": "radioInput(\"export-all-themes\", !allThemes, () => setAllThemes(false))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "allThemes",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setAllThemes",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllThemesNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 253,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportAllThemesYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 248,
+        "conditional": false,
+        "expression": "radioRow(() => setAllThemes(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setAllThemes",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllThemesYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 249,
+        "conditional": false,
+        "expression": "radioInput(\"export-all-themes\", allThemes, () => setAllThemes(true))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "allThemes",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setAllThemes",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportAllThemesYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 250,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportCancel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 299,
+        "conditional": false,
+        "expression": "{ onClick: cancel }",
+        "inputs": [
+          {
+            "name": "cancel",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "cancel",
+            "inputs": [
+              {
+                "name": "cancel",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportCancelLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 300,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportConfirm": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 301,
+        "conditional": false,
+        "expression": "{ onClick: save, \"aria-disabled\": exporting, style: confirmStyle }",
+        "inputs": [
+          {
+            "name": "save",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "exporting",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "confirmStyle",
+            "declaredAt": {
+              "line": 163,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "save",
+            "inputs": [
+              {
+                "name": "save",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-disabled",
+            "expression": "exporting",
+            "inputs": [
+              {
+                "name": "exporting",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "confirmStyle",
+            "inputs": [
+              {
+                "name": "confirmStyle",
+                "declaredAt": {
+                  "line": 163,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportConfirmLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 302,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFieldset": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 222,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFontLinks": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 228,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"Generate Google Font API Links\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"Generate Google Font API Links\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportFontLinksLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 229,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFontLinksNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 233,
+        "conditional": false,
+        "expression": "radioRow(() => setFontLinks(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setFontLinks",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportFontLinksNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 234,
+        "conditional": false,
+        "expression": "radioInput(\"export-font-links\", !fontLinks, () => setFontLinks(false))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "fontLinks",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setFontLinks",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportFontLinksNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 235,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFontLinksYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 230,
+        "conditional": false,
+        "expression": "radioRow(() => setFontLinks(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setFontLinks",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportFontLinksYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 231,
+        "conditional": false,
+        "expression": "radioInput(\"export-font-links\", fontLinks, () => setFontLinks(true))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "fontLinks",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setFontLinks",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportFontLinksYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 232,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFramework": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 190,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFrameworkCombobox": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 192,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportFrameworkField": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 193,
+        "conditional": false,
+        "expression": "{ value: frameworkLabel, readOnly: true, onClick: openFramework, \"aria-expanded\": frameworkOpen, style: styles.opaquePointer, }",
+        "inputs": [
+          {
+            "name": "frameworkLabel",
+            "declaredAt": {
+              "line": 123,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          },
+          {
+            "name": "openFramework",
+            "declaredAt": {
+              "line": 99,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "frameworkOpen",
+            "declaredAt": {
+              "line": 90,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 346,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "frameworkLabel",
+            "inputs": [
+              {
+                "name": "frameworkLabel",
+                "declaredAt": {
+                  "line": 123,
+                  "kind": "const",
+                  "via": "useMemo"
+                }
+              }
+            ]
+          },
+          {
+            "key": "readOnly",
+            "expression": "true",
+            "inputs": []
+          },
+          {
+            "key": "onClick",
+            "expression": "openFramework",
+            "inputs": [
+              {
+                "name": "openFramework",
+                "declaredAt": {
+                  "line": 99,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-expanded",
+            "expression": "frameworkOpen",
+            "inputs": [
+              {
+                "name": "frameworkOpen",
+                "declaredAt": {
+                  "line": 90,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.opaquePointer",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 346,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportFrameworkLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 191,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportHidden": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 237,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"Hidden Components\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"Hidden Components\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportHiddenLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 238,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportHiddenNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 242,
+        "conditional": false,
+        "expression": "radioRow(() => setIncludeHidden(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setIncludeHidden",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportHiddenNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 243,
+        "conditional": false,
+        "expression": "radioInput(\"export-hidden\", !includeHidden, () => setIncludeHidden(false))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "includeHidden",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setIncludeHidden",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportHiddenNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 244,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportHiddenYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 239,
+        "conditional": false,
+        "expression": "radioRow(() => setIncludeHidden(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setIncludeHidden",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportHiddenYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 240,
+        "conditional": false,
+        "expression": "radioInput(\"export-hidden\", includeHidden, () => setIncludeHidden(true))",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "includeHidden",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setIncludeHidden",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportHiddenYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 241,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportPlatform": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 201,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportPlatformCombobox": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 203,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportPlatformField": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 204,
+        "conditional": false,
+        "expression": "{ value: platformLabel, readOnly: true, onClick: openPlatform, \"aria-expanded\": platformOpen, style: styles.opaquePointer, }",
+        "inputs": [
+          {
+            "name": "platformLabel",
+            "declaredAt": {
+              "line": 105,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          },
+          {
+            "name": "openPlatform",
+            "declaredAt": {
+              "line": 93,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "platformOpen",
+            "declaredAt": {
+              "line": 88,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 346,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "platformLabel",
+            "inputs": [
+              {
+                "name": "platformLabel",
+                "declaredAt": {
+                  "line": 105,
+                  "kind": "const",
+                  "via": "useMemo"
+                }
+              }
+            ]
+          },
+          {
+            "key": "readOnly",
+            "expression": "true",
+            "inputs": []
+          },
+          {
+            "key": "onClick",
+            "expression": "openPlatform",
+            "inputs": [
+              {
+                "name": "openPlatform",
+                "declaredAt": {
+                  "line": 93,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-expanded",
+            "expression": "platformOpen",
+            "inputs": [
+              {
+                "name": "platformOpen",
+                "declaredAt": {
+                  "line": 88,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.opaquePointer",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 346,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportPlatformLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 202,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportProjectFolder": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 212,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportProjectFolderField": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 214,
+        "conditional": false,
+        "expression": "{ value: directoryLabel, placeholder: \"Choose a folder…\", readOnly: true, onClick: chooseDirectory, style: styles.opaquePointer, }",
+        "inputs": [
+          {
+            "name": "directoryLabel",
+            "declaredAt": {
+              "line": 158,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "chooseDirectory",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 346,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "directoryLabel",
+            "inputs": [
+              {
+                "name": "directoryLabel",
+                "declaredAt": {
+                  "line": 158,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "\"Choose a folder…\"",
+            "inputs": []
+          },
+          {
+            "key": "readOnly",
+            "expression": "true",
+            "inputs": []
+          },
+          {
+            "key": "onClick",
+            "expression": "chooseDirectory",
+            "inputs": [
+              {
+                "name": "chooseDirectory",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.opaquePointer",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 346,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportProjectFolderLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 213,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportScripts": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 286,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"CLI Utility Scripts\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"CLI Utility Scripts\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportScriptsLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 287,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportScriptsNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 293,
+        "conditional": false,
+        "expression": "radioRow(() => setIncludeScripts(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setIncludeScripts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportScriptsNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 294,
+        "conditional": false,
+        "expression": "radioInput(\"export-scripts\", !includeScripts, () => setIncludeScripts(false), )",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "includeScripts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setIncludeScripts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportScriptsNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 297,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportScriptsYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 288,
+        "conditional": false,
+        "expression": "radioRow(() => setIncludeScripts(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setIncludeScripts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportScriptsYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 289,
+        "conditional": false,
+        "expression": "radioInput(\"export-scripts\", includeScripts, () => setIncludeScripts(true), )",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "includeScripts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setIncludeScripts",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportScriptsYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 292,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportTitle": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 177,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportWorkspace": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 273,
+        "conditional": false,
+        "expression": "{ role: \"radiogroup\", \"aria-label\": \"Workspace File\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "role",
+            "expression": "\"radiogroup\"",
+            "inputs": []
+          },
+          {
+            "key": "aria-label",
+            "expression": "\"Workspace File\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "exportWorkspaceLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 274,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportWorkspaceName": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 179,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportWorkspaceNameField": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 181,
+        "conditional": false,
+        "expression": "{ value: workspaceName, placeholder: \"Untitled workspace\", onChange: changeWorkspaceName, onBlur: commitWorkspaceName, onKeyDown: commitNameOnEnter, style: styl...",
+        "inputs": [
+          {
+            "name": "workspaceName",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "changeWorkspaceName",
+            "declaredAt": {
+              "line": 141,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "commitWorkspaceName",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "commitNameOnEnter",
+            "declaredAt": {
+              "line": 148,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 346,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "workspaceName",
+            "inputs": [
+              {
+                "name": "workspaceName",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "\"Untitled workspace\"",
+            "inputs": []
+          },
+          {
+            "key": "onChange",
+            "expression": "changeWorkspaceName",
+            "inputs": [
+              {
+                "name": "changeWorkspaceName",
+                "declaredAt": {
+                  "line": 141,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onBlur",
+            "expression": "commitWorkspaceName",
+            "inputs": [
+              {
+                "name": "commitWorkspaceName",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onKeyDown",
+            "expression": "commitNameOnEnter",
+            "inputs": [
+              {
+                "name": "commitNameOnEnter",
+                "declaredAt": {
+                  "line": 148,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.opaque",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 346,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportWorkspaceNameLabel": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 180,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportWorkspaceNo": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 280,
+        "conditional": false,
+        "expression": "radioRow(() => setSavedWorkspace(false))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setSavedWorkspace",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportWorkspaceNoInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 281,
+        "conditional": false,
+        "expression": "radioInput(\"export-saved-workspace\", !savedWorkspace, () => setSavedWorkspace(false), )",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "savedWorkspace",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setSavedWorkspace",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportWorkspaceNoText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 284,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportWorkspaceYes": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 275,
+        "conditional": false,
+        "expression": "radioRow(() => setSavedWorkspace(true))",
+        "inputs": [
+          {
+            "name": "radioRow",
+            "declaredAt": {
+              "line": 337,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "setSavedWorkspace",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportWorkspaceYesInput": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 276,
+        "conditional": false,
+        "expression": "radioInput(\"export-saved-workspace\", savedWorkspace, () => setSavedWorkspace(true), )",
+        "inputs": [
+          {
+            "name": "radioInput",
+            "declaredAt": {
+              "line": 342,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "savedWorkspace",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "setSavedWorkspace",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "exportWorkspaceYesText": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 279,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
     "filterField": [
       {
         "file": "app/sidebars/properties/PanelPropertyController.tsx",
@@ -10011,13 +11895,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 353,
+          "line": 317,
           "expression": "barHandle",
           "inputs": [
             {
               "name": "barHandle",
               "declaredAt": {
-                "line": 174,
+                "line": 165,
                 "kind": "const",
                 "via": "useMemo"
               }

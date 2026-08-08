@@ -18,6 +18,15 @@ A helper or function call inside a JSX prop is a violation, even a short one. `c
 
 Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that turns a generated slot on or off carries no logic, so it does not need a name.
 
+### Ref Maps (`seldonRefs`)
+
+A `seldonRefs` map is read by the bindings scanner, which parses source without running it. Author it so a static read sees every ref. See `packages/factory/bindings/README.md`.
+
+- Author it as a hoisted object literal with static string keys. A `useMemo` or a Vue `computed` is fine only when its callback is a concise expression that returns one literal, as in `useMemo(() => ({ ... }), deps)`.
+- Do not build the map in a block-bodied callback such as `() => { const refs = {}; return refs }`, in a loop, or with a computed key such as `refs[prefix + "Yes"]`. Do not spread another object into it.
+- Spell out every key, even when groups share a shape. A key the scanner cannot read reports its ref as unconnected on the canvas, and the export still ships the component, so the miss is silent at runtime.
+- Values may be dynamic and may call a helper, such as `radioInput(name, checked, onSelect)`. Only the keys must be static.
+
 ### Vue Templates
 
 The same rule holds in a Vue template. Hoist each value into a named `const` or a `computed` in `<script setup>`, then bind the identifier.

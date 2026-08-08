@@ -85,6 +85,17 @@ A repeated row cannot hoist a local. JSX can open a function body per row and de
 
 A call resolves through the function it names, taking every object literal that function returns. A property access resolves through the property name, taking every literal assigned under it in the file. Both cover more than one literal because a row list is often built in more than one branch.
 
+### Shapes A Static Read Can See
+
+The scan does not run the code, so it reads a map only in a few shapes:
+
+- A hoisted object literal with static string keys, such as `const seldonRefs = { exportTitle: {} }`.
+- A `useMemo` or `computed` whose callback is a concise expression that returns one literal, such as `useMemo(() => ({ ... }), deps)`.
+- Static `name.key = value` additions after the literal, marked `conditional` when behind a branch.
+- A helper call or a row property, for a repeated row, as above.
+
+It cannot read a map built any other way. A block-bodied callback such as `() => { const refs = {}; return refs }`, a loop, a computed key such as `refs[prefix + "Yes"]`, or a spread all read as empty. The scan records nothing for that map and emits no error, so its refs show as unconnected on the canvas while the component still exports. Author the map as a flat literal with every key spelled out. Editor controllers follow this in `.cursor/rules/editor-jsx.mdc`.
+
 ### Ambiguous Names
 
 Resolution is by name within a file, and the first declaration found wins. A file that declares one name twice therefore reports the wrong entries for at least one of them, because sibling function scopes are invisible to a scan that has no type checker.
