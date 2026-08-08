@@ -83,11 +83,34 @@ export function resolveIconExport(
   iconId: IconId,
   rootDirectory: string,
 ): ResolvedIconExport | null {
+  return resolveIconExportInCatalog(iconId, getCatalogDir(rootDirectory))
+}
+
+/**
+ * Absolute path to the catalog source file for a resolved icon, given the
+ * catalog directory directly. Used by the package-resolution asset reader,
+ * which points at an installed `@seldon/core/icon-sets/catalog`.
+ */
+export function getIconSourcePathInCatalog(
+  resolved: ResolvedIconExport,
+  catalogDir: string,
+): string {
+  return path.join(catalogDir, `${resolved.relativePath}.tsx`)
+}
+
+/**
+ * Resolve an icon id against a catalog directory, rather than deriving the
+ * directory from a monorepo root. Behaves like {@link resolveIconExport}.
+ */
+export function resolveIconExportInCatalog(
+  iconId: IconId,
+  catalogDir: string,
+): ResolvedIconExport | null {
   if (iconId === "__default__") {
     return { componentName: "IconDefault", relativePath: "IconDefault" }
   }
 
-  const index = getCatalogIndex(getCatalogDir(rootDirectory))
+  const index = getCatalogIndex(catalogDir)
 
   const candidates = [getIconComponentName(iconId)]
   const dashIndex = iconId.indexOf("-")
@@ -124,5 +147,5 @@ export function resolveIconExport(
  * Absolute path to the catalog source file for a resolved icon.
  */
 export function getIconSourcePath(resolved: ResolvedIconExport, rootDirectory: string): string {
-  return path.join(getCatalogDir(rootDirectory), `${resolved.relativePath}.tsx`)
+  return getIconSourcePathInCatalog(resolved, getCatalogDir(rootDirectory))
 }

@@ -14,7 +14,7 @@ import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useState } from "react"
 
-import { getBoardRowIcon } from "@seldon/core/icon-registry"
+import { getBoardRowIcon } from "@seldon/core/icon-lookup"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isAuthoredBoard,

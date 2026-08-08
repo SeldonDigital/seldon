@@ -141,7 +141,7 @@ Every property a schema declares uses the same tagged shape. A `type` tag drawn 
 A few examples:
 
 ```typescript
-// Not set — resolved by inheritance or platform default
+// Not set, resolved by inheritance or platform default
 display: { type: Sdn.ValueType.EMPTY, value: null }
 
 // Take the value from the parent
@@ -351,7 +351,7 @@ Runtime checks happen in the workspace and properties layers, covering override 
 
 ## Performance Considerations
 
-**Note:** These are general guidelines for systems that lean on the catalog heavily. They are not micro-benchmarked claims about this package.
+These are general guidelines for systems that lean on the catalog heavily. They are not micro-benchmarked claims about this package.
 
 ### Optimization Strategies
 
@@ -370,7 +370,7 @@ Runtime checks happen in the workspace and properties layers, covering override 
 
 ## Error Handling
 
-**Note:** Describes typical failure modes at a product level, such as TypeScript, validation, and missing ids. Specific error strings depend on the caller.
+This section describes typical failure modes at a product level, such as TypeScript, validation, and missing ids. Specific error strings depend on the caller.
 
 ### Validation Errors
 
@@ -388,7 +388,7 @@ Runtime checks happen in the workspace and properties layers, covering override 
 
 ## Adding Components to Core
 
-The high-level recipe; details vary by level.
+The high-level recipe. Details vary by level.
 
 **1. Pick the bucket**
 
@@ -436,7 +436,7 @@ Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../propert
 
 After editing a schema, sync [`catalog/index.ts`](./catalog/index.ts), `constants/index.ts`, and `types/component-id.ts` so the imports, catalog arrays, export config map, and `ComponentId` values stay aligned with the schema files.
 
-Invoke `@components-catalog`.
+Invoke `@foundation-components-catalog`.
 
 **5. Wire downstream consumers**
 
@@ -444,7 +444,7 @@ Anything that consumes catalog ids (workspace migrations, React/CSS export overr
 
 **6. Add tests**
 
-Follow the testing patterns in nearby schema and catalog tests: use real workspace fixtures, `testTheme`, and real values; no mocks.
+Follow the testing patterns in nearby schema and catalog tests. Use real workspace fixtures, `testTheme`, and real values. Do not use mocks.
 
 ---
 

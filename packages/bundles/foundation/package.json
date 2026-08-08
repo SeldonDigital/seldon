@@ -1,0 +1,40 @@
+{
+  "name": "@seldon/foundation",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The full Seldon platform: @seldon/hari (engine plus AI) and the embeddable editor library (@seldon/editor). Ships as source for a consumer bundler.",
+  "license": "SEE LICENSE IN ../../../license/noncommercial/LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git",
+    "directory": "packages/bundles/foundation"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "prepublishOnly": "echo 'Publishing @seldon/foundation is blocked. See PUBLISHING.md to unlock.' && exit 1"
+  },
+  "dependencies": {
+    "@seldon/editor": "0.0.0",
+    "@seldon/hari": "0.0.0"
+  }
+}

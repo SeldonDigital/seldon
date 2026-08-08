@@ -49,7 +49,7 @@ export async function getFontsComponent(
       const families = workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
 
       for (const family of families) {
-        if (family.origin !== "remote") continue
+        if (family.origin === "local") continue
         const enabled = enabledByFamily[family.name]
 
         // An explicit empty selection (preset None) requests no weights, so skip.

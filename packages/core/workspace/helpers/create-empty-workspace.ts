@@ -13,6 +13,7 @@ export function createEmptyWorkspace(): Workspace {
   const workspace: Workspace = {
     metadata: {
       version: CURRENT_WORKSPACE_VERSION,
+      id: crypto.randomUUID(),
       label: "",
     },
     boards: {},

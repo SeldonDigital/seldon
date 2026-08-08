@@ -1,14 +1,8 @@
-import { carbonIconIds } from "."
 import { computeIconSet } from "../../helpers/compute-icon-set"
+import { carbonAvailableIconIds } from "./available"
+import { carbonDefaultEnabledIconIds } from "./default-enabled"
 
-import type { IconCategory } from "../../constants/categories"
 import type { StockIconSet } from "../../types/icon-set"
-
-/**
- * Categories enabled when the Carbon icon set is added to a workspace. Icons in
- * every other category start off until the user turns them on.
- */
-export const CARBON_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = ["user-interface"]
 
 export const iconSet: StockIconSet = {
   metadata: {
@@ -18,8 +12,11 @@ export const iconSet: StockIconSet = {
     intent: "Provides IBM Carbon icons for interface and content icons.",
   },
   source: "carbon",
-  icons: [...carbonIconIds],
-  defaultEnabledCategories: CARBON_DEFAULT_ENABLED_CATEGORIES,
+  icons: [...carbonAvailableIconIds],
+  // The curated subset starts on. Every other available icon starts off until
+  // the user turns it on, so default workspaces are not overloaded.
+  defaultEnabledCategories: [],
+  defaultEnabledIcons: [...carbonDefaultEnabledIconIds],
 }
 
 export const defaultIconSet = computeIconSet(iconSet)

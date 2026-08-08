@@ -5,10 +5,10 @@ import { seldonBase } from "../../../../eslint.config.base.mjs"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
-  "app/ should render Views only. Move raw DOM markup into a reusable View in seldon/, or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
+  "app/ should render Views only. Move raw DOM markup into a reusable View in sdn/, or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
 
 export default defineConfig([
-  globalIgnores(["seldon/**", "dist/**", "node_modules/**"]),
+  globalIgnores(["sdn/**", "dist/**", "node_modules/**"]),
   ...seldonBase,
   // Register react-hooks so existing inline eslint-disable directives resolve,
   // and enable the console policy shared by the editor apps.

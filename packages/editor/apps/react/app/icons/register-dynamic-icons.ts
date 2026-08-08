@@ -1,6 +1,5 @@
 import {
   IconMaterialComputer,
-  IconMaterialLaptop,
   IconMaterialSmartphone,
   IconMaterialTablet,
   IconMaterialTv,
@@ -44,7 +43,7 @@ export function registerDynamicIcons(): void {
   registerIcon("icon-custom-theme-swatches", toRegistered(ThemeSwatches))
   registerIcon("icon-custom-device-mobile", toRegistered(IconMaterialSmartphone))
   registerIcon("icon-custom-device-tablet", toRegistered(IconMaterialTablet))
-  registerIcon("icon-custom-device-laptop", toRegistered(IconMaterialLaptop))
+  registerIcon("icon-custom-device-laptop", toRegistered(IconMaterialComputer))
   registerIcon("icon-custom-device-desktop", toRegistered(IconMaterialComputer))
   registerIcon("icon-custom-device-tv", toRegistered(IconMaterialTv))
   registerIcon("icon-custom-device-watch", toRegistered(IconMaterialWatch))

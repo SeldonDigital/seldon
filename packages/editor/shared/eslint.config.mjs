@@ -35,7 +35,7 @@ const REACT_BAN = {
 }
 
 export default defineConfig([
-  globalIgnores(["dist/**", "node_modules/**", "seldon/**"]),
+  globalIgnores(["dist/**", "node_modules/**", "sdn/**"]),
   ...seldonBase,
   {
     files: ["lib/**/*.{ts,tsx}"],

@@ -1,7 +1,8 @@
-import { Unit, ValueType } from "../../index"
 import { resolveAutoFitSource } from "../../properties/compute/resolve-auto-fit-source"
+import { Unit } from "../../properties/constants/shared/units"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
-import { modulate } from "../math/modulate"
+import { modulate, snapRemToPixelGrid } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
 import { exactTokenToLength } from "./resolve-length-token"
 
@@ -59,7 +60,7 @@ export function resolveSize({
         type: ValueType.EXACT,
         value: {
           unit: Unit.REM,
-          value: resolvedSource.value.value * theme.autoFit.parameters.factor,
+          value: snapRemToPixelGrid(resolvedSource.value.value * theme.autoFit.parameters.factor),
         },
       }
     }

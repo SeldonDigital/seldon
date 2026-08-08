@@ -5,4 +5,4 @@
  * know which folder it just wrote, so both read it from here rather than
  * repeating the literal.
  */
-export const DEFAULT_COMPONENTS_FOLDER = "seldon"
+export const DEFAULT_COMPONENTS_FOLDER = "sdn"

@@ -165,7 +165,7 @@ This shared package is the platform-neutral part of the **Model**. It backs the 
 - The React app uses `use-*.ts` hooks as ViewModels and generated `.tsx` components as Views. See [../apps/react/README.md](../apps/react/README.md).
 - The Vue app uses composables and Pinia stores as ViewModels and generated `.vue` components as Views. See [../apps/vue/README.md](../apps/vue/README.md).
 
-Each app enforces its View and ViewModel boundaries with lint rules. The framework-specific View authoring rules live in each app's README and in `.cursor/rules/editor-jsx.mdc`.
+Each app enforces its View and ViewModel boundaries with lint rules. The framework-specific View authoring rules live in each app's README and in `.cursor/rules/foundation-editor-jsx.mdc`.
 
 ### Why MVVM
 

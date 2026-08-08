@@ -12,7 +12,7 @@ import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import { getNodeRowIcon } from "@seldon/core/icon-registry"
+import { getNodeRowIcon } from "@seldon/core/icon-lookup"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import {
@@ -81,6 +81,11 @@ export function useRowNode(
 
   const nodeExistsInWorkspace = hasNode(workspace, node.id)
   const properties: Properties = nodeExistsInWorkspace ? getNodeProperties(node, workspace) : {}
+
+  // With View Code Names on, the row shows (and inline rename edits) the node's
+  // ref handle instead of its label. "Show Node Ids" debug output is read-only,
+  // so it never enters this mode.
+  const isCodeNameRename = !showNodeIds && showCodeNames && nodeExistsInWorkspace
 
   // A user variant that repeats a sibling's label reads as an error: it exports
   // under a colliding component name and blocks factory export.
@@ -171,6 +176,14 @@ export function useRowNode(
     if (isEcho) return
     const entityType = typeCheckingService.getEntityType(node)
 
+    // Code-name mode edits the ref, which nodes own individually (instances
+    // included), so it gates on the ref rule, not the rename rule.
+    if (isCodeNameRename) {
+      if (rules.mutations.setRef[entityType].allowed) setEditingName(true)
+
+      return
+    }
+
     if (rules.mutations.rename[entityType].allowed) {
       setEditingName(true)
     } else if (typeCheckingService.isInstance(node)) {
@@ -236,6 +249,22 @@ export function useRowNode(
     setEditingName(false)
   }
 
+  function setNodeRef(newRef: string) {
+    dispatch({
+      type: "set_node_ref",
+      payload: {
+        nodeId: node.id as VariantId,
+        ref: newRef.trim(),
+      },
+    })
+    setEditingName(false)
+  }
+
+  // Code-name mode seeds the edit with the current ref (empty when unset) and
+  // commits it as the ref; otherwise it edits and commits the node label.
+  const renameSeed = isCodeNameRename ? (node.ref ?? "") : node.label
+  const submitRename = isCodeNameRename ? setNodeRef : setNodeLabel
+
   return {
     label,
     buttonIconic,
@@ -255,7 +284,8 @@ export function useRowNode(
     isNodeActive,
     isEditingName,
     setEditingName,
-    setNodeLabel,
+    renameSeed,
+    submitRename,
     hasChildren,
     children,
     dragging,

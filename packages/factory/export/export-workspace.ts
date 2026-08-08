@@ -1,4 +1,6 @@
+import { EXPORT_MANIFEST_FILENAME, buildExportManifest } from "./manifest"
 import { PLATFORMS } from "./platforms/registry"
+import { formatJson } from "./shared/format-json"
 import { generateWorkspaceCopy } from "./shared/generate-workspace-copy"
 
 import type { ExportOptions, FileToExport } from "./types"
@@ -88,6 +90,21 @@ export async function exportWorkspace(
     // Rules ship with the scripts export. They are docs the user copies and
     // edits, so they stay out of the scripts integrity hashes.
     files.push(...generateRules(options))
+  }
+
+  // Emitted last so it records every other file. It marks which workspace owns
+  // this components folder, so a later export into the same folder can warn
+  // before overwriting another workspace's output. Skipped when the workspace
+  // has no id, since ownership cannot be attributed without one.
+  const workspaceId = workspace.metadata.id
+
+  if (workspaceId) {
+    const manifest = buildExportManifest(workspaceId, files)
+
+    files.push({
+      path: `${componentsFolder}/${EXPORT_MANIFEST_FILENAME}`.replaceAll("//", "/"),
+      content: await formatJson(JSON.stringify(manifest, null, 2)),
+    })
   }
 
   return files

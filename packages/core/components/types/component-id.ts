@@ -2,7 +2,7 @@
  * The component id union for the catalog. Each id matches a schema's `id` and a
  * `ComponentId` key. Keep this enum aligned with the schema files and
  * `packages/core/components/catalog`. To sync it after schema changes, invoke
- * `@components-catalog`.
+ * `@foundation-components-catalog`.
  *
  * `ComponentId` stays an enum because it is part of the serialized workspace API.
  */

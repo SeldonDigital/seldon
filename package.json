@@ -14,6 +14,7 @@
     "start": "npm run start --workspace @seldon/editor-react",
     "start:vue": "npm run start --workspace @seldon/editor-vue",
     "check": "node scripts/check.mjs",
+    "clean": "node scripts/clean.mjs",
     "format": "node scripts/format.mjs",
     "format:check": "prettier --check \"**/*.{ts,tsx,vue,json,css,js,mjs}\"",
     "lint": "npm run lint --workspace @seldon/editor-react",
@@ -32,11 +33,18 @@
     "coverage": "vitest run --coverage",
     "export:seldon": "npm run export:seldon --workspace @seldon/editor-react",
     "export:seldon:vue": "npm run export:seldon --workspace @seldon/editor-vue",
+    "icons": "node scripts/generate-icons.mjs",
+    "fonts": "node scripts/generate-fonts.mjs",
+    "fonts:meta": "node scripts/generate-font-metadata.mjs",
     "bindings": "npm run bindings --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "bindings:check": "npm run bindings:check --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "notices:thirdparty": "node packages/editor/shared/scripts/generate-third-party-notices.mjs",
     "ollama:ensure": "npm run ollama:ensure --workspace @seldon/ai",
-    "ollama:kill": "npm run ollama:kill --workspace @seldon/ai"
+    "ollama:kill": "npm run ollama:kill --workspace @seldon/ai",
+    "build:packages": "npm run build --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/ai --workspace @seldon/terminus --workspace @seldon/hari",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "verify:packages": "node scripts/verify-packages.mjs"
   },
   "repository": {
     "type": "git",
@@ -55,14 +63,26 @@
     "packages/editor/apps/vue",
     "packages/core",
     "packages/factory",
-    "packages/ai"
+    "packages/ai",
+    "packages/bundles/terminus",
+    "packages/bundles/hari",
+    "packages/bundles/foundation",
+    "apps/desktop"
   ],
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.0",
+    "@changesets/cli": "^2.27.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@iconify-json/carbon": "^1.2.25",
+    "@iconify-json/lucide": "^1.2.121",
+    "@iconify-json/material-symbols": "^1.2.88",
+    "@iconify/utils": "^3.1.4",
     "@vitest/coverage-v8": "^4.1.9",
+    "esbuild": "^0.28.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "happy-dom": "^20.10.6",
     "prettier": "^3.3.3",
+    "publint": "^0.3.0",
     "typescript-eslint": "^8.61.0",
     "vitest": "^4.1.9"
   },
@@ -71,7 +91,13 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
+  "optionalDependencies": {
+    "@rolldown/binding-darwin-arm64": "1.0.3",
+    "@rolldown/binding-darwin-x64": "1.0.3",
+    "@rolldown/binding-linux-x64-gnu": "1.0.3",
+    "@rolldown/binding-win32-x64-msvc": "1.0.3"
+  },
   "volta": {
-    "node": "22.18.0"
+    "node": "22.23.1"
   }
 }

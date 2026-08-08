@@ -1,0 +1,18 @@
+{
+  "algorithm": "sha256",
+  "bindingsVersion": 1,
+  "files": {
+    "README.md": "994d0778f43c6fbe7dd2ba09377a3c21307a2903a3fb0550c2e7a74b3bef5579",
+    "bindings/generate-bindings.mjs": "acfce9d47b96305655fdb5461fb18486cdd6ef6658146246743d12b4ca756670",
+    "bindings/lib/config.mjs": "ff293c71d06762b27ee4e43bbdb497faf8575a67a005d40567f616844f3e17be",
+    "bindings/lib/declaration-index.mjs": "54d47b6761f9580e4775bf01ea41928b214a5604e7dbde9e22a062ef0c1e7f7f",
+    "bindings/lib/describe-expression.mjs": "79def8ee09ba7eb648713796f5f64c6dbd715bb11ffa4a1d3ea94ddd18aa77af",
+    "bindings/lib/resolve-object-literal.mjs": "86a09968e8af97696975a52bc019bc094d449ae67ecb1e447929f7131cbce147",
+    "bindings/lib/scan-typescript.mjs": "1c19dfc96547e055486655607210c5eecaa60d5ad718684f98984d35ffabcd6f",
+    "bindings/lib/scan-vue.mjs": "77dee8c06c3548c3ea835d47e85c32d1bca864326794dcb6a0187ce567869ab3",
+    "bindings/lib/scan.mjs": "5b9b1e0761d1fbb00b8d4550d084e46d6e4c7a7bb4b67ece9e4d479a620dbb3a",
+    "bindings/lib/serialize.mjs": "acb4755a6060470f03489cd785abce71efde790f821d69ca379d7bc1160e5f05",
+    "bindings/lib/shallow.mjs": "13921857108b62676b5638f92db4c9d73db1e6d9ac20df15bfa6620b9c989b98",
+    "bindings/lib/version.mjs": "10fe3a77f584fb001ded3994d1e9161576709dfb1fcc29da46acc32e6791fc39"
+  }
+}

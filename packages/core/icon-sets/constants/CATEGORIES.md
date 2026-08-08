@@ -208,7 +208,7 @@ const category = getIconCategoryFromId(unknownIconId)
 
 When working with icon categories:
 
-1. **File location is authoritative**: An icon's category is determined by its file path in `packages/core/icon-sets/catalog/{iconSet}/{category}/{subcategory}/`
+1. **Seldon category from file path**: A seldon icon's category comes from its file path in `packages/core/icon-sets/catalog/seldon/{category}/{subcategory}/`. The vendor sets ship no component files, so their categories come from the curated source in point 6.
 
 2. **Category paths are fixed**: The list of valid categories and subcategories is fixed and defined in `packages/core/icon-sets/constants/categories.ts`. Do not create new categories without updating this file.
 
@@ -218,4 +218,4 @@ When working with icon categories:
 
 5. **Icon set independence**: Categories are shared across all icon sets (material, carbon, lucide, seldon)
 
-6. **Static mapping**: Category mappings are stored per icon set in `packages/core/icon-sets/catalog/{iconSet}/category-map.ts` (e.g., `catalog/material/category-map.ts`, `catalog/carbon/category-map.ts`, `catalog/lucide/category-map.ts`, `catalog/seldon/category-map.ts`)
+6. **Category source**: The vendor sets (material, carbon, lucide) share one curated `id -> category` map in `packages/core/icon-sets/constants/icon-categories.ts`. An id absent from it falls back to the keyword table in `category-keywords.ts`. The seldon set keeps its folder-derived `catalog/seldon/category-map.ts`. `getIconCategoryFromId` reads both.

@@ -1,4 +1,5 @@
-import { BorderWidth, ValueType } from "../../index"
+import { ValueType } from "../../properties/constants/shared/value-types"
+import { BorderWidth } from "../../properties/values/appearance/border/border-width"
 import { isOptionToken } from "../../themes/types"
 import { getThemeOption } from "../theme/get-theme-option"
 import { resolveModulatedOrExactLength } from "./resolve-length-token"

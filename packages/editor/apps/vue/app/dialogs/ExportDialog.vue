@@ -14,11 +14,13 @@ import DialogExportComponent from "@seldon/components/modules/DialogExportCompon
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
+import { FRAMEWORK_IDS, resolveOutputLayout } from "@seldon/factory/export/presets"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 
 import type { MenuEntry } from "@app/menus/types"
-import type { ExportOptions } from "@seldon/factory/export/types"
+import type { LocalExportOptions } from "@seldon/editor/lib/export/run-local-export"
+import type { FrameworkId } from "@seldon/factory/export/presets"
 import type { CSSProperties } from "vue"
 
 /** Upper bound on a workspace name, matching the inline project rename. */
@@ -28,6 +30,30 @@ const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
   id: platform.id,
   label: platform.label,
   available: platform.status === "available",
+}))
+
+/** Display labels for each framework layout, keyed by id. */
+const FRAMEWORK_LABELS: Record<FrameworkId, string> = {
+  none: "None",
+  vite: "Vite",
+  next: "Next.js",
+  nuxt: "Nuxt",
+  sveltekit: "SvelteKit",
+  astro: "Astro",
+  remix: "Remix",
+}
+
+/** Layouts verified in the editor export. Others show as "soon" until proven. */
+const AVAILABLE_FRAMEWORKS = new Set<FrameworkId>(["none", "vite", "next"])
+
+/**
+ * Project layouts shown in the dialog picker, in registry order. `none` writes
+ * to the output root; the others match a framework's folder layout.
+ */
+const EXPORT_FRAMEWORK_OPTIONS = FRAMEWORK_IDS.map((id) => ({
+  id,
+  label: FRAMEWORK_LABELS[id],
+  available: AVAILABLE_FRAMEWORKS.has(id),
 }))
 
 const panel = usePanelStore()
@@ -42,11 +68,12 @@ const workspaceId = useWorkspaceId()
 
 const isOpen = computed(() => activePanel.value === "export-components")
 
-// Platform and the scope toggles come from a persisted store, so reopening the
-// dialog restores the last-used selections instead of the defaults.
+// Platform, framework, and the scope toggles come from a persisted store, so
+// reopening the dialog restores the last-used selections instead of defaults.
 const options = useExportOptionsStore()
 const {
   platform,
+  framework,
   includeHidden,
   allThemes,
   allFonts,
@@ -67,6 +94,9 @@ const directoryLabel = computed(() => directory.value?.name ?? "")
 const platformLabel = computed(
   () => EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform.value)?.label ?? "",
 )
+const frameworkLabel = computed(
+  () => EXPORT_FRAMEWORK_OPTIONS.find((option) => option.id === framework.value)?.label ?? "",
+)
 
 // Escape reaches the running export, the same way the Cancel button does.
 const { x, y, moveControls } = useDraggableWindow({
@@ -76,6 +106,8 @@ const { x, y, moveControls } = useDraggableWindow({
 
 const platformOpen = ref(false)
 const platformAnchor = ref<HTMLElement | null>(null)
+const frameworkOpen = ref(false)
+const frameworkAnchor = ref<HTMLElement | null>(null)
 
 const platformItems = computed<MenuEntry[]>(() =>
   EXPORT_PLATFORM_OPTIONS.map((option) => ({
@@ -91,6 +123,20 @@ const platformItems = computed<MenuEntry[]>(() =>
   })),
 )
 
+const frameworkItems = computed<MenuEntry[]>(() =>
+  EXPORT_FRAMEWORK_OPTIONS.map((option) => ({
+    id: option.id,
+    label: option.available ? option.label : `${option.label} (soon)`,
+    selected: option.id === framework.value,
+    active: option.id === framework.value,
+    activeMarker: "bullet",
+    disabled: !option.available,
+    onSelect: () => {
+      framework.value = option.id
+    },
+  })),
+)
+
 function startDrag(event: PointerEvent): void {
   moveControls.start(event)
 }
@@ -100,6 +146,13 @@ function openPlatform(event: MouseEvent): void {
 }
 function closePlatform(): void {
   platformOpen.value = false
+}
+function openFramework(event: MouseEvent): void {
+  frameworkAnchor.value = event.currentTarget as HTMLElement
+  frameworkOpen.value = true
+}
+function closeFramework(): void {
+  frameworkOpen.value = false
 }
 
 // Typing writes the label so the name travels with the exported workspace copy.
@@ -149,8 +202,9 @@ async function chooseDirectory(): Promise<void> {
 async function runExport(): Promise<void> {
   if (isExporting.value) return
   commitName()
-  const options: Partial<ExportOptions> = {
+  const options: LocalExportOptions = {
     target: { framework: platform.value, styles: "css-properties" },
+    output: resolveOutputLayout(framework.value),
     includeHiddenComponents: includeHidden.value,
     exportAllThemes: allThemes.value,
     exportAllFontCollections: allFonts.value,
@@ -217,7 +271,6 @@ watch(isOpen, (open) => {
 
 const styles: Record<string, CSSProperties> = {
   dragHandle: { cursor: "grab", userSelect: "none", touchAction: "none" },
-  pointer: { cursor: "pointer" },
 
   // Only Export takes its disabled look during a run, so Cancel and the title bar
   // stay usable. Its pointer events go with it, which stops a second export from
@@ -233,10 +286,6 @@ const styles: Record<string, CSSProperties> = {
   radioRow: { cursor: "pointer" },
 }
 
-// Display-only slots ship baked authored copy, so an empty object turns them on.
-// Interactive behavior rides in through `seldonRefs`.
-const showSlot = {}
-
 /** Widens a row's hit area so a click beside the bullet still selects it. */
 function radioRow(onSelect: () => void) {
   return { onClick: onSelect, style: styles.radioRow }
@@ -247,25 +296,22 @@ function radioInput(group: string, checked: boolean, onSelect: () => void) {
   return { name: group, checked, onChange: onSelect }
 }
 
-/** Names a Yes/No pair as one group, since each row is its own radio group. */
-function radioGroup(label: string) {
-  return { role: "radiogroup", "aria-label": label }
-}
-
 const barHandle = computed(() => ({
   onPointerdown: startDrag,
   style: styles.dragHandle,
 }))
 
-// The whole field opens the platform menu, so the chevron works like the input.
-const platformField = computed(() => ({
-  onClick: openPlatform,
-  "aria-expanded": platformOpen.value,
-  style: styles.pointer,
-}))
+// The dialog addresses every slot by its `data-seldon-ref` name rather than a
+// positional prop, so adding or reordering fields cannot silently drop a control.
+// Authored as one flat literal with static keys, never a loop or computed keys,
+// so the bindings scanner reads every ref; see `.cursor/rules/foundation-editor-jsx.mdc`.
+// Display-only slots turn on with an empty object; behavior rides in per ref.
+const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
+  exportTitle: {},
 
-const seldonRefs = computed(() => ({
-  exportWorkspaceName: {
+  exportWorkspaceName: {},
+  exportWorkspaceNameLabel: {},
+  exportWorkspaceNameField: {
     value: workspaceName.value,
     placeholder: "Untitled workspace",
     onInput: onNameInput,
@@ -273,46 +319,172 @@ const seldonRefs = computed(() => ({
     onKeydown: commitNameOnEnter,
     style: styles.opaque,
   },
-  exportRootPath: {
+
+  exportFramework: {},
+  exportFrameworkLabel: {},
+  exportFrameworkCombobox: {},
+  exportFrameworkField: {
+    value: frameworkLabel.value,
+    readonly: true,
+    onClick: openFramework,
+    "aria-expanded": frameworkOpen.value,
+    style: styles.opaquePointer,
+  },
+
+  exportPlatform: {},
+  exportPlatformLabel: {},
+  exportPlatformCombobox: {},
+  exportPlatformField: {
+    value: platformLabel.value,
+    readonly: true,
+    onClick: openPlatform,
+    "aria-expanded": platformOpen.value,
+    style: styles.opaquePointer,
+  },
+
+  exportProjectFolder: {},
+  exportProjectFolderLabel: {},
+  exportProjectFolderField: {
     value: directoryLabel.value,
     placeholder: "Choose a folder…",
     readonly: true,
     onClick: chooseDirectory,
     style: styles.opaquePointer,
   },
-  exportPlatform: {
-    value: platformLabel.value,
-    readonly: true,
-    style: styles.opaquePointer,
-  },
 
+  exportFieldset: {},
+
+  // Scope groups. Every key is spelled out, never built in a loop, so the
+  // bindings scanner records each ref. The container holds the radiogroup role,
+  // each row widens the hit area, and each native input holds the group name plus
+  // checked state.
+  exportFontLinks: { role: "radiogroup", "aria-label": "Generate Google Font API Links" },
+  exportFontLinksLabel: {},
   exportFontLinksYes: radioRow(() => (fontLinks.value = true)),
+  exportFontLinksYesInput: radioInput(
+    "export-font-links",
+    fontLinks.value,
+    () => (fontLinks.value = true),
+  ),
+  exportFontLinksYesText: {},
   exportFontLinksNo: radioRow(() => (fontLinks.value = false)),
+  exportFontLinksNoInput: radioInput(
+    "export-font-links",
+    !fontLinks.value,
+    () => (fontLinks.value = false),
+  ),
+  exportFontLinksNoText: {},
 
+  exportHidden: { role: "radiogroup", "aria-label": "Hidden Components" },
+  exportHiddenLabel: {},
   exportHiddenYes: radioRow(() => (includeHidden.value = true)),
+  exportHiddenYesInput: radioInput(
+    "export-hidden",
+    includeHidden.value,
+    () => (includeHidden.value = true),
+  ),
+  exportHiddenYesText: {},
   exportHiddenNo: radioRow(() => (includeHidden.value = false)),
+  exportHiddenNoInput: radioInput(
+    "export-hidden",
+    !includeHidden.value,
+    () => (includeHidden.value = false),
+  ),
+  exportHiddenNoText: {},
 
+  exportAllThemes: { role: "radiogroup", "aria-label": "All Themes" },
+  exportAllThemesLabel: {},
   exportAllThemesYes: radioRow(() => (allThemes.value = true)),
+  exportAllThemesYesInput: radioInput(
+    "export-all-themes",
+    allThemes.value,
+    () => (allThemes.value = true),
+  ),
+  exportAllThemesYesText: {},
   exportAllThemesNo: radioRow(() => (allThemes.value = false)),
+  exportAllThemesNoInput: radioInput(
+    "export-all-themes",
+    !allThemes.value,
+    () => (allThemes.value = false),
+  ),
+  exportAllThemesNoText: {},
 
+  exportAllFonts: { role: "radiogroup", "aria-label": "All Enabled Fonts" },
+  exportAllFontsLabel: {},
   exportAllFontsYes: radioRow(() => (allFonts.value = true)),
+  exportAllFontsYesInput: radioInput(
+    "export-all-fonts",
+    allFonts.value,
+    () => (allFonts.value = true),
+  ),
+  exportAllFontsYesText: {},
   exportAllFontsNo: radioRow(() => (allFonts.value = false)),
+  exportAllFontsNoInput: radioInput(
+    "export-all-fonts",
+    !allFonts.value,
+    () => (allFonts.value = false),
+  ),
+  exportAllFontsNoText: {},
 
+  exportAllIcons: { role: "radiogroup", "aria-label": "All Enabled Icons" },
+  exportAllIconsLabel: {},
   exportAllIconsYes: radioRow(() => (allIcons.value = true)),
+  exportAllIconsYesInput: radioInput(
+    "export-all-icons",
+    allIcons.value,
+    () => (allIcons.value = true),
+  ),
+  exportAllIconsYesText: {},
   exportAllIconsNo: radioRow(() => (allIcons.value = false)),
+  exportAllIconsNoInput: radioInput(
+    "export-all-icons",
+    !allIcons.value,
+    () => (allIcons.value = false),
+  ),
+  exportAllIconsNoText: {},
 
-  exportSavedWorkspaceYes: radioRow(() => (savedWorkspace.value = true)),
-  exportSavedWorkspaceNo: radioRow(() => (savedWorkspace.value = false)),
+  exportWorkspace: { role: "radiogroup", "aria-label": "Workspace File" },
+  exportWorkspaceLabel: {},
+  exportWorkspaceYes: radioRow(() => (savedWorkspace.value = true)),
+  exportWorkspaceYesInput: radioInput(
+    "export-saved-workspace",
+    savedWorkspace.value,
+    () => (savedWorkspace.value = true),
+  ),
+  exportWorkspaceYesText: {},
+  exportWorkspaceNo: radioRow(() => (savedWorkspace.value = false)),
+  exportWorkspaceNoInput: radioInput(
+    "export-saved-workspace",
+    !savedWorkspace.value,
+    () => (savedWorkspace.value = false),
+  ),
+  exportWorkspaceNoText: {},
 
+  exportScripts: { role: "radiogroup", "aria-label": "CLI Utility Scripts" },
+  exportScriptsLabel: {},
   exportScriptsYes: radioRow(() => (includeScripts.value = true)),
+  exportScriptsYesInput: radioInput(
+    "export-scripts",
+    includeScripts.value,
+    () => (includeScripts.value = true),
+  ),
+  exportScriptsYesText: {},
   exportScriptsNo: radioRow(() => (includeScripts.value = false)),
+  exportScriptsNoInput: radioInput(
+    "export-scripts",
+    !includeScripts.value,
+    () => (includeScripts.value = false),
+  ),
+  exportScriptsNoText: {},
 
   exportCancel: { onClick: cancel },
+  exportCancelLabel: {},
   exportConfirm: {
     onClick: runExport,
     "aria-disabled": isExporting.value,
     style: isExporting.value ? styles.busy : undefined,
   },
+  exportConfirmLabel: {},
 }))
 </script>
 
@@ -330,85 +502,6 @@ const seldonRefs = computed(() => ({
       data-testid="export-components-dialog"
       :aria-busy="isExporting"
       :bar="barHandle"
-      :text-title="showSlot"
-      :form-control="showSlot"
-      :text-label="showSlot"
-      :form-control2="showSlot"
-      :text-label2="showSlot"
-      :form-control3="showSlot"
-      :text-label3="showSlot"
-      :combobox-field="platformField"
-      :form-control-radio="radioGroup('Generate Google Font API Links')"
-      :text-label4="showSlot"
-      :form-control-radio-button-control="showSlot"
-      :input-radio-button="radioInput('export-font-links', fontLinks, () => (fontLinks = true))"
-      :text-label5="showSlot"
-      :form-control-radio-button-control2="showSlot"
-      :input-radio-button2="radioInput('export-font-links', !fontLinks, () => (fontLinks = false))"
-      :text-label6="showSlot"
-      :fieldset="showSlot"
-      :form-control-radio2="radioGroup('Hidden Components')"
-      :text-label7="showSlot"
-      :form-control-radio-button-control3="showSlot"
-      :input-radio-button3="
-        radioInput('export-hidden', includeHidden, () => (includeHidden = true))
-      "
-      :text-label8="showSlot"
-      :form-control-radio-button-control4="showSlot"
-      :input-radio-button4="
-        radioInput('export-hidden', !includeHidden, () => (includeHidden = false))
-      "
-      :text-label9="showSlot"
-      :form-control-radio3="radioGroup('All Themes')"
-      :text-label10="showSlot"
-      :form-control-radio-button-control5="showSlot"
-      :input-radio-button5="radioInput('export-all-themes', allThemes, () => (allThemes = true))"
-      :text-label11="showSlot"
-      :form-control-radio-button-control6="showSlot"
-      :input-radio-button6="radioInput('export-all-themes', !allThemes, () => (allThemes = false))"
-      :text-label12="showSlot"
-      :form-control-radio4="radioGroup('All Enabled Fonts')"
-      :text-label13="showSlot"
-      :form-control-radio-button-control7="showSlot"
-      :input-radio-button7="radioInput('export-all-fonts', allFonts, () => (allFonts = true))"
-      :text-label14="showSlot"
-      :form-control-radio-button-control8="showSlot"
-      :input-radio-button8="radioInput('export-all-fonts', !allFonts, () => (allFonts = false))"
-      :text-label15="showSlot"
-      :form-control-radio5="radioGroup('All Enabled Icons')"
-      :text-label16="showSlot"
-      :form-control-radio-button-control9="showSlot"
-      :input-radio-button9="radioInput('export-all-icons', allIcons, () => (allIcons = true))"
-      :text-label17="showSlot"
-      :form-control-radio-button-control10="showSlot"
-      :input-radio-button10="radioInput('export-all-icons', !allIcons, () => (allIcons = false))"
-      :text-label18="showSlot"
-      :form-control-radio6="radioGroup('Saved Workspace')"
-      :text-label19="showSlot"
-      :form-control-radio-button-control11="showSlot"
-      :input-radio-button11="
-        radioInput('export-saved-workspace', savedWorkspace, () => (savedWorkspace = true))
-      "
-      :text-label20="showSlot"
-      :form-control-radio-button-control12="showSlot"
-      :input-radio-button12="
-        radioInput('export-saved-workspace', !savedWorkspace, () => (savedWorkspace = false))
-      "
-      :text-label21="showSlot"
-      :form-control-radio7="radioGroup('CLI Utility Scripts')"
-      :text-label22="showSlot"
-      :form-control-radio-button-control13="showSlot"
-      :input-radio-button13="
-        radioInput('export-scripts', includeScripts, () => (includeScripts = true))
-      "
-      :text-label23="showSlot"
-      :form-control-radio-button-control14="showSlot"
-      :input-radio-button14="
-        radioInput('export-scripts', !includeScripts, () => (includeScripts = false))
-      "
-      :text-label24="showSlot"
-      :text-label25="showSlot"
-      :text-label26="showSlot"
       :seldon-refs="seldonRefs"
     />
     <MenuController
@@ -416,6 +509,12 @@ const seldonRefs = computed(() => ({
       :anchor="platformAnchor"
       :items="platformItems"
       @close="closePlatform"
+    />
+    <MenuController
+      :open="frameworkOpen"
+      :anchor="frameworkAnchor"
+      :items="frameworkItems"
+      @close="closeFramework"
     />
   </WindowSurface>
 </template>

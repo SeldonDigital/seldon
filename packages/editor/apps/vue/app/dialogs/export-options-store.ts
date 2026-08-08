@@ -1,12 +1,14 @@
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
 
+import type { FrameworkId } from "@seldon/factory/export/presets"
 import type { PlatformId } from "@seldon/factory/export/types"
 
 const STORAGE_KEY = "export-options"
 
 interface PersistedExportOptions {
   platform: PlatformId
+  framework: FrameworkId
   includeHidden: boolean
   allThemes: boolean
   allFonts: boolean
@@ -38,6 +40,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
   const persisted = loadPersisted()
 
   const platform = ref<PlatformId>(persisted.platform ?? "vue")
+  const framework = ref<FrameworkId>(persisted.framework ?? "none")
   const includeHidden = ref(persisted.includeHidden ?? false)
   const allThemes = ref(persisted.allThemes ?? false)
   const allFonts = ref(persisted.allFonts ?? false)
@@ -49,6 +52,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
   watch(
     [
       platform,
+      framework,
       includeHidden,
       allThemes,
       allFonts,
@@ -61,6 +65,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
       if (typeof localStorage === "undefined") return
       const snapshot: PersistedExportOptions = {
         platform: platform.value,
+        framework: framework.value,
         includeHidden: includeHidden.value,
         allThemes: allThemes.value,
         allFonts: allFonts.value,
@@ -77,6 +82,7 @@ export const useExportOptionsStore = defineStore("export-options", () => {
 
   return {
     platform,
+    framework,
     includeHidden,
     allThemes,
     allFonts,

@@ -1,4 +1,5 @@
-import { Unit, ValueType } from "../../index"
+import { Unit } from "../../properties/constants/shared/units"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import { modulateWithTheme } from "../../themes/helpers/modulate"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 

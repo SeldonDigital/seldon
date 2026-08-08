@@ -79,7 +79,7 @@ Compound behavior:
 - The theme can list **looks** for a compound, for example `border.hairline` with width, style, and color. The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** `@shadow.none`, `@border.none`, and `@font.normal` are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties such as `border.width` and `border.color`. Background is the exception. It has no compound theme looks. Each background layer carries a `kind` facet of `none`, `color`, `image`, or `gradient` that selects which facets apply. A `gradient` layer still picks a theme gradient recipe through its `preset` facet `@gradient.*`.
 - Applying a preset overwrites every parameter that preset defines. Any parameter the preset does not mention is set to **EMPTY**, which clears older values.
 - Preset facets also expand at compute time. Each property snapshot in the effective merge expands its own `preset` facet before merging: the look's parameters fill the facets, facets the look does not define become **EMPTY**, and the snapshot's own non-EMPTY facets win over the look.
-- If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme’s named presets again.
+- If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme's named presets again.
 
 ---
 
@@ -115,9 +115,9 @@ properties.corners = {
 
 Shorthand behavior:
 
-- **Display:** Show one value when all dimensions match; otherwise show multiple values in facet order.
+- **Display:** Show one value when all dimensions match. Otherwise show multiple values in facet order.
 - **Application:** Choosing a shorthand option from its picker usually applies that value to every sub-dimension at once.
-- **Overrides:** The shorthand is treated as overridden when any sub-dimension differs from the node’s catalog default.
+- **Overrides:** The shorthand is treated as overridden when any sub-dimension differs from the node's catalog default.
 
 ---
 
@@ -128,7 +128,7 @@ Properties use seven value types to handle different data sources and behaviors:
 | Value type | Meaning |
 | --- | --- |
 | `EMPTY` | Unset: resolved by the platform or defaults. Inheritance from parents or platform defaults can apply. |
-| `INHERIT` | Explicitly uses the parent component’s value, forming a direct parent to child inheritance chain. |
+| `INHERIT` | Explicitly uses the parent component's value, forming a direct parent to child inheritance chain. |
 | `EXACT` | A concrete value such as a color, size, or text with no reference to another property or theme. |
 | `OPTION` | One of a fixed set of allowed choices. |
 | `COMPUTED` | Derived from other properties through math or functions, such as width as 80% of the parent. |
@@ -461,7 +461,7 @@ Properties that control visual effects and interactions.
 
 ### Accessibility
 
-Properties that expose ARIA semantics to assistive technologies. They are plain static properties, available whenever a component schema declares them. Order runs from most used and required to least. Authors set static defaults here; the editor's runtime layer toggles dynamic states such as checked or pressed.
+Properties that expose ARIA semantics to assistive technologies. They are plain static properties, available whenever a component schema declares them. Order runs from most used and required to least. Authors set static defaults here. The editor's runtime layer toggles dynamic states such as checked or pressed.
 
 | Property | Type | Values |
 | --- | --- | --- |
@@ -619,7 +619,7 @@ const invalidProps: Properties = {
 
 ### Property Path Validation
 
-**Authoritative property key unions** live in [`types/property-keys.ts`](types/property-keys.ts): `PropertyKey` for top-level keys plus `CompoundPropertyKey`, `ShorthandPropertyKey`, and `LayeredPaintKey` with the `LAYERED_PAINT_KEYS` runtime set for the compound, shorthand, and layered paint groupings.
+The property key unions live in [`types/property-keys.ts`](types/property-keys.ts). `PropertyKey` covers top-level keys. `CompoundPropertyKey`, `ShorthandPropertyKey`, and `LayeredPaintKey` cover the compound, shorthand, and layered paint groupings, with the `LAYERED_PAINT_KEYS` runtime set.
 
 **Runtime paths** used by `getBasedOnValue` and `findInObject` are **dot-separated only**: array indices are numeric path segments, not brackets. Use `background.0.color`, `shadow.0.offsetX`, not `background[0].color`.
 
@@ -636,7 +636,7 @@ const invalidProps: Properties = {
 
 ## Performance Considerations
 
-**Note:** The bullets below are **general engineering guidance** for systems that use properties heavily. They are not a guarantee that every optimization is implemented or measured inside this package.
+The bullets below are general engineering guidance for systems that use properties heavily. They are not a guarantee that every optimization is implemented or measured inside this package.
 
 ### Optimization Strategies
 
@@ -656,7 +656,7 @@ const invalidProps: Properties = {
 
 ## Error Handling
 
-**Note:** This section describes **typical failure modes** at a product level, such as TypeScript, validation, theme resolution, and compute. Specific error strings, logging hooks, or fallbacks depend on the caller and are not all implemented as APIs in `packages/core/properties`.
+This section describes typical failure modes at a product level, such as TypeScript, validation, theme resolution, and compute. Specific error strings, logging hooks, or fallbacks depend on the caller and are not all implemented as APIs in `packages/core/properties`.
 
 ### Validation Errors
 

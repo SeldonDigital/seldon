@@ -1,6 +1,5 @@
 import fs from "node:fs/promises"
 import path from "node:path"
-import { fileURLToPath } from "node:url"
 
 import type { ServerResponse } from "node:http"
 import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
@@ -12,11 +11,16 @@ import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
  * share it. This dev-server plugin serves /api/workspaces over a shared folder
  * on disk, so both editors read and write the same workspace JSON regardless of
  * port. One JSON file per workspace; the directory listing is the index.
+ *
+ * The store lives at `<root>/.seldon/workspaces`. `root` defaults to the process
+ * working directory, so a consumer that mounts the editor gets the store under
+ * its own project. The monorepo passes its repo root, so both editors share one
+ * store no matter which app started the server.
  */
 
-const pluginDir = path.dirname(fileURLToPath(import.meta.url))
-const repoRoot = path.join(pluginDir, "../../../..")
-const workspacesDir = path.join(repoRoot, ".seldon", "workspaces")
+export interface WorkspaceApiPluginOptions {
+  root?: string
+}
 
 type StoredWorkspace = {
   id: string
@@ -25,26 +29,26 @@ type StoredWorkspace = {
   lastEditor?: string
 }
 
-async function ensureDir(): Promise<void> {
-  await fs.mkdir(workspacesDir, { recursive: true })
+async function ensureDir(dir: string): Promise<void> {
+  await fs.mkdir(dir, { recursive: true })
 }
 
-function recordPath(id: string): string {
+function recordPath(dir: string, id: string): string {
   const safe = id.replace(/[^a-zA-Z0-9_-]/g, "")
 
-  return path.join(workspacesDir, `${safe}.json`)
+  return path.join(dir, `${safe}.json`)
 }
 
-async function listWorkspaces(): Promise<StoredWorkspace[]> {
-  await ensureDir()
-  const entries = await fs.readdir(workspacesDir)
+async function listWorkspaces(dir: string): Promise<StoredWorkspace[]> {
+  await ensureDir(dir)
+  const entries = await fs.readdir(dir)
   const records: StoredWorkspace[] = []
 
   for (const entry of entries) {
     if (!entry.endsWith(".json")) continue
 
     try {
-      const raw = await fs.readFile(path.join(workspacesDir, entry), "utf8")
+      const raw = await fs.readFile(path.join(dir, entry), "utf8")
 
       records.push(JSON.parse(raw) as StoredWorkspace)
     } catch {
@@ -55,9 +59,9 @@ async function listWorkspaces(): Promise<StoredWorkspace[]> {
   return records
 }
 
-async function getWorkspace(id: string): Promise<StoredWorkspace | undefined> {
+async function getWorkspace(dir: string, id: string): Promise<StoredWorkspace | undefined> {
   try {
-    const raw = await fs.readFile(recordPath(id), "utf8")
+    const raw = await fs.readFile(recordPath(dir, id), "utf8")
 
     return JSON.parse(raw) as StoredWorkspace
   } catch {
@@ -65,14 +69,15 @@ async function getWorkspace(id: string): Promise<StoredWorkspace | undefined> {
   }
 }
 
-const BACKUP_SLOTS = 3
-
 /**
- * Rotates the file a save is about to replace into numbered backups, newest at
- * `.1.bak`. A workspace the editor overwrites with the wrong state is therefore
- * still on disk, and several saves have to pass before the last good copy ages
- * out. Backups do not end in `.json`, so the listing never offers them as
- * workspaces.
+ * Keeps exactly one backup of the file a save is about to replace, at
+ * `<file>.bak`. A workspace the editor overwrites with the wrong state is still
+ * on disk for the next save, and the backup is overwritten in place, so a
+ * workspace never keeps more than one backup per id. Backups do not end in
+ * `.json`, so the listing never offers them as workspaces.
+ *
+ * Numbered `.N.bak` files left by an earlier rotation scheme are pruned, so a
+ * store written before this cleans itself up on the next save.
  */
 async function backupExisting(target: string): Promise<void> {
   try {
@@ -81,20 +86,24 @@ async function backupExisting(target: string): Promise<void> {
     return
   }
 
-  for (let slot = BACKUP_SLOTS - 1; slot >= 1; slot--) {
-    try {
-      await fs.rename(`${target}.${slot}.bak`, `${target}.${slot + 1}.bak`)
-    } catch {
-      // That slot has not been written yet.
-    }
-  }
-
-  await fs.copyFile(target, `${target}.1.bak`)
+  await fs.copyFile(target, `${target}.bak`)
+  await pruneLegacyBackups(target)
 }
 
-async function saveWorkspace(record: StoredWorkspace): Promise<void> {
-  await ensureDir()
-  const target = recordPath(record.id)
+/** Removes numbered `.N.bak` backups left by the earlier rotation scheme. */
+async function pruneLegacyBackups(target: string): Promise<void> {
+  for (let slot = 1; slot <= 9; slot++) {
+    try {
+      await fs.rm(`${target}.${slot}.bak`)
+    } catch {
+      // That slot does not exist, which is the normal case.
+    }
+  }
+}
+
+async function saveWorkspace(dir: string, record: StoredWorkspace): Promise<void> {
+  await ensureDir(dir)
+  const target = recordPath(dir, record.id)
 
   await backupExisting(target)
 
@@ -106,9 +115,9 @@ async function saveWorkspace(record: StoredWorkspace): Promise<void> {
   await fs.rename(tmp, target)
 }
 
-async function deleteWorkspace(id: string): Promise<void> {
+async function deleteWorkspace(dir: string, id: string): Promise<void> {
   try {
-    await fs.unlink(recordPath(id))
+    await fs.unlink(recordPath(dir, id))
   } catch {
     // Already gone.
   }
@@ -131,6 +140,7 @@ function sendJson(res: ServerResponse, status: number, body: unknown): void {
 }
 
 async function handle(
+  dir: string,
   req: Connect.IncomingMessage,
   res: ServerResponse,
   next: Connect.NextFunction,
@@ -148,13 +158,13 @@ async function handle(
 
   try {
     if (req.method === "GET" && !id) {
-      sendJson(res, 200, await listWorkspaces())
+      sendJson(res, 200, await listWorkspaces(dir))
 
       return
     }
 
     if (req.method === "GET" && id) {
-      const record = await getWorkspace(id)
+      const record = await getWorkspace(dir, id)
 
       if (!record) {
         sendJson(res, 404, { error: "Not found" })
@@ -170,14 +180,14 @@ async function handle(
     if (req.method === "PUT" && id) {
       const record = JSON.parse(await readBody(req)) as StoredWorkspace
 
-      await saveWorkspace(record)
+      await saveWorkspace(dir, record)
       sendJson(res, 200, { ok: true })
 
       return
     }
 
     if (req.method === "DELETE" && id) {
-      await deleteWorkspace(id)
+      await deleteWorkspace(dir, id)
       sendJson(res, 200, { ok: true })
 
       return
@@ -191,17 +201,20 @@ async function handle(
   }
 }
 
-export function workspaceApiPlugin(): Plugin {
+export function workspaceApiPlugin(options: WorkspaceApiPluginOptions = {}): Plugin {
+  const root = options.root ?? process.cwd()
+  const workspacesDir = path.join(root, ".seldon", "workspaces")
+
   return {
     name: "seldon-workspace-api",
     configureServer(server: ViteDevServer) {
       server.middlewares.use((req, res, next) => {
-        void handle(req, res, next)
+        void handle(workspacesDir, req, res, next)
       })
     },
     configurePreviewServer(server: PreviewServer) {
       server.middlewares.use((req, res, next) => {
-        void handle(req, res, next)
+        void handle(workspacesDir, req, res, next)
       })
     },
   }

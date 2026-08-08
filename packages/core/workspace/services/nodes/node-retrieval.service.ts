@@ -1,4 +1,4 @@
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { ErrorMessages } from "../../constants"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { typeCheckingService } from "../type-checking/type-checking.service"

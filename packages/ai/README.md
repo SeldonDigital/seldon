@@ -139,6 +139,8 @@ const { actions, reply } = await chatToActions({
 
 `chatToActions` builds a hermetic Pi session with the Seldon tools, injects the per-turn editor context with the user request, and lets the model call tools until it is done. The caller applies the returned actions. This function never changes state.
 
+The `@seldon/hari` bundle re-exports `chatToActions` alongside the engine, so a headless host can install one package. See [docs/hari-guide.md](../../docs/hari-guide.md) for the load, chat, adopt, and export loop.
+
 ---
 
 ## The Turn Loop

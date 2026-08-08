@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
+import type { FrameworkId } from "@seldon/factory/export/presets"
 import type { PlatformId } from "@seldon/factory/export/types"
 
 /**
@@ -10,6 +11,7 @@ import type { PlatformId } from "@seldon/factory/export/types"
  */
 interface ExportOptionsState {
   platform: PlatformId
+  framework: FrameworkId
   includeHidden: boolean
   allThemes: boolean
   allFonts: boolean
@@ -19,6 +21,7 @@ interface ExportOptionsState {
   includeScripts: boolean
 
   setPlatform: (value: PlatformId) => void
+  setFramework: (value: FrameworkId) => void
   setIncludeHidden: (value: boolean) => void
   setAllThemes: (value: boolean) => void
   setAllFonts: (value: boolean) => void
@@ -32,6 +35,7 @@ export const useExportOptions = create<ExportOptionsState>()(
   persist(
     (set) => ({
       platform: "react",
+      framework: "none",
       includeHidden: false,
       allThemes: false,
       allFonts: false,
@@ -41,6 +45,7 @@ export const useExportOptions = create<ExportOptionsState>()(
       includeScripts: true,
 
       setPlatform: (value) => set({ platform: value }),
+      setFramework: (value) => set({ framework: value }),
       setIncludeHidden: (value) => set({ includeHidden: value }),
       setAllThemes: (value) => set({ allThemes: value }),
       setAllFonts: (value) => set({ allFonts: value }),

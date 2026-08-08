@@ -1,6 +1,6 @@
 import { produce } from "immer"
 
-import { invariant } from "../../../../index"
+import { invariant } from "../../../../helpers/utils/invariant"
 import { ErrorMessages } from "../../../constants"
 
 import type { ExtractPayload, Workspace } from "../../../../index"

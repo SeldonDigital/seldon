@@ -1,4 +1,4 @@
-import { getResourceEntryIcon } from "@seldon/core/icon-registry"
+import { getResourceEntryIcon } from "@seldon/core/icon-lookup"
 import {
   isFontCollectionBoard,
   isIconSetBoard,

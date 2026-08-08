@@ -1,0 +1,18 @@
+import type { SVGAttributes } from "react"
+
+export function IconMaterialReceipt(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M3 22V2l1.5 1.5L6 2l1.5 1.5L9 2l1.5 1.5L12 2l1.5 1.5L15 2l1.5 1.5L18 2l1.5 1.5L21 2v20l-1.5-1.5L18 22l-1.5-1.5L15 22l-1.5-1.5L12 22l-1.5-1.5L9 22l-1.5-1.5L6 22l-1.5-1.5zm3-5h12v-2H6zm0-4h12v-2H6zm0-4h12V7H6zM5 19.1h14V4.9H5zM5 4.9v14.2z"/>',
+      }}
+    />
+  )
+}

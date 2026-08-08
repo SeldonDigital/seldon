@@ -1,8 +1,8 @@
 import { isIconSetBoard } from "../../workspace/model/components"
-import { carbonIconIds } from "../catalog/carbon"
-import { lucideIconIds } from "../catalog/lucide"
-import { materialIconIds } from "../catalog/material"
-import { seldonIconIds } from "../catalog/seldon"
+import { carbonDefaultEnabledIconIds } from "../catalog/carbon/default-enabled"
+import { lucideDefaultEnabledIconIds } from "../catalog/lucide/default-enabled"
+import { materialDefaultEnabledIconIds } from "../catalog/material/default-enabled"
+import { seldonDefaultEnabledIconIds } from "../catalog/seldon/default-enabled"
 
 import type { IconId } from "../../icon-sets"
 import type { Workspace } from "../../workspace/types"
@@ -18,13 +18,13 @@ const ICON_SET_CATALOG_TO_SET_ID: Record<string, IconSetId> = {
 function iconIdsForSet(setId: IconSetId): readonly IconId[] {
   switch (setId) {
     case "google-material":
-      return materialIconIds
+      return materialDefaultEnabledIconIds
     case "carbon":
-      return carbonIconIds
+      return carbonDefaultEnabledIconIds
     case "lucide":
-      return lucideIconIds
+      return lucideDefaultEnabledIconIds
     case "seldon":
-      return seldonIconIds
+      return seldonDefaultEnabledIconIds
     default:
       return []
   }

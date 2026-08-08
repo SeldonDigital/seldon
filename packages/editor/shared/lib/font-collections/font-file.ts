@@ -1,7 +1,7 @@
 /**
  * Resolves the served woff2 URL for a packaged font family variant. Font files
- * are copied into `public/font-files/<slot>/<slot>-<variant>.woff2` by
- * `scripts/copy-font-files.mjs`, where the slot matches the family slot id in a
+ * are materialized into `public/font-files/<slot>/<slot>-<variant>.woff2` by
+ * `scripts/generate-fonts.mjs`, where the slot matches the family slot id in a
  * font collection.
  */
 export function getFontFileHref(slot: string, variant: string): string {

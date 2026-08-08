@@ -237,7 +237,7 @@ export const schema = {
                 overrides: {
                   symbol: {
                     type: Sdn.ValueType.OPTION,
-                    value: "material-email",
+                    value: "material-mail",
                   },
                 },
               },

@@ -1,14 +1,8 @@
-import { lucideIconIds } from "."
 import { computeIconSet } from "../../helpers/compute-icon-set"
+import { lucideAvailableIconIds } from "./available"
+import { lucideDefaultEnabledIconIds } from "./default-enabled"
 
-import type { IconCategory } from "../../constants/categories"
 import type { StockIconSet } from "../../types/icon-set"
-
-/**
- * Categories enabled when the Lucide icon set is added to a workspace. Icons in
- * every other category start off until the user turns them on.
- */
-export const LUCIDE_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = ["user-interface"]
 
 export const iconSet: StockIconSet = {
   metadata: {
@@ -18,8 +12,11 @@ export const iconSet: StockIconSet = {
     intent: "Provides Lucide icons for interface and content icons.",
   },
   source: "lucide",
-  icons: [...lucideIconIds],
-  defaultEnabledCategories: LUCIDE_DEFAULT_ENABLED_CATEGORIES,
+  icons: [...lucideAvailableIconIds],
+  // The curated subset starts on. Every other available icon starts off until
+  // the user turns it on, so default workspaces are not overloaded.
+  defaultEnabledCategories: [],
+  defaultEnabledIcons: [...lucideDefaultEnabledIconIds],
 }
 
 export const defaultIconSet = computeIconSet(iconSet)

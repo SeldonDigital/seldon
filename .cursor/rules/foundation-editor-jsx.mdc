@@ -1,0 +1,34 @@
+---
+description: Markup authoring rules for the editor apps, React JSX and Vue templates
+globs: packages/editor/apps/*/app/**/*.{tsx,vue}
+alwaysApply: false
+---
+
+## Editor JSX And Template Authoring
+
+Important: This is a hard rule. No exceptions. Resolve every JSX value before the `return`. Returned JSX holds element tags and identifier references only. Nothing is computed inside returned JSX.
+
+A helper or function call inside a JSX prop is a violation, even a short one. `comboboxField={buildFieldStateProps({ selected })}` is wrong. Hoist it: `const comboboxField = buildFieldStateProps({ selected })`, then `comboboxField={comboboxField}`.
+
+- Do not write expressions inside returned JSX. This covers ternaries, `&&`, `||`, comparisons, computed objects or arrays, inline `style` objects, function calls that build a value, template literals, and inline arrow or function handlers.
+- Hoist each value into a named `const`, `useCallback`, or `useMemo` above the `return`.
+- A conditional element tree becomes a named constant. Write `const childrenSection = hasChildren ? <Children /> : null`, then render `{childrenSection}`.
+- Resolve lists before the `return`. Precompute the array into a `const`, or extract a child component. A `.map` callback passes identifier or item-field props only, and computes nothing inline.
+- Event handlers are named functions or `useCallback` values. Do not define an arrow handler inside a JSX prop.
+
+Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that turns a generated slot on or off carries no logic, so it does not need a name.
+
+### Ref Maps (`seldonRefs`)
+
+A `seldonRefs` map is read by the bindings scanner, which parses source without running it. Author it so a static read sees every ref. See `packages/factory/bindings/README.md`.
+
+- Author it as a hoisted object literal with static string keys. A `useMemo` or a Vue `computed` is fine only when its callback is a concise expression that returns one literal, as in `useMemo(() => ({ ... }), deps)`.
+- Do not build the map in a block-bodied callback such as `() => { const refs = {}; return refs }`, in a loop, or with a computed key such as `refs[prefix + "Yes"]`. Do not spread another object into it.
+- Spell out every key, even when groups share a shape. A key the scanner cannot read reports its ref as unconnected on the canvas, and the export still ships the component, so the miss is silent at runtime.
+- Values may be dynamic and may call a helper, such as `radioInput(name, checked, onSelect)`. Only the keys must be static.
+
+### Vue Templates
+
+The same rule holds in a Vue template. Hoist each value into a named `const` or a `computed` in `<script setup>`, then bind the identifier.
+
+A `v-for` row is the one exception, because a template has nowhere to declare a per-row local. A row calls a named helper and passes the item, as in `:seldon-refs="rowRefs(item)"` or `:style="rowStyle(item)"`. Keep the helper in `<script setup>` and keep the call to one argument. Everything a row needs comes from the helper, not from an expression in the binding.

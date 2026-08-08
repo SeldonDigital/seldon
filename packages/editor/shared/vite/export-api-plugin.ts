@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs"
 import fs from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"
@@ -7,6 +8,10 @@ import { build } from "esbuild"
 import type { ExportRequestBody, runExport } from "./export-handler"
 import type { IncomingMessage, ServerResponse } from "node:http"
 import type { Connect, Plugin } from "vite"
+
+export interface ExportApiPluginOptions {
+  root?: string
+}
 
 const ROUTE = "/api/export"
 
@@ -33,6 +38,15 @@ let cachedRunExport: Promise<RunExport> | null = null
  * runtime. Works the same under `vite dev` and `vite preview`.
  */
 async function loadRunExport(): Promise<RunExport> {
+  // Alias to the monorepo source when it is on disk, so an in-repo export reads
+  // live core and factory code. Off the monorepo (an installed editor) the
+  // aliases are dropped, so esbuild resolves `@seldon/core` and `@seldon/factory`
+  // from the consumer's `node_modules`.
+  const alias: Record<string, string> = {}
+
+  if (existsSync(coreRoot)) alias["@seldon/core"] = coreRoot
+  if (existsSync(factoryRoot)) alias["@seldon/factory"] = factoryRoot
+
   const result = await build({
     entryPoints: [handlerEntry],
     bundle: true,
@@ -41,10 +55,17 @@ async function loadRunExport(): Promise<RunExport> {
     target: "node22",
     write: false,
     logLevel: "silent",
-    alias: {
-      "@seldon/core": coreRoot,
-      "@seldon/factory": factoryRoot,
-    },
+    alias,
+    // The bindings scanner and best-effort formatter reach these through the
+    // export graph, but the handler never runs them. They resolve from the
+    // consumer's own node_modules at runtime, so leaving them external keeps
+    // esbuild from bundling `@vue/compiler-sfc`'s optional template engines.
+    external: [
+      "@vue/compiler-sfc",
+      "typescript",
+      "prettier",
+      "@ianvs/prettier-plugin-sort-imports",
+    ],
   })
 
   const outputFile = path.join(os.tmpdir(), `seldon-export-handler-${process.pid}.mjs`)
@@ -90,46 +111,48 @@ function sendJson(res: ServerResponse, status: number, payload: unknown): void {
   res.end(JSON.stringify(payload))
 }
 
-const middleware: Connect.NextHandleFunction = (req, res, next) => {
-  if (req.method !== "POST") {
-    next()
+function createMiddleware(root: string): Connect.NextHandleFunction {
+  return (req, res, next) => {
+    if (req.method !== "POST") {
+      next()
 
-    return
-  }
-
-  // This endpoint is unauthenticated and reads repo source, so it is meant to
-  // stay bound to the local dev/preview server. If you ever expose the server
-  // (for example `vite --host` for device testing), add a gate here before
-  // running the export: generate a per-session token at server start, require
-  // it on the request (header or query param), and/or check req.headers.origin
-  // and req.headers.host against an allowlist, rejecting with 401/403 otherwise.
-  const contentType = req.headers["content-type"] ?? ""
-
-  if (!contentType.includes("application/json")) {
-    sendJson(res, 415, { error: "Expected an application/json request body." })
-
-    return
-  }
-
-  void (async () => {
-    try {
-      const body = await readJsonBody(req)
-      const run = await getRunExport()
-      const result = await run(body)
-
-      sendJson(res, 200, result)
-    } catch (error) {
-      if (error instanceof PayloadTooLargeError) {
-        sendJson(res, 413, { error: error.message })
-
-        return
-      }
-
-      sendJson(res, 500, {
-        error: error instanceof Error ? error.message : "Export failed.",
-      })
+      return
     }
-  })()
+
+    // This endpoint is unauthenticated and reads repo source, so it is meant to
+    // stay bound to the local dev/preview server. If you ever expose the server
+    // (for example `vite --host` for device testing), add a gate here before
+    // running the export: generate a per-session token at server start, require
+    // it on the request (header or query param), and/or check req.headers.origin
+    // and req.headers.host against an allowlist, rejecting with 401/403 otherwise.
+    const contentType = req.headers["content-type"] ?? ""
+
+    if (!contentType.includes("application/json")) {
+      sendJson(res, 415, { error: "Expected an application/json request body." })
+
+      return
+    }
+
+    void (async () => {
+      try {
+        const body = await readJsonBody(req)
+        const run = await getRunExport()
+        const result = await run(body, { root })
+
+        sendJson(res, 200, result)
+      } catch (error) {
+        if (error instanceof PayloadTooLargeError) {
+          sendJson(res, 413, { error: error.message })
+
+          return
+        }
+
+        sendJson(res, 500, {
+          error: error instanceof Error ? error.message : "Export failed.",
+        })
+      }
+    })()
+  }
 }
 
 /**
@@ -147,7 +170,10 @@ function invalidateOnSourceChange(file: string): void {
  * Serves the factory export over POST `/api/export` for both `vite dev` and
  * `vite preview`, replacing the former Next.js API route.
  */
-export function exportApiPlugin(): Plugin {
+export function exportApiPlugin(options: ExportApiPluginOptions = {}): Plugin {
+  const root = options.root ?? process.cwd()
+  const middleware = createMiddleware(root)
+
   return {
     name: "seldon-export-api",
     configureServer(server) {

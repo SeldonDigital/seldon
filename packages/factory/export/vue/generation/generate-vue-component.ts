@@ -1,4 +1,3 @@
-import { LICENSE_HEADER } from "../../react/generation/inserts/insert-license"
 import { generateJSXStructure } from "../../react/generation/preprocess/generate-jsx-structure"
 import { isAttributeKey } from "../../react/generation/shared/attribute-props"
 import { generateDefaultProps } from "../../react/generation/shared/generate-default-props"
@@ -148,7 +147,6 @@ export function generateVueComponent(
   const jsDoc = generateJSDocComment(component, workspace, propNames).replace("```tsx", "```vue")
 
   const content = `<script lang="ts">
-${LICENSE_HEADER}
 ${jsDoc}
 export default {}
 </script>

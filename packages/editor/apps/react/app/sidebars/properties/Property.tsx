@@ -2,6 +2,7 @@ import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { mergeStateProps } from "@app/views/state-props"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
+import { ItemPropertyTextArea } from "@seldon/components/elements/ItemPropertyTextArea"
 import { ItemPropertyToggle } from "@seldon/components/elements/ItemPropertyToggle"
 import { memo, useCallback } from "react"
 
@@ -167,6 +168,15 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
   // aligned, but disable it: `aria-disabled` marks the state, and
   // `pointerEvents: none` stops both the hover styling and click-into-edit, so
   // the row body's own click still toggles the disclosure.
+  // A dimmed row is read-only, so its value field drops the editable hover
+  // outline. A link row (Source) keeps a pointer cursor since its value still
+  // opens an external page on click.
+  const readOnlyFieldClass = props.property.isDimmed
+    ? props.property.linkHref
+      ? "sdn-field-readonly sdn-field-link"
+      : "sdn-field-readonly"
+    : undefined
+
   const comboboxField = props.property.isLookParent
     ? ({
         "aria-disabled": true,
@@ -175,6 +185,7 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
     : ({
         ref: view.setValueFieldRef,
         onClick: view.onValueFieldClick,
+        className: readOnlyFieldClass,
       } as ComboboxFieldProps)
 
   // Drive each slot through its stable workspace ref. The value `input` slot is
@@ -209,6 +220,44 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
   // ref paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve
   // through the same slot via the generated `Icon`'s runtime registry.
   const valueIconSlot = listItemProps.icon2 ? undefined : null
+
+  // Multiline rows (Content, metadata Description) bind the generated
+  // `ItemPropertyTextArea` View. It mirrors `ItemProperty`'s shared row slots
+  // but carries the value through a `Textarea` (`propertyTextAreaValueLabel`)
+  // and owns no value-menu chevron. `buildPropertyValueTextarea` supplies the
+  // read-only display and, in edit mode, the live multiline control.
+  if (props.property.multiline) {
+    const textAreaRefs: Record<string, Record<string, unknown>> = {
+      propertyTextAreaDisclosure: { ...listItemProps.buttonIconic },
+      propertyTextAreaDisclosureIcon: { ...listItemProps.icon },
+      propertyTextAreaLabel: mergeStateProps(view.nameLabelProps, stateRef, labelHideProps),
+      propertyTextAreaValueField: { ...comboboxField },
+      propertyTextAreaValueLabel: mergeStateProps(view.valueLabelProps, stateRef),
+      propertyTextAreaActions: { ...optionsMenu.buttonIconic },
+    }
+
+    if (listItemProps.icon2) {
+      textAreaRefs.propertyTextAreaIcon = mergeStateProps(listItemProps.icon2, stateRef)
+    }
+
+    return (
+      <>
+        <ItemPropertyTextArea
+          buttonIconic={hideDisclosure ? null : {}}
+          formControlCombobox={{}}
+          input={{}}
+          icon2={valueIconSlot}
+          textarea={{}}
+          buttonIconic2={{}}
+          seldonRefs={textAreaRefs}
+          onClick={view.onRowClick}
+          onDoubleClick={view.onRowDoubleClick}
+        />
+        {optionsMenu.menu}
+        {childRows}
+      </>
+    )
+  }
 
   // Render the exported `ItemProperty` through its slots. `LayerDragRow` wraps a
   // multi-layer paint parent as a drag source and passes other rows through

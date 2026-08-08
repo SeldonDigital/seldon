@@ -1,20 +1,65 @@
 {
   "name": "@seldon/editor",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Shared, framework-neutral code for the Seldon editors (React and Vue): domain lib helpers, dev-server Vite plugins (including the shared workspace store), and shared assets. Consumed as source via path aliases; not a runnable app.",
+  "description": "Shared, framework-neutral code for the Seldon editors (React and Vue): domain lib helpers, dev-server Vite plugins (including the shared workspace store), and shared assets. The embeddable library re-exported by @seldon/foundation.",
+  "license": "SEE LICENSE IN ../../../license/noncommercial/LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git",
+    "directory": "packages/editor/shared"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./lib/*": {
+      "types": "./lib/*.ts",
+      "default": "./lib/*.ts"
+    },
+    "./vite/*": "./vite/*.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.ts",
+    "lib",
+    "vite",
+    "README.md",
+    "!**/*.test.ts",
+    "!**/*.test.tsx"
+  ],
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json",
-    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs"
+    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs",
+    "prepublishOnly": "echo 'Publishing @seldon/editor is blocked. See PUBLISHING.md to unlock.' && exit 1"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   },
   "dependencies": {
-    "@seldon/core": "file:../../core",
-    "@seldon/factory": "file:../../factory"
+    "@seldon/ai": "0.0.0",
+    "@seldon/core": "0.0.0",
+    "@seldon/factory": "0.0.0"
   },
   "volta": {
-    "node": "22.18.0"
+    "node": "22.23.1"
   }
 }

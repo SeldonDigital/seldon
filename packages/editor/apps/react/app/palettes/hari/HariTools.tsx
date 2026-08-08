@@ -26,7 +26,7 @@ interface HariToolsProps {
 export function HariTools({ tools, defaultOpen }: HariToolsProps) {
   const [open, setOpen] = useState(defaultOpen)
 
-  const chevron: IconProps["icon"] = open ? "material-chevronDown" : "material-chevronRight"
+  const chevron: IconProps["icon"] = open ? "material-keyboardArrowDown" : "material-chevronRight"
   const headerRefs = {
     hariToolsToggle: {
       onClick: () => setOpen(!open),

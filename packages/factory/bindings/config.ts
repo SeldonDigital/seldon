@@ -1,6 +1,6 @@
 import type { BindingsConfig, BindingsConfigInput, BindingsFramework } from "./types"
 
-const DEFAULT_COMPONENTS_FOLDER = "seldon"
+const DEFAULT_COMPONENTS_FOLDER = "sdn"
 
 const DEFAULT_COMPONENT_IMPORT_PREFIX = "@seldon/components/"
 

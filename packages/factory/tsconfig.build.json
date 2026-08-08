@@ -1,0 +1,21 @@
+{
+  "extends": "../../scripts/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": false,
+    "declarationMap": false,
+    "incremental": false,
+    "rootDir": ".",
+    "outDir": "./dist",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
+    "customConditions": null,
+    "skipLibCheck": true,
+    "paths": {
+      "@seldon/core": ["../core/dist/index.d.ts"],
+      "@seldon/core/*": ["../core/dist/*"]
+    }
+  },
+  "include": ["index.ts", "export/**/*.ts"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "vitest.config.ts", "export/cli/**"]
+}

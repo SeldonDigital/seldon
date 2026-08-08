@@ -51,7 +51,7 @@ const OUTCOME_META: Record<
     description: "The edit matched nothing, so the workspace is unchanged.",
   },
   none: {
-    icon: "material-removeCircle",
+    icon: "material-doNotDisturbOn",
     label: "No changes applied",
     description: "The turn produced no accepted edit.",
   },

@@ -1,6 +1,4 @@
-import prettier from "prettier"
-
-import { exportPrettierConfig } from "../export-prettier-config"
+import { formatWithPrettier } from "../format-with-prettier"
 
 /**
  * Formats an emitted single-file component, so a file that lands in a formatted
@@ -18,12 +16,11 @@ export async function formatVue(content: string, options?: { skipFormat?: boolea
     return content
   }
 
-  const vueConfig = { ...exportPrettierConfig, parser: "vue" as const }
-  const firstPass = await prettier.format(content, vueConfig)
+  const firstPass = await formatWithPrettier(content, { parser: "vue" })
 
   // Prettier's Vue printer settles on the second pass for a whitespace-sensitive
   // inline slot, where the first pass wraps what the second tightens. Running it
   // twice lands on the same text a consuming repository's own format check
   // produces, so an export leaves nothing for that check to fix.
-  return prettier.format(firstPass, vueConfig)
+  return formatWithPrettier(firstPass, { parser: "vue" })
 }

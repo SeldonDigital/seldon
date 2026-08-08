@@ -1,6 +1,6 @@
 import { current, isDraft, produce } from "immer"
 
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { debugLog } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
 import { componentBoardUniqueNodeId } from "../../helpers/components/entry-node-ids"

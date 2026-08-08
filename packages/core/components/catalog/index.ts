@@ -1,7 +1,7 @@
 /**
- * To sync this file after component schema changes, invoke `@components-catalog`.
+ * To sync this file after component schema changes, invoke `@foundation-components-catalog`.
  *
- * The `@components-catalog` rule treats the `.schema.ts` files under
+ * The `@foundation-components-catalog` rule treats the `.schema.ts` files under
  * `packages/core/components/` as the source of truth and updates this file, the
  * `packages/core/components/constants/` index, and `components/types/component-id.ts`
  * together.

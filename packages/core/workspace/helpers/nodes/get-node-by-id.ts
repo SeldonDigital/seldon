@@ -1,4 +1,4 @@
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { ErrorMessages } from "../../constants"
 
 import type { EntryNode, EntryNodeId, Workspace } from "../../types"

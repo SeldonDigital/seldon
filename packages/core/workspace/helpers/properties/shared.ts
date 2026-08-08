@@ -1,4 +1,3 @@
-import { ValueType } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
@@ -15,6 +14,8 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
+
+import { ValueType } from "../../../properties/constants/shared/value-types"
 
 import type { Properties, PropertyKey } from "@seldon/core"
 import type { ComponentId } from "@seldon/core/components/constants"

@@ -1,4 +1,4 @@
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { getBoardOrder, setBoardOrder } from "../../helpers/components/board-sort-order"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import {

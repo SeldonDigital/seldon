@@ -22,7 +22,13 @@ export default defineConfig(({ mode }) => ({
   root: editorRoot,
   // Both editors serve the same static assets from the shared editor package.
   publicDir: path.join(sharedRoot, "public"),
-  plugins: [vue(), workspaceApiPlugin(), exportApiPlugin(), importWebApiPlugin(), agentApiPlugin()],
+  plugins: [
+    vue(),
+    workspaceApiPlugin({ root: repoRoot }),
+    exportApiPlugin({ root: repoRoot }),
+    importWebApiPlugin(),
+    agentApiPlugin(),
+  ],
   define: {
     "process.env.NODE_ENV": JSON.stringify(mode),
     "process.env.DEBUG_MODE": JSON.stringify(process.env.DEBUG_MODE ?? ""),
@@ -33,7 +39,7 @@ export default defineConfig(({ mode }) => ({
       { find: "@seldon/editor", replacement: sharedRoot },
       {
         find: "@seldon/components",
-        replacement: path.join(editorRoot, "seldon"),
+        replacement: path.join(editorRoot, "sdn"),
       },
       { find: "@seldon/core", replacement: corePackageRoot },
       { find: "@seldon/factory", replacement: factoryPackageRoot },

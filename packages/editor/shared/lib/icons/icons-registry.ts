@@ -1,4 +1,4 @@
-import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
+import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-lookup"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   getCompoundSubPropertySchema,
@@ -26,6 +26,8 @@ export interface PropertyRegistryEntry {
   /** Option value is itself an icon id and renders as that glyph. */
   renderValueAsIcon?: boolean
   control?: ControlType
+  /** Render the value cell as a multi-line textarea instead of a single-line field. */
+  multiline?: boolean
   subProperties?: {
     [subPropertyKey: string]: PropertyRegistryEntry
   }
@@ -110,11 +112,11 @@ function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
  */
 const UI_OVERRIDES: PropertyRegistry = {
   // 1. ATTRIBUTES
-  content: { control: "text" },
+  content: { control: "text", multiline: true },
   altText: { control: "text" },
   ariaLabel: { control: "text" },
   ariaHidden: { control: "menu" },
-  placeholder: { control: "text" },
+  placeholder: { control: "text", multiline: true },
   checked: { control: "menu" },
   inputType: { control: "menu" },
   htmlElement: { label: "HTML Element", control: "menu" },
@@ -330,6 +332,7 @@ function mergeEntry(
     icon: override.icon ?? base.icon,
     renderValueAsIcon: override.renderValueAsIcon ?? base.renderValueAsIcon,
     control: override.hasOwnProperty("control") ? override.control : base.control,
+    multiline: override.multiline ?? base.multiline,
   }
 
   if (base.subProperties || override.subProperties) {

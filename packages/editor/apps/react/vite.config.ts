@@ -22,8 +22,8 @@ export default defineConfig(({ mode }) => ({
   publicDir: path.join(sharedRoot, "public"),
   plugins: [
     react(),
-    workspaceApiPlugin(),
-    exportApiPlugin(),
+    workspaceApiPlugin({ root: repoRoot }),
+    exportApiPlugin({ root: repoRoot }),
     agentApiPlugin(),
     importWebApiPlugin(),
   ],
@@ -41,7 +41,7 @@ export default defineConfig(({ mode }) => ({
       { find: "@seldon/editor", replacement: sharedRoot },
       {
         find: "@seldon/components",
-        replacement: path.join(editorRoot, "seldon"),
+        replacement: path.join(editorRoot, "sdn"),
       },
       { find: "@seldon/core", replacement: corePackageRoot },
       { find: "@seldon/factory", replacement: factoryPackageRoot },

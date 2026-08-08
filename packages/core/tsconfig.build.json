@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false
+  },
+  "exclude": [
+    "./dist",
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/generated-ai-action-schema.json"
+  ]
+}

@@ -27,6 +27,7 @@ export { getComputedTheme, computeWorkspaceThemes } from "@seldon/core/workspace
 // Factory compute + CSS bridge.
 export { buildContext } from "@seldon/factory/helpers/compute-workspace"
 export { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
+export { getCssObjectFromProperties } from "@seldon/factory/styles/css-properties/get-css-object-from-properties"
 
 // Commonly used runtime values and helpers from the core barrel.
 export { invariant, resolveNodeRepeat, ValueType, Display, MAX_REPEAT_COUNT } from "@seldon/core"

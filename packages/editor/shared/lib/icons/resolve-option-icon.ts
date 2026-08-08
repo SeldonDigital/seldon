@@ -6,7 +6,7 @@ import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-s
 import { getThemeTokenIconColor } from "@seldon/editor/lib/themes/theme-token-icon-color"
 import { getCompoundSelectorFacet, isCompoundCatalogProperty } from "@seldon/core"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
-import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
+import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-lookup"
 import { parseThemeLookRef } from "@seldon/core/themes/looks"
 
 import type { Theme } from "@seldon/core"

@@ -1,8 +1,7 @@
-import { iconCategoryMapping as carbonMapping } from "../catalog/carbon/category-map"
-import { iconCategoryMapping as lucideMapping } from "../catalog/lucide/category-map"
-import { iconCategoryMapping as materialMapping } from "../catalog/material/category-map"
 import { iconCategoryMapping as seldonMapping } from "../catalog/seldon/category-map"
 import { DEFAULT_CATEGORY_PATH } from "../constants/categories"
+import { matchCategoryKeyword } from "../constants/category-keywords"
+import { vendorIconCategories } from "../constants/icon-categories"
 
 import type { IconId } from "../../icon-sets"
 import type { IconCategoryPath } from "../constants/categories"
@@ -26,18 +25,6 @@ function getIconIdPrefix(iconSetId: IconSetId): string {
 }
 
 /**
- * Gets the appropriate mapping for an icon ID
- */
-function getMappingForIconId(iconId: IconId): Partial<Record<IconId, IconCategoryPath>> | null {
-  if (iconId.startsWith("material-")) return materialMapping
-  if (iconId.startsWith("carbon-")) return carbonMapping
-  if (iconId.startsWith("lucide-")) return lucideMapping
-  if (iconId.startsWith("seldon-")) return seldonMapping
-
-  return null
-}
-
-/**
  * Checks if an icon ID belongs to an icon set ID
  */
 export function iconBelongsToIconSet(iconId: IconId, iconSetId: IconSetId): boolean {
@@ -47,11 +34,15 @@ export function iconBelongsToIconSet(iconId: IconId, iconSetId: IconSetId): bool
 }
 
 /**
- * Gets the category path for an icon ID
- * Uses the per-set mappings generated from index-all.ts files
+ * Gets the category path for an icon id. The seldon set uses its folder-derived
+ * map. The vendor sets use the curated `vendorIconCategories` source, falling
+ * back to the shared keyword table for an id not listed there, so a newly seeded
+ * icon still categorizes without a hand edit.
  */
 export function getIconCategoryFromId(iconId: IconId): IconCategoryPath {
-  const mapping = getMappingForIconId(iconId)
+  if (iconId.startsWith("seldon-")) {
+    return seldonMapping[iconId] || DEFAULT_CATEGORY_PATH
+  }
 
-  return mapping?.[iconId] || DEFAULT_CATEGORY_PATH
+  return vendorIconCategories[iconId] ?? matchCategoryKeyword(iconId)
 }

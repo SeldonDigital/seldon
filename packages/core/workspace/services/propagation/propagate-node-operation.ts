@@ -1,4 +1,4 @@
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"

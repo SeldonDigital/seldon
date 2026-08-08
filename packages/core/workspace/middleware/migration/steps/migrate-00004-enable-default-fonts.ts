@@ -12,7 +12,7 @@ import type { Workspace } from "../../../model/workspace"
  * v4: enable Google font families that became defaults after a workspace was
  * created.
  *
- * `GOOGLE_DEFAULT_ENABLED_FAMILIES` is applied only when the Google collection
+ * `googleDefaultEnabledFamilies` is applied only when the Google collection
  * is first seeded or added. Families added to that set later stay disabled in
  * existing workspaces, so a theme that references one cannot show it in the font
  * picker. This backfills those families on every Google collection entry,

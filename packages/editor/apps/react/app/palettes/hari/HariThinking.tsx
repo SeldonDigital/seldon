@@ -31,7 +31,7 @@ export function HariThinking({ text, durationMs, clamped }: HariThinkingProps) {
       : clamped
         ? "Reasoning off"
         : "Thinking..."
-  const chevron: IconProps["icon"] = open ? "material-chevronDown" : "material-chevronRight"
+  const chevron: IconProps["icon"] = open ? "material-keyboardArrowDown" : "material-chevronRight"
   const seldonRefs = {
     hariReasoningToggle: {
       onClick: () => setOpen(!open),

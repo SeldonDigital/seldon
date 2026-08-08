@@ -2,7 +2,7 @@
  * Keep this file aligned with the component schemas and
  * `packages/core/components/catalog`.
  *
- * To sync it after schema changes, invoke `@components-catalog`.
+ * To sync it after schema changes, invoke `@foundation-components-catalog`.
  *
  * `ComponentId` lives in `./component-id` and is re-exported here for callers that
  * import component constants and the id from one place.

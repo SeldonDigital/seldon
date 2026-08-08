@@ -1,4 +1,4 @@
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getChildrenIds } from "../components/get-children-ids"
 import { findParentNode } from "./find-parent-node"

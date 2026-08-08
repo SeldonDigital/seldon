@@ -13,13 +13,13 @@ This app owns the Vue interface: components, composables, and Pinia stores. It i
 - **motion-v** drives window and panel animation, matching framer-motion in the React app. **splitpanes** handles resizable panes. **panzoom** drives canvas zoom and pan. **@atlaskit/pragmatic-drag-and-drop** drives tree and canvas drag.
 - **markdown-it** and **shiki** render the AI chat. **@vueuse/core** and **hotkeys-js** cover reactive utilities and shortcuts.
 - The workspace store is the shared filesystem store served at `/api/workspaces`, so a workspace saved here opens in the React editor. See [../../shared/README.md](../../shared/README.md).
-- Imports use path aliases: `@app` for `app/`, `@seldon/components` for `seldon/`, and `@seldon/editor` for the shared package, alongside `@seldon/core`, `@seldon/factory`, and `@seldon/ai`.
+- Imports use path aliases: `@app` for `app/`, `@seldon/components` for `sdn/`, and `@seldon/editor` for the shared package, alongside `@seldon/core`, `@seldon/factory`, and `@seldon/ai`.
 
 ### Run steps
 
 - `npm run dev` copies font licenses and font files, ensures a local Ollama server for the AI agent through [`@seldon/ai`](../../../ai/scripts/ensure-ollama.mjs), then starts Vite on port 5174.
 - `npm run build` type-checks with `vue-tsc` and builds the production bundle. `npm run build:release` generates third-party notices first. `npm start` serves the build with `vite preview`.
-- `npm run typecheck` type-checks with `vue-tsc --noEmit`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
+- `npm run typecheck` type-checks with `vue-tsc --noEmit`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `sdn/` components.
 
 ---
 
@@ -48,13 +48,13 @@ This app owns the Vue interface: components, composables, and Pinia stores. It i
 | `core/` | Vue-side adapters over shared logic |
 | `io/`, `home/`, `overlays/` | Import and export, home page, overlays |
 
-### `seldon/` — generated View library
+### `sdn/` — generated View library
 
-`seldon/` holds the generated `.vue` design components the app binds to. These files are generated, so do not hand-edit them. Regenerate with `npm run export:seldon`.
+`sdn/` holds the generated `.vue` design components the app binds to. These files are generated, so do not hand-edit them. Regenerate with `npm run export:seldon`.
 
 ### `scripts/`
 
-Font copy and `seldon/` export.
+Font copy and `sdn/` export.
 
 ---
 
@@ -62,21 +62,21 @@ Font copy and `seldon/` export.
 
 The app follows the editor MVVM layering from [../../shared/README.md](../../shared/README.md). In Vue:
 
-- **View**: generated `.vue` components in `seldon/`, plus editor chrome views. A View binds named values and renders element tags. It computes nothing.
+- **View**: generated `.vue` components in `sdn/`, plus editor chrome views. A View binds named values and renders element tags. It computes nothing.
 - **ViewModel**: `use-*.ts` composables and Pinia stores. Some controller components act as view-models. A view-model owns UI state, derives display values, wires commands, and assembles the props the View binds to.
 - **Model**: `@seldon/core` services and the shared `@seldon/editor` lib.
 
 ### View rules
 
 - Compute nothing inside the template beyond identifier references and slot enablers. Hoist derived values into `computed` or a named `const` in `<script setup>`, then bind the name.
-- Author no raw DOM in a View. Put markup in a reusable View. Use `seldon/` for design components.
+- Author no raw DOM in a View. Put markup in a reusable View. Use `sdn/` for design components.
 - Mark a genuinely hand-authored view as `*.bespoke.vue`. `WindowSurface.vue` is bespoke, since no generated component covers a draggable, resizable window and it builds on `motion-v`.
 
 ---
 
 ## Dialogs
 
-The dialogs render generated `seldon/` modules inside `WindowSurface.vue`, so they match the React editor instead of using hand-rolled markup.
+The dialogs render generated `sdn/` modules inside `WindowSurface.vue`, so they match the React editor instead of using hand-rolled markup.
 
 - `WindowSurface.vue` is the draggable, resizable window shell. It builds on `motion-v` drag controls, teleports to the body, re-applies the editor theme and mode, and renders resize handles from the shared `resize` utility.
 - `PanelDialogController.vue` is the shared controller for the catalog dialogs. `ComponentsDialog.vue` and `BoardsDialog.vue` bind it with their own filters and pick handlers, driven by `use-catalog-dialog.ts`.

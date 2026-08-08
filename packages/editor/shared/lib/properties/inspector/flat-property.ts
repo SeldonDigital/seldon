@@ -29,6 +29,8 @@ export interface FlatProperty {
   isSubProperty: boolean
   status: PropertyStatus
   controlType?: ControlType
+  /** Render the value cell as a multi-line textarea instead of a single-line field. */
+  multiline?: boolean
   /**
    * Allowed unit suffixes for a measured theme value, resolved from the core
    * token schema. Present only on theme rows that declare a unit; absent on node

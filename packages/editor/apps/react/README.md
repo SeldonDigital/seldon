@@ -47,9 +47,9 @@ This app owns the React interface: components, hooks, and runtime state. It impo
 | `themes/`, `icons/`, `fonts/` | Theme, icon, and font view-models |
 | `io/`, `home/`, `overlays/`, `views/` | Import and export, home page, overlays, screen views |
 
-### `seldon/` — generated View library
+### `sdn/` — generated View library
 
-`seldon/` holds the generated design components the app binds to. Raw markup comes from `seldon/native-react/`. These files are generated, so do not hand-edit them. Regenerate with `npm run export:seldon`. See [seldon/README.md](./seldon/README.md) for component usage.
+`sdn/` holds the generated design components the app binds to. Raw markup comes from `sdn/native-react/`. These files are generated, so do not hand-edit them. Regenerate with `npm run export:seldon`. See [sdn/README.md](./sdn/README.md) for component usage.
 
 ### `scripts/`
 
@@ -73,7 +73,7 @@ The app follows the editor MVVM layering from [../../shared/README.md](../../sha
 - Mark a genuinely hand-authored view as `*.bespoke.tsx`. A bespoke view opts out of the raw-markup rule. `WindowSurface.bespoke.tsx` is one, since no generated component covers a draggable, resizable window.
 - Keep bare literal slot enablers inline. A positional `{}`, `null`, or `undefined` that only turns a slot on or off carries no logic.
 
-These layers are lint rules in `eslint.config.mjs`, not convention. A View that imports a domain service or authors raw DOM fails the build. JSX authoring rules for AI agents live in `.cursor/rules/editor-jsx.mdc`.
+These layers are lint rules in `eslint.config.mjs`, not convention. A View that imports a domain service or authors raw DOM fails the build. JSX authoring rules for AI agents live in `.cursor/rules/foundation-editor-jsx.mdc`.
 
 ---
 
