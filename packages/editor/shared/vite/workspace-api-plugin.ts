@@ -65,17 +65,15 @@ async function getWorkspace(id: string): Promise<StoredWorkspace | undefined> {
   }
 }
 
-const BACKUP_SLOTS = 1
-
 /**
- * Keeps one backup of the file a save is about to replace, at `.1.bak`. A
- * workspace the editor overwrites with the wrong state is therefore still on
- * disk for the next save. The backup is capped at one file so `.seldon` never
- * fills with old copies. Backups do not end in `.json`, so the listing never
- * offers them as workspaces.
+ * Keeps exactly one backup of the file a save is about to replace, at
+ * `<file>.bak`. A workspace the editor overwrites with the wrong state is still
+ * on disk for the next save, and the backup is overwritten in place, so a
+ * workspace never keeps more than one backup per id. Backups do not end in
+ * `.json`, so the listing never offers them as workspaces.
  *
- * Any higher-numbered backups left by an earlier, deeper rotation are pruned, so
- * a store written before the cap dropped cleans itself up on the next save.
+ * Numbered `.N.bak` files left by an earlier rotation scheme are pruned, so a
+ * store written before this cleans itself up on the next save.
  */
 async function backupExisting(target: string): Promise<void> {
   try {
@@ -84,21 +82,13 @@ async function backupExisting(target: string): Promise<void> {
     return
   }
 
-  for (let slot = BACKUP_SLOTS - 1; slot >= 1; slot--) {
-    try {
-      await fs.rename(`${target}.${slot}.bak`, `${target}.${slot + 1}.bak`)
-    } catch {
-      // That slot has not been written yet.
-    }
-  }
-
-  await fs.copyFile(target, `${target}.1.bak`)
-  await pruneStaleBackups(target)
+  await fs.copyFile(target, `${target}.bak`)
+  await pruneLegacyBackups(target)
 }
 
-/** Removes numbered backups past the cap, cleaning up a deeper old rotation. */
-async function pruneStaleBackups(target: string): Promise<void> {
-  for (let slot = BACKUP_SLOTS + 1; slot <= 9; slot++) {
+/** Removes numbered `.N.bak` backups left by the earlier rotation scheme. */
+async function pruneLegacyBackups(target: string): Promise<void> {
+  for (let slot = 1; slot <= 9; slot++) {
     try {
       await fs.rm(`${target}.${slot}.bak`)
     } catch {
