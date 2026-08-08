@@ -25,7 +25,7 @@ import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 
-import { getBoardRowIcon } from "@seldon/core/icon-registry"
+import { getBoardRowIcon } from "@seldon/core/icon-lookup"
 import {
   isAuthoredBoard,
   isComponentBoard,
@@ -35,6 +35,7 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 
+import FontCollectionEntryRows from "./FontCollectionEntryRows.vue"
 import NodeRow from "./NodeRow.vue"
 import ResourceEntry from "./ResourceEntry.vue"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
@@ -433,7 +434,16 @@ const seldonRefs = computed(() => ({
     />
 
     <FramerExpandable :is-expanded="isExpanded">
-      <template v-if="resourceRowConfig">
+      <template v-if="resourceRowConfig && resourceRowConfig.kind === 'fontCollection'">
+        <FontCollectionEntryRows
+          v-for="entryId in variantRootIds"
+          :key="entryId"
+          :workspace="workspace"
+          :entry-id="entryId"
+          :board-key="boardKey"
+        />
+      </template>
+      <template v-else-if="resourceRowConfig">
         <ResourceEntry
           v-for="entryId in variantRootIds"
           :key="entryId"

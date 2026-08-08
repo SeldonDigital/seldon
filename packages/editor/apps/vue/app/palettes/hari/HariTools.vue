@@ -30,7 +30,7 @@ const headerRefs = computed(() => ({
     "aria-label": open.value ? "Hide tools" : "Show tools",
   },
   hariToolsChevron: {
-    icon: open.value ? "material-chevronDown" : "material-chevronRight",
+    icon: open.value ? "material-keyboardArrowDown" : "material-chevronRight",
   },
 }))
 

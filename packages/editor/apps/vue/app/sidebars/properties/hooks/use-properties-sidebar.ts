@@ -3,11 +3,15 @@ import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
+import { parseFontCollectionItemKey } from "@seldon/editor/lib/font-collections/font-collection-item-key"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
+import { flattenFontCollectionFamilySizes } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
 import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
-import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
+import {
+  buildFontFamilyMetadataProperties,
+  buildMetadataProperties,
+} from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
 import {
   flattenNodeProperties,
   getPropertiesSubjectId,
@@ -25,6 +29,7 @@ import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessor
 import { computed } from "vue"
 
 import { buildEmptyCustomTokenPayload } from "@seldon/core"
+import { getFontFamilyWebsiteUrl } from "@seldon/core/font-collections"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
@@ -107,6 +112,7 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
     selectedIconSetEntryId,
+    selectedResourceItemKey,
   } = useSelection()
   const config = useEditorConfigStore()
   const boardState = useBoardStateStore()
@@ -226,19 +232,18 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       const entry = ws["font-collections"][fontEntryId]
 
       if (collection) {
-        const selectionMap = workspaceFontCollectionService.getVariantSelection(fontEntryId, ws)
-
-        familyProperties = flattenFontCollectionFamilies(
-          collection,
-          selectionMap,
-          config.showUnusedFonts,
-        )
+        // Family and weight selection now lives in the Objects sidebar, so the
+        // Properties sidebar keeps only the collection's metadata rows.
         metadataVariantLabel = entry?.label
-        metadataProperties = buildMetadataProperties({
-          name: entry?.label ?? collection.metadata.name,
-          description: collection.metadata.description,
-          intent: collection.metadata.intent,
-        })
+        metadataProperties = buildMetadataProperties(
+          {
+            name: entry?.label ?? collection.metadata.name,
+            description: collection.metadata.description,
+            intent: collection.metadata.intent,
+          },
+          false,
+          "material-fontDownload",
+        )
         fontCollectionEditingContext = {
           isFontCollectionEditing: true,
           updateFontCollectionProperty: (property, value) => {
@@ -248,6 +253,77 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
           },
         }
         node = findBoardForEntry(ws, isFontCollectionBoard, fontEntryId) ?? null
+      }
+    }
+
+    // Selecting a font collection board directly still shows the collection's
+    // metadata, so it falls back to the board's default entry. Board component
+    // props already render from the `if (selection)` branch above.
+    if (selection && isBoard(selection) && isFontCollectionBoard(selection)) {
+      const boardEntryId = selection.variants[0]?.id
+      const collection = boardEntryId
+        ? workspaceFontCollectionService.getFontCollection(boardEntryId, ws)
+        : null
+      const entry = boardEntryId ? ws["font-collections"][boardEntryId] : undefined
+
+      if (collection && boardEntryId) {
+        metadataVariantLabel = entry?.label
+        metadataProperties = buildMetadataProperties(
+          {
+            name: entry?.label ?? collection.metadata.name,
+            description: collection.metadata.description,
+            intent: collection.metadata.intent,
+          },
+          false,
+          "material-fontDownload",
+        )
+        fontCollectionEditingContext = {
+          isFontCollectionEditing: true,
+          updateFontCollectionProperty: (property, value) => {
+            const action = buildFontCollectionEditAction(boardEntryId, property.key, value)
+
+            if (action) dispatch(action as never)
+          },
+        }
+      }
+    }
+
+    // ---- Font family (Installed Font Sizes) ----
+    // Selecting a font family in the Objects sidebar opens its installed weights
+    // here as On/Off switches, and keeps the collection's metadata rows.
+    const familyItem = parseFontCollectionItemKey(selectedResourceItemKey.value)
+
+    if (!selection && familyItem) {
+      const collection = workspaceFontCollectionService.getFontCollection(familyItem.entryId, ws)
+      const family = collection?.families[familyItem.slot]
+
+      if (collection && family) {
+        metadataVariantLabel = family.name
+        metadataProperties = buildFontFamilyMetadataProperties({
+          name: family.name,
+          vendor: collection.metadata.name,
+          category: family.category,
+          designer: family.designer,
+          description: family.description,
+          sourceHref: getFontFamilyWebsiteUrl(family.name, family.origin) ?? undefined,
+        })
+        fontCollectionEditingContext = {
+          isFontCollectionEditing: true,
+          updateFontCollectionProperty: (property, value) => {
+            const action = buildFontCollectionEditAction(familyItem.entryId, property.key, value)
+
+            if (action) dispatch(action as never)
+          },
+        }
+
+        const selectionMap = workspaceFontCollectionService.getVariantSelection(
+          familyItem.entryId,
+          ws,
+        )
+        const rows = flattenFontCollectionFamilySizes(collection, selectionMap, familyItem.slot)
+
+        familyProperties = rows.length > 0 ? rows : undefined
+        node = findBoardForEntry(ws, isFontCollectionBoard, familyItem.entryId) ?? null
       }
     }
 

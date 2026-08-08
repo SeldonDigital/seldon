@@ -16,8 +16,8 @@ import {
 } from "@seldon/core/workspace/model/components"
 
 import { ComponentBoard } from "./boards/ComponentBoard"
-import { FontCollectionBoard } from "./boards/FontCollectionBoard"
-import { IconSetBoard } from "./boards/IconSetBoard"
+import { FontSpecimenCanvas } from "./boards/FontSpecimenCanvas.bespoke"
+import { IconSetBoard } from "./boards/IconSetBoard.bespoke"
 import { IsolationBoards } from "./boards/IsolationBoards"
 import { SandboxCanvas } from "./boards/SandboxCanvas"
 import { ThemeBoard } from "./boards/ThemeBoard"
@@ -68,7 +68,7 @@ function renderBoard(board: Board) {
     }
 
     if (isFontCollectionBoard(board)) {
-      return <FontCollectionBoard board={board} />
+      return <FontSpecimenCanvas board={board} />
     }
   }
 

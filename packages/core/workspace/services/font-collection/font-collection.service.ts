@@ -2,6 +2,7 @@ import merge from "lodash/merge"
 
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { instantiateFontCollection } from "../../../font-collections/compute"
+import { isSelfHostedRemoteOrigin } from "../../../font-collections/constants"
 import { deriveVariantPreset, getEnabledVariants } from "../../../font-collections/helpers"
 import { sortFontVariants } from "../../../helpers/utils/font-variant"
 import { isFontCollectionBoard } from "../../model/components"
@@ -113,7 +114,7 @@ export class WorkspaceFontCollectionService {
         const selection = this.getVariantSelection(variant.id, workspace)
 
         for (const [slot, family] of Object.entries(collection.families)) {
-          if (!family || family.origin !== "remote" || !family.variants) {
+          if (!family || !isSelfHostedRemoteOrigin(family.origin) || !family.variants) {
             continue
           }
 
@@ -156,7 +157,7 @@ export class WorkspaceFontCollectionService {
         const selection = this.getVariantSelection(variant.id, workspace)
 
         for (const [slot, family] of Object.entries(collection.families)) {
-          if (!family || family.origin !== "remote" || !family.variants) {
+          if (!family || !isSelfHostedRemoteOrigin(family.origin) || !family.variants) {
             continue
           }
 

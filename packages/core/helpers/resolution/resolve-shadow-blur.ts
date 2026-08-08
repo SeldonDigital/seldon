@@ -1,4 +1,4 @@
-import { ValueType } from "../../index"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import { getThemeOption } from "../theme/get-theme-option"
 import { resolveModulatedOrExactLength } from "./resolve-length-token"
 

@@ -18,7 +18,9 @@ export interface IconSetMetadata<TId extends string = IconSetTemplateId> {
  * `source` is the shipped component set these icons come from, such as `seldon`. `icons` is every
  * icon id available in this set. `defaultEnabledCategories` are the categories enabled by default,
  * and icons in other categories start off. `defaultEnabledIcons`, when present, defines the default
- * inclusion by icon id and supersedes `defaultEnabledCategories`.
+ * inclusion by icon id and supersedes `defaultEnabledCategories`. `seededByDefault`, when true, seeds
+ * this set into every new workspace alongside the protected `seldonIcons` base. The seeder derives
+ * its list from this flag, so adding or removing a set needs no seeder edit.
  */
 export interface StockIconSet {
   metadata: IconSetMetadata
@@ -26,6 +28,7 @@ export interface StockIconSet {
   icons: IconId[]
   defaultEnabledCategories: IconCategory[]
   defaultEnabledIcons?: IconId[]
+  seededByDefault?: boolean
 }
 
 /** A computed icon set. Adds the resolved catalog `id`. */

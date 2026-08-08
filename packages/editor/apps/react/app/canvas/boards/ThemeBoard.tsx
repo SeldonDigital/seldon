@@ -16,6 +16,7 @@ import {
 import { getNodeCatalogComponentId, getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
+import { getCssObjectFromProperties } from "@seldon/factory/styles/css-properties/get-css-object-from-properties"
 import { useCallback, useMemo, useRef, useState } from "react"
 
 import { ValueType } from "@seldon/core"
@@ -47,6 +48,22 @@ export type ThemeBoardProps = {
 /** Transparent delegation layer over a preview; adds no box of its own. */
 const previewClickLayerStyle: CSSProperties = { display: "contents" }
 
+// Fallback board layout: variants stacked in a column. The board's own component
+// properties (orientation, align, margin, padding, gap, wrap, clip, background)
+// are resolved to CSS and spread over this, so any LAYOUT control the user sets
+// wins while an unset property keeps this default. `position` and `minHeight`
+// are canvas-only and always stay.
+const boardLayoutFallback: CSSProperties = {
+  position: "static",
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+  gap: "2rem",
+  alignItems: "stretch",
+  minHeight: "100%",
+  padding: "2rem",
+}
+
 /**
  * Theme board canvas: board chrome and a placeholder until a v0 preview fixture exists.
  */
@@ -73,35 +90,25 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
       : defaultVariantId
   const variantEntryIds = activeVariantId ? [activeVariantId] : []
 
-  const boardCss = getCssFromProperties(
+  const styleContext = {
+    theme: boardTheme ?? undefined,
     properties,
-    {
-      theme: boardTheme ?? undefined,
-      properties,
-      parentContext: null,
-    },
-    className,
-  )
+    parentContext: null,
+  }
+  const boardCss = getCssFromProperties(properties, styleContext, className)
+
+  // Resolve the board's own component properties to CSS and layer them over the
+  // fallback, so Direction, Orientation, Align, Margin, Padding, Gap, Wrap, and
+  // Clip take effect. Unset properties are absent here and keep the fallback.
+  const resolvedBoardStyle = getCssObjectFromProperties(properties, styleContext) as CSSProperties
+  const boardStyle: CSSProperties = { ...boardLayoutFallback, ...resolvedBoardStyle }
 
   return (
     <>
       <CssPortal>
         <StyleTag css={boardCss} />
       </CssPortal>
-      <Frame
-        data-board-id={boardKey}
-        className={className}
-        style={{
-          position: "static",
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "nowrap",
-          gap: "2rem",
-          alignItems: "stretch",
-          minHeight: "100%",
-          padding: "2rem",
-        }}
-      >
+      <Frame data-board-id={boardKey} className={className} style={boardStyle}>
         {variantEntryIds.map((variantEntryId) => (
           <ThemeVariantPreview
             key={variantEntryId}

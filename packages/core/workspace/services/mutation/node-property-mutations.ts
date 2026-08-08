@@ -1,5 +1,6 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { isComponentId } from "../../../components/constants"
+import { decodeHtmlEntities } from "../../../helpers/utils/decode-html-entities"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
 import {
@@ -38,6 +39,34 @@ interface PropertyResetTarget {
   layerIndex?: number
 }
 
+/** Plain-text copy keys whose values are decoded on write. */
+const COPY_PROPERTY_KEYS = ["content", "altText", "placeholder", "ariaLabel"] as const
+
+/**
+ * Decodes HTML entities in plain-text copy before it is stored, so a paste from
+ * rich text does not persist `&#039;` or `&amp;` in the copy the editor renders
+ * and the factory exports. Returns the same bag when no copy value changes.
+ */
+function decodeCopyProperties(properties: Properties): Properties {
+  let result = properties
+
+  for (const key of COPY_PROPERTY_KEYS) {
+    const value = (properties as Record<string, unknown>)[key]
+
+    if (!value || typeof value !== "object") continue
+    const raw = (value as { value?: unknown }).value
+
+    if (typeof raw !== "string") continue
+    const decoded = decodeHtmlEntities(raw)
+
+    if (decoded === raw) continue
+    if (result === properties) result = { ...properties }
+    ;(result as Record<string, unknown>)[key] = { ...(value as object), value: decoded }
+  }
+
+  return result
+}
+
 /** Merges properties into a node's overrides. */
 export function setNodeProperties(
   nodeId: VariantId | InstanceId,
@@ -45,15 +74,17 @@ export function setNodeProperties(
   workspace: Workspace,
   options?: { mergeSubProperties?: boolean },
 ): Workspace {
+  const decodedProperties = decodeCopyProperties(properties)
+
   return withNodeMutation(nodeId, workspace, (node) => {
     if (!isEntryNodeForRules(node)) return
-    node.overrides = mergeProperties(node.overrides, properties, options)
+    node.overrides = mergeProperties(node.overrides, decodedProperties, options)
     // Drop any written facet that equals the value the node inherits, so setting
     // a property to its catalog or upstream value stays a no-op rather than a
     // stored override that would shadow later changes to that value.
     cleanupRedundantOverrides(
       node.overrides,
-      properties,
+      decodedProperties,
       getInheritedNodeProperties(node.id, workspace),
     )
   })
@@ -81,7 +112,7 @@ export function pasteNodeProperties(
     if (!catalogId || !isComponentId(catalogId)) return
 
     const allowedKeys = new Set(Object.keys(getComponentSchema(catalogId).properties))
-    const filtered = filterPropertiesToAllowedKeys(properties, allowedKeys)
+    const filtered = filterPropertiesToAllowedKeys(decodeCopyProperties(properties), allowedKeys)
 
     const layered: Record<string, unknown> = {}
     const rest: Record<string, unknown> = {}
@@ -128,10 +159,12 @@ export function setNodeStateProperties(
   workspace: Workspace,
   options?: { mergeSubProperties?: boolean },
 ): Workspace {
+  const decodedProperties = decodeCopyProperties(properties)
+
   return withNodeMutation(nodeId, workspace, (node, draft) => {
     if (!isEntryNodeForRules(node)) return
     const states = node.states ?? {}
-    const mergedBag = mergeProperties(states[state] ?? {}, properties, options)
+    const mergedBag = mergeProperties(states[state] ?? {}, decodedProperties, options)
 
     states[state] = mergedBag
     node.states = states
@@ -141,11 +174,11 @@ export function setNodeStateProperties(
     // in play, so a facet the preset would re-derive is not cleaned up just
     // because it equals the Normal value. The state bag stays registered even when
     // empty, matching a bare state write.
-    states[state] = stripPatchFacets(mergedBag, properties)
+    states[state] = stripPatchFacets(mergedBag, decodedProperties)
     const baseline = getEffectiveNodeProperties(node.id, draft, { state })
 
     states[state] = mergedBag
-    cleanupRedundantOverrides(states[state], properties, baseline)
+    cleanupRedundantOverrides(states[state], decodedProperties, baseline)
   })
 }
 

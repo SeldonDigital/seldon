@@ -8,7 +8,7 @@
  *
  * Discovering and eagerly loading those stylesheets is build-relative and
  * belongs to each editor package, so the exported slugs are passed in. See the
- * per-editor `chrome-themes` module that globs its own `seldon/styles`.
+ * per-editor `chrome-themes` module that globs its own `sdn/styles`.
  */
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes"
 
@@ -49,7 +49,7 @@ const STOCK_NAMES_BY_SLUG: Record<string, string> = Object.fromEntries(
  * The chrome switcher's themes, one per exported `styles/{slug}.css` slug. The
  * default `seldon` theme sorts first; the rest follow alphabetically by label.
  *
- * @param slugs - Slugs discovered from the editor's own `seldon/styles` folder
+ * @param slugs - Slugs discovered from the editor's own `sdn/styles` folder
  */
 export function getChromeThemes(slugs: string[]): ChromeTheme[] {
   return slugs

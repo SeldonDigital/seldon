@@ -3,7 +3,7 @@ import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tre
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { ComponentId, HtmlElement } from "@seldon/core"
 import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
-import { iconLabels } from "@seldon/core/icon-sets"
+import { getIconLabel } from "@seldon/core/icon-sets"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { generatePropertyOptions } from "./options-utils"
@@ -12,7 +12,6 @@ import { getRepeatSymbolDescendant } from "./repeat-display"
 import type { PropertyPickerResult } from "./options-utils"
 import type { FlatProperty } from "./properties-data"
 import type { ComponentLevel, Theme, Workspace } from "@seldon/core"
-import type { IconId } from "@seldon/core/icon-sets"
 import type { Board, Instance, Variant } from "@seldon/core/workspace/types"
 
 type PropertyOptions = PropertyPickerResult["options"]
@@ -182,7 +181,7 @@ function addCurrentSymbolOption(options: PropertyOptions, property: FlatProperty
 
   const synthetic = {
     value: currentId,
-    name: iconLabels[currentId as IconId] ?? currentId,
+    name: getIconLabel(currentId),
   }
 
   if (groups.length > 0) {

@@ -1,0 +1,18 @@
+import type { SVGAttributes } from "react"
+
+export function IconMaterialLayers(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="m12 21.05l-9-7l1.65-1.25L12 18.5l7.35-5.7L21 14.05zM12 16L3 9l9-7l9 7zm0-2.55L17.75 9L12 4.55L6.25 9z"/>',
+      }}
+    />
+  )
+}

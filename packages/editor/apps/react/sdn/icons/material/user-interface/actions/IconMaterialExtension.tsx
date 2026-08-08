@@ -1,0 +1,18 @@
+import type { SVGAttributes } from "react"
+
+export function IconMaterialExtension(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+      dangerouslySetInnerHTML={{
+        __html:
+          '<path fill="currentColor" d="M5 19h13v-4.6l1.125-.55q.4-.2.638-.55t.237-.8q0-.425-.238-.788t-.637-.562L18 10.625V6h-4.8l-.25-1.7q-.075-.55-.487-.925T11.5 3q-.575 0-.987.375t-.488.925L9.775 6H5v2.15q1.4.525 2.2 1.7T8 12.5q0 1.5-.8 2.675t-2.2 1.7zm0 2q-.85 0-1.425-.575T3 19v-3.8q1.2 0 2.1-.762T6 12.5q0-1.15-.9-1.9T3 9.8V6q0-.825.588-1.412T5 4h3.05q.175-1.275 1.15-2.137T11.5 1q1.3 0 2.275.863T14.95 4H18q.825 0 1.413.588T20 6v3.35q.9.45 1.45 1.3T22 12.5q0 1.025-.55 1.875T20 15.65V19q0 .85-.587 1.425T18 21zm7.5-8.5"/>',
+      }}
+    />
+  )
+}

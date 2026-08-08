@@ -60,7 +60,7 @@ export function getThemeValueAnnotation(key: string, theme: Theme): string | und
 }
 
 /** Formats a number to at most two decimals with no trailing zeros. */
-function formatNumber(value: number): string {
+export function formatNumber(value: number): string {
   return `${Math.round(value * 100) / 100}`
 }
 

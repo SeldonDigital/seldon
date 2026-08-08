@@ -219,9 +219,9 @@ const SKIPPED_FOLDERS = new Set([
 
 /**
  * How far below the picked folder the search looks. Two levels reach the usual
- * homes, `seldon` and `src/seldon`, and a third reaches a package in a monorepo,
- * such as `apps/web/seldon`. Past that a search costs more than asking the user
- * to pick the folder itself.
+ * homes, `sdn` and `src/sdn`, and a third reaches a package in a monorepo, such
+ * as `apps/web/sdn`. Past that a search costs more than asking the user to pick
+ * the folder itself.
  */
 const MAX_SEARCH_DEPTH = 3
 
@@ -329,7 +329,7 @@ async function getFileHandleAt(
 
 /**
  * Resolves the components folder inside a picked project root. The folder may be
- * nested, such as `src/seldon`, so each segment is walked.
+ * nested, such as `src/sdn`, so each segment is walked.
  */
 export async function resolveComponentsDirectory(
   root: FileSystemDirectoryHandle,

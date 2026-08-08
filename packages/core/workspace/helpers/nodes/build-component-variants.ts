@@ -10,7 +10,7 @@
  * they are stored as the node's own overrides on top of that source chain.
  */
 import { getComponentSchema } from "../../../components/catalog"
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isComponentBoard } from "../../model/components"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"

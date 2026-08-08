@@ -30,7 +30,7 @@ flowchart LR
 
 ### Authoring modules (named export `theme`)
 
-Each module exports one `StockTheme` as the named export `theme`. `metadata.id` matches the file’s template id.
+Each module exports one `StockTheme` as the named export `theme`. `metadata.id` matches the file's template id.
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |

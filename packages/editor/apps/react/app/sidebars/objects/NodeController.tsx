@@ -90,7 +90,8 @@ const NodeInner = function NodeInner({
     isNodeActive,
     isEditingName,
     setEditingName,
-    setNodeLabel,
+    renameSeed,
+    submitRename,
     hasChildren,
     children,
     dragging,
@@ -130,14 +131,15 @@ const NodeInner = function NodeInner({
 
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } = useSidebarCanvasTracking(node)
 
-  // Display shows the row label (which may be a transformed code name), but
-  // inline rename always edits and commits the underlying node label.
+  // Display shows the row label (which may be a transformed code name). Inline
+  // rename edits the node label by default, or the ref when View Code Names is
+  // on, per the seed and submit resolved in useRowNode.
   const nameInput = useRenameInput({
     label: String(baseLabel.children),
-    editLabel: node.label,
+    editLabel: renameSeed,
     isEditing: isEditingName,
     setEditing: setEditingName,
-    onSubmit: setNodeLabel,
+    onSubmit: submitRename,
   })
 
   const dataTestId = `object-panel-node-${node.id}`

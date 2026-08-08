@@ -274,7 +274,7 @@ function getChildNodeProps(properties: Properties) {
     properties
 
   if (content?.value) {
-    props.children = { defaultValue: escapeHtml(content.value) }
+    props.children = { defaultValue: content.value }
   }
 
   if (symbol?.value) {
@@ -282,7 +282,7 @@ function getChildNodeProps(properties: Properties) {
   }
 
   if (placeholder?.value) {
-    props.placeholder = { defaultValue: escapeHtml(placeholder.value) }
+    props.placeholder = { defaultValue: placeholder.value }
   }
 
   if (source?.value) {
@@ -384,13 +384,4 @@ function getVariantProps(
   }
 
   return props
-}
-
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;")
 }

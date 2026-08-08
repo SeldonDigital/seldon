@@ -92,6 +92,6 @@ export const COMPOUND_FACET_DISPLAY_ORDER: Record<string, readonly string[]> = {
   borderRight: ["preset", "color", "brightness", "opacity", "style", "width"],
   borderBottom: ["preset", "color", "brightness", "opacity", "style", "width"],
   borderLeft: ["preset", "color", "brightness", "opacity", "style", "width"],
-  font: ["preset", "family", "style", "weight", "size", "lineHeight", "textCase", "letterSpacing"],
+  font: ["preset", "family", "size", "weight", "style", "textCase", "lineHeight", "letterSpacing"],
   board: ["preset", "width", "height"],
 }

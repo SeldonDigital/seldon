@@ -10,6 +10,7 @@ import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
+import { writeWorkspaceSource } from "@seldon/editor/lib/export/write-workspace-source"
 import { triggerDownload } from "@seldon/editor/lib/helpers/trigger-download"
 import { runImportWeb } from "@seldon/editor/lib/import/web/run-import-web"
 import {
@@ -131,8 +132,14 @@ export function useImportExport() {
       exportStatus.setExporting(true)
       exportStatus.setCancelExport(() => controller.abort())
 
+      // The dialog's "Save workspace source" choice arrives as `includeWorkspace`.
+      // It gates the `.seldon/` source below, not the factory's beside-components
+      // copy, which the editor never emits: the source at the root supersedes it.
+      const saveSource = options?.includeWorkspace ?? true
+      const framework = options?.target?.framework ?? "vue"
+
       const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
-      const files = await runLocalExport(workspace.value, options)
+      const files = await runLocalExport(workspace.value, { ...options, includeWorkspace: false })
       const count = await writeExportToDirectory(directory, files, controller.signal)
 
       // Nothing is rolled back, so the count is the whole story: it says how far
@@ -147,6 +154,13 @@ export function useImportExport() {
       }
 
       toast.addToast(`Exported ${count} file${count === 1 ? "" : "s"}`)
+
+      // Write the editable design source at the project root, so a later
+      // `seldon-export --input .seldon/<name>.<framework>.json` regenerates from
+      // the same design the editor just exported.
+      if (saveSource) {
+        await writeWorkspaceSource(directory, workspace.value, framework)
+      }
 
       // Remember where this workspace landed, so the editor can read back what
       // the project reports about its own use of the generated components, and

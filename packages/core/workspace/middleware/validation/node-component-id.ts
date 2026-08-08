@@ -1,5 +1,5 @@
 import { isComponentId } from "../../../components/constants"
-import { invariant } from "../../../index"
+import { invariant } from "../../../helpers/utils/invariant"
 import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
 
 import type { ComponentId } from "../../../components/constants"

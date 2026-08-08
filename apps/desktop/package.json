@@ -1,0 +1,50 @@
+{
+  "name": "@seldon/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Electron desktop shell that loads the Seldon editor. Distributable app, never published to npm.",
+  "license": "SEE LICENSE IN ../../license/noncommercial/LICENSE.md",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "electron .",
+    "build:editor": "npm run build --workspace @seldon/editor-react",
+    "dist": "npm run build:editor && electron-builder",
+    "prepublishOnly": "echo '@seldon/desktop is an app and is never published.' && exit 1"
+  },
+  "devDependencies": {
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.seldon.desktop",
+    "productName": "Seldon",
+    "files": [
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../../packages/editor/apps/react/dist",
+        "to": "editor"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
+  }
+}

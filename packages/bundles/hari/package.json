@@ -1,0 +1,45 @@
+{
+  "name": "@seldon/hari",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless Seldon engine with AI: @seldon/terminus plus local AI orchestration (@seldon/ai).",
+  "license": "SEE LICENSE IN ../../../license/noncommercial/LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git",
+    "directory": "packages/bundles/hari"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "node": {
+        "types": "./dist/index.d.ts",
+        "development": "./index.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "index.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "echo 'Publishing @seldon/hari is blocked. See PUBLISHING.md to unlock.' && exit 1"
+  },
+  "dependencies": {
+    "@seldon/ai": "0.0.0",
+    "@seldon/terminus": "0.0.0"
+  }
+}

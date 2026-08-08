@@ -15,7 +15,7 @@ export const Seldon = {
 export * from "./components/constants"
 export * from "./components/types"
 export * from "./components/catalog"
-export * from "./icon-registry"
+export * from "./icon-lookup"
 export * from "./helpers/utils/get-google-font-url"
 export { getRemoteFontUrl, isRemoteFontFamily } from "./font-collections/helpers/remote-font-url"
 export { getFamilyNameByValue } from "./font-collections/helpers/get-family-name-by-value"
@@ -45,6 +45,9 @@ export {
   ensureWorkspaceEditableThemeEntry,
 } from "./workspace/helpers/themes/workspace-editable-theme"
 export { createEmptyWorkspace } from "./workspace/helpers/create-empty-workspace"
+export { loadWorkspace } from "./workspace/reducers/load-workspace"
+export { applyActions } from "./workspace/reducers/apply-actions"
+export { workspaceReducer } from "./workspace/reducers/reducer"
 export {
   applyNodeRepeat,
   getNodeRepeat,

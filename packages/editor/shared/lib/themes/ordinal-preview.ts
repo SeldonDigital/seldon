@@ -1,7 +1,9 @@
-import { ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
-import { resolveModulatedOrExactLength } from "@seldon/core/helpers/resolution/resolve-length-token"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+import {
+  formatNumber,
+  getThemeValueAnnotation,
+} from "@seldon/core/helpers/theme/get-theme-value-annotation"
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { isModulatedToken, isThemeExactToken } from "@seldon/core/themes/types"
 import { getThemeSpecPreviewBase } from "./build-theme-spec-preview"
@@ -187,29 +189,19 @@ export function ordinalStepName(scale: OrdinalScale, step: string, theme: Theme)
   return getThemeValueName(ordinalStepRef(scale, step), theme)
 }
 
-/** Formats a number to at most two decimals with no trailing zeros. */
-function formatNumber(value: number): string {
-  return `${Math.round(value * 100) / 100}`
-}
-
-/** Formats a resolved length token, e.g. `1rem`. */
-function formatLength(length: ReturnType<typeof resolveModulatedOrExactLength>): string {
-  if (!length || length.type !== ValueType.EXACT) return ""
-
-  return `${formatNumber(length.value.value)}${length.value.unit}`
-}
-
 /**
- * The chip row text for a scale step: the token's step value paired with its
- * resolved length in the given theme, e.g. `0 · 1rem`. Modulated tokens show
- * their modulation step; exact tokens show their raw numeric value.
+ * The chip row text for a scale step: the token's modulation step paired with
+ * its resolved value, e.g. `0 · 16px · 1rem`. The value uses the shared
+ * `getThemeValueAnnotation`, so every value display in the editor reads the same
+ * way. Modulated tokens show their modulation step; exact tokens show their raw
+ * numeric value.
  */
 export function ordinalStepValueText(scale: OrdinalScale, step: string, theme: Theme): string {
   const ref = ordinalStepRef(scale, step)
 
   try {
     const option = getThemeOption(ref, theme)
-    const lengthText = formatLength(resolveModulatedOrExactLength(option, theme))
+    const valueText = getThemeValueAnnotation(ref, theme) ?? ""
     let stepText = ""
 
     if (isModulatedToken(option)) {
@@ -218,9 +210,9 @@ export function ordinalStepValueText(scale: OrdinalScale, step: string, theme: T
       stepText = formatNumber(option.parameters.value)
     }
 
-    if (stepText && lengthText) return `${stepText} · ${lengthText}`
+    if (stepText && valueText) return `${stepText} · ${valueText}`
 
-    return lengthText || stepText
+    return valueText || stepText
   } catch {
     return ""
   }

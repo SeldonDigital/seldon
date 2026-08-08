@@ -46,7 +46,38 @@ const files = await exportWorkspace(workspace, {
 
 `assetsFolder` and `assetPublicPath` are optional. When omitted they default to nest under `componentsFolder`, so image assets land in `${componentsFolder}/assets` and generated components reference them at `/${componentsFolder}/assets`. Set them explicitly to place assets elsewhere. Keeping the default keeps a generated library self-contained and avoids emitting a stray top-level `assets/` folder.
 
-Factory has no `exports` field and no top-level barrel. Import the concrete file paths shown here, not a bare `@seldon/factory` specifier.
+Factory has a top-level barrel (`index.ts`) and an `exports` map, so a consumer imports the public API from the bare `@seldon/factory` specifier:
+
+```typescript
+import {
+  createResolvedExportAssetReader,
+  exportWorkspace,
+  PLATFORMS,
+} from "@seldon/factory"
+```
+
+The barrel re-exports `exportWorkspace`, the platform registry, both asset readers, and the export types. Deep imports such as `@seldon/factory/export/types` still resolve for advanced use.
+
+When the export runs from a consumer project (no monorepo on disk), pass `createResolvedExportAssetReader()` so engine assets resolve from the installed `@seldon/core`. In-repo callers can omit `assetReader` and let `exportWorkspace` default to the monorepo reader.
+
+### Export CLI
+
+Factory ships a `seldon-export` bin. It reads a workspace JSON through `@seldon/core`, runs `exportWorkspace`, and writes the files to disk. It resolves engine assets from the installed `@seldon/core`, so it works from any consumer project.
+
+Keep the editable workspace source at `.seldon/<label>.<framework>.json`, the workspace label with the export target appended, such as `.seldon/my-app.react.json`. The Editor writes it on every export, and export from it.
+
+```bash
+# Vite project layout: components under src/sdn, assets under public/sdn
+npx seldon-export --input .seldon/my-app.react.json --preset vite
+
+# Next.js project layout: components under components/sdn
+npx seldon-export --input .seldon/my-app.react.json --preset next --platform react
+
+# Self-contained default under sdn/
+npx seldon-export --input .seldon/my-app.react.json
+```
+
+`--platform` selects the framework (`react`, `vue`). `--preset` selects the project layout (`vite`, `next`, `plain`). Run `seldon-export --help` for every flag.
 
 `exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and dispatches by `target.framework`. React is the only implemented target today, so it delegates to React generation when `target.framework` is `"react"` and throws for any other framework. Future targets such as Swift and Java add their own generation branches here.
 
@@ -195,7 +226,9 @@ Factory writes one theme stylesheet for every entry in `workspace.themes`, both 
 
 Setting `includeWorkspace` emits a copy of the workspace at the root of the components folder. `generateWorkspaceCopy` in [export/shared/generate-workspace-copy.ts](./export/shared/generate-workspace-copy.ts) produces it.
 
-The file is named from the workspace label, kebab-cased, which is how a downloaded workspace names itself too. A label of `Seldon Editor` gives `seldon-editor.json`. A workspace with no label falls back to `workspace.json`. Renaming a workspace changes the file the next export writes, and the export prunes nothing, so the copy under the old name stays until it is deleted.
+The file is named `<label>.<framework>.json`, the workspace label kebab-cased with the export target appended, such as `seldon-editor.react.json` or `seldon-editor.vue.json`. The label keeps the copy recognizable, and the framework suffix lets a React and a Vue export sit side by side without overwriting each other. A workspace with no label falls back to `workspace.<framework>.json`. Renaming a workspace changes the file the next export writes, and the export prunes nothing, so the copy under the old name stays until it is deleted.
+
+The interactive Editor export does not emit this copy. It writes the editable source to `.seldon/<label>.<framework>.json` at the project root instead, so a folder export keeps one workspace file. This copy is for headless `seldon-export` runs, where the input already is the source file.
 
 The copy holds the workspace as authored. It is written by `exportWorkspace` rather than by a target, because each target rewrites image paths on its own copy before generating, so a target-side copy would carry export paths instead of the original image values.
 

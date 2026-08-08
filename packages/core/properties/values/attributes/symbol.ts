@@ -1,4 +1,4 @@
-import { iconIds, iconLabels } from "../../../icon-sets"
+import { defaultIconId, getIconLabel, iconIds } from "../../../icon-sets"
 import { getAvailableIcons } from "../../../icon-sets/helpers/get-available-icons"
 import {
   getAddedIconSetPrefixes,
@@ -39,9 +39,7 @@ function symbolPresetOptions(workspace?: Workspace) {
   }
 
   return ids.map((id) => {
-    const label = iconLabels[id]
-
-    if (!label) {
+    if (id === defaultIconId || id === "missing") {
       return {
         value: id,
         name: "[Unused Icon]",
@@ -50,7 +48,7 @@ function symbolPresetOptions(workspace?: Workspace) {
 
     return {
       value: id,
-      name: label,
+      name: getIconLabel(id),
     }
   })
 }

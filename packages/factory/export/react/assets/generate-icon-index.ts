@@ -1,12 +1,13 @@
-import { resolveIconExport } from "../utils/find-icon-path"
+import { resolveIconComponent } from "./resolve-icon-component"
 
 import type { ExportOptions, FileToExport } from "../../types"
 import type { IconId } from "@seldon/core/icon-sets"
 
 /**
- * Generate an index file that exports all used icons as named exports.
- * Only icons that resolve to an actual catalog file get an export line, so
- * the index never references files that were not emitted.
+ * Generate an index file that exports all used icons as named exports. Every id
+ * resolves through {@link resolveIconComponent}: a data-backed id, a catalog
+ * source file, or the `seldon-missing` glyph for an unresolvable id, so the
+ * index always matches the emitted files and the icon map.
  *
  * @param usedIconIds - Set of icon IDs that are used in the workspace
  * @param options - Export options
@@ -21,12 +22,7 @@ export function generateIconIndex(usedIconIds: Set<IconId>, options: ExportOptio
     const sortedIconIds = Array.from(usedIconIds).sort()
 
     for (const iconId of sortedIconIds) {
-      const resolved = resolveIconExport(iconId, options.rootDirectory)
-
-      if (!resolved) {
-        console.warn(`Skipping icon index export for "${iconId}": no catalog file found`)
-        continue
-      }
+      const resolved = resolveIconComponent(iconId, options)
 
       if (exportedNames.has(resolved.componentName)) {
         continue

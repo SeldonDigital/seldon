@@ -178,7 +178,7 @@ iconSet: {
 }
 ```
 
-Unlike the rest of the theme, `iconSet` has no `type` discriminator, no `@iconSet.*` reference paths, no reserved/`customN` slot convention, and no entry in `THEME_TOKEN_SECTIONS`. The structure block lists `iconSet` as a placeholder so authors know where it sits in a saved theme; a token-style schema for it will be designed alongside the upcoming `core/icons/` refactor.
+Unlike the rest of the theme, `iconSet` has no `type` discriminator, no `@iconSet.*` reference paths, no reserved/`customN` slot convention, and no entry in `THEME_TOKEN_SECTIONS`. The structure block lists `iconSet` as a placeholder so authors know where it sits in a saved theme. A token-style schema for it will be designed alongside the upcoming `core/icons/` refactor.
 
 ---
 
@@ -242,7 +242,7 @@ Every token except `@fontFamily.*` accepts custom keys. Most stock themes ship w
 | `@shadow.*` | `theme.categorical` | `xlight` \| `light` \| `moderate` \| `strong` \| `xstrong` | `custom1` \| `custom2` \| ... |
 | `@scrollbar.*` | `theme.categorical` | `primary` | `custom1` \| `custom2` \| ... |
 
-`@swatch.swatch1` through `@swatch.swatch4` are reserved palette slots filled in by `computeTheme`; they are not custom slots even though their keys are numbered.
+`@swatch.swatch1` through `@swatch.swatch4` are reserved palette slots filled in by `computeTheme`. They are not custom slots even though their keys are numbered.
 
 The look tables also reserve cleared ids that `computeTheme` injects at compute time: `@font.normal` plus `none` on `@border.*` and `@shadow.*`. They are part of every computed theme even though stock themes do not author them. The `@gradient.*` section has no cleared look.
 
@@ -265,10 +265,10 @@ Every token cell uses a single input field named `parameters`. The shape of `par
 | --- | --- |
 | `modulated` | `{ step: number }` |
 | `exact` | `{ unit: "px" \| "rem" \| "%" \| "deg" \| "number", value: number }` |
-| `dynamic.swatch` | (no `parameters`; uses `role: white \| gray \| black \| primary \| swatch1 \| swatch2 \| swatch3 \| swatch4`) |
+| `dynamic.swatch` | No `parameters`. Uses `role: white \| gray \| black \| primary \| swatch1 \| swatch2 \| swatch3 \| swatch4`. |
 | `swatch` | `{ colorspace: "hsl" \| "rgb" \| "lch" \| "hex" \| "name", value: <payload for that colorspace> }` |
 | `font.family` | string (font family name) |
-| `option` | string option key (e.g. `"hairline"`); the set of allowed keys is per-table |
+| `option` | String option key such as `"hairline"`. Allowed keys are per table. |
 | `look` | object of nested parameters specific to the look (font, shadow, border, gradient, scrollbar) |
 
 ```typescript
@@ -418,7 +418,7 @@ The reserved fixed-color swatch keys are the ten interface slots: `foreground`, 
 | `name` | no | string | Display label. |
 | `intent` | no | string | Free-text description. |
 | `parameters.colorspace` | yes | `option: hsl, rgb, lch, hex, name` | Color space discriminator. |
-| `parameters.value` | yes | object or string | HSL/RGB/LCH object for those colorspaces; hex string like `"#aabbcc"` for `hex`; CSS named color string like `"purple"` for `name`. |
+| `parameters.value` | yes | object or string | An HSL, RGB, or LCH object for those colorspaces. A hex string like `"#aabbcc"` for `hex`. A CSS named color string like `"purple"` for `name`. |
 
 ```typescript
 import { Colorspace, TokenType } from "@seldon/core/themes"
@@ -459,7 +459,7 @@ There is no `name` field. The display label in the product is derived from the f
 | --- | --- | --- | --- |
 | `type` | yes | `TokenType.FONT_FAMILY` | Discriminator. |
 | `intent` | no | string | Free-text description. |
-| `parameters` | yes | string | Font family name (e.g. `"Inter"`, `"Raleway"`). |
+| `parameters` | yes | string | Font family name such as `"Inter"` or `"Raleway"`. |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -696,7 +696,7 @@ scrollbar: {
 
 ## Theme Composition
 
-`instantiateTheme` in `themes/compute/instantiate-theme.ts` deep-merges a packaged stock authoring row with an overrides patch via `lodash/merge`, then runs `computeTheme` on the result. Pass the catalog id first, the overrides object second, and a `PresetThemesById` map (e.g. `STOCK_THEMES_BY_ID`) third. Empty or missing `overrides` skips the merge step and runs `computeTheme(base)` only.
+`instantiateTheme` in `themes/compute/instantiate-theme.ts` deep-merges a packaged stock authoring row with an overrides patch via `lodash/merge`, then runs `computeTheme` on the result. Pass the catalog id first, the overrides object second, and a `PresetThemesById` map such as `STOCK_THEMES_BY_ID` third. Empty or missing `overrides` skips the merge step and runs `computeTheme(base)` only.
 
 ```typescript
 // Compose more than two sources by chaining `lodash/merge` outside of
@@ -726,13 +726,13 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 ### Workspace serialization
 
-[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-earth-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
+[`workspace.json`](../workspace/README.md) holds **raw authoring state** only. Each board or node references a theme by an opaque string ref such as `theme-earth-default`, and the editable theme source rows live under the top-level `themes` map. Read-side selectors `computeWorkspaceThemes` and `getComputedTheme` produce computed theme rows. They are **not** persisted back into the file.
 
 [`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds`. Workspace validation uses the ids to check theme board `catalogId` values.
 
 ### Computed resolution (imports)
 
-The main [`@seldon/core/themes`](./index.ts) barrel re-exports `computeTheme` and `normalizeTheme` from [`./helpers`](./helpers/index.ts), but keeps palette math, `instantiateTheme`, and the input normalizer in **[`@seldon/core/themes/compute`](./compute/index.ts)** to avoid an import cycle with `themes/catalog`. Use **`@seldon/core/themes/compute`** for `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and the colorspace helpers. Resolving an `@<scope>.<key>` reference into a concrete CSS value is **property-side** (`helpers/resolution`), not this package; behavior and palette rules for theme materialization are documented in [`compute/README.md`](./compute/README.md).
+The main [`@seldon/core/themes`](./index.ts) barrel re-exports `computeTheme` and `normalizeTheme` from [`./helpers`](./helpers/index.ts), but keeps palette math, `instantiateTheme`, and the input normalizer in **[`@seldon/core/themes/compute`](./compute/index.ts)** to avoid an import cycle with `themes/catalog`. Use **`@seldon/core/themes/compute`** for `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and the colorspace helpers. Resolving an `@<scope>.<key>` reference into a concrete CSS value is **property-side** work in `helpers/resolution`, not this package. Behavior and palette rules for theme materialization are documented in [`compute/README.md`](./compute/README.md).
 
 ---
 
@@ -787,11 +787,11 @@ export type ThemeTemplateId =
 export type ThemeInstanceId = ThemeTemplateId
 ```
 
-In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
+In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** such as `theme-earth-default`. Resolution happens through `getComputedTheme` and `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
 
 ### Token Table Shape
 
-**Authoritative table types** live in [`types/helpers.ts`](./types/helpers.ts) as `ThemeTokenTable<TUnion, TCell>`. Reserved keys (the part of `TUnion` outside `ThemeCustomKey`) are required; `customN` slots are optional:
+The table types live in [`types/helpers.ts`](./types/helpers.ts) as `ThemeTokenTable<TUnion, TCell>`. Reserved keys, the part of `TUnion` outside `ThemeCustomKey`, are required. `customN` slots are optional:
 
 ```typescript
 export type ThemeCustomKey = `custom${number}`
@@ -807,10 +807,10 @@ This is how every token namespace except `fontFamily` (which only has fixed `pri
 
 ### Token Id Unions
 
-**Authoritative slot id unions** live in [`types/theme-token-ids.ts`](./types/theme-token-ids.ts). Each is a union of reserved literals plus `` `custom${number}` `` and is what restricts a token table's keys:
+The slot id unions live in [`types/theme-token-ids.ts`](./types/theme-token-ids.ts). Each is a union of reserved literals plus `` `custom${number}` `` and restricts a token table's keys:
 
 ```typescript
-// Abbreviated from `types/theme-token-ids.ts` — see source for full unions.
+// Abbreviated from `types/theme-token-ids.ts`. See source for full unions.
 export type ThemeFontSizeId =
   | "tiny"
   | "xxsmall"
@@ -845,10 +845,10 @@ export type ThemeSwatchId =
 
 ### Theme Reference Validation
 
-**Authoritative `@`-reference unions** live in [`types/theme-reference-keys.ts`](./types/theme-reference-keys.ts) as `ThemeSwatchKey`, `ThemeFontSizeKey`, `ThemeMarginKey`, etc., plus their union `ThemeValueKey`. These are template-string types built from the slot unions above:
+The `@`-reference unions live in [`types/theme-reference-keys.ts`](./types/theme-reference-keys.ts) as `ThemeSwatchKey`, `ThemeFontSizeKey`, `ThemeMarginKey`, and more, plus their union `ThemeValueKey`. These are template-string types built from the slot unions above:
 
 ```typescript
-// Abbreviated from `types/theme-reference-keys.ts` — see source for the full set.
+// Abbreviated from `types/theme-reference-keys.ts`. See source for the full set.
 export type ThemeSwatchKey   = `@swatch.${ThemeSwatchId}`
 export type ThemeFontSizeKey = `@fontSize.${ThemeFontSizeId}`
 export type ThemeMarginKey   = `@margin.${ThemeSpacingId}`
@@ -903,7 +903,7 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 
 ## Performance Considerations
 
-**Note:** The bullets below are **general engineering guidance** for systems that use themes heavily. They are not a guarantee that every optimization is implemented or measured inside this package.
+The bullets below are general engineering guidance for systems that use themes heavily. They are not a guarantee that every optimization is implemented or measured inside this package.
 
 ### Optimization Strategies
 
@@ -923,7 +923,7 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 
 ## Error Handling
 
-**Note:** This section describes **typical failure modes** at a product level (TypeScript, validation, theme materialization). Specific error strings, logging hooks, or fallbacks depend on the caller and are not all implemented as APIs in `packages/core/themes`.
+This section describes typical failure modes at a product level, such as TypeScript, validation, and theme materialization. Specific error strings, logging hooks, or fallbacks depend on the caller and are not all implemented as APIs in `packages/core/themes`.
 
 ### Validation Errors
 
@@ -949,7 +949,7 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 
 ## Adding Themes and Tokens to Core
 
-This is a step-by-step process for introducing new theme content. Most needs (a fresh stock theme, a brand-tuned variant) are covered by **Adding a stock theme** below; reach for the broader recipe only when introducing a new reserved key, a new token kind, or a new section.
+This is a step-by-step process for introducing new theme content. Most needs, such as a fresh stock theme or a brand-tuned variant, are covered by **Adding a stock theme** below. Reach for the broader recipe only when introducing a new reserved key, a new token kind, or a new section.
 
 **1. Update theme types**
 
@@ -996,7 +996,7 @@ export interface ThemeFont {
 **4. Update exports**
 
 - Re-export new types and helpers from **`values/index.ts`**, **`constants/index.ts`**, **`types/index.ts`**, or **`schemas/index.ts`** as appropriate.
-- The root **`themes/index.ts`** already re-exports `./constants`, `./schemas`, `./types`, plus `computeTheme` / `normalizeTheme`; consumers stay on `@seldon/core/themes` without duplicating paths.
+- The root **`themes/index.ts`** already re-exports `./constants`, `./schemas`, `./types`, plus `computeTheme` and `normalizeTheme`. Consumers stay on `@seldon/core/themes` without duplicating paths.
 
 **5. Adding a stock theme**
 

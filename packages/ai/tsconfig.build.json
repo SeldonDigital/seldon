@@ -1,0 +1,29 @@
+{
+  "extends": "../../scripts/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": false,
+    "declarationMap": false,
+    "incremental": false,
+    "rootDir": ".",
+    "outDir": "./dist",
+    "moduleResolution": "bundler",
+    "customConditions": null,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "paths": {
+      "@seldon/core": ["../core/dist/index.d.ts"],
+      "@seldon/core/*": ["../core/dist/*"]
+    }
+  },
+  "include": [
+    "index.ts",
+    "orchestrate.ts",
+    "types.ts",
+    "pi/**/*.ts",
+    "prompt/**/*.ts",
+    "repair/**/*.ts",
+    "schema/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

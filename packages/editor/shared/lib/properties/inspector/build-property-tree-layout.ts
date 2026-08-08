@@ -1,7 +1,9 @@
 import { NODE_FIELD_DISPLAY_ORDER } from "@seldon/core"
+import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
+import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { getPropertySections } from "./get-property-sections"
 import { getThemePropertySections } from "./get-theme-property-sections"
@@ -98,14 +100,27 @@ export function buildPropertyTreeLayout({
         }
       : null
 
+  // A selected font family lists its weights and styles here as On/Off switches.
+  // The section keeps the internal `families` category so both editors route its
+  // rows through the font collection editing context.
   const familiesSection: PropertySection | null =
     familyProperties && familyProperties.length > 0
       ? {
-          label: "Families",
+          label: "Font Weights & Styles",
           category: "families",
           properties: familyProperties.filter((p) => !p.isSubProperty),
         }
       : null
+
+  // A selected font family focuses the tree on its own metadata and weights, so
+  // the board's Theme picker and component sections drop away. `familyProperties`
+  // is only ever set for a family selection, so this never affects a board tree.
+  if (familiesSection) {
+    return {
+      sections: [...(metadataSection ? [metadataSection] : []), familiesSection],
+      allProperties: [...(metadataProperties ?? []), ...(familyProperties ?? [])],
+    }
+  }
 
   if (themeEditingContext?.isThemeEditing) {
     const themeSections = getThemePropertySections(properties, theme)
@@ -118,8 +133,13 @@ export function buildPropertyTreeLayout({
     }
   }
 
+  // A font collection board carries a theme that drives its specimen look, so it
+  // gets the Theme picker even though resource boards otherwise omit leading
+  // fields. Every other resource board keeps its board component rows only.
   const propertiesWithLeadingFields = isResourceType(node as Board)
-    ? [...properties]
+    ? isBoard(node) && isFontCollectionBoard(node)
+      ? [buildThemeAssignmentProperty(node, workspace), ...properties]
+      : [...properties]
     : [
         ...buildLeadingNodeFieldRows(node, workspace),
         ...injectRepeatRows(properties, node, workspace),
@@ -127,13 +147,26 @@ export function buildPropertyTreeLayout({
 
   const regularSections = getPropertySections(propertiesWithLeadingFields, node, workspace)
 
-  const allSections: Array<PropertySection | ThemePropertySection> = [
-    ...(metadataSection ? [metadataSection] : []),
-    ...regularSections,
-  ]
+  // A font collection board leads with its board attributes section (name,
+  // theme, size), then the collection metadata, then the remaining board sections
+  // (layout, appearance, effects). Every other tree keeps metadata first.
+  const isFontCollectionBoardNode = isBoard(node) && isFontCollectionBoard(node)
 
-  if (familiesSection) {
-    allSections.push(familiesSection)
+  let allSections: Array<PropertySection | ThemePropertySection>
+
+  if (isFontCollectionBoardNode) {
+    const attributesIndex = regularSections.findIndex(
+      (section) => section.category === PropertyDisplayCategory.ATTRIBUTES,
+    )
+    const insertAt = attributesIndex >= 0 ? attributesIndex + 1 : 0
+
+    allSections = [...regularSections]
+
+    if (metadataSection) {
+      allSections.splice(insertAt, 0, metadataSection)
+    }
+  } else {
+    allSections = [...(metadataSection ? [metadataSection] : []), ...regularSections]
   }
 
   if (iconProperties && iconProperties.length > 0) {

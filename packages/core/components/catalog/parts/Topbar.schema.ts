@@ -367,7 +367,7 @@ export const schema = {
                 overrides: {
                   symbol: {
                     type: Sdn.ValueType.OPTION,
-                    value: "material-email",
+                    value: "material-mail",
                   },
                 },
               },
@@ -892,7 +892,7 @@ export const schema = {
                   overrides: {
                     symbol: {
                       type: Sdn.ValueType.OPTION,
-                      value: "material-phone",
+                      value: "material-call",
                     },
                     size: {
                       type: Sdn.ValueType.THEME_ORDINAL,

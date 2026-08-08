@@ -1,14 +1,17 @@
+import type { FontOrigin } from "../constants/font-origin"
 import type {
   FontCollectionPipelineInput,
   FontFamilyEntry,
   StockFontCollection,
 } from "../types/font-collection"
 
+const FONT_ORIGINS: ReadonlySet<FontOrigin> = new Set<FontOrigin>(["local", "remote", "fontshare"])
+
 /** Coerces a family entry into a complete `FontFamilyEntry` with a valid origin. */
 function normalizeFamily(entry: FontFamilyEntry): FontFamilyEntry {
   return {
     ...entry,
-    origin: entry.origin === "remote" ? "remote" : "local",
+    origin: FONT_ORIGINS.has(entry.origin) ? entry.origin : "local",
   }
 }
 

@@ -1,4 +1,4 @@
-import { resolveIconExport } from "../../utils/find-icon-path"
+import { resolveIconComponent } from "../../assets/resolve-icon-component"
 import { TransformStrategy, transformSource } from "../../utils/transform-source"
 
 import type { ExportOptions } from "../../../types"
@@ -16,11 +16,10 @@ export function insertIconMap(
     const uniqueIconIds = usedIconIds instanceof Set ? usedIconIds : new Set(usedIconIds)
 
     for (const icon of uniqueIconIds) {
-      const resolved = resolveIconExport(icon, options.rootDirectory)
-      // The map must stay total over the IconProps["icon"] union, so ids
-      // without a catalog file fall back to the default icon instead of
-      // referencing an export that was never emitted.
-      const componentName = resolved?.componentName ?? "IconDefault"
+      // One resolver for the map, index, and files: a data-backed id maps to
+      // its synthesized component, and an unresolvable id maps to the emitted
+      // `seldon-missing` glyph, so the map never references a missing export.
+      const { componentName } = resolveIconComponent(icon, options)
 
       content += `"${icon}": Icons.${componentName},\n`
     }

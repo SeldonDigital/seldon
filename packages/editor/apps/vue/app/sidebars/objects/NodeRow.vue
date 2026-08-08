@@ -37,7 +37,7 @@ import {
   VariantId,
   resolveNodeRepeat,
 } from "@seldon/core"
-import { getNodeRowIcon } from "@seldon/core/icon-registry"
+import { getNodeRowIcon } from "@seldon/core/icon-lookup"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import {
@@ -182,6 +182,12 @@ const {
 // Inline rename.
 const { isEditingName, setEditingName } = useEditState(isSelected)
 
+// With View Code Names on, the row shows (and inline rename edits) the node's
+// ref handle instead of its label. "Show Node Ids" debug output is read-only.
+const isCodeNameRename = computed(
+  () => !showNodeIds.value && showCodeNames.value && nodeExists.value,
+)
+
 function setNodeLabel(newLabel: string): void {
   dispatch({
     type: "set_node_label",
@@ -190,12 +196,25 @@ function setNodeLabel(newLabel: string): void {
   setEditingName(false)
 }
 
+function setNodeRef(newRef: string): void {
+  dispatch({
+    type: "set_node_ref",
+    payload: { nodeId: props.nodeId as VariantId, ref: newRef.trim() },
+  })
+  setEditingName(false)
+}
+
+function submitRename(value: string): void {
+  if (isCodeNameRename.value) setNodeRef(value)
+  else setNodeLabel(value)
+}
+
 const { inputProps } = useRenameInput({
   label: () => labelText.value,
-  editLabel: () => node.value?.label ?? "",
+  editLabel: () => (isCodeNameRename.value ? (node.value?.ref ?? "") : (node.value?.label ?? "")),
   isEditing: isEditingName,
   setEditing: setEditingName,
-  onSubmit: setNodeLabel,
+  onSubmit: submitRename,
 })
 
 const itemRef = ref<{ $el?: HTMLElement } | null>(null)
@@ -212,6 +231,15 @@ watch(isEditingName, async (editing) => {
 
 function handleDoubleClick(): void {
   if (props.isEcho) return
+
+  // Code-name mode edits the ref, which nodes own individually (instances
+  // included), so it gates on the ref rule, not the rename rule.
+  if (isCodeNameRename.value) {
+    if (rules.mutations.setRef[entityType.value].allowed) setEditingName(true)
+
+    return
+  }
+
   if (rules.mutations.rename[entityType.value].allowed) {
     setEditingName(true)
   } else if (typeCheckingService.isInstance(node.value as EntryNode)) {

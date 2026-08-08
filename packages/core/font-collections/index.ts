@@ -12,6 +12,7 @@ export {
   normalizeFontCollection,
   getRemoteFontUrl,
   isRemoteFontFamily,
+  getFontFamilyWebsiteUrl,
   getFamilyNameByValue,
   deriveVariantPreset,
   getEnabledVariants,

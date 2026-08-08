@@ -1,0 +1,42 @@
+import { GOOGLE_FONT_FAMILIES } from "../../../properties/constants/typography/font-families"
+import { googleDefaultEnabledFamilies } from "./default-enabled"
+import { googleFontMetadata } from "./metadata"
+
+import type { FontFamilyEntry, StockFontCollection } from "../../types/font-collection"
+
+/** Builds a stable family slot id from a family name, such as `IBM Plex Sans` -> `ibm-plex-sans`. */
+function slugify(family: string): string {
+  return family
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+}
+
+const families: Record<string, FontFamilyEntry> = {}
+
+for (const font of GOOGLE_FONT_FAMILIES) {
+  const slug = slugify(font.family)
+
+  families[slug] = {
+    name: font.family,
+    origin: "remote",
+    variants: font.variants,
+    ...googleFontMetadata[slug],
+  }
+}
+
+/**
+ * The `Google Fonts` collection. Families load from Google Fonts. This collection is seeded
+ * into new workspaces. A workspace can also add it through `add_font_collection`.
+ */
+export const collection: StockFontCollection = {
+  metadata: {
+    id: "googleFonts",
+    name: "Google Fonts",
+    description: "Font families served by Google Fonts.",
+    intent: "Remote font families loaded from Google Fonts when added to a workspace.",
+  },
+  families,
+  defaultEnabledFamilies: [...googleDefaultEnabledFamilies],
+  seededByDefault: true,
+}

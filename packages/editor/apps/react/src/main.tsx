@@ -1,6 +1,7 @@
 import { StrictMode, Suspense, lazy } from "react"
 import { createRoot } from "react-dom/client"
-import { RouterProvider, createBrowserRouter } from "react-router"
+import { createBrowserRouter } from "react-router"
+import { RouterProvider } from "react-router/dom"
 
 import type { CSSProperties } from "react"
 

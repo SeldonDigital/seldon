@@ -9,6 +9,11 @@ const PIXEL_SNAP = 0.25
 /** Snap steps per whole rem for the pixel grid (`16 / 0.25 = 64`). */
 const SNAP_STEPS_PER_REM = ROOT_FONT_SIZE_PX / PIXEL_SNAP
 
+/** Snaps a rem length to the modulation pixel grid (multiples of `1/64` rem). */
+export function snapRemToPixelGrid(rem: number): number {
+  return Math.round(rem * SNAP_STEPS_PER_REM) / SNAP_STEPS_PER_REM
+}
+
 /**
  * Ratio-based scaling for typography and spacing (modular scale).
  */
@@ -34,5 +39,5 @@ export function modulate(
     return modulation
   }
 
-  return Math.round(modulation * SNAP_STEPS_PER_REM) / SNAP_STEPS_PER_REM
+  return snapRemToPixelGrid(modulation)
 }

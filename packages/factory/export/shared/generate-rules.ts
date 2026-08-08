@@ -1,3 +1,5 @@
+import { kebabCase } from "change-case"
+
 import { PLATFORMS, PLATFORM_LIST } from "../platforms/registry"
 
 import type { ExportOptions, FileToExport, PlatformId } from "../types"
@@ -14,6 +16,7 @@ interface RulesContext {
   frameworkLabel: string
   isVue: boolean
   componentExtension: string
+  workspaceSourcePath: string
   availableLabels: string[]
   availableList: string
 }
@@ -28,8 +31,8 @@ interface RulesContext {
  * same `includeScripts` block. They are documentation the user copies and edits,
  * so they stay out of `scripts/INTEGRITY.json`.
  */
-export function generateRules(options: ExportOptions): FileToExport[] {
-  const context = buildContext(options)
+export function generateRules(options: ExportOptions, workspaceLabel?: string): FileToExport[] {
+  const context = buildContext(options, workspaceLabel)
   const folder = `${context.componentsFolder}/rules`
 
   return [
@@ -45,12 +48,13 @@ export function generateRules(options: ExportOptions): FileToExport[] {
   ]
 }
 
-function buildContext(options: ExportOptions): RulesContext {
+function buildContext(options: ExportOptions, workspaceLabel?: string): RulesContext {
   const framework = options.target.framework
   const isVue = framework === "vue"
   const availableLabels = PLATFORM_LIST.filter((platform) => platform.status === "available").map(
     (platform) => platform.label,
   )
+  const sourceBase = kebabCase(workspaceLabel ?? "") || "workspace"
 
   return {
     componentsFolder: options.output.componentsFolder,
@@ -58,6 +62,7 @@ function buildContext(options: ExportOptions): RulesContext {
     frameworkLabel: PLATFORMS[framework]?.label ?? framework,
     isVue,
     componentExtension: isVue ? "vue" : "tsx",
+    workspaceSourcePath: `.seldon/${sourceBase}.${framework}.json`,
     availableLabels,
     availableList: formatList(availableLabels),
   }
@@ -196,7 +201,7 @@ See the generated \`${componentsFolder}/README.md\` for the full prop reference.
 }
 
 function editingExportedComponents(context: RulesContext): string {
-  const { componentsFolder } = context
+  const { componentsFolder, framework, workspaceSourcePath } = context
 
   return `# Editing Exported Components
 
@@ -217,11 +222,51 @@ the edit is temporary.
 
 ## Never hand-edit these
 
-- The workspace \`.json\` copy at the root of \`${componentsFolder}\`. It is the design
-  source. Change it only through Seldon actions, never by patching the JSON.
 - \`refs/index.ts\` and \`refs/registry.json\`. Seldon generates the ref registry.
 - \`styles.css\` and \`styles/\`. Seldon generates the stylesheets from the theme.
 - The generated component files. Change the schema in Seldon, not the output.
+
+## The design source lives outside this folder
+
+The editable source is \`${workspaceSourcePath}\` in your repo. The name is the
+workspace label with the export target appended. The Editor writes it on every
+export, so it always matches the design you just exported. Change it only through
+Seldon, the Editor or a Seldon MCP server, never by patching the JSON. Regenerate
+the components from it:
+
+\`\`\`sh
+npx seldon-export --input ${workspaceSourcePath} --platform ${framework}
+\`\`\`
+
+Commit \`${workspaceSourcePath}\` as the design source, and ignore the Editor's
+local state so backups and any live store stay out of the repo:
+
+\`\`\`gitignore
+.seldon/workspaces/
+.seldon/*.bak
+\`\`\`
+
+## Set up a repeatable export
+
+The \`seldon-export\` CLI ships with \`@seldon/factory\`, and \`@seldon/terminus\` and
+\`@seldon/hari\` pull it in. Install one so the command is available:
+
+\`\`\`sh
+npm i -D @seldon/factory
+\`\`\`
+
+Then add a script to \`package.json\` so a re-export is one command. Add
+\`--preset vite\` or \`--preset next\` if your project uses that layout:
+
+\`\`\`json
+{
+  "scripts": {
+    "seldon:export": "seldon-export --input ${workspaceSourcePath} --platform ${framework}"
+  }
+}
+\`\`\`
+
+Run it with \`npm run seldon:export\` after every design change.
 
 ## The workspace contract
 

@@ -49,6 +49,9 @@ jobs:
           node-version: 22.18.0
           cache: npm
       - run: npm ci
+      # Bundle packages typecheck against the built d.ts of core/factory/ai, so
+      # their dist must exist before the workspace typecheck fans out.
+      - run: npm run build:packages
       - run: npm run typecheck:all
 
   bindings:

@@ -2,6 +2,7 @@ import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useNodeActiveState } from "@app/workspace/hooks/use-node-active-state"
 import { useSelectedNodeRootId, useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { parseFontCollectionItemKey } from "@seldon/editor/lib/font-collections/font-collection-item-key"
 import {
   isFontCollectionEditingSelection,
   resolveActiveFontCollectionEntryId,
@@ -11,10 +12,13 @@ import {
   resolveActiveIconSetEntryId,
 } from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
+import { flattenFontCollectionFamilySizes } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
 import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
-import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
+import {
+  buildFontFamilyMetadataProperties,
+  buildMetadataProperties,
+} from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
 import {
   flattenNodeProperties,
   getPropertiesSubjectId,
@@ -26,7 +30,9 @@ import {
 } from "@seldon/editor/lib/themes/resolve-active-theme-entry-id"
 import { useMemo } from "react"
 
+import { getFontFamilyWebsiteUrl } from "@seldon/core/font-collections"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isFontCollectionBoard,
@@ -81,11 +87,16 @@ function findBoardForEntry<T extends Board>(
  * prop assembly so the sidebar view-model stays a binding shell.
  */
 export function usePropertiesSidebar(): PropertiesSidebarState {
-  const { selection, selectedThemeEntryId, selectedFontCollectionEntryId, selectedIconSetEntryId } =
-    useSelection()
+  const {
+    selection,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+    selectedIconSetEntryId,
+    selectedResourceItemKey,
+  } = useSelection()
   const selectedNodeRootId = useSelectedNodeRootId()
   const { workspace } = useWorkspace({ usePreview: false })
-  const { showUnusedProperties, showUnusedFonts, showUnusedIcons } = useEditorConfig()
+  const { showUnusedProperties, showUnusedIcons } = useEditorConfig()
 
   const activeThemeEntryId = useMemo(
     () =>
@@ -101,18 +112,42 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     [workspace, selectedThemeEntryId],
   )
 
+  // A selected font family carries its collection entry and family slot in the
+  // resource item key. Selecting a family opens that collection's Installed Font
+  // Sizes in the Properties sidebar.
+  const selectedFamilyItem = useMemo(
+    () => parseFontCollectionItemKey(selectedResourceItemKey),
+    [selectedResourceItemKey],
+  )
+
+  // Selecting a font collection board directly (not one of its entries) still
+  // shows the collection's metadata, so it falls back to the board's default
+  // entry. A selected family resolves through its own entry id. Board component
+  // props keep rendering from `selection`.
+  const effectiveFontCollectionEntryId = useMemo(() => {
+    if (selectedFontCollectionEntryId) return selectedFontCollectionEntryId
+
+    if (selectedFamilyItem) return selectedFamilyItem.entryId
+
+    if (selection && isBoard(selection) && isFontCollectionBoard(selection)) {
+      return selection.variants[0]?.id ?? null
+    }
+
+    return null
+  }, [selectedFontCollectionEntryId, selectedFamilyItem, selection])
+
   const activeFontCollectionEntryId = useMemo(
     () =>
       resolveActiveFontCollectionEntryId({
         workspace,
-        selectedFontCollectionEntryId,
+        selectedFontCollectionEntryId: effectiveFontCollectionEntryId,
       }),
-    [workspace, selectedFontCollectionEntryId],
+    [workspace, effectiveFontCollectionEntryId],
   )
 
   const isFontCollectionEditingMode = useMemo(
-    () => isFontCollectionEditingSelection(workspace, selectedFontCollectionEntryId),
-    [workspace, selectedFontCollectionEntryId],
+    () => isFontCollectionEditingSelection(workspace, effectiveFontCollectionEntryId),
+    [workspace, effectiveFontCollectionEntryId],
   )
 
   const editedFontCollection = useMemo(() => {
@@ -294,14 +329,35 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       )
     }
 
+    // A selected family shows its own metadata: family Name, Vendor, Designer,
+    // Category, Description, and a Source link, in place of the collection rows.
+    if (selectedFamilyItem && editedFontCollection) {
+      const family = editedFontCollection.families[selectedFamilyItem.slot]
+
+      if (family) {
+        return buildFontFamilyMetadataProperties({
+          name: family.name,
+          vendor: editedFontCollection.metadata.name,
+          category: family.category,
+          designer: family.designer,
+          description: family.description,
+          sourceHref: getFontFamilyWebsiteUrl(family.name, family.origin) ?? undefined,
+        })
+      }
+    }
+
     if (isFontCollectionEditingMode && editedFontCollection && activeFontCollectionEntryId) {
       const entry = workspace["font-collections"][activeFontCollectionEntryId]
 
-      return buildMetadataProperties({
-        name: entry?.label ?? editedFontCollection.metadata.name,
-        description: editedFontCollection.metadata.description,
-        intent: editedFontCollection.metadata.intent,
-      })
+      return buildMetadataProperties(
+        {
+          name: entry?.label ?? editedFontCollection.metadata.name,
+          description: editedFontCollection.metadata.description,
+          intent: editedFontCollection.metadata.intent,
+        },
+        false,
+        "material-fontDownload",
+      )
     }
 
     if (isIconSetEditingMode && editedIconSet && activeIconSetEntryId) {
@@ -321,6 +377,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     activeThemeEntryId,
     activeThemeBoard,
     isAuthoredTheme,
+    selectedFamilyItem,
     isFontCollectionEditingMode,
     editedFontCollection,
     activeFontCollectionEntryId,
@@ -337,6 +394,12 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       return workspace.themes[activeThemeEntryId]?.label
     }
 
+    // A selected family titles the metadata section by the family name, so the
+    // header reads "Google Fonts · Roboto".
+    if (selectedFamilyItem && editedFontCollection) {
+      return editedFontCollection.families[selectedFamilyItem.slot]?.name
+    }
+
     if (isFontCollectionEditingMode && activeFontCollectionEntryId) {
       return workspace["font-collections"][activeFontCollectionEntryId]?.label
     }
@@ -349,6 +412,8 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
   }, [
     isThemeEditingMode,
     activeThemeEntryId,
+    selectedFamilyItem,
+    editedFontCollection,
     isFontCollectionEditingMode,
     activeFontCollectionEntryId,
     isIconSetEditingMode,
@@ -356,24 +421,26 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     workspace,
   ])
 
-  const fontVariantSelection = useMemo(() => {
-    if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) return {}
+  // Selecting a font family in the Objects sidebar opens its installed weights
+  // here as the "Installed Font Sizes" section. Every other selection (the
+  // board, an entry) skips it.
+  const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
+    if (!selectedFamilyItem || !editedFontCollection || !activeFontCollectionEntryId) {
+      return undefined
+    }
 
-    return workspaceFontCollectionService.getVariantSelection(
+    const selectionMap = workspaceFontCollectionService.getVariantSelection(
       activeFontCollectionEntryId,
       workspace,
     )
-  }, [isFontCollectionEditingMode, activeFontCollectionEntryId, workspace])
-
-  const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
-    if (!isFontCollectionEditingMode || !editedFontCollection) return undefined
-
-    return flattenFontCollectionFamilies(
+    const rows = flattenFontCollectionFamilySizes(
       editedFontCollection,
-      fontVariantSelection,
-      showUnusedFonts,
+      selectionMap,
+      selectedFamilyItem.slot,
     )
-  }, [isFontCollectionEditingMode, editedFontCollection, fontVariantSelection, showUnusedFonts])
+
+    return rows.length > 0 ? rows : undefined
+  }, [selectedFamilyItem, editedFontCollection, activeFontCollectionEntryId, workspace])
 
   const { updateFontCollectionProperty } = useFontCollectionProperties(activeFontCollectionEntryId)
 

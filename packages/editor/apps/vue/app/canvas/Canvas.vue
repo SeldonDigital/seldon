@@ -14,10 +14,12 @@ import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
+import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { boardOrderService } from "@seldon/core/workspace/services"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 
 import CanvasNode from "./CanvasNode.vue"
+import FontSpecimenCanvas from "./FontSpecimenCanvas.vue"
 import IsolationBoard from "./IsolationBoard.vue"
 import ZoomControls from "./ZoomControls.vue"
 
@@ -171,6 +173,12 @@ const isolatedBoard = computed<Board | null>(() => {
 
 const showIsolationGallery = computed(() => isolatedView.value && isolatedBoard.value !== null)
 
+// A font-collection board renders a single specimen for the selected family
+// instead of a node tree, so it takes its own canvas branch.
+const showFontSpecimen = computed(
+  () => activeBoard.value !== null && isFontCollectionBoard(activeBoard.value),
+)
+
 const isolationRows = computed(() => {
   const board = isolatedBoard.value
   if (!board) return []
@@ -260,6 +268,11 @@ watch(
           />
         </div>
       </div>
+      <FontSpecimenCanvas
+        v-else-if="showFontSpecimen && activeBoard"
+        :workspace="workspace"
+        :board="activeBoard"
+      />
       <section v-else-if="activeBoard" class="canvas-board">
         <Teleport to="head">
           <component :is="'style'">{{ boardCss }}</component>
