@@ -1,20 +1,16 @@
 {
+  "extends": "../../scripts/tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
-    "strict": true,
-    "declaration": true,
     "noEmit": false,
-    "outDir": "./dist",
+    "composite": false,
+    "declarationMap": false,
+    "incremental": false,
     "rootDir": ".",
-    "esModuleInterop": true,
-    "module": "esnext",
+    "outDir": "./dist",
     "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "customConditions": null,
     "skipLibCheck": true,
     "types": ["node"],
-    "jsx": "react-jsx",
-    "target": "ES2021",
     "paths": {
       "@seldon/core": ["../core/dist/index.d.ts"],
       "@seldon/core/*": ["../core/dist/*"]

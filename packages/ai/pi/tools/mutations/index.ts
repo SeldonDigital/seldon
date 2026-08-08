@@ -17,6 +17,7 @@ import { createSetFontCollectionFamilyPresetTool } from "./set-font-collection-f
 import { createSetFontCollectionFamilyVariantTool } from "./set-font-collection-family-variant"
 import { createSetIconSetOverrideTool } from "./set-icon-set-override"
 import { createSetIconSetSubcategoryPresetTool } from "./set-icon-set-subcategory-preset"
+import { createSetNodeRefTool } from "./set-node-ref"
 import { createSetPropertiesTool } from "./set-properties"
 import { createSetSpacingFeelTool } from "./set-spacing-feel"
 import { createSetStateStyleTool } from "./set-state-style"
@@ -80,6 +81,7 @@ export function createMutationTools(
       createNudgeTool(state, resolved),
       createSetAlignTool(state, resolved),
       createSetStateStyleTool(state, resolved),
+      createSetNodeRefTool(state, resolved),
     )
   }
 
