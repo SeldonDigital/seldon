@@ -1,6 +1,4 @@
-import prettier from "prettier"
-
-import { exportPrettierConfig } from "../export-prettier-config"
+import { formatWithPrettier } from "../format-with-prettier"
 
 /**
  * Formats an emitted JSON file, so a file that lands in a formatted repository does not
@@ -18,8 +16,5 @@ import { exportPrettierConfig } from "../export-prettier-config"
  * Prettier ends its output with a newline, so a caller adds none.
  */
 export async function formatJson(content: string): Promise<string> {
-  return prettier.format(content, {
-    ...exportPrettierConfig,
-    parser: "json",
-  })
+  return formatWithPrettier(content, { parser: "json" })
 }

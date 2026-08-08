@@ -311,7 +311,9 @@ function ExportComponentsDialog({
       refs[`${group.ref}YesInput`] = radioInput(group.name, group.value, () => group.setValue(true))
       refs[`${group.ref}YesText`] = {}
       refs[`${group.ref}No`] = radioRow(() => group.setValue(false))
-      refs[`${group.ref}NoInput`] = radioInput(group.name, !group.value, () => group.setValue(false))
+      refs[`${group.ref}NoInput`] = radioInput(group.name, !group.value, () =>
+        group.setValue(false),
+      )
       refs[`${group.ref}NoText`] = {}
     }
 

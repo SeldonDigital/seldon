@@ -1,16 +1,10 @@
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
 
+import type { FrameworkId } from "@seldon/factory/export/presets"
 import type { PlatformId } from "@seldon/factory/export/types"
 
 const STORAGE_KEY = "export-options"
-
-/**
- * Target project layout for the export. `none` keeps the generated library at
- * the output root; the others match a framework's expected folders. The
- * framework-to-layout mapping is applied where the export runs, not here.
- */
-export type FrameworkId = "none" | "vite" | "next"
 
 interface PersistedExportOptions {
   platform: PlatformId

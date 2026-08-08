@@ -35,5 +35,7 @@ __exports__
 /packages/editor/shared/public/font-files
 /packages/editor/shared/public/font-licenses
 
-# Shared filesystem workspace store used by both editors
-.seldon/
+# Live filesystem workspace store used by both editors. The committed design
+# source at `.seldon/<label>.<framework>.json` stays tracked; only the live
+# store under `workspaces/` is ignored.
+.seldon/workspaces/

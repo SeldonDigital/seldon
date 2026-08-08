@@ -14,7 +14,6 @@ import type { Options } from "prettier"
 export const exportPrettierConfig: Options = {
   semi: false,
   printWidth: 100,
-  plugins: ["@ianvs/prettier-plugin-sort-imports"],
   importOrder: [
     "<BUILTIN_MODULES>",
     "",

@@ -59,10 +59,10 @@ For a plain export with no code, use the `seldon-export` CLI that ships with the
 factory:
 
 ```bash
-npx seldon-export --input .seldon/my-app.react.json --preset vite
+npx seldon-export --input .seldon/my-app.react.json --framework vite
 ```
 
-`--preset` picks the project layout (`vite`, `next`, `plain`) and `--platform`
+`--framework` picks the project layout (`none`, `vite`, `next`, and more) and `--platform`
 picks the framework. The CLI resolves engine assets from the installed
 `@seldon/core`, so it works from any project. Run `seldon-export --help` for
 every flag, and see the [factory README](../packages/factory/README.md) for the

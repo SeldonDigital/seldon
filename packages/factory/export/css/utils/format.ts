@@ -1,10 +1,5 @@
-import prettier from "prettier"
-
-import { exportPrettierConfig } from "../../export-prettier-config"
+import { formatWithPrettier } from "../../format-with-prettier"
 
 export async function format(content: string) {
-  return await prettier.format(content, {
-    ...exportPrettierConfig,
-    parser: "css",
-  })
+  return formatWithPrettier(content, { parser: "css" })
 }

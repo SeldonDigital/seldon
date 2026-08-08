@@ -171,6 +171,16 @@ async function loadHandler() {
       "@seldon/core": coreRoot,
       "@seldon/factory": factoryRoot,
     },
+    // The bindings scanner and best-effort formatter reach these through the
+    // export graph, but the handler never runs them. They resolve from the
+    // consumer's own node_modules at runtime, so leaving them external keeps
+    // esbuild from bundling `@vue/compiler-sfc`'s optional template engines.
+    external: [
+      "@vue/compiler-sfc",
+      "typescript",
+      "prettier",
+      "@ianvs/prettier-plugin-sort-imports",
+    ],
   })
 
   const outputFile = path.join(os.tmpdir(), `seldon-export-${process.pid}.mjs`)
@@ -258,7 +268,7 @@ async function main() {
   // Read through Core so the file is migrated and verified before it is exported.
   const workspace = loadWorkspace(await resolveInputWorkspaceText(workspaceFile, useCommitted))
 
-  const { files } = await runExport({
+  const exportRequest = {
     workspace,
     options: {
       target: { framework: platform, styles: "css-properties" },
@@ -280,7 +290,11 @@ async function main() {
       // `sdn/refs/bindings.json`, which the connections overlay reads.
       includeScripts: config.includeScripts,
     },
-  })
+  }
+
+  // Pass the repo root explicitly so the handler reads live monorepo source
+  // regardless of the working directory this script runs from.
+  const { files } = await runExport(exportRequest, { root: repoRoot })
 
   // Clear the generated icon folder so a pruned or renamed icon leaves no stale
   // file behind. Renaming an icon's casing on a case-insensitive filesystem

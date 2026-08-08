@@ -1,14 +1,8 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
+import type { FrameworkId } from "@seldon/factory/export/presets"
 import type { PlatformId } from "@seldon/factory/export/types"
-
-/**
- * Target project layout for the export. `none` keeps the generated library at
- * the output root; the others match a framework's expected folders. The
- * framework-to-layout mapping is applied where the export runs, not here.
- */
-export type FrameworkId = "none" | "vite" | "next"
 
 /**
  * The Export Components dialog's target platform and scope toggles. Held apart

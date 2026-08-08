@@ -68,16 +68,16 @@ Keep the editable workspace source at `.seldon/<label>.<framework>.json`, the wo
 
 ```bash
 # Vite project layout: components under src/sdn, assets under public/sdn
-npx seldon-export --input .seldon/my-app.react.json --preset vite
+npx seldon-export --input .seldon/my-app.react.json --framework vite
 
 # Next.js project layout: components under components/sdn
-npx seldon-export --input .seldon/my-app.react.json --preset next --platform react
+npx seldon-export --input .seldon/my-app.react.json --framework next --platform react
 
 # Self-contained default under sdn/
 npx seldon-export --input .seldon/my-app.react.json
 ```
 
-`--platform` selects the framework (`react`, `vue`). `--preset` selects the project layout (`vite`, `next`, `plain`). Run `seldon-export --help` for every flag.
+`--platform` selects the framework (`react`, `vue`). `--framework` selects the project layout (`none`, `vite`, `next`, `nuxt`, `sveltekit`, `astro`, `remix`). Run `seldon-export --help` for every flag.
 
 `exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and dispatches by `target.framework`. React is the only implemented target today, so it delegates to React generation when `target.framework` is `"react"` and throws for any other framework. Future targets such as Swift and Java add their own generation branches here.
 

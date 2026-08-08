@@ -1,6 +1,15 @@
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 
+/**
+ * Editor-facing export options. Loosens `output` so a caller can pass only a
+ * `componentsFolder` and let the factory default the asset folders, matching a
+ * framework layout that ships no explicit asset paths (such as `none`).
+ */
+export type LocalExportOptions = Partial<Omit<ExportOptions, "output">> & {
+  output?: Partial<ExportOptions["output"]>
+}
+
 type WireFile = {
   path: string
   encoding: "utf8" | "base64"
@@ -40,7 +49,7 @@ function fromWireFile(file: WireFile): FileToExport {
  */
 export async function runLocalExport(
   workspace: Workspace,
-  options?: Partial<ExportOptions>,
+  options?: LocalExportOptions,
 ): Promise<FileToExport[]> {
   const response = await fetch("/api/export", {
     method: "POST",

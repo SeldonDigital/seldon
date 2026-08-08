@@ -21,7 +21,7 @@
     "seldon-export": "./dist/export/cli/index.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core index.ts dist/index.js && node scripts/build-cli.mjs",
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core --external prettier --external @ianvs/prettier-plugin-sort-imports index.ts dist/index.js && node scripts/build-cli.mjs",
     "build:cli": "node scripts/build-cli.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -66,10 +66,13 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "typescript": "^5.0.0"
+    "typescript": ">=5"
   },
   "peerDependenciesMeta": {
     "react": {
+      "optional": true
+    },
+    "typescript": {
       "optional": true
     }
   },

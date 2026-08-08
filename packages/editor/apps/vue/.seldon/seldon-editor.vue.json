@@ -6855,7 +6855,15 @@
       "level": "part",
       "label": "Token Previews",
       "intent": "Used for preview and properties badges over the canvas.",
-      "tags": ["Properties", "tokens", "margins", "padding", "orientation", "align", "gap"],
+      "tags": [
+        "Properties",
+        "tokens",
+        "margins",
+        "padding",
+        "orientation",
+        "align",
+        "gap"
+      ],
       "componentTheme": "theme-seldon-default",
       "componentProperties": {
         "board": {
@@ -24287,7 +24295,9 @@
           ]
         },
         "hover": {
-          "background": [{}]
+          "background": [
+            {}
+          ]
         },
         "disabled": {
           "border": {},

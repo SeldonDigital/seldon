@@ -199,7 +199,7 @@ Each runs `seldon/scripts/generate-bindings.mjs` inside the app and writes `seld
 `cli.ts` runs the library directly, without needing an export first:
 
 ```bash
-bun packages/factory/bindings/cli.ts <projectRoot> [--framework react|vue] [--components seldon] [--out bindings.json]
+bun packages/factory/bindings/cli.ts <projectRoot> [--platform react|vue] [--components sdn] [--out bindings.json]
 ```
 
 Note: it writes `bindings.json` at the project root unless `--out` says otherwise. Pass `--out seldon/refs/bindings.json` to write where the emitted script writes.

@@ -6,11 +6,12 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
+import { FRAMEWORK_IDS, resolveOutputLayout } from "@seldon/factory/export/presets"
 import { useCallback, useEffect, useState } from "react"
 
 import { useExportOptions } from "./use-export-options"
 
-import type { FrameworkId } from "./use-export-options"
+import type { FrameworkId } from "@seldon/factory/export/presets"
 
 /** Upper bound on a workspace name, matching the inline title rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
@@ -22,17 +23,33 @@ export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
   available: platform.status === "available",
 }))
 
+/** Display labels for each framework layout, keyed by id. */
+const FRAMEWORK_LABELS: Record<FrameworkId, string> = {
+  none: "None",
+  vite: "Vite",
+  next: "Next.js",
+  nuxt: "Nuxt",
+  sveltekit: "SvelteKit",
+  astro: "Astro",
+  remix: "Remix",
+}
+
+/** Layouts verified in the editor export. Others show as "soon" until proven. */
+const AVAILABLE_FRAMEWORKS: ReadonlySet<FrameworkId> = new Set<FrameworkId>([
+  "none",
+  "vite",
+  "next",
+])
+
 /**
- * Project layouts shown in the dialog picker. `none` writes to the output root;
- * the others match a framework's folder layout. Selection persists now; mapping
- * it to the export's output paths is wired separately.
+ * Project layouts shown in the dialog picker, in registry order. `none` writes
+ * to the output root; the others match a framework's folder layout.
  */
-export const EXPORT_FRAMEWORK_OPTIONS: Array<{ id: FrameworkId; label: string; available: boolean }> =
-  [
-    { id: "none", label: "None", available: true },
-    { id: "vite", label: "Vite", available: true },
-    { id: "next", label: "Next.js", available: true },
-  ]
+export const EXPORT_FRAMEWORK_OPTIONS = FRAMEWORK_IDS.map((id) => ({
+  id,
+  label: FRAMEWORK_LABELS[id],
+  available: AVAILABLE_FRAMEWORKS.has(id),
+}))
 
 /**
  * View-model for the Export Components dialog. Holds the target platform, the
@@ -162,6 +179,7 @@ export function useExportComponentsPanel() {
     await exportToFolder(
       {
         target: { framework: platform, styles: "css-properties" },
+        output: resolveOutputLayout(framework),
         includeHiddenComponents: includeHidden,
         exportAllThemes: allThemes,
         exportAllFontCollections: allFonts,
@@ -178,6 +196,7 @@ export function useExportComponentsPanel() {
     commitWorkspaceName,
     exportToFolder,
     platform,
+    framework,
     includeHidden,
     allThemes,
     allFonts,

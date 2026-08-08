@@ -8,7 +8,7 @@ import { serializeBindings } from "./serialize"
 import type { BindingWarning, BindingsFramework, FileSource } from "./types"
 
 const USAGE =
-  "Usage: bun packages/factory/bindings/cli.ts <projectRoot> [--framework react|vue] [--components seldon] [--out bindings.json]"
+  "Usage: bun packages/factory/bindings/cli.ts <projectRoot> [--platform react|vue] [--components sdn] [--out bindings.json]"
 
 /**
  * Reads a project from disk. Node file access stays here rather than in the
@@ -67,15 +67,15 @@ async function main(): Promise<void> {
     process.exit(1)
   }
 
-  const framework = (getFlag(args, "framework") ?? "react") as BindingsFramework
+  const platform = (getFlag(args, "platform") ?? "react") as BindingsFramework
 
-  if (framework !== "react" && framework !== "vue") {
-    console.error(`Unknown framework "${framework}". Use "react" or "vue".`)
+  if (platform !== "react" && platform !== "vue") {
+    console.error(`Unknown platform "${platform}". Use "react" or "vue".`)
     process.exit(1)
   }
 
   const config = resolveBindingsConfig({
-    framework,
+    framework: platform,
     componentsFolder: getFlag(args, "components"),
   })
 

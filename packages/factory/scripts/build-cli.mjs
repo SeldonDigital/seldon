@@ -31,6 +31,10 @@ await build({
   alias: {
     "@seldon/core": coreRoot,
   },
+  // Prettier and its import-sort plugin stay external so they are not inlined.
+  // The export loads them at runtime, best effort: present in a consumer means
+  // formatted output, absent means unformatted but valid output.
+  external: ["prettier", "@ianvs/prettier-plugin-sort-imports"],
 })
 
 fs.chmodSync(outfile, 0o755)

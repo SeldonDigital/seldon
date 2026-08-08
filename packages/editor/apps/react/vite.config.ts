@@ -22,8 +22,8 @@ export default defineConfig(({ mode }) => ({
   publicDir: path.join(sharedRoot, "public"),
   plugins: [
     react(),
-    workspaceApiPlugin(),
-    exportApiPlugin(),
+    workspaceApiPlugin({ root: repoRoot }),
+    exportApiPlugin({ root: repoRoot }),
     agentApiPlugin(),
     importWebApiPlugin(),
   ],

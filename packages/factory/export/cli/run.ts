@@ -1,15 +1,24 @@
 import fs from "node:fs"
 import path from "node:path"
+import readline from "node:readline"
 
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 
 import { exportWorkspace } from "../export-workspace"
+import {
+  EXPORT_MANIFEST_FILENAME,
+  describeExportCollisions,
+  detectExportCollisions,
+  hasExportCollisions,
+  parseExportManifest,
+} from "../manifest"
 import { PLATFORMS } from "../platforms/registry"
+import { FRAMEWORK_IDS, resolveOutputLayout } from "../presets"
 import { createResolvedExportAssetReader } from "../resolved-asset-reader"
-import { EXPORT_PRESETS, EXPORT_PRESET_IDS } from "./presets"
 
-import type { PlatformId } from "../types"
-import type { ExportPresetId } from "./presets"
+import type { ExportManifest } from "../manifest"
+import type { FrameworkId } from "../presets"
+import type { FileToExport, PlatformId } from "../types"
 
 const PLATFORM_IDS = Object.keys(PLATFORMS) as PlatformId[]
 
@@ -29,7 +38,7 @@ const BOOLEAN_FLAGS: Record<string, keyof CliConfig> = {
 
 interface CliConfig {
   platform: PlatformId
-  preset: ExportPresetId
+  framework: FrameworkId
   input: string
   out: string
   includeHidden: boolean
@@ -39,6 +48,7 @@ interface CliConfig {
   allIcons: boolean
   savedWorkspace: boolean
   includeScripts: boolean
+  overwrite: boolean
   componentsFolder?: string
   assetsFolder?: string
   assetPublicPath?: string
@@ -47,7 +57,7 @@ interface CliConfig {
 /** Defaults match the editor's export dialog defaults. */
 const DEFAULT_CONFIG: CliConfig = {
   platform: "react",
-  preset: "plain",
+  framework: "none",
   input: "",
   out: process.cwd(),
   includeHidden: false,
@@ -57,12 +67,13 @@ const DEFAULT_CONFIG: CliConfig = {
   allIcons: true,
   savedWorkspace: true,
   includeScripts: true,
+  overwrite: false,
 }
 
 const HELP = `seldon-export - export a Seldon workspace to framework components
 
 Usage:
-  seldon-export --input <workspace.json> [--platform <id>] [--preset <id>] [--out <dir>] [flags]
+  seldon-export --input <workspace.json> [--platform <id>] [--framework <id>] [--out <dir>] [flags]
 
 Required:
   -i, --input <path>         Workspace JSON saved from the Seldon editor.
@@ -70,11 +81,11 @@ Required:
 Targets:
   -p, --platform <${PLATFORM_IDS.join("|")}>
                              Framework to generate (default: react).
-      --preset <${EXPORT_PRESET_IDS.join("|")}>
-                             Project layout (default: plain).
+  -f, --framework <${FRAMEWORK_IDS.join("|")}>
+                             Project layout (default: none).
   -o, --out <dir>            Output root directory (default: current directory).
 
-Layout overrides (advanced, override the preset):
+Layout overrides (advanced, override the framework layout):
       --components-folder <path>
       --assets-folder <path>
       --asset-public-path <url>
@@ -87,6 +98,10 @@ Scope flags (each also has a --no- form):
       --all-icons            Export every enabled icon (default on).
       --saved-workspace      Emit a copy of the workspace (default on).
       --scripts              Emit the bindings scanner scripts (default on).
+
+Overwrite:
+  -y, --yes, --force         Overwrite an export another workspace owns in the
+                             output folder without prompting.
 
   -h, --help                 Show this message.`
 
@@ -136,16 +151,16 @@ export function parseCliArgs(argv: string[]): CliConfig {
       continue
     }
 
-    if (arg === "--preset" || arg.startsWith("--preset=")) {
+    if (arg === "-f" || arg === "--framework" || arg.startsWith("--framework=")) {
       const value = readValue()
 
-      if (!EXPORT_PRESET_IDS.includes(value as ExportPresetId)) {
+      if (!FRAMEWORK_IDS.includes(value as FrameworkId)) {
         throw new Error(
-          `Unknown preset "${value}". Expected one of: ${EXPORT_PRESET_IDS.join(", ")}.`,
+          `Unknown framework "${value}". Expected one of: ${FRAMEWORK_IDS.join(", ")}.`,
         )
       }
 
-      config.preset = value as ExportPresetId
+      config.framework = value as FrameworkId
       continue
     }
 
@@ -161,6 +176,11 @@ export function parseCliArgs(argv: string[]): CliConfig {
 
     if (arg === "--asset-public-path" || arg.startsWith("--asset-public-path=")) {
       config.assetPublicPath = readValue()
+      continue
+    }
+
+    if (arg === "-y" || arg === "--yes" || arg === "--force") {
+      config.overwrite = true
       continue
     }
 
@@ -190,7 +210,7 @@ export async function runExportCli(argv: string[]): Promise<void> {
     throw new Error("Missing required --input <workspace.json>. Run with --help for usage.")
   }
 
-  const preset = EXPORT_PRESETS[config.preset]
+  const layout = resolveOutputLayout(config.framework)
   const outRoot = path.resolve(config.out)
   const workspace = loadWorkspace(fs.readFileSync(path.resolve(config.input), "utf8"))
 
@@ -199,9 +219,9 @@ export async function runExportCli(argv: string[]): Promise<void> {
     assetReader: createResolvedExportAssetReader(),
     target: { framework: config.platform, styles: "css-properties" },
     output: {
-      componentsFolder: config.componentsFolder ?? preset.componentsFolder,
-      assetsFolder: config.assetsFolder ?? preset.assetsFolder,
-      assetPublicPath: config.assetPublicPath ?? preset.assetPublicPath,
+      componentsFolder: config.componentsFolder ?? layout.componentsFolder,
+      assetsFolder: config.assetsFolder ?? layout.assetsFolder,
+      assetPublicPath: config.assetPublicPath ?? layout.assetPublicPath,
     },
     includeHiddenComponents: config.includeHidden,
     exportAllThemes: config.allThemes,
@@ -211,6 +231,8 @@ export async function runExportCli(argv: string[]): Promise<void> {
     includeWorkspace: config.savedWorkspace,
     includeScripts: config.includeScripts,
   })
+
+  await guardExportCollisions(files, outRoot, config.overwrite)
 
   for (const file of files) {
     const target = path.join(outRoot, file.path)
@@ -223,10 +245,70 @@ export async function runExportCli(argv: string[]): Promise<void> {
   }
 
   console.log(
-    `Exported ${files.length} files (${config.platform}, ${config.preset} preset) into ${outRoot}`,
+    `Exported ${files.length} files (${config.platform}, ${config.framework} layout) into ${outRoot}`,
   )
 
   printRepeatableExportTip(config)
+}
+
+/**
+ * Stops before writing when this export would overwrite files or refs another
+ * workspace owns in the output folder. Reads the folder's existing manifest,
+ * compares it to the one this export emitted, and on a real collision either
+ * prompts on a TTY or aborts. `overwrite` (from `--yes`/`--force`) skips the
+ * check. Writing nothing on decline keeps the folder as the other workspace
+ * left it.
+ */
+async function guardExportCollisions(
+  files: FileToExport[],
+  outRoot: string,
+  overwrite: boolean,
+): Promise<void> {
+  if (overwrite) return
+
+  const emitted = files.find((file) => file.path.split("/").pop() === EXPORT_MANIFEST_FILENAME)
+
+  if (!emitted || typeof emitted.content !== "string") return
+
+  const next = parseExportManifest(emitted.content)
+
+  if (!next) return
+
+  const existing = readManifestFromDisk(path.join(outRoot, emitted.path))
+  const collisions = detectExportCollisions(existing, next)
+
+  if (!hasExportCollisions(collisions)) return
+
+  const message = describeExportCollisions(existing, collisions)
+
+  if (!process.stdin.isTTY) {
+    throw new Error(`${message} Re-run with --yes to overwrite.`)
+  }
+
+  const proceed = await promptYesNo(`${message}\nOverwrite? (y/N) `)
+
+  if (!proceed) {
+    throw new Error("Export cancelled. Nothing was written.")
+  }
+}
+
+function readManifestFromDisk(manifestPath: string): ExportManifest | null {
+  try {
+    return parseExportManifest(fs.readFileSync(manifestPath, "utf8"))
+  } catch {
+    return null
+  }
+}
+
+function promptYesNo(question: string): Promise<boolean> {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+
+  return new Promise<boolean>((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close()
+      resolve(/^y(es)?$/i.test(answer.trim()))
+    })
+  })
 }
 
 /**
@@ -236,7 +318,7 @@ export async function runExportCli(argv: string[]): Promise<void> {
  * not touch a consumer's files beyond the components folder.
  */
 function printRepeatableExportTip(config: CliConfig): void {
-  const command = `seldon-export --input ${config.input} --platform ${config.platform} --preset ${config.preset}`
+  const command = `seldon-export --input ${config.input} --platform ${config.platform} --framework ${config.framework}`
 
   console.log(
     `\nTo make this repeatable, add a script to package.json:\n  "seldon:export": "${command}"\nThen rerun with: npm run seldon:export`,

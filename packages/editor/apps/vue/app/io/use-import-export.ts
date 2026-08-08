@@ -7,6 +7,10 @@ import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { DEFAULT_COMPONENTS_FOLDER } from "@seldon/editor/lib/export/constants"
 import {
+  findEmittedManifest,
+  readExistingManifest,
+} from "@seldon/editor/lib/export/read-export-manifest"
+import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
@@ -22,12 +26,18 @@ import {
   ensureExportTargetWritable,
   saveExportTarget,
 } from "@seldon/editor/lib/storage/export-target-store"
+import {
+  describeExportCollisions,
+  detectExportCollisions,
+  hasExportCollisions,
+} from "@seldon/factory/export/manifest"
 import { kebabCase } from "change-case"
 
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
 
-import type { ExportOptions } from "@seldon/factory/export/types"
+import type { LocalExportOptions } from "@seldon/editor/lib/export/run-local-export"
+import type { FileToExport } from "@seldon/factory/export/types"
 
 /**
  * File, folder, and web import/export actions for the Vue editor, mirroring the
@@ -115,7 +125,7 @@ export function useImportExport() {
   }
 
   async function exportToFolder(
-    options?: Partial<ExportOptions>,
+    options?: LocalExportOptions,
     preselectedDirectory?: FileSystemDirectoryHandle,
   ): Promise<void> {
     const controller = new AbortController()
@@ -140,6 +150,13 @@ export function useImportExport() {
 
       const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
       const files = await runLocalExport(workspace.value, { ...options, includeWorkspace: false })
+
+      if (!(await confirmExportCollisions(directory, files))) {
+        toast.addToast("Export cancelled")
+
+        return
+      }
+
       const count = await writeExportToDirectory(directory, files, controller.signal)
 
       // Nothing is rolled back, so the count is the whole story: it says how far
@@ -239,4 +256,25 @@ async function resolveExportDirectory(
   if (await ensureExportTargetWritable(preselected)) return preselected
 
   return pickExportDirectory()
+}
+
+/**
+ * Asks before overwriting an export another workspace owns in the picked folder.
+ * Returns true to proceed. A fresh folder, or the same workspace re-exporting,
+ * never prompts. Declining leaves the folder untouched.
+ */
+async function confirmExportCollisions(
+  directory: FileSystemDirectoryHandle,
+  files: FileToExport[],
+): Promise<boolean> {
+  const emitted = findEmittedManifest(files)
+
+  if (!emitted) return true
+
+  const existing = await readExistingManifest(directory, emitted.path)
+  const collisions = detectExportCollisions(existing, emitted.manifest)
+
+  if (!hasExportCollisions(collisions)) return true
+
+  return window.confirm(`${describeExportCollisions(existing, collisions)}\n\nOverwrite?`)
 }

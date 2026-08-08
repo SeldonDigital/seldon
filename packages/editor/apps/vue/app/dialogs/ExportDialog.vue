@@ -14,12 +14,13 @@ import DialogExportComponent from "@seldon/components/modules/DialogExportCompon
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
+import { FRAMEWORK_IDS, resolveOutputLayout } from "@seldon/factory/export/presets"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 
-import type { FrameworkId } from "@app/dialogs/export-options-store"
 import type { MenuEntry } from "@app/menus/types"
-import type { ExportOptions } from "@seldon/factory/export/types"
+import type { LocalExportOptions } from "@seldon/editor/lib/export/run-local-export"
+import type { FrameworkId } from "@seldon/factory/export/presets"
 import type { CSSProperties, Ref } from "vue"
 
 /** Upper bound on a workspace name, matching the inline project rename. */
@@ -31,16 +32,29 @@ const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
   available: platform.status === "available",
 }))
 
+/** Display labels for each framework layout, keyed by id. */
+const FRAMEWORK_LABELS: Record<FrameworkId, string> = {
+  none: "None",
+  vite: "Vite",
+  next: "Next.js",
+  nuxt: "Nuxt",
+  sveltekit: "SvelteKit",
+  astro: "Astro",
+  remix: "Remix",
+}
+
+/** Layouts verified in the editor export. Others show as "soon" until proven. */
+const AVAILABLE_FRAMEWORKS = new Set<FrameworkId>(["none", "vite", "next"])
+
 /**
- * Project layouts shown in the dialog picker. `none` writes to the output root;
- * the others match a framework's folder layout. Selection persists now; mapping
- * it to the export's output paths is wired separately.
+ * Project layouts shown in the dialog picker, in registry order. `none` writes
+ * to the output root; the others match a framework's folder layout.
  */
-const EXPORT_FRAMEWORK_OPTIONS: Array<{ id: FrameworkId; label: string; available: boolean }> = [
-  { id: "none", label: "None", available: true },
-  { id: "vite", label: "Vite", available: true },
-  { id: "next", label: "Next.js", available: true },
-]
+const EXPORT_FRAMEWORK_OPTIONS = FRAMEWORK_IDS.map((id) => ({
+  id,
+  label: FRAMEWORK_LABELS[id],
+  available: AVAILABLE_FRAMEWORKS.has(id),
+}))
 
 const panel = usePanelStore()
 const { activePanel } = storeToRefs(panel)
@@ -188,8 +202,9 @@ async function chooseDirectory(): Promise<void> {
 async function runExport(): Promise<void> {
   if (isExporting.value) return
   commitName()
-  const options: Partial<ExportOptions> = {
+  const options: LocalExportOptions = {
     target: { framework: platform.value, styles: "css-properties" },
+    output: resolveOutputLayout(framework.value),
     includeHiddenComponents: includeHidden.value,
     exportAllThemes: allThemes.value,
     exportAllFontCollections: allFonts.value,
@@ -296,17 +311,37 @@ const scopeGroups: ScopeGroup[] = [
     name: "export-font-links",
     model: fontLinks,
   },
-  { prefix: "exportHidden", label: "Hidden Components", name: "export-hidden", model: includeHidden },
+  {
+    prefix: "exportHidden",
+    label: "Hidden Components",
+    name: "export-hidden",
+    model: includeHidden,
+  },
   { prefix: "exportAllThemes", label: "All Themes", name: "export-all-themes", model: allThemes },
-  { prefix: "exportAllFonts", label: "All Enabled Fonts", name: "export-all-fonts", model: allFonts },
-  { prefix: "exportAllIcons", label: "All Enabled Icons", name: "export-all-icons", model: allIcons },
+  {
+    prefix: "exportAllFonts",
+    label: "All Enabled Fonts",
+    name: "export-all-fonts",
+    model: allFonts,
+  },
+  {
+    prefix: "exportAllIcons",
+    label: "All Enabled Icons",
+    name: "export-all-icons",
+    model: allIcons,
+  },
   {
     prefix: "exportWorkspace",
     label: "Workspace File",
     name: "export-saved-workspace",
     model: savedWorkspace,
   },
-  { prefix: "exportScripts", label: "CLI Utility Scripts", name: "export-scripts", model: includeScripts },
+  {
+    prefix: "exportScripts",
+    label: "CLI Utility Scripts",
+    name: "export-scripts",
+    model: includeScripts,
+  },
 ]
 
 const barHandle = computed(() => ({
@@ -385,10 +420,18 @@ const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => {
     refs[group.prefix] = { role: "radiogroup", "aria-label": group.label }
     refs[`${group.prefix}Label`] = {}
     refs[`${group.prefix}Yes`] = radioRow(() => (group.model.value = true))
-    refs[`${group.prefix}YesInput`] = radioInput(group.name, value, () => (group.model.value = true))
+    refs[`${group.prefix}YesInput`] = radioInput(
+      group.name,
+      value,
+      () => (group.model.value = true),
+    )
     refs[`${group.prefix}YesText`] = {}
     refs[`${group.prefix}No`] = radioRow(() => (group.model.value = false))
-    refs[`${group.prefix}NoInput`] = radioInput(group.name, !value, () => (group.model.value = false))
+    refs[`${group.prefix}NoInput`] = radioInput(
+      group.name,
+      !value,
+      () => (group.model.value = false),
+    )
     refs[`${group.prefix}NoText`] = {}
   }
 

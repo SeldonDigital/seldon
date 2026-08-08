@@ -256,7 +256,7 @@ npm i -D @seldon/factory
 \`\`\`
 
 Then add a script to \`package.json\` so a re-export is one command. Add
-\`--preset vite\` or \`--preset next\` if your project uses that layout:
+\`--framework vite\` or \`--framework next\` if your project uses that layout:
 
 \`\`\`json
 {
