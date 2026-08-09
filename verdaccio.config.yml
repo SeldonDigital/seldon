@@ -4,6 +4,12 @@
 # non-@seldon package to the public npm registry through the `npmjs` uplink.
 storage: ./.verdaccio-storage
 
+# Keep credentials out of the repo. Without this, Verdaccio writes htpasswd to the
+# config directory (the repo root). This path lives in the user home instead.
+auth:
+  htpasswd:
+    file: /Users/andreiseldon/.config/verdaccio/htpasswd
+
 uplinks:
   npmjs:
     url: https://registry.npmjs.org/

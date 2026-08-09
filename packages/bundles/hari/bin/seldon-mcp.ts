@@ -6,6 +6,8 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 
+import { importSourceIntoStore, runInit } from "./init"
+
 import type { McpHost } from "@seldon/ai"
 import type { IncomingMessage, ServerResponse } from "node:http"
 
@@ -105,8 +107,22 @@ async function runHttp(host: McpHost, port: number): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const options = parseArgs(process.argv.slice(2))
+  const argv = process.argv.slice(2)
+
+  if (argv[0] === "init") {
+    await runInit(process.cwd(), argv.slice(1))
+
+    return
+  }
+
+  const options = parseArgs(argv)
   const host = new HeadlessHost({ storeDir: options.storeDir, exportRoot: options.exportRoot })
+
+  if (options.workspace) {
+    const id = await importSourceIntoStore(options.storeDir, options.workspace)
+
+    process.stderr.write(`seldon-mcp imported workspace ${id} from ${options.workspace}\n`)
+  }
 
   if (options.http) {
     await runHttp(host, options.port)

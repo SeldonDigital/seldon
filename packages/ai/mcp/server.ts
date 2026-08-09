@@ -156,6 +156,13 @@ export function createSeldonMcpServer(host: McpHost): Server {
 
     if (typeof resolved === "string") return { id: resolved }
 
+    if (resolved.candidates.length === 0) {
+      return {
+        directive:
+          "No workspaces in the store yet. Create one with the workspace_create tool, or run `npx seldon-mcp init` in your project to scaffold a store and a starter workspace.",
+      }
+    }
+
     return {
       directive: `The store holds several workspaces. Call workspace_select with one of: ${resolved.candidates.join(", ")}, or pass targetWorkspaceId.`,
     }
