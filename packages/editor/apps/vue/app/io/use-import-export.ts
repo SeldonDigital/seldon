@@ -26,8 +26,11 @@ import {
   ensureExportTargetWritable,
   saveExportTarget,
 } from "@seldon/editor/lib/storage/export-target-store"
+import { activateBinding, saveBinding } from "@seldon/editor/lib/storage/workspace-binding-store"
 import {
   createStoredWorkspace,
+  deleteLiveWorkspace,
+  saveStoredWorkspace,
   withFreshWorkspaceId,
 } from "@seldon/editor/lib/storage/workspace-store"
 import {
@@ -212,6 +215,22 @@ export function useImportExport() {
 
         await saveExportTarget(id, directory)
         await projectLink.linkExportedFolder(id, directory, componentsFolder)
+
+        // Bind the workspace to this project and move it into the project's
+        // store, so the editor and the project's MCP server share one store.
+        // The export already holds a readwrite grant on the folder.
+        const boundAt = new Date().toISOString()
+
+        await saveBinding(id, {
+          directory,
+          projectName: directory.name,
+          label: workspace.value.metadata.label ?? "",
+          updatedAt: boundAt,
+          boundAt,
+        })
+        await activateBinding(id)
+        await saveStoredWorkspace({ id, workspace: workspace.value, updatedAt: boundAt })
+        await deleteLiveWorkspace(id)
       }
     } catch (error) {
       toast.addToast(error instanceof Error ? error.message : "Export failed")
