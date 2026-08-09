@@ -72,17 +72,17 @@ export interface McpHost {
 
 /** Per-connection state: the pinned target, the running selection, an open transaction. */
 interface ConnectionState {
-  targetId?: string
   selection: SelectionContext
+  targetId?: string
   transaction?: { targetId: string; session: EditSession }
 }
 
 /** Reads the JSON-schema properties/required off a TypeBox object schema. */
 interface JsonObjectSchema {
+  [key: string]: unknown
   type: "object"
   properties?: Record<string, unknown>
   required?: string[]
-  [key: string]: unknown
 }
 
 /**

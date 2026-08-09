@@ -46,8 +46,8 @@ export interface CommitResult {
  * selection; MCP backs it with a per-connection session and the select tools.
  */
 export interface ToolContext {
-  getWorkspace(): Workspace
   selection: SelectionContext
+  getWorkspace(): Workspace
   setSelection(patch: Partial<SelectionContext>): void
   resolveTarget(target: TargetSpec, match?: string): TargetResolution
   propose(action: WorkspaceAction): string

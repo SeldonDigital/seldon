@@ -594,8 +594,9 @@ const canInsert = defineSeldonTool({
     )
     const note = resolved.note ? `${resolved.note}\n` : ""
 
-    if (result.isValid)
+    if (result.isValid) {
       return `${note}Valid: ${resolved.id} may be inserted under ${String(params.parentId)}.`
+    }
 
     return `${note}Cannot insert ${resolved.id} under ${String(params.parentId)}: ${result.errors.join(" ")}`
   },

@@ -258,9 +258,9 @@ export class EditSession implements ToolContext {
   repairs: ActionRepair[] = []
   ineffective: string[] = []
   rejected: RejectedActionResult[] = []
-  allowedNodeIds?: Set<string>
-  allowedBoardKeys?: Set<string>
   selection: SelectionContext
+  allowedNodeIds: Set<string> | undefined = undefined
+  allowedBoardKeys: Set<string> | undefined = undefined
 
   constructor(workspace: Workspace, selection: SelectionContext = {}) {
     this.workspace = workspace
@@ -309,46 +309,6 @@ export class EditSession implements ToolContext {
     this.repairs = []
     this.ineffective = []
     this.rejected = []
-  }
-
-  /**
-   * The reason an action is out of the isolation closure, or null when it is in
-   * scope or isolation is off. A node anchor passes when its board is in scope,
-   * or when it is a fresh id minted in scope this session.
-   */
-  private isolationRejection(action: WorkspaceAction): string | null {
-    const { allowedNodeIds, allowedBoardKeys } = this
-
-    if (!allowedNodeIds || !allowedBoardKeys) return null
-    const anchor = getActionAnchor(action)
-
-    if (!anchor) return null
-
-    if (anchor.kind === "node") {
-      if (!anchor.id || allowedNodeIds.has(anchor.id)) return null
-      const owner = boardKeyOfNode(this.workspace, anchor.id)
-
-      if (owner && allowedBoardKeys.has(owner)) return null
-
-      return `Isolation Mode: node ${anchor.id} is on a board outside the isolated closure, so "${action.type}" is rejected. Target a node on the isolated board or one of the dependency components in scope, or tell the user this needs exiting Isolation Mode.`
-    }
-
-    if (!anchor.key || allowedBoardKeys.has(anchor.key)) return null
-
-    return `Isolation Mode: board ${anchor.key} is outside the isolated closure, so "${action.type}" is rejected. Target the isolated board or a dependency component in scope, or tell the user this needs exiting Isolation Mode.`
-  }
-
-  /** Grows the isolation closure by the ids an accepted action minted. */
-  private growClosure(before: Workspace, after: Workspace): void {
-    if (!this.allowedNodeIds || !this.allowedBoardKeys) return
-
-    for (const id of Object.keys(after.nodes)) {
-      if (!before.nodes[id]) this.allowedNodeIds.add(id)
-    }
-
-    for (const key of Object.keys(after.boards)) {
-      if (!before.boards[key]) this.allowedBoardKeys.add(key)
-    }
   }
 
   /**
@@ -448,5 +408,45 @@ export class EditSession implements ToolContext {
         : `Scope instance: wrote ${writeNodeId} as a local override.`
 
     return `${outcome}\n${scopeNote}`
+  }
+
+  /**
+   * The reason an action is out of the isolation closure, or null when it is in
+   * scope or isolation is off. A node anchor passes when its board is in scope,
+   * or when it is a fresh id minted in scope this session.
+   */
+  private isolationRejection(action: WorkspaceAction): string | null {
+    const { allowedNodeIds, allowedBoardKeys } = this
+
+    if (!allowedNodeIds || !allowedBoardKeys) return null
+    const anchor = getActionAnchor(action)
+
+    if (!anchor) return null
+
+    if (anchor.kind === "node") {
+      if (!anchor.id || allowedNodeIds.has(anchor.id)) return null
+      const owner = boardKeyOfNode(this.workspace, anchor.id)
+
+      if (owner && allowedBoardKeys.has(owner)) return null
+
+      return `Isolation Mode: node ${anchor.id} is on a board outside the isolated closure, so "${action.type}" is rejected. Target a node on the isolated board or one of the dependency components in scope, or tell the user this needs exiting Isolation Mode.`
+    }
+
+    if (!anchor.key || allowedBoardKeys.has(anchor.key)) return null
+
+    return `Isolation Mode: board ${anchor.key} is outside the isolated closure, so "${action.type}" is rejected. Target the isolated board or a dependency component in scope, or tell the user this needs exiting Isolation Mode.`
+  }
+
+  /** Grows the isolation closure by the ids an accepted action minted. */
+  private growClosure(before: Workspace, after: Workspace): void {
+    if (!this.allowedNodeIds || !this.allowedBoardKeys) return
+
+    for (const id of Object.keys(after.nodes)) {
+      if (!before.nodes[id]) this.allowedNodeIds.add(id)
+    }
+
+    for (const key of Object.keys(after.boards)) {
+      if (!before.boards[key]) this.allowedBoardKeys.add(key)
+    }
   }
 }

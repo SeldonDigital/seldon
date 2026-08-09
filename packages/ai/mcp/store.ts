@@ -39,16 +39,6 @@ export class WorkspaceStore {
     this.dir = dir
   }
 
-  private recordPath(id: string): string {
-    const safe = id.replace(/[^a-zA-Z0-9_-]/g, "")
-
-    return path.join(this.dir, `${safe}.json`)
-  }
-
-  private async ensureDir(): Promise<void> {
-    await fs.mkdir(this.dir, { recursive: true })
-  }
-
   /** Lists every stored workspace id, in directory order. */
   async listIds(): Promise<string[]> {
     await this.ensureDir()
@@ -94,5 +84,15 @@ export class WorkspaceStore {
 
     await fs.writeFile(tmp, JSON.stringify(record, null, 2), "utf8")
     await fs.rename(tmp, target)
+  }
+
+  private recordPath(id: string): string {
+    const safe = id.replace(/[^a-zA-Z0-9_-]/g, "")
+
+    return path.join(this.dir, `${safe}.json`)
+  }
+
+  private async ensureDir(): Promise<void> {
+    await fs.mkdir(this.dir, { recursive: true })
   }
 }

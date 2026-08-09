@@ -98,59 +98,6 @@ export class HeadlessHost implements McpHost {
     this.exportRoot = path.resolve(options.exportRoot ?? process.cwd())
   }
 
-  /** Loads a target into memory once, then serves it from the cache. */
-  private async getState(id: string): Promise<TargetState> {
-    const cached = this.states.get(id)
-
-    if (cached) return cached
-    const entry = await this.store.read(id)
-
-    if (!entry) throw new Error(`No workspace "${id}" in the store.`)
-
-    return this.seedState(id, entry.workspace)
-  }
-
-  private seedState(id: string, workspace: Workspace): TargetState {
-    const state: TargetState = {
-      workspace,
-      version: 0,
-      history: [workspace],
-      historyIndex: 0,
-      checkpoints: [],
-      queue: Promise.resolve(),
-    }
-
-    this.states.set(id, state)
-
-    return state
-  }
-
-  /** Serializes work on one target so read-modify-write-persist stays atomic. */
-  private enqueue<T>(state: TargetState, run: () => Promise<T>): Promise<T> {
-    const next = state.queue.then(run, run)
-
-    state.queue = next.then(
-      () => undefined,
-      () => undefined,
-    )
-
-    return next
-  }
-
-  /** Adopts a new workspace as one revision: records history and persists. */
-  private async adopt(id: string, state: TargetState, workspace: Workspace): Promise<number> {
-    state.workspace = workspace
-    state.history = state.history.slice(0, state.historyIndex + 1)
-    state.history.push(workspace)
-
-    if (state.history.length > HISTORY_LIMIT) state.history.shift()
-    state.historyIndex = state.history.length - 1
-    state.version += 1
-    await this.store.write(id, workspace)
-
-    return state.version
-  }
-
   async listTargets(): Promise<WorkspaceTarget[]> {
     const ids = await this.store.listIds()
     const targets: WorkspaceTarget[] = []
@@ -311,5 +258,58 @@ export class HeadlessHost implements McpHost {
     this.seedState(id, workspace)
 
     return { id }
+  }
+
+  /** Loads a target into memory once, then serves it from the cache. */
+  private async getState(id: string): Promise<TargetState> {
+    const cached = this.states.get(id)
+
+    if (cached) return cached
+    const entry = await this.store.read(id)
+
+    if (!entry) throw new Error(`No workspace "${id}" in the store.`)
+
+    return this.seedState(id, entry.workspace)
+  }
+
+  private seedState(id: string, workspace: Workspace): TargetState {
+    const state: TargetState = {
+      workspace,
+      version: 0,
+      history: [workspace],
+      historyIndex: 0,
+      checkpoints: [],
+      queue: Promise.resolve(),
+    }
+
+    this.states.set(id, state)
+
+    return state
+  }
+
+  /** Serializes work on one target so read-modify-write-persist stays atomic. */
+  private enqueue<T>(state: TargetState, run: () => Promise<T>): Promise<T> {
+    const next = state.queue.then(run, run)
+
+    state.queue = next.then(
+      () => undefined,
+      () => undefined,
+    )
+
+    return next
+  }
+
+  /** Adopts a new workspace as one revision: records history and persists. */
+  private async adopt(id: string, state: TargetState, workspace: Workspace): Promise<number> {
+    state.workspace = workspace
+    state.history = state.history.slice(0, state.historyIndex + 1)
+    state.history.push(workspace)
+
+    if (state.history.length > HISTORY_LIMIT) state.history.shift()
+    state.historyIndex = state.history.length - 1
+    state.version += 1
+    await this.store.write(id, workspace)
+
+    return state.version
   }
 }
