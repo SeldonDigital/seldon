@@ -106,9 +106,11 @@ function mutationToolNames(scope: SelectionContext["scope"]): string[] {
   if (componentScope) names.push(...COMPONENT_VERB_NAMES)
   if (includeAll) names.push("apply_actions")
   if (includeAll || scope === "theme") names.push("set_theme_override", "set_spacing_feel")
+
   if (includeAll || scope === "fontCollection") {
     names.push("set_font_collection_family_preset", "set_font_collection_family_variant")
   }
+
   if (includeAll || scope === "iconSet") {
     names.push("set_icon_set_subcategory_preset", "set_icon_set_override")
   }

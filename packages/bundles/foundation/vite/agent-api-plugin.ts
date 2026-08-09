@@ -3,19 +3,27 @@ import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import { build } from "esbuild"
 
-import type { AgentRequestBody, agentConfig, runAgent, warmAgent } from "./agent-handler"
-import type { AgentStreamEvent } from "@seldon/ai"
+import type {
+  AgentRequestBody,
+  AgentStreamEvent,
+  agentConfig,
+  runAgent,
+  warmAgent,
+} from "@seldon/ai"
 import type { IncomingMessage, ServerResponse } from "node:http"
 import type { Connect, Plugin } from "vite"
 
 const ROUTE = "/api/agent"
 
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
-const handlerEntry = path.join(pluginDir, "agent-handler.ts")
 const coreRoot = path.join(pluginDir, "../../../core")
 const factoryRoot = path.join(pluginDir, "../../../factory")
 const aiRoot = path.join(pluginDir, "../../../ai")
 const aiEntry = path.join(aiRoot, "index.ts")
+// Bundle the agent functions straight from the `ai` package source, not through
+// the package index, so the bundle skips the MCP server and factory graph the
+// index re-exports and pulls only the chat-to-actions path Pi needs.
+const handlerEntry = path.join(aiRoot, "server/agent.ts")
 
 type RunAgent = typeof runAgent
 type WarmAgent = typeof warmAgent

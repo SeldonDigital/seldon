@@ -1,19 +1,15 @@
 /**
  * @seldon/hari - the headless Seldon engine with AI.
  *
- * Re-exports everything in `@seldon/terminus` plus the local AI orchestration
- * (`@seldon/ai`). Use it to turn chat into workspace actions, then adopt the
- * returned workspace and export it. A local model host is required; see the
- * package README.
+ * Re-exports the workspace engine (`@seldon/core`), the export factory
+ * (`@seldon/factory`), and the local AI orchestration (`@seldon/ai`) as one
+ * install. Use it to turn chat into workspace actions, then adopt the returned
+ * workspace and export it. A local model host is required; see the package
+ * README.
  *
- * Also ships the headless MCP host. `HeadlessHost` runs the shared MCP tools
- * over a file-backed workspace store, wired to a transport by the `seldon-mcp`
- * bin. Pair it with `createSeldonMcpServer` from `@seldon/ai`.
+ * Also ships the `seldon-mcp` bin, which wires the headless MCP host from
+ * `@seldon/ai` (`HeadlessHost`, re-exported below) to a stdio or HTTP transport.
  */
-export * from "@seldon/terminus"
+export * from "@seldon/core"
+export * from "@seldon/factory"
 export * from "@seldon/ai"
-export { HeadlessHost } from "./mcp/headless-host.js"
-export { WorkspaceStore } from "./mcp/store.js"
-
-export type { HeadlessHostOptions } from "./mcp/headless-host.js"
-export type { StoreEntry } from "./mcp/store.js"

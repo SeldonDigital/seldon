@@ -251,6 +251,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
         if (!targets.some((t) => t.id === id)) {
           return `No workspace "${id}" in the store. Call workspace_list for ids.`
         }
+
         state.targetId = id
         state.selection = {}
 
@@ -273,6 +274,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
           id: args.id as string | undefined,
           label: args.label as string | undefined,
         })
+
         state.targetId = created.id
 
         return `Created workspace ${created.id} and pinned it as the default target.`
@@ -315,6 +317,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
         if (state.transaction) {
           return `A transaction is already open on ${state.transaction.targetId}. Call commit_change or rollback_change first.`
         }
+
         const resolved = await resolveTargetId(args)
 
         if ("directive" in resolved) return resolved.directive
@@ -343,6 +346,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
 
           return "Transaction closed with no changes."
         }
+
         const { version } = await host.commitSession(txn.targetId, txn.session)
 
         state.selection = txn.session.selection

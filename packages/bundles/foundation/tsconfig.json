@@ -10,6 +10,7 @@
     "customConditions": null,
     "skipLibCheck": true,
     "jsx": "react-jsx",
+    "types": ["node"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "paths": {
       "@seldon/core": ["../../core/dist/index.d.ts"],
@@ -18,11 +19,9 @@
       "@seldon/factory/*": ["../../factory/dist/*"],
       "@seldon/ai": ["../../ai/dist/index.d.ts"],
       "@seldon/ai/*": ["../../ai/dist/*"],
-      "@seldon/terminus": ["../terminus/dist/index.d.ts"],
-      "@seldon/hari": ["../hari/dist/index.d.ts"],
       "@seldon/editor": ["../../editor/shared/index.ts"],
       "@seldon/editor/*": ["../../editor/shared/*"]
     }
   },
-  "include": ["index.ts"]
+  "include": ["index.ts", "vite/**/*.ts"]
 }

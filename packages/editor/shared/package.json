@@ -1,9 +1,8 @@
 {
   "name": "@seldon/editor",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
-  "description": "Shared, framework-neutral code for the Seldon editors (React and Vue): domain lib helpers, dev-server Vite plugins (including the shared workspace store), and shared assets. The embeddable library re-exported by @seldon/foundation.",
+  "description": "Shared, framework-neutral code for the Seldon editors (React and Vue): domain lib helpers, dev-server Vite plugins (workspace store, export, web import), and shared assets. AI-free; the AI editor-server plugins live in @seldon/foundation. The embeddable library re-exported by @seldon/foundation.",
   "license": "SEE LICENSE IN ../../../license/noncommercial/LICENSE.md",
   "repository": {
     "type": "git",
@@ -42,24 +41,23 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json",
-    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs",
-    "prepublishOnly": "echo 'Publishing @seldon/editor is blocked. See PUBLISHING.md to unlock.' && exit 1"
-  },
+    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs"  },
   "peerDependencies": {
+    "@seldon/ai": "0.0.0",
     "react": "^19.0.0",
     "typescript": "^5.0.0"
   },
   "peerDependenciesMeta": {
+    "@seldon/ai": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "@seldon/ai": "0.0.0",
     "@seldon/core": "0.0.0",
-    "@seldon/factory": "0.0.0",
-    "@seldon/hari": "0.0.0"
+    "@seldon/factory": "0.0.0"
   },
   "volta": {
     "node": "22.23.1"

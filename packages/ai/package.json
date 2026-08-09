@@ -1,7 +1,6 @@
 {
   "name": "@seldon/ai",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "description": "Local AI orchestration that turns chat into Seldon workspace actions.",
   "license": "SEE LICENSE IN ../../license/noncommercial/LICENSE.md",
@@ -33,28 +32,29 @@
     "index.ts",
     "orchestrate.ts",
     "types.ts",
+    "mcp",
     "pi",
     "prompt",
     "repair",
     "schema",
     "scripts",
+    "server",
     "README.md",
     "!**/*.test.ts",
     "!**/*.test.tsx"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core --external @earendil-works/pi-ai --external @earendil-works/pi-coding-agent index.ts dist/index.js",
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core --external @seldon/factory --external @earendil-works/pi-ai --external @earendil-works/pi-coding-agent index.ts dist/index.js",
     "ollama:ensure": "node scripts/ensure-ollama.mjs",
     "ollama:kill": "pkill -f 'ollama serve' || true",
     "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json",
-    "prepublishOnly": "echo 'Publishing @seldon/ai is blocked. See PUBLISHING.md to unlock.' && exit 1"
-  },
+    "typecheck": "tsc -p tsconfig.json"  },
   "dependencies": {
-    "@earendil-works/pi-ai": "^0.80.6",
-    "@earendil-works/pi-coding-agent": "^0.80.6",
+    "@earendil-works/pi-ai": "0.80.6",
+    "@earendil-works/pi-coding-agent": "0.80.6",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "@seldon/core": "0.0.0",
+    "@seldon/factory": "0.0.0",
     "typebox": "^1.3.6"
   },
   "devDependencies": {

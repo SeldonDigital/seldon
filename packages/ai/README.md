@@ -42,6 +42,10 @@ The package groups a few parts that work together:
 | **Editor context** | Build the per-turn editor context by scope | [pi/editor-context.ts](./pi/editor-context.ts) |
 | **Tools** | Mutation and read tools, shared by Pi and MCP | [tools/](./tools) |
 | **Pi adapter** | Map the shared tools onto one Pi turn | [pi/adapter.ts](./pi/adapter.ts) |
+| **Agent handler** | Run a chat turn and report models for a server route | [server/agent.ts](./server/agent.ts) |
+| **MCP server** | Build a transport-neutral MCP server over a host | [mcp/server.ts](./mcp/server.ts) |
+| **Headless host** | Run the engine in memory over a file-backed store | [mcp/headless-host.ts](./mcp/headless-host.ts) |
+| **Workspace store** | Read and write the shared `.seldon/workspaces` files | [mcp/store.ts](./mcp/store.ts) |
 | **Context sections** | Build the reusable context blocks | [prompt/context-sections/](./prompt/context-sections) |
 | **Repair** | Fix common shape mistakes before validation | [repair/normalize-actions.ts](./repair/normalize-actions.ts) |
 | **Design semantics** | Map a design concept to a property, token, or verb | `@seldon/core` `rules/config/design-semantics.config.ts` |
@@ -49,7 +53,7 @@ The package groups a few parts that work together:
 | **Action schema** | List the allowed actions and their payload specs | [schema/action-schema.ts](./schema/action-schema.ts) |
 | **Model** | Resolve the local Ollama model for Pi | [pi/model.ts](./pi/model.ts) |
 
-The package imports workspace types, catalogs, and compute from `@seldon/core`. It does not fork property or theme rules.
+The package imports workspace types, catalogs, and compute from `@seldon/core`, and the export from `@seldon/factory` for the headless host. It does not fork property or theme rules. The agent handler and MCP server are framework-neutral, so a Node server of any kind can mount them; `@seldon/hari` wires them to stdio and HTTP, and `@seldon/foundation` wires them to the editor dev server.
 
 ---
 

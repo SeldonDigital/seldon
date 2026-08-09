@@ -39,6 +39,12 @@ export type {
   McpHost,
   WorkspaceTarget,
 } from "./mcp/server"
+export { HeadlessHost } from "./mcp/headless-host"
+export { WorkspaceStore } from "./mcp/store"
+export type { HeadlessHostOptions } from "./mcp/headless-host"
+export type { StoreEntry } from "./mcp/store"
+export { agentConfig, runAgent, warmAgent } from "./server/agent"
+export type { AgentConfig, AgentRequestBody, AgentResult, WarmResult } from "./server/agent"
 export { clampedThinkingLevel, deriveModelThinking, resolvePiModelId } from "./pi/model"
 export type { ModelThinking, ThinkingLevelOption, ThinkingMenuOption } from "./pi/model"
 export type {

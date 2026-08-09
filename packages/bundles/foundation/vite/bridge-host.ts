@@ -1,16 +1,20 @@
 import { EditSession } from "@seldon/ai"
 
-import type { BridgeCommandType, BridgeContext, BridgeResult } from "../lib/mcp/bridge-protocol"
+import type {
+  BridgeCommandType,
+  BridgeContext,
+  BridgeResult,
+} from "../../../editor/shared/lib/mcp/bridge-protocol"
 import type {
   CheckpointInfo,
   ExportedFile,
+  HeadlessHost,
   McpExportOptions,
   McpHost,
   SelectionContext,
+  SelectionScope,
   WorkspaceTarget,
 } from "@seldon/ai"
-import type { HeadlessHost } from "@seldon/hari"
-import type { SelectionScope } from "@seldon/ai"
 import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ServerResponse } from "node:http"
 

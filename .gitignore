@@ -19,6 +19,9 @@ npm-debug.log*
 .vscode
 !.vscode/launch.json
 
+# Local Verdaccio registry storage
+.verdaccio-storage
+
 # Cursor editor swap files
 *.crswap
 

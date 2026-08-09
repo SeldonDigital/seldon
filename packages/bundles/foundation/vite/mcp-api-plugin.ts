@@ -1,7 +1,6 @@
 import path from "node:path"
 import { randomUUID } from "node:crypto"
-import { createSeldonMcpServer } from "@seldon/ai"
-import { HeadlessHost } from "@seldon/hari"
+import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 
 import { BridgeHost, BridgeHub } from "./bridge-host"
@@ -10,9 +9,9 @@ import {
   BRIDGE_EVENTS_PATH,
   BRIDGE_RESULT_PATH,
   MCP_PATH,
-} from "../lib/mcp/bridge-protocol"
+} from "../../../editor/shared/lib/mcp/bridge-protocol"
 
-import type { BridgeResult } from "../lib/mcp/bridge-protocol"
+import type { BridgeResult } from "../../../editor/shared/lib/mcp/bridge-protocol"
 import type { ServerResponse } from "node:http"
 import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
 

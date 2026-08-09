@@ -38,10 +38,10 @@ the server to whatever transport its runtime offers.
 
 There are two hosts:
 
-- `HeadlessHost` (from `@seldon/hari`) runs the engine in memory over a
-  file-backed store. No editor is involved. It reads and writes the same
-  `.seldon/workspaces` folder the editor uses.
-- `BridgeHost` (in the editor dev server) relays to a live editor tab and falls
+- `HeadlessHost` (from `@seldon/ai`, re-exported by `@seldon/hari`) runs the
+  engine in memory over a file-backed store. No editor is involved. It reads and
+  writes the same `.seldon/workspaces` folder the editor uses.
+- `BridgeHost` (from `@seldon/foundation`) relays to a live editor tab and falls
   back to a headless host when no tab has the target workspace open.
 
 ## Deployment scenarios
@@ -87,7 +87,7 @@ seldon-mcp --http --port 7355 --store ./.seldon/workspaces
 
 ### The editor bridge
 
-The editor dev server mounts `mcpApiPlugin` from `@seldon/editor/vite`. It serves
+The editor dev server mounts `mcpApiPlugin` from `@seldon/foundation/vite`. It serves
 the MCP endpoint at `/api/mcp` backed by a `BridgeHost`, plus the bridge's SSE
 stream and result endpoints the tab uses. Both apps register it in their
 `vite.config.ts` next to the other API plugins.
@@ -145,12 +145,12 @@ Configure the client to run `seldon-mcp --store <project>/.seldon/workspaces`.
 
 ### A consumer project on `@seldon/hari`
 
-Install `@seldon/hari`. It ships the `seldon-mcp` bin and the `HeadlessHost` and
-`WorkspaceStore` classes. To wire a custom transport, build the server yourself:
+Install `@seldon/hari`. It ships the `seldon-mcp` bin and re-exports the
+`HeadlessHost`, `WorkspaceStore`, and `createSeldonMcpServer` from `@seldon/ai`.
+To wire a custom transport, build the server yourself:
 
 ```typescript
-import { HeadlessHost } from "@seldon/hari"
-import { createSeldonMcpServer } from "@seldon/ai"
+import { HeadlessHost, createSeldonMcpServer } from "@seldon/hari"
 
 const host = new HeadlessHost({ storeDir: "./.seldon/workspaces" })
 const server = createSeldonMcpServer(host)
@@ -160,6 +160,17 @@ const server = createSeldonMcpServer(host)
 ### The editor bridge in a mounted editor
 
 A project that embeds the editor through `@seldon/foundation` gets the bridge
-from the dev-server plugin. Register `mcpApiPlugin({ root })` in the Vite config
-alongside `workspaceApiPlugin`, then open a workspace and point an MCP client at
+from the dev-server plugin. Register `mcpApiPlugin({ root })` from
+`@seldon/foundation/vite/mcp-api-plugin` in the Vite config alongside
+`workspaceApiPlugin`, then open a workspace and point an MCP client at
 `/api/mcp`.
+
+### Outside Vite
+
+The host and server are framework-neutral. `createSeldonMcpServer`,
+`HeadlessHost`, and `BridgeHost` have no Vite dependency, so any Node server can
+mount them. In Next.js, Express, or a plain `http` server, create the host once,
+call `createSeldonMcpServer(host)` per session, and hand the request and
+response to the MCP SDK's `StreamableHTTPServerTransport`. The `seldon-mcp` bin
+in `@seldon/hari` is the reference for the stdio and HTTP wiring. The Vite
+plugins in `@seldon/foundation` are the reference for the editor bridge routes.

@@ -1,7 +1,8 @@
 # @seldon/hari
 
-The headless Seldon engine with AI. One install that pulls in `@seldon/terminus`
-(engine plus factory) and `@seldon/ai` (local AI orchestration).
+The headless Seldon engine with AI. One install that pulls in the workspace
+engine (`@seldon/core`), the export factory (`@seldon/factory`), and local AI
+orchestration (`@seldon/ai`).
 
 Choose `hari` when a consumer app wants chat-driven edits on top of the headless
 load, edit, and export flow. It needs a local model host.
@@ -23,5 +24,5 @@ import { chatToActions, loadWorkspace, workspaceReducer } from "@seldon/hari"
 | Bundle | Pulls in | Choose when |
 | --- | --- | --- |
 | `@seldon/terminus` | core + factory | Headless load, edit, export. No AI, no editor. |
-| `@seldon/hari` | terminus + ai | You also want chat-driven edits from a local model. |
+| `@seldon/hari` | core + factory + ai | You also want chat-driven edits from a local model. |
 | `@seldon/foundation` | hari + editor | You embed the editor UI, not just the engine. |

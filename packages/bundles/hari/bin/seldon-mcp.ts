@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto"
 import { createServer } from "node:http"
-import { createSeldonMcpServer } from "@seldon/ai"
+import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
-
-import { HeadlessHost } from "../mcp/headless-host.js"
 
 import type { McpHost } from "@seldon/ai"
 import type { IncomingMessage, ServerResponse } from "node:http"

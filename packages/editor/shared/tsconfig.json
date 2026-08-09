@@ -19,8 +19,6 @@
       "@seldon/core/*": ["../../core/*"],
       "@seldon/factory": ["../../factory/index.ts"],
       "@seldon/factory/*": ["../../factory/*"],
-      "@seldon/ai": ["../../ai/index.ts"],
-      "@seldon/ai/*": ["../../ai/*"],
       "@seldon/editor/lib/*": ["./lib/*"]
     },
     "target": "ES2021"

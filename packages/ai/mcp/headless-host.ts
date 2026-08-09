@@ -2,7 +2,6 @@ import fs from "node:fs"
 import path from "node:path"
 import { randomUUID } from "node:crypto"
 import { pathToFileURL } from "node:url"
-import { EditSession, safeApply } from "@seldon/ai"
 import {
   createNodeExportAssetReader,
   createResolvedExportAssetReader,
@@ -10,7 +9,8 @@ import {
 } from "@seldon/factory"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 
-import { WorkspaceStore } from "./store.js"
+import { EditSession, safeApply } from "../tools"
+import { WorkspaceStore } from "./store"
 
 import type {
   CheckpointInfo,
@@ -18,7 +18,7 @@ import type {
   McpExportOptions,
   McpHost,
   WorkspaceTarget,
-} from "@seldon/ai"
+} from "./server"
 import type { ExportOptions } from "@seldon/factory"
 import type { Workspace } from "@seldon/core/workspace/types"
 

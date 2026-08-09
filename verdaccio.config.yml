@@ -1,0 +1,38 @@
+# Local Verdaccio registry for the @seldon packages. Start it with:
+#   npm run verdaccio
+# It stores packages under ./.verdaccio-storage (gitignored) and proxies every
+# non-@seldon package to the public npm registry through the `npmjs` uplink.
+storage: ./.verdaccio-storage
+
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+    cache: true
+
+packages:
+  "@seldon/*":
+    # Open access for local use. Anyone who can reach the registry can read and
+    # publish the @seldon scope. This is a local dev registry, not a public one.
+    access: $all
+    publish: $all
+    unpublish: $all
+
+  "@*/*":
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+
+  "**":
+    access: $all
+    publish: $authenticated
+    proxy: npmjs
+
+# Do not proxy publishes upstream, so a `npm publish` of @seldon never leaves the
+# local machine even if the scope rule is edited.
+publish:
+  allow_offline: true
+
+log:
+  type: stdout
+  format: pretty
+  level: warn
