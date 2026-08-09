@@ -35,11 +35,7 @@ export function selectTools(names: readonly string[]): SeldonTool[] {
 }
 
 export { DISCOVERY_TOOLS, MUTATION_TOOLS, SELECTION_TOOLS }
-export {
-  defineSeldonTool,
-  joinOrEmpty,
-  textResult,
-} from "./context"
+export { defineSeldonTool, joinOrEmpty, textResult } from "./context"
 export { EditSession, dryRun, safeApply } from "./session"
 export { buildIsolationClosure } from "./isolation"
 export { resolveNodeTarget } from "./resolve-target"

@@ -26,7 +26,8 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json",
-    "format": "node ../../scripts/format.mjs"  },
+    "format": "node ../../scripts/format.mjs"
+  },
   "exports": {
     ".": {
       "node": {

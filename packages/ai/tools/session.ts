@@ -7,10 +7,10 @@ import { collectDesignViolations } from "../repair/design-lint"
 import { normalizeActions } from "../repair/normalize-actions"
 import { resolveNodeTarget } from "./resolve-target"
 
-import type { CommitResult, PropertyEditArgs, SelectionContext, ToolContext } from "./context"
-import type { TargetResolution, TargetSpec } from "./resolve-target"
 import type { ActionRepair } from "../repair/normalize-actions"
 import type { RejectedActionResult } from "../types"
+import type { CommitResult, PropertyEditArgs, SelectionContext, ToolContext } from "./context"
+import type { TargetResolution, TargetSpec } from "./resolve-target"
 import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** True when applying an action left the working copy effectively unchanged. */
@@ -128,7 +128,12 @@ function boardKeyOfNode(workspace: Workspace, nodeId: string): BoardKey | undefi
 
 /** The outcome of applying one action against a working copy, before recording. */
 type ApplyOutcome =
-  | { status: "applied"; workspace: Workspace; normalized: WorkspaceAction[]; repairs: ActionRepair[] }
+  | {
+      status: "applied"
+      workspace: Workspace
+      normalized: WorkspaceAction[]
+      repairs: ActionRepair[]
+    }
   | { status: "ineffective" }
   | { status: "rejected"; reason: string }
 

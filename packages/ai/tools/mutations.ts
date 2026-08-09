@@ -1,3 +1,5 @@
+import { Type } from "typebox"
+
 import { findComponentSchema } from "@seldon/core/components/catalog"
 import { getPropertyOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import { getCatalogKeyForPropertyPath } from "@seldon/core/properties/schemas/helpers/property-path"
@@ -16,7 +18,6 @@ import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/compone
 import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { getNodeParentIndex } from "@seldon/core/workspace/helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import { Type } from "typebox"
 
 import { SHORTHAND_SIDES, isTaggedValue, propertyShape } from "../prompt/property-taxonomy"
 import { ALL_ACTION_TYPES } from "../schema/action-schema"
@@ -729,7 +730,8 @@ const nudge = defineSeldonTool({
     // A bare relative verb ("tighten") names both the concept and direction.
     const operation = resolveOperation(params.concept as string)
     const concept = operation?.concept ?? (params.concept as string)
-    const direction = (params.direction as "increase" | "decrease" | undefined) ?? operation?.direction
+    const direction =
+      (params.direction as "increase" | "decrease" | undefined) ?? operation?.direction
 
     if (!direction) {
       return `Nudge needs a direction for "${params.concept as string}". Pass direction "increase" or "decrease", or use a verb like "tighten" or "bolder".`
@@ -854,7 +856,10 @@ const setStateStyle = defineSeldonTool({
   }),
   run: (ctx, params) => {
     const workspace = ctx.getWorkspace()
-    const resolution = ctx.resolveTarget(params.target as TargetSpec, params.match as string | undefined)
+    const resolution = ctx.resolveTarget(
+      params.target as TargetSpec,
+      params.match as string | undefined,
+    )
 
     if (resolution.kind === "message") return resolution.text
 
@@ -906,7 +911,10 @@ const setNodeRef = defineSeldonTool({
     ),
   }),
   run: (ctx, params) => {
-    const resolution = ctx.resolveTarget(params.target as TargetSpec, params.match as string | undefined)
+    const resolution = ctx.resolveTarget(
+      params.target as TargetSpec,
+      params.match as string | undefined,
+    )
 
     if (resolution.kind === "message") return resolution.text
 

@@ -2,9 +2,8 @@ import { defineTool } from "@earendil-works/pi-coding-agent"
 
 import { selectTools, textResult } from "../tools"
 
+import type { EditSession, SeldonTool, SelectionContext, ToolContext } from "../tools"
 import type { ResolvedContext } from "./editor-context"
-import type { SeldonTool, SelectionContext, ToolContext } from "../tools"
-import type { EditSession } from "../tools"
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Maps the editor's resolved context onto the neutral selection the tools read. */

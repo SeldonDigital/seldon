@@ -2,22 +2,26 @@
 
 import { useDispatch } from "@app/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace, useHistoryStore } from "@app/workspace/hooks/use-history"
-import { getCurrentSelection, useStore as useSelectionStore } from "@app/workspace/hooks/use-selection"
+import {
+  getCurrentSelection,
+  useStore as useSelectionStore,
+} from "@app/workspace/hooks/use-selection"
 import { getResourceTargetId, getSelectionScope } from "@app/workspace/hooks/use-selection-scope"
 import { findActiveBoardKey } from "@seldon/editor/lib/ai/apply-report"
-import {
-  BRIDGE_EVENTS_PATH,
-  BRIDGE_RESULT_PATH,
-} from "@seldon/editor/lib/mcp/bridge-protocol"
+import { BRIDGE_EVENTS_PATH, BRIDGE_RESULT_PATH } from "@seldon/editor/lib/mcp/bridge-protocol"
 import { useEffect } from "react"
 
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 
-import type { BridgeCommand, BridgeContext, BridgeResult } from "@seldon/editor/lib/mcp/bridge-protocol"
 import type { Action } from "@seldon/core/index"
 import type { Workspace } from "@seldon/core/workspace/types"
+import type {
+  BridgeCommand,
+  BridgeContext,
+  BridgeResult,
+} from "@seldon/editor/lib/mcp/bridge-protocol"
 
 type Dispatch = ReturnType<typeof useDispatch>
 
@@ -104,7 +108,9 @@ export function useMcpBridge(workspaceId: string): void {
 
   useEffect(() => {
     if (!workspaceId) return
-    const source = new EventSource(`${BRIDGE_EVENTS_PATH}?workspace=${encodeURIComponent(workspaceId)}`)
+    const source = new EventSource(
+      `${BRIDGE_EVENTS_PATH}?workspace=${encodeURIComponent(workspaceId)}`,
+    )
 
     source.onmessage = (event: MessageEvent<string>) => {
       let result: BridgeResult

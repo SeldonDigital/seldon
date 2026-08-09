@@ -41,7 +41,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json",
-    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs"  },
+    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs"
+  },
   "peerDependencies": {
     "@seldon/ai": "0.0.0",
     "react": "^19.0.0",

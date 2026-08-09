@@ -48,7 +48,8 @@
     "ollama:ensure": "node scripts/ensure-ollama.mjs",
     "ollama:kill": "pkill -f 'ollama serve' || true",
     "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json"  },
+    "typecheck": "tsc -p tsconfig.json"
+  },
   "dependencies": {
     "@earendil-works/pi-ai": "0.80.6",
     "@earendil-works/pi-coding-agent": "0.80.6",

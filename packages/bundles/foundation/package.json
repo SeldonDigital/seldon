@@ -33,7 +33,8 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json"  },
+    "typecheck": "tsc -p tsconfig.json"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
     "@seldon/ai": "0.0.0",

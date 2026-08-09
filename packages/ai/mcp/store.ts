@@ -1,8 +1,8 @@
 import fs from "node:fs/promises"
 import path from "node:path"
 
-import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
+import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 

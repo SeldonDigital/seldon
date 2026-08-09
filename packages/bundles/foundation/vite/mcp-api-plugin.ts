@@ -1,15 +1,15 @@
-import path from "node:path"
 import { randomUUID } from "node:crypto"
-import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
+import path from "node:path"
 
-import { BridgeHost, BridgeHub } from "./bridge-host"
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
+import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 
 import {
   BRIDGE_EVENTS_PATH,
   BRIDGE_RESULT_PATH,
   MCP_PATH,
 } from "../../../editor/shared/lib/mcp/bridge-protocol"
+import { BridgeHost, BridgeHub } from "./bridge-host"
 
 import type { BridgeResult } from "../../../editor/shared/lib/mcp/bridge-protocol"
 import type { ServerResponse } from "node:http"

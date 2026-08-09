@@ -1,10 +1,7 @@
 import { chatToActions, warmModel } from "../orchestrate"
-import {
-  clampedThinkingLevel,
-  deriveModelThinking,
-  resolvePiModelId,
-} from "../pi/model"
+import { clampedThinkingLevel, deriveModelThinking, resolvePiModelId } from "../pi/model"
 
+import type { ModelThinking, ThinkingLevelOption } from "../pi/model"
 import type {
   AgentDebug,
   AgentMetrics,
@@ -14,7 +11,6 @@ import type {
   RejectedActionResult,
   SelectionScope,
 } from "../types"
-import type { ModelThinking, ThinkingLevelOption } from "../pi/model"
 import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 export type AgentRequestBody = {

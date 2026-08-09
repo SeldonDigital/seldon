@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto"
 import { createServer } from "node:http"
-import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
+
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
+import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 
 import type { McpHost } from "@seldon/ai"
 import type { IncomingMessage, ServerResponse } from "node:http"
@@ -117,6 +118,8 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-  process.stderr.write(`${error instanceof Error ? error.stack ?? error.message : String(error)}\n`)
+  process.stderr.write(
+    `${error instanceof Error ? (error.stack ?? error.message) : String(error)}\n`,
+  )
   process.exit(1)
 })

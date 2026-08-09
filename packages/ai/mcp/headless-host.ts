@@ -1,12 +1,14 @@
+import { randomUUID } from "node:crypto"
 import fs from "node:fs"
 import path from "node:path"
-import { randomUUID } from "node:crypto"
 import { pathToFileURL } from "node:url"
+
 import {
   createNodeExportAssetReader,
   createResolvedExportAssetReader,
   exportWorkspace,
 } from "@seldon/factory"
+
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 
 import { EditSession, safeApply } from "../tools"
@@ -19,8 +21,8 @@ import type {
   McpHost,
   WorkspaceTarget,
 } from "./server"
-import type { ExportOptions } from "@seldon/factory"
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { ExportOptions } from "@seldon/factory"
 
 /** How many revisions the per-target undo history keeps in memory. */
 const HISTORY_LIMIT = 100
@@ -208,9 +210,7 @@ export class HeadlessHost implements McpHost {
     const rootDirectory = monorepoRoot ?? this.exportRoot
     const assetReader = monorepoRoot
       ? createNodeExportAssetReader(monorepoRoot)
-      : createResolvedExportAssetReader(
-          pathToFileURL(path.join(this.exportRoot, "index.js")).href,
-        )
+      : createResolvedExportAssetReader(pathToFileURL(path.join(this.exportRoot, "index.js")).href)
 
     const componentsFolder = options?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
 

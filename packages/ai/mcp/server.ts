@@ -62,7 +62,10 @@ export interface McpHost {
   undo(targetId: string): Promise<{ version: number } | { message: string }>
   redo(targetId: string): Promise<{ version: number } | { message: string }>
   createCheckpoint(targetId: string, label?: string): Promise<CheckpointInfo>
-  restoreCheckpoint(targetId: string, id: string): Promise<{ version: number } | { message: string }>
+  restoreCheckpoint(
+    targetId: string,
+    id: string,
+  ): Promise<{ version: number } | { message: string }>
   listCheckpoints(targetId: string): Promise<CheckpointInfo[]>
   createWorkspace(options: { id?: string; label?: string }): Promise<{ id: string }>
 }
@@ -172,8 +175,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
 
     // An open transaction on this target accumulates; otherwise the call runs on
     // an ephemeral session that commits a bare write as one revision.
-    const inTransaction =
-      state.transaction !== undefined && state.transaction.targetId === targetId
+    const inTransaction = state.transaction !== undefined && state.transaction.targetId === targetId
     const session: ToolContext = inTransaction
       ? state.transaction!.session
       : await host.openSession(targetId, { prefer })
@@ -229,7 +231,10 @@ export function createSeldonMcpServer(host: McpHost): Server {
         if (targets.length === 0) return "No workspaces in the store."
 
         return targets
-          .map((t) => `${t.id}${t.label ? ` "${t.label}"` : ""} — ${t.mode}${t.editorConnected ? " (editor connected)" : ""}`)
+          .map(
+            (t) =>
+              `${t.id}${t.label ? ` "${t.label}"` : ""} — ${t.mode}${t.editorConnected ? " (editor connected)" : ""}`,
+          )
           .join("\n")
       },
     },
@@ -287,7 +292,10 @@ export function createSeldonMcpServer(host: McpHost): Server {
       inputSchema: withHostParams({
         type: "object",
         properties: {
-          framework: { type: "string", description: 'Export framework, for example "react" or "vue".' },
+          framework: {
+            type: "string",
+            description: 'Export framework, for example "react" or "vue".',
+          },
           styles: { type: "string", description: 'Style output, for example "css-properties".' },
           componentsFolder: { type: "string", description: "Output folder for components." },
         },
@@ -402,14 +410,19 @@ export function createSeldonMcpServer(host: McpHost): Server {
         "Capture the target workspace's current state as a named checkpoint. The agent-safe revert: restore_checkpoint re-applies it as a new revision, so it survives other writers.",
       inputSchema: withHostParams({
         type: "object",
-        properties: { label: { type: "string", description: "Optional label for the checkpoint." } },
+        properties: {
+          label: { type: "string", description: "Optional label for the checkpoint." },
+        },
         required: [],
       } as unknown as TSchema),
       run: async (args) => {
         const resolved = await resolveTargetId(args)
 
         if ("directive" in resolved) return resolved.directive
-        const checkpoint = await host.createCheckpoint(resolved.id, args.label as string | undefined)
+        const checkpoint = await host.createCheckpoint(
+          resolved.id,
+          args.label as string | undefined,
+        )
 
         return `Created checkpoint ${checkpoint.id} at revision ${checkpoint.version}.`
       },
@@ -420,7 +433,12 @@ export function createSeldonMcpServer(host: McpHost): Server {
         "Restore a checkpoint as a new revision, so it is itself undoable and does not clobber redo.",
       inputSchema: withHostParams({
         type: "object",
-        properties: { id: { type: "string", description: "Checkpoint id from create_checkpoint or list_checkpoints." } },
+        properties: {
+          id: {
+            type: "string",
+            description: "Checkpoint id from create_checkpoint or list_checkpoints.",
+          },
+        },
         required: ["id"],
       } as unknown as TSchema),
       run: async (args) => {

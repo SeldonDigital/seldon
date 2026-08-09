@@ -1,10 +1,11 @@
+import { Type } from "typebox"
+
 import { PropertyDisplayCategory } from "@seldon/core/properties/constants/property-display"
 import { computeNodeProperties } from "@seldon/core/workspace/compute/compute-node-properties"
 import { getComputedTheme as computeThemeById } from "@seldon/core/workspace/compute/compute-workspace-themes"
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
 import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
-import { Type } from "typebox"
 
 import {
   activeBoardSection,
@@ -28,8 +29,14 @@ import {
 } from "../prompt/context-sections/resource-board"
 import { selectionSection } from "../prompt/context-sections/selection"
 import { themeIdsSection } from "../prompt/context-sections/theme-ids"
-import { searchThemeTokensSection, themeTokensSection } from "../prompt/context-sections/theme-tokens"
-import { findNodesSection, workspaceBoardsSection } from "../prompt/context-sections/workspace-index"
+import {
+  searchThemeTokensSection,
+  themeTokensSection,
+} from "../prompt/context-sections/theme-tokens"
+import {
+  findNodesSection,
+  workspaceBoardsSection,
+} from "../prompt/context-sections/workspace-index"
 import {
   buildActionPayloadSpecs,
   buildActionReference,
@@ -57,7 +64,8 @@ function toPropertyCategory(value: string | undefined): PropertyDisplayCategory 
 const getActiveBoard = defineSeldonTool({
   name: "get_active_board",
   label: "Get Active Board",
-  description: "Return the active board's variant node trees: each node's id, level, and catalog id.",
+  description:
+    "Return the active board's variant node trees: each node's id, level, and catalog id.",
   kind: "read",
   parameters: Type.Object({}),
   run: (ctx) => {
@@ -250,7 +258,8 @@ const getComponentVocabulary = defineSeldonTool({
     catalogId: Type.String({ description: "Catalog id, for example button or text." }),
     category: Type.Optional(
       Type.String({
-        description: "One group: attributes, layout, appearance, typography, effects, accessibility.",
+        description:
+          "One group: attributes, layout, appearance, typography, effects, accessibility.",
       }),
     ),
   }),
@@ -585,7 +594,8 @@ const canInsert = defineSeldonTool({
     )
     const note = resolved.note ? `${resolved.note}\n` : ""
 
-    if (result.isValid) return `${note}Valid: ${resolved.id} may be inserted under ${String(params.parentId)}.`
+    if (result.isValid)
+      return `${note}Valid: ${resolved.id} may be inserted under ${String(params.parentId)}.`
 
     return `${note}Cannot insert ${resolved.id} under ${String(params.parentId)}: ${result.errors.join(" ")}`
   },

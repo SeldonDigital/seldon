@@ -1,8 +1,8 @@
+import type { SelectionScope } from "../types"
 import type { IsolationClosure } from "./isolation"
 import type { TargetResolution, TargetSpec } from "./resolve-target"
-import type { SelectionScope } from "../types"
-import type { TSchema } from "typebox"
 import type { Board, BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
+import type { TSchema } from "typebox"
 
 /**
  * The selection identity a turn acts within. It mirrors the editor's resolved

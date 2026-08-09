@@ -2,27 +2,28 @@ import { getCurrentWorkspace, useHistoryStore } from "@app/workspace/history-sto
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { findActiveBoardKey } from "@seldon/editor/lib/ai/apply-report"
-import {
-  BRIDGE_EVENTS_PATH,
-  BRIDGE_RESULT_PATH,
-} from "@seldon/editor/lib/mcp/bridge-protocol"
+import { BRIDGE_EVENTS_PATH, BRIDGE_RESULT_PATH } from "@seldon/editor/lib/mcp/bridge-protocol"
 import { resolveSelectionScope } from "@seldon/editor/lib/workspace/selection-scope"
 import { getComponent, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { onUnmounted, watch } from "vue"
 
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
   isMediaBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 
-import type { BridgeCommand, BridgeContext, BridgeResult } from "@seldon/editor/lib/mcp/bridge-protocol"
 import type { Action } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
+import type {
+  BridgeCommand,
+  BridgeContext,
+  BridgeResult,
+} from "@seldon/editor/lib/mcp/bridge-protocol"
 import type { Ref } from "vue"
 
 type Dispatch = ReturnType<typeof useDispatch>
@@ -32,6 +33,7 @@ function resolveResourceTargetId(workspace: Workspace): string | undefined {
   const selection = useSelectionStore()
 
   if (selection.selectedResourceEntry) return selection.selectedResourceEntry.id
+
   if (selection.selectedResourceItemKey) {
     return selection.selectedResourceItemKey.split(":")[2] || undefined
   }
@@ -58,7 +60,9 @@ function readContext(): BridgeContext {
   const workspace = getCurrentWorkspace()
   const selection = useSelectionStore()
   const node = selection.selectedNodeId ? getNode(workspace, selection.selectedNodeId) : null
-  const board = selection.selectedBoardId ? getComponent(workspace, selection.selectedBoardId) : null
+  const board = selection.selectedBoardId
+    ? getComponent(workspace, selection.selectedBoardId)
+    : null
   const selected = node ?? board
   const activeBoard = selected
     ? isBoard(selected)

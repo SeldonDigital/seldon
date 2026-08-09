@@ -229,7 +229,13 @@ export class BridgeHost implements McpHost {
     const context = await this.context(targetId)
     const id = `cp-${this.checkpoints.length + 1}`
 
-    this.checkpoints.push({ id, version: context.version, workspace: context.workspace, targetId, label })
+    this.checkpoints.push({
+      id,
+      version: context.version,
+      workspace: context.workspace,
+      targetId,
+      label,
+    })
 
     return { id, version: context.version, label }
   }
@@ -244,7 +250,9 @@ export class BridgeHost implements McpHost {
 
     if (!checkpoint) return this.fallback.restoreCheckpoint(targetId, id)
     if (!this.hub.hasClient(targetId)) {
-      return { message: `Checkpoint ${id} was captured from a live tab. Reopen the workspace in the editor to restore it.` }
+      return {
+        message: `Checkpoint ${id} was captured from a live tab. Reopen the workspace in the editor to restore it.`,
+      }
     }
     const result = await this.hub.send(targetId, "adopt", { workspace: checkpoint.workspace })
 

@@ -1,11 +1,12 @@
+import { Type } from "typebox"
+
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
-import { Type } from "typebox"
 
 import { defineSeldonTool } from "./context"
 
-import type { SeldonTool } from "./context"
 import type { SelectionScope } from "../types"
+import type { SeldonTool } from "./context"
 import type { TargetSpec } from "./resolve-target"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 

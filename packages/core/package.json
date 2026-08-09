@@ -24,7 +24,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "node ../../scripts/format.mjs",
     "icons": "node ../../scripts/generate-icons.mjs",
-    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"  },
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
+  },
   "exports": {
     ".": {
       "node": {
