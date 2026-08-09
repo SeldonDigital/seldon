@@ -133,6 +133,30 @@ is preserved.
 
 ## Setup recipes
 
+### Connecting a client
+
+For per-client setup, use the `@seldon/hari` README as the reference. It covers
+Cursor, Codex CLI, and Claude Code with verified config snippets:
+[../packages/bundles/hari/README.md](../packages/bundles/hari/README.md).
+
+Set this up per project, not globally, so the server runs only where the store
+is. Point every client at the same `.seldon/workspaces` directory.
+
+Common gotchas:
+
+- Cursor shows no servers at all. An empty or invalid `~/.cursor/mcp.json` stops
+  Cursor from loading every MCP config. Make it `{}` or delete it.
+- The `seldon` server is missing from the list. The Customize MCPs page filters
+  by a personal-vs-project scope dropdown. Switch it to the project.
+- A Cursor stdio entry needs `"type": "stdio"`. Without it the server does not
+  load.
+- The status reads `disconnected`. That is not an error. It means known but not
+  started.
+- Use a local Agent chat, not the cloud Agents window. A cloud agent cannot spawn
+  a local stdio server.
+- Codex config is TOML, not JSON. The table key is `mcp_servers` with an
+  underscore.
+
 ### An MCP client that spawns a stdio server
 
 Build the packages, then point the client at the bin:

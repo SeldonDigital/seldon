@@ -18,6 +18,7 @@ interface InitOptions {
 
 /** The Cursor MCP server entry `init` writes so the client can spawn this bin over stdio. */
 interface McpServerEntry {
+  type: "stdio"
   command: string
   args: string[]
 }
@@ -102,7 +103,7 @@ async function writeCursorConfig(
   const servers = (config.mcpServers as Record<string, McpServerEntry> | undefined) ?? {}
   const added = servers.seldon === undefined
 
-  servers.seldon = { command: "npx", args: ["seldon-mcp", "--store", storeArg] }
+  servers.seldon = { type: "stdio", command: "npx", args: ["seldon-mcp", "--store", storeArg] }
   config.mcpServers = servers
 
   await fs.mkdir(cursorDir, { recursive: true })
@@ -175,7 +176,9 @@ function printSummary(input: SummaryInput): void {
   const lines = ["", "Seldon MCP initialised.", ""]
 
   lines.push(`  Store:   ${input.storeDir}`)
-  lines.push(`  Config:  ${input.config.path} (seldon server ${input.config.added ? "added" : "updated"})`)
+  lines.push(
+    `  Config:  ${input.config.path} (seldon server ${input.config.added ? "added" : "updated"})`,
+  )
 
   if (input.seeded) {
     lines.push(`  Seeded:  "${input.seeded.label}" (${input.seeded.id})`)
@@ -185,7 +188,7 @@ function printSummary(input: SummaryInput): void {
 
   lines.push("")
   lines.push("Next steps:")
-  lines.push("  1. Reload Cursor, or open Settings > MCP and enable the \"seldon\" server.")
+  lines.push('  1. Reload Cursor, or open Settings > MCP and enable the "seldon" server.')
   lines.push("  2. Ask your agent to list workspaces, then add a component to the seeded one.")
   lines.push("  3. Run the editor separately to view edits live; it shares this store.")
   lines.push("")

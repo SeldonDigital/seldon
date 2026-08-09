@@ -19,11 +19,16 @@ import { chatToActions, loadWorkspace, workspaceReducer } from "@seldon/hari"
 - How a host drives the engine: [../../../docs/host-contract.md](../../../docs/host-contract.md)
 - Local model setup and AI status: [../../ai/README.md](../../ai/README.md)
 
-## MCP quickstart
+## Connect an AI client
 
 `hari` ships the `seldon-mcp` bin. It serves a project's workspace store to an MCP
-client such as Cursor, so an agent can read and edit the design through Seldon's
-core and factory.
+client such as Cursor, Codex CLI, or Claude Code, so an agent reads and edits the
+design through Seldon's core and factory.
+
+Set this up per project, not globally, so the server only runs where the store
+lives. Point every client at the same store directory, `.seldon/workspaces`.
+
+### Cursor quickstart
 
 From your project root:
 
@@ -38,8 +43,9 @@ npx seldon-mcp init
 - Adds a `seldon` server to `.cursor/mcp.json` and keeps any other servers.
 - Seeds one starter workspace named after your project when the store is empty.
 
-Reload Cursor, or open Settings > MCP and enable the `seldon` server. Then ask
-your agent to list workspaces and edit the seeded one.
+Reload Cursor. Open Settings, then MCP, switch the scope to this project, and
+enable the `seldon` server. Ask your agent to list workspaces and edit the seeded
+one.
 
 Options:
 
@@ -47,7 +53,71 @@ Options:
 - `npx seldon-mcp init --source <file>` seeds from an existing workspace file
   instead of a blank one.
 
-To run the server by hand instead of letting the client spawn it:
+### Cursor manual config
+
+To write the config yourself, add a project-scoped `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "seldon": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["seldon-mcp", "--store", "${workspaceFolder}/.seldon/workspaces"]
+    }
+  }
+}
+```
+
+`"type": "stdio"` is required. Without it Cursor does not load the server.
+`${workspaceFolder}` is the folder that holds `.cursor/mcp.json`, so the store
+path stays correct no matter where the server spawns.
+
+### Codex CLI
+
+Codex reads TOML, not JSON. Add the server to the user config at
+`~/.codex/config.toml`, or to a trusted project config at `.codex/config.toml`:
+
+```toml
+[mcp_servers.seldon]
+command = "npx"
+args = ["seldon-mcp", "--store", ".seldon/workspaces"]
+```
+
+Or run `codex mcp add seldon -- npx seldon-mcp --store .seldon/workspaces`. The
+table key is `mcp_servers` with an underscore. A relative `--store` resolves
+against the directory where `codex` runs.
+
+### Claude Code
+
+Add a project-scoped `.mcp.json` at the project root:
+
+```json
+{
+  "mcpServers": {
+    "seldon": {
+      "command": "npx",
+      "args": ["seldon-mcp", "--store", ".seldon/workspaces"]
+    }
+  }
+}
+```
+
+Or run
+`claude mcp add --scope project --transport stdio seldon -- npx seldon-mcp --store .seldon/workspaces`.
+Claude Code asks to approve a project server on first use. Manage servers with
+`/mcp`. Reset approvals with `claude mcp reset-project-choices`.
+
+### Project scope vs global scope
+
+Prefer project scope so the server runs only where the store is. Use a global
+config, such as `~/.cursor/mcp.json`, only when you want the server everywhere.
+In Cursor a project entry wins over a global entry with the same name, with no
+merge.
+
+## Run the server by hand
+
+To run the server yourself instead of letting the client spawn it:
 
 ```bash
 seldon-mcp --store .seldon/workspaces            # stdio
@@ -64,15 +134,31 @@ Each workspace is one `<id>.json` file, and the directory listing is the index.
 Point the editor's workspace API and `seldon-mcp` at the same directory and both
 see the same records.
 
+The editor serves this store only when it runs at the project root. Opening a
+file in the editor imports it into the current store. It does not switch which
+store the editor serves.
+
 A file such as `project.react.json` under `.seldon` is an export artifact, not a
 store record. Do not point `--store` at it.
 
 ## Troubleshooting
 
+- Cursor shows no servers at all. An empty or invalid `~/.cursor/mcp.json` stops
+  Cursor from loading every MCP config. Make it `{}` or delete it.
+- The `seldon` server is missing from the list. The Customize MCPs page filters
+  by a personal-vs-project scope dropdown. Switch it to this project. The
+  marketplace Browse view is a different list.
+- The status reads `disconnected`. That is not an error. It means known but not
+  started. Enable the server or use it once.
+- Use a local Agent chat, not the cloud Agents window. A cloud agent cannot spawn
+  a local stdio server.
+- To see errors in Cursor, open the Output panel and pick the MCP Logs channel.
+- `npx seldon-mcp` must resolve. Install `@seldon/hari` in the project. Otherwise
+  point `command` at `node` and `args` at
+  `./node_modules/@seldon/hari/dist/bin/seldon-mcp.js`.
+- Codex config is TOML. Pasting Cursor or Claude JSON will not work.
 - The agent reports no workspaces. Run `npx seldon-mcp init`, or ask it to call
   `workspace_create`.
-- The `seldon` server is missing. Reload Cursor after `init`, and check that
-  `.cursor/mcp.json` has a `seldon` entry under `mcpServers`.
 
 ## Bundles
 
