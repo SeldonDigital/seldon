@@ -56,7 +56,10 @@ async function remove(id: string): Promise<void> {
 }
 
 async function duplicate(record: StoredWorkspace): Promise<void> {
-  const copy = setWorkspaceLabel({ value: `${workspaceName(record)} copy` }, record.workspace)
+  // A fresh id keeps the copy from overwriting the record it came from, so the
+  // original and the duplicate both survive.
+  const renamed = setWorkspaceLabel({ value: `${workspaceName(record)} copy` }, record.workspace)
+  const copy = withFreshWorkspaceId(renamed)
 
   await createStoredWorkspace(copy)
   await refresh()
@@ -140,7 +143,7 @@ onMounted(refresh)
 <template>
   <main class="home">
     <h1 class="home-title">{{ HOME_CONTENT.title }}</h1>
-    <p class="home-subtitle">{{ HOME_CONTENT.subtitle("React") }}</p>
+    <p class="home-subtitle">{{ HOME_CONTENT.subtitle("Vue") }}</p>
 
     <div class="home-actions">
       <button class="home-create" @click="create">

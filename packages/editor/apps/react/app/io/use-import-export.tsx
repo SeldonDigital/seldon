@@ -27,6 +27,10 @@ import {
   saveExportTarget,
 } from "@seldon/editor/lib/storage/export-target-store"
 import {
+  createStoredWorkspace,
+  withFreshWorkspaceId,
+} from "@seldon/editor/lib/storage/workspace-store"
+import {
   describeExportCollisions,
   detectExportCollisions,
   hasExportCollisions,
@@ -36,6 +40,7 @@ import { useCallback } from "react"
 
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
+import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { LocalExportOptions } from "@seldon/editor/lib/export/run-local-export"
@@ -50,15 +55,33 @@ export function useImportExport() {
 
   const workspaceName = workspace.metadata.label || "workspace"
 
+  // Downloads the current workspace as a JSON file, named after the workspace.
+  // The file keeps its `metadata.id` and `metadata.label`, so re-importing it
+  // resolves back to this workspace and shows the same name. To make a renamed,
+  // separate workspace, use `saveCopyAs`.
   const exportWorkspaceToFile = useCallback(async () => {
     const blob = new Blob([JSON.stringify(orderWorkspaceNodeKeys(workspace), null, 2)], {
       type: "application/json",
     })
-    const name = prompt("Enter name for your exported file", workspaceName) ?? workspaceName
 
-    if (!name) return
-    triggerDownload(blob, `${kebabCase(name)}.json`)
+    triggerDownload(blob, `${kebabCase(workspaceName)}.json`)
   }, [workspace, workspaceName])
+
+  // Saves a renamed duplicate of the current workspace as its own record. A
+  // fresh `metadata.id` keeps it from overwriting the original, and the entered
+  // name becomes its label. The user stays on the current workspace, so this is
+  // a snapshot they can open later from the home screen.
+  const saveCopyAs = useCallback(async () => {
+    const suggested = `${workspaceName} copy`
+    const input = prompt("Save a copy as", suggested)
+
+    if (input === null) return
+    const name = input.trim() || suggested
+    const copy = setWorkspaceLabel({ value: name }, withFreshWorkspaceId(workspace))
+
+    await createStoredWorkspace(copy)
+    addToast(`Saved copy "${name}"`)
+  }, [addToast, workspace, workspaceName])
 
   const exportSelectionToClipboard = useCallback(async () => {
     if (!selection) {
@@ -241,6 +264,7 @@ export function useImportExport() {
     importWorkspace,
     importWeb,
     exportWorkspaceToFile,
+    saveCopyAs,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     exportToFolder,

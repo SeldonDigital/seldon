@@ -78,6 +78,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
+    saveCopyAs,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -204,8 +205,14 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     },
     "separator",
     {
+      id: "save-copy-as",
+      label: "Save a Copy As…",
+      action: saveCopyAs,
+      visibleIn: ["edit"],
+    },
+    {
       id: "export-workspace",
-      label: "Save Workspace As…",
+      label: "Download Workspace…",
       action: exportWorkspaceToFile,
       visibleIn: ["edit"],
     },
