@@ -12,13 +12,14 @@ Write the code consistently first. Prettier only normalizes width, quotes, semic
 Layers own different things:
 
 - Author: how `const`, `if`, `return`, guards, blank lines, grouping, object literals, signatures, and interface order are written.
-- ESLint pins structure Prettier ignores: brace style (`curly: multi-line`), value-vs-type imports (`consistent-type-imports`), and required-before-optional interface order (`member-ordering`).
+- ESLint pins structure Prettier ignores: brace style (`curly: multi-line`), value-vs-type imports (`consistent-type-imports`), and member order in interfaces and classes (`member-ordering`), which covers required before optional, fields before methods, and public before private.
 - Prettier normalizes only: `printWidth: 100`, import grouping and type-import separation, quotes, semicolons, commas.
 
 ### Statements
 
 - One declaration per `const`. Do not pad every `const` with blank lines.
-- Use a single-line guard only when the whole guard fits, such as `if (!x) return`. Once the condition or body wraps, use braces on their own lines.
+- Use a single-line guard only when the whole line fits within `printWidth: 100`, such as `if (!x) return`. Once the condition or body wraps, use braces on their own lines.
+- Brace the guard from the start when the body is a long expression Prettier will wrap, such as a template literal or a call. A bare one-line `if (cond) return` whose body Prettier pushes onto the next line fails `curly: multi-line`, so never author `if (cond) return \`...long...\`` on one line.
 - Keep the same guard and return shape across a function. Do not mix one-line and braced forms for equivalent cases.
 
 ### Object literals
@@ -51,10 +52,12 @@ Layers own different things:
 - Prefer separate `import type` statements over inline `type` specifiers.
 - Within a value import, uppercase-initial names (SCREAMING_SNAKE constants and enum values) sort ahead of camelCase functions, so ALL_CAPS names cluster first and never break up a function list.
 
-### Interfaces
+### Interfaces and classes
 
 - Required fields first, then optional, grouped by concern. Keep member order consistent within a file.
 - Keep fields comment-free. Put any explanation in the interface's top JSDoc, or name the field so it needs none.
+- In a class, declare an index signature and fields before methods, and public members before private ones. Author the order by hand, because `member-ordering` reports these as warnings with no autofix.
+- Required-before-optional spans the whole class, methods included. An optional instance field placed before a method trips the rule, so declare it required with an explicit `undefined` such as `allowedNodeIds: Set<string> | undefined = undefined`.
 
 ### Examples
 
@@ -66,6 +69,19 @@ if (!resolved.id) {
   return textResult(resolved.message ?? "Unknown catalog id.")
 }
 const catalogId = resolved.id
+```
+
+A long body wraps under Prettier, so brace it from the start. Never author a bare one-line guard whose body is a long template literal:
+
+```typescript
+// Wrong: Prettier wraps the body onto the next line, which fails curly: multi-line.
+if (result.isValid)
+  return `Valid: ${resolved.id} may be inserted under ${String(params.parentId)}.`
+
+// Right: braces from the start.
+if (result.isValid) {
+  return `Valid: ${resolved.id} may be inserted under ${String(params.parentId)}.`
+}
 ```
 
 Value imports first, then a type block; constants ahead of functions:

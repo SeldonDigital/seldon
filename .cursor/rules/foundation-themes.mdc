@@ -98,5 +98,6 @@ When adding a stock theme:
 2. Create the stock file under `catalog/` with every section from `packages/core/themes/README.md`.
 3. Register it in `catalog/index.ts` by adding the import and including it in `STOCK_THEMES`.
 4. Do not edit token id unions unless adding reserved keys or sections.
+5. Verify per the Verification section in `.cursor/rules/foundation-engineering.mdc`. Run `npm run format:check`, `npm run lint:all`, and `npm run typecheck:all`, and clear every error and warning before reporting done.
 
 When adding a new token kind or section, update the matching types, values, constants, schemas, exports, and section ordering described in `packages/core/themes/README.md`.

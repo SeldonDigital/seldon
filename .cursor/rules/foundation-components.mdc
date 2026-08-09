@@ -143,3 +143,4 @@ When adding a component:
 5. Keep property keys and compound facets in documented order from `packages/core/properties/README.md`.
 6. Update `packages/core/components/catalog/index.ts` afterwards to include new components.
 7. Sync the catalog by invoking `@foundation-components-catalog`. It updates `packages/core/components/catalog/index.ts`, `packages/core/components/constants/index.ts`, and `packages/core/components/types/component-id.ts` from the schema files. Do not rely on a generation script.
+8. Verify per the Verification section in `.cursor/rules/foundation-engineering.mdc`. Run `npm run format:check`, `npm run lint:all`, and `npm run typecheck:all`, and clear every error and warning before reporting done.
