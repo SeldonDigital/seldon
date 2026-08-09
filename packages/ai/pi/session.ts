@@ -6,16 +6,14 @@ import {
   getAgentDir,
 } from "@earendil-works/pi-coding-agent"
 
+import { EditSession } from "../tools"
+import { buildPiTools, selectionFromResolved } from "./adapter"
 import { resolveContext } from "./editor-context"
 import { buildOllamaModel, clampedThinkingLevel, createPiAuth, supportsThinking } from "./model"
 import { buildPiSystemPrompt } from "./system-prompt"
-import { createContextTools } from "./tools/context"
-import { createMutationTools } from "./tools/mutations"
-import { createTurnState } from "./tools/turn-state"
 
 import type { EditorContextInput, ResolvedContext } from "./editor-context"
 import type { ThinkingLevelOption } from "./model"
-import type { PiTurnState } from "./tools/turn-state"
 import type { AgentSession } from "@earendil-works/pi-coding-agent"
 
 /**
@@ -35,7 +33,7 @@ export interface SeldonSessionOptions {
 
 export interface SeldonSession {
   session: AgentSession
-  state: PiTurnState
+  state: EditSession
   resolved: ResolvedContext
 }
 
@@ -74,19 +72,14 @@ export async function createSeldonSession(
   options: SeldonSessionOptions = {},
 ): Promise<SeldonSession> {
   const resolved = resolveContext(input)
-  const state = createTurnState(input.workspace)
 
-  // Carry the isolation closure onto the turn state so the shared `commit`
-  // chokepoint can reject out-of-closure edits and grow the allowed set as
+  // The turn runs on one shared edit session seeded from the request workspace
+  // and the resolved selection. It carries the isolation closure so the shared
+  // write model rejects out-of-closure edits and grows the allowed set as
   // in-scope inserts mint ids.
-  if (resolved.isolation) {
-    state.allowedNodeIds = new Set(resolved.isolation.allowedNodeIds)
-    state.allowedBoardKeys = new Set(resolved.isolation.allowedBoardKeys)
-  }
+  const state = new EditSession(input.workspace, selectionFromResolved(resolved))
 
-  const mutationTools = createMutationTools(state, resolved)
-  const contextTools = createContextTools(state, resolved)
-  const customTools = [...mutationTools, ...contextTools]
+  const customTools = buildPiTools(state)
   const toolNames = customTools.map((tool) => tool.name)
 
   // Thinking-capable models keep `reasoning: true` so Pi always emits the

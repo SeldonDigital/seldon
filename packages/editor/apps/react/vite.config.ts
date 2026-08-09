@@ -7,6 +7,7 @@ import { defineConfig } from "vite"
 import { agentApiPlugin } from "../../shared/vite/agent-api-plugin"
 import { exportApiPlugin } from "../../shared/vite/export-api-plugin"
 import { importWebApiPlugin } from "../../shared/vite/import-web-api-plugin"
+import { mcpApiPlugin } from "../../shared/vite/mcp-api-plugin"
 import { workspaceApiPlugin } from "../../shared/vite/workspace-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
@@ -26,6 +27,7 @@ export default defineConfig(({ mode }) => ({
     exportApiPlugin({ root: repoRoot }),
     agentApiPlugin(),
     importWebApiPlugin(),
+    mcpApiPlugin({ root: repoRoot }),
   ],
   define: {
     // @seldon/core reads process.env in browser code. Statically replace

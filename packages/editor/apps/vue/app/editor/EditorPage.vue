@@ -14,6 +14,7 @@ import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
 import HariController from "@app/palettes/hari/HariController.vue"
+import { useMcpBridge } from "@app/mcp/use-mcp-bridge"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
@@ -104,6 +105,8 @@ useWorkspaceAutosave()
 const status = ref<"loading" | "ready" | "missing">("loading")
 
 const workspaceId = computed(() => String(route.params.id))
+
+useMcpBridge(workspaceId)
 
 async function load(id: string): Promise<void> {
   status.value = "loading"

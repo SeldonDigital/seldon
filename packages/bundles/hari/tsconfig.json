@@ -22,5 +22,5 @@
       "@seldon/terminus": ["../terminus/dist/index.d.ts"]
     }
   },
-  "include": ["index.ts"]
+  "include": ["index.ts", "mcp/**/*.ts", "bin/**/*.ts"]
 }

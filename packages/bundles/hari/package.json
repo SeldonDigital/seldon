@@ -17,6 +17,9 @@
     "node": ">=22"
   },
   "sideEffects": false,
+  "bin": {
+    "seldon-mcp": "./dist/bin/seldon-mcp.js"
+  },
   "exports": {
     ".": {
       "node": {
@@ -31,15 +34,24 @@
   "files": [
     "dist",
     "index.ts",
+    "mcp",
+    "bin",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node ../../../scripts/bundle-package-entry.mjs --external @seldon/ai --external @seldon/factory --external @modelcontextprotocol/sdk index.ts dist/index.js && node ../../../scripts/bundle-package-entry.mjs --external @seldon/ai --external @seldon/factory --external @modelcontextprotocol/sdk bin/seldon-mcp.ts dist/bin/seldon-mcp.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prepublishOnly": "echo 'Publishing @seldon/hari is blocked. See PUBLISHING.md to unlock.' && exit 1"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@seldon/ai": "0.0.0",
+    "@seldon/core": "0.0.0",
+    "@seldon/factory": "0.0.0",
     "@seldon/terminus": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "typescript": "^5.8.3"
   }
 }

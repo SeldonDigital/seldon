@@ -55,9 +55,11 @@
     }
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@seldon/ai": "0.0.0",
     "@seldon/core": "0.0.0",
-    "@seldon/factory": "0.0.0"
+    "@seldon/factory": "0.0.0",
+    "@seldon/hari": "0.0.0"
   },
   "volta": {
     "node": "22.23.1"
