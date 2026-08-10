@@ -3,6 +3,7 @@
 import { Layout as LayoutComponent } from "@app/Layout"
 import { useMcpBridge } from "@app/mcp/use-mcp-bridge"
 import { useWorkspaceAutosave } from "@app/persistence/hooks/use-workspace-autosave"
+import { useWorkspaceRemoteRefresh } from "@app/persistence/hooks/use-workspace-remote-refresh"
 import { useWorkspaceSyncStatus } from "@app/project/hooks/use-workspace-sync-status"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
@@ -19,6 +20,7 @@ export function LocalWorkspaceShell({
   const isDirty = useWorkspaceSyncStatus(record.id)
 
   useWorkspaceAutosave(record, workspace, isDirty)
+  useWorkspaceRemoteRefresh(record, isDirty)
   useMcpBridge(record.id)
 
   return <LayoutComponent testId="canvas">{children}</LayoutComponent>

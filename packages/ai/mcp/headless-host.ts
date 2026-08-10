@@ -14,6 +14,7 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 import { EditSession, safeApply } from "../tools"
 import { WorkspaceStore } from "./store"
 
+import type { RejectedActionResult } from "../types"
 import type {
   CheckpointInfo,
   ExportedFile,
@@ -21,6 +22,7 @@ import type {
   McpHost,
   WorkspaceTarget,
 } from "./server"
+import type { StatToken } from "./store"
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { ExportOptions } from "@seldon/factory"
 
@@ -33,10 +35,26 @@ const DEFAULT_COMPONENTS_FOLDER = "components"
 interface TargetState {
   workspace: Workspace
   version: number
+  rev: string
+  loadedToken: StatToken | null
   history: Workspace[]
   historyIndex: number
   checkpoints: CheckpointRecord[]
   queue: Promise<unknown>
+}
+
+/** True when two stat tokens differ, treating a missing file as a change. */
+function tokenChanged(a: StatToken | null, b: StatToken | null): boolean {
+  if (a === null || b === null) return a !== b
+
+  return a.mtimeMs !== b.mtimeMs || a.size !== b.size
+}
+
+/** The message a commit throws when the workspace moved on disk under it. */
+function commitConflictMessage(rejected: RejectedActionResult[]): string {
+  const reasons = rejected.map((entry) => `${entry.type}: ${entry.reason}`).join(" ")
+
+  return `Commit conflict: the workspace changed on disk and none of this change's actions still apply. ${reasons} Re-read the current state and retry.`
 }
 
 interface CheckpointRecord {
@@ -141,10 +159,18 @@ export class HeadlessHost implements McpHost {
     const state = await this.getState(targetId)
 
     return this.enqueue(state, async () => {
-      // Re-apply the session's accepted actions against the current workspace,
-      // not the snapshot the session opened on, so a concurrent commit that
-      // landed first is preserved rather than overwritten.
+      // Rebase onto disk under the lock, not the snapshot the session opened on,
+      // so an editor autosave or a concurrent commit that landed first is
+      // preserved. safeApply reruns each action through the linter and reducer,
+      // so an action that no longer applies to the fresh base is rejected rather
+      // than clobbering the newer state.
+      await this.reloadIfDiverged(targetId, state)
       const result = safeApply(state.workspace, session.actions)
+
+      if (result.applied.length === 0 && result.rejected.length > 0) {
+        throw new Error(commitConflictMessage(result.rejected))
+      }
+
       const version = await this.adopt(targetId, state, result.workspace)
 
       return { version }
@@ -184,11 +210,17 @@ export class HeadlessHost implements McpHost {
     const state = await this.getState(targetId)
 
     return this.enqueue(state, async () => {
+      if (await this.reloadIfDiverged(targetId, state)) {
+        return {
+          message: "History reset: the workspace changed outside this session. Nothing to undo.",
+        }
+      }
+
       if (state.historyIndex === 0) return { message: "Nothing to undo." }
       state.historyIndex -= 1
       state.workspace = state.history[state.historyIndex]
       state.version += 1
-      await this.store.write(targetId, state.workspace)
+      await this.writeState(targetId, state)
 
       return { version: state.version }
     })
@@ -198,11 +230,17 @@ export class HeadlessHost implements McpHost {
     const state = await this.getState(targetId)
 
     return this.enqueue(state, async () => {
+      if (await this.reloadIfDiverged(targetId, state)) {
+        return {
+          message: "History reset: the workspace changed outside this session. Nothing to redo.",
+        }
+      }
+
       if (state.historyIndex >= state.history.length - 1) return { message: "Nothing to redo." }
       state.historyIndex += 1
       state.workspace = state.history[state.historyIndex]
       state.version += 1
-      await this.store.write(targetId, state.workspace)
+      await this.writeState(targetId, state)
 
       return { version: state.version }
     })
@@ -255,27 +293,55 @@ export class HeadlessHost implements McpHost {
     const id = options.id ?? workspace.metadata.id ?? randomUUID()
 
     await this.store.write(id, workspace)
-    this.seedState(id, workspace)
+    const fresh = await this.store.readWithRev(id)
+    const token = await this.store.statToken(id)
+
+    this.seedState(id, fresh?.entry.workspace ?? workspace, fresh?.rev ?? "", token)
 
     return { id }
   }
 
-  /** Loads a target into memory once, then serves it from the cache. */
+  /**
+   * Serves a target read-through over the store. It seeds on first touch, then
+   * reconciles: a cheap `stat` gates whether to reload, and a content-rev change
+   * reseeds from disk so an editor autosave or another writer is picked up
+   * without a restart.
+   */
   private async getState(id: string): Promise<TargetState> {
     const cached = this.states.get(id)
+    const token = await this.store.statToken(id)
 
-    if (cached) return cached
-    const entry = await this.store.read(id)
+    if (cached) {
+      if (!tokenChanged(cached.loadedToken, token)) return cached
+      const fresh = await this.store.readWithRev(id)
 
-    if (!entry) throw new Error(`No workspace "${id}" in the store.`)
+      if (fresh && fresh.rev !== cached.rev) {
+        this.reseedFromDisk(cached, fresh.entry.workspace, fresh.rev, token)
+      } else {
+        cached.loadedToken = token
+      }
 
-    return this.seedState(id, entry.workspace)
+      return cached
+    }
+
+    const fresh = await this.store.readWithRev(id)
+
+    if (!fresh) throw new Error(`No workspace "${id}" in the store.`)
+
+    return this.seedState(id, fresh.entry.workspace, fresh.rev, token)
   }
 
-  private seedState(id: string, workspace: Workspace): TargetState {
+  private seedState(
+    id: string,
+    workspace: Workspace,
+    rev: string,
+    token: StatToken | null,
+  ): TargetState {
     const state: TargetState = {
       workspace,
       version: 0,
+      rev,
+      loadedToken: token,
       history: [workspace],
       historyIndex: 0,
       checkpoints: [],
@@ -285,6 +351,37 @@ export class HeadlessHost implements McpHost {
     this.states.set(id, state)
 
     return state
+  }
+
+  /**
+   * Reloads a target from disk in place as a new baseline. An external write
+   * invalidates the in-memory undo history, so history resets to the disk state.
+   * Checkpoints survive as the agent-safe revert.
+   */
+  private reseedFromDisk(
+    state: TargetState,
+    workspace: Workspace,
+    rev: string,
+    token: StatToken | null,
+  ): void {
+    state.workspace = workspace
+    state.rev = rev
+    state.loadedToken = token
+    state.history = [workspace]
+    state.historyIndex = 0
+    state.version += 1
+  }
+
+  /** Reseeds from disk when the stored rev diverged from the cached one. */
+  private async reloadIfDiverged(id: string, state: TargetState): Promise<boolean> {
+    const fresh = await this.store.readWithRev(id)
+
+    if (!fresh || fresh.rev === state.rev) return false
+    const token = await this.store.statToken(id)
+
+    this.reseedFromDisk(state, fresh.entry.workspace, fresh.rev, token)
+
+    return true
   }
 
   /** Serializes work on one target so read-modify-write-persist stays atomic. */
@@ -299,6 +396,15 @@ export class HeadlessHost implements McpHost {
     return next
   }
 
+  /** Persists the state's current workspace and refreshes its rev and token. */
+  private async writeState(id: string, state: TargetState): Promise<void> {
+    await this.store.write(id, state.workspace)
+    const fresh = await this.store.readWithRev(id)
+
+    if (fresh) state.rev = fresh.rev
+    state.loadedToken = await this.store.statToken(id)
+  }
+
   /** Adopts a new workspace as one revision: records history and persists. */
   private async adopt(id: string, state: TargetState, workspace: Workspace): Promise<number> {
     state.workspace = workspace
@@ -308,7 +414,7 @@ export class HeadlessHost implements McpHost {
     if (state.history.length > HISTORY_LIMIT) state.history.shift()
     state.historyIndex = state.history.length - 1
     state.version += 1
-    await this.store.write(id, workspace)
+    await this.writeState(id, state)
 
     return state.version
   }
