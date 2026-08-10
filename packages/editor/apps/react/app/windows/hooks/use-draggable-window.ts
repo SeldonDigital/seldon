@@ -8,6 +8,11 @@ import type { BoundingBox } from "framer-motion"
 /** The smallest a floating window is drawn at, and the size one opens at by default. */
 export const MIN_WINDOW_SIZE = { width: 300, height: 300 }
 
+/** Bound a value to the inclusive range, used to keep a window inside the viewport. */
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max)
+}
+
 /**
  * Open windows that close on Escape, most recently opened last.
  *
@@ -131,13 +136,13 @@ export function useDraggableWindow({
     const unsubscribeWidth = width.on("change", (width) =>
       setDragConstraints((box) => ({
         ...box,
-        right: windowWidth - width,
+        right: getWindowInnerSize().width - width,
       })),
     )
     const unsubscribeHeight = height.on("change", (height) =>
       setDragConstraints((box) => ({
         ...box,
-        bottom: windowHeight - height,
+        bottom: getWindowInnerSize().height - height,
       })),
     )
 
@@ -145,7 +150,7 @@ export function useDraggableWindow({
       unsubscribeWidth()
       unsubscribeHeight()
     }
-  }, [width, height, windowWidth, windowHeight])
+  }, [width, height])
 
   // The latest close, held in a ref so the window registers once on open and keeps its place
   // in the stack, rather than re-registering to the top whenever `handleClose` changes.
@@ -161,22 +166,31 @@ export function useDraggableWindow({
   }, [closeOnEscape])
 
   /**
-   * Recalculate the drag constraints when the window is resized
+   * Recalculate the drag constraints when the window is resized, and pull the
+   * surface back into view. A shrunk viewport leaves a resting window past the
+   * new edge, and framer only applies constraints during a drag, so clamp its
+   * position here or its title bar and handles stay off screen and unreachable.
+   * A content-sized modal drags as an offset from center inside its overlay, so
+   * skip the clamp for it.
    */
   useEffect(() => {
     function handleResize() {
-      setDragConstraints({
-        top: 0,
-        left: 0,
-        right: windowWidth - width.get(),
-        bottom: windowHeight - height.get(),
-      })
+      const { width: viewportWidth, height: viewportHeight } = getWindowInnerSize()
+      const maxX = Math.max(0, viewportWidth - width.get())
+      const maxY = Math.max(0, viewportHeight - height.get())
+
+      if (!contentSized) {
+        x.set(clamp(x.get(), 0, maxX))
+        y.set(clamp(y.get(), 0, maxY))
+      }
+
+      setDragConstraints({ top: 0, left: 0, right: maxX, bottom: maxY })
     }
 
     window.addEventListener("resize", handleResize)
 
     return () => window.removeEventListener("resize", handleResize)
-  }, [width, height, windowWidth, windowHeight])
+  }, [x, y, width, height, contentSized])
 
   return {
     x,
