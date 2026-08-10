@@ -1,97 +1,56 @@
-# Seldon · Core, Editor, and Factory
+# Seldon · Core, Factory, and Editor
 
 [License: PolyForm Noncommercial](LICENSE.md)
 
-Seldon is a component-based design engine that consists of three main parts.
+Seldon is a component-based design engine. You give it an input, it processes that input, and it returns an output. The output is deterministic.
 
 ![Seldon Editor](screenshots/seldon-editor.png)
 
----
+A Seldon workspace is a single JSON file. Every change to it, whether a person clicks in the Editor or an AI agent calls a tool, runs through one reducer engine in Core and comes back as validated JSON. The Factory turns that workspace into production code and assets. There is no Docker setup and no external database in this repo. That is intentional.
 
-The [Seldon Core](packages/core/README.md) is the engine that defines component-based design systems. It ships a catalog of component building blocks, properties, and theme models those components use. It is also the processing engine for design workspace files.
+## What you can do with it
 
-Core owns design state and rules. Editors, agents, and other tools load a workspace, apply typed actions via the Core, and get validated JSON back. Workspaces can then be passed to the Factory for code and asset generation at any point in time.
-
----
-
-The [Seldon Factory](packages/factory/README.md) turns a Seldon workspace into production code. It consumes a workspace file and produces components, CSS, and processed assets. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
-
-Factory owns export and production code generation. It can be extended beyond one platform, since multiple factory pipelines can be supported. React is the default Factory for now.
+- Design with a catalog of components, properties, and theme tokens.
+- Edit locally in a browser Editor that needs no API, database, auth, or cloud service.
+- Export production code and assets with the Factory. React is the default target.
+- Drive the same edits from an AI agent, because a human and an agent both go through the same Core engine.
+- Connect an AI client such as Cursor, Codex CLI, or Claude Code over MCP.
 
 ---
 
-The [Seldon Editor](packages/editor/shared/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and stores workspaces, and needs no API, database, auth, or cloud service. It ships as two mirrored apps that share the same underlying logic and workspace files: a [React build](packages/editor/apps/react/README.md) on `localhost:5173` and a [Vue build](packages/editor/apps/vue/README.md) on `localhost:5174`.
+## The three parts
 
-A user opens a workspace with the Editor, edits components, and each action flows through the same Core reducer engine that an AI agent would use.
+The [Seldon Core](packages/core/README.md) is the engine that defines component-based design systems. It ships a catalog of component building blocks, properties, and the theme models those components use. It is also the processing engine for design workspace files. Core owns design state and rules. Editors, agents, and other tools load a workspace, apply typed actions through Core, and get validated JSON back. A workspace can then go to the Factory for code and asset generation at any time.
 
-The Editor that ships with this repo serves multiple purposes: to provide users with a graphical way to edit components, to consume components for dogfooding, and as a way to make sure no special code or logic is created that prevents an AI agent from executing the same set of actions.
+The [Seldon Factory](packages/factory/README.md) turns a Seldon workspace into production code. It consumes a workspace file and produces components, CSS, and processed assets. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file. Factory can be extended beyond one platform, since multiple factory pipelines can be supported. React is the default for now.
 
----
-
-There is no Docker setup, standalone API, or external database in this repo. This is intentional.
+The [Seldon Editor](packages/editor/shared/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and stores workspaces, and needs no API, database, auth, or cloud service. It ships as two mirrored apps that share the same logic and workspace files: a [React build](packages/editor/apps/react/README.md) on `localhost:5173` and a [Vue build](packages/editor/apps/vue/README.md) on `localhost:5174`. A user opens a workspace, edits components, and each action flows through the same Core reducer an agent would use. The Editor in this repo serves three purposes: it gives users a graphical way to edit components, it consumes components for dogfooding, and it proves no special code blocks an agent from running the same actions.
 
 ---
 
-This repository packages up these three pieces to be run on your machine. All of the code is out in the open.
+## The Monorepo and packages
 
-Why?
+This repo is an npm-workspaces monorepo. The parts above live under `packages`, and three bundle packages compose them for consumers:
 
-**We don't believe you need AI to write button code.**
+| Package | Pulls in | Choose when |
+| --- | --- | --- |
+| `@seldon/terminus` | core + factory | Headless load, edit, and export. No AI, no Editor. Use this if all you need to do is process Seldon workspace.json files for automated workflows. |
+| `@seldon/hari` | core + factory + ai | Allows for AI Agentic editing using local open source models via Ollama and Pi. If you want to use frontier models, then this allows for MCP 2.0 using `seldon-mcp` within your own IDE or other AI Agent product |
+| `@seldon/foundation` | core + factory + ai + editor | The full package, plus the Editor as a locally hosted web app to be used on your computer. |
 
-In fact, given the past nine months I've spent in the trenches getting Seldon to this point, I'm even more convinced that having AI and LLMs waste tokens, cycles, energy, and money on writing front-end code from scratch is largely a waste of time and money.
-
-Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost for everyone involved. We are spending far more time and money trying to rein in non-deterministic models instead of exploring the new ways AI can help us build products of the future.
-
-But if it's solved, what's the issue?
-
-Most front-end product problems lack a rigorous, structured approach to their design definitions, even when using design systems. Teams create some rigor to build products at scale, and yet they inevitably run into the handoff problem. At the heart of this is that design and code are disconnected.
-
-They have been for decades now.
-
-Add AI to that mix and what happens is massive overspend and more unnecessary complexity with the front-end code as models go off on all sorts of unnecessary tangents. AI handles the v.0 to v.1 jump amazingly well, but iterating past that to v.2, then to v.3 and beyond? That's where it crashes and burns. Throwing more data and compute at all of this will not solve the problem.
-
-It's not a problem that needs solving.
-
-What we do need is a structured approach to the design of components, in the same way PostScript gave print a language, and web standards gave browsers dependability. We need a way to define design for digital products that is rooted in code, while based on design practice.
-
-Once we have that structured approach with a standard JSON artifact, then we have the thing AI can manipulate. At this task LLMs really shine. Rather than attempting to make pseudo-random number generators try to behave deterministically by throwing massive amounts of data, energy, and money at them, all you need is for LLMs to manipulate JSON through an engine. Standardized data as the input, processed through a machine, generates deterministic output. It's the model we all use today in printers, web browsers, and telecommunications.
-
-The purpose of releasing Seldon into the wild is to provide a starting point that can evolve into that structure and architecture while also allowing for as many paths of exploration as possible. Paths that are far more interesting and include human beings as the ones driving what new tools and processes they need out of the technology.
-
----
-
-No one knows where the future will land.
-
-There are a lot of opinions out there about what LLMs and AI mean for humanity. Most of those opinions are based on a thin understanding of technology, or a cynical view of human beings. Many opinions about AI are just plain wrong and need to be called out directly. A few have real value.
-
-One thing that should become clear over time, however, is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write the code for a Button component.
-
----
-
-This is what Seldon offers:
-
-- A design workspace that is structured as a standard JSON file. This workspace contains components, playgrounds, themes, font collections, icon collections, and media.
-- A core engine that defines how everything in that JSON file can be manipulated. The Core engine has the code to create components, mutate data, transform data, and process it all to make sure a workspace is validated.
-- An editor run locally that works like traditional apps. The actions the editor can take are the same set of actions an AI agent can take.
-- A code factory that takes a workspace file and processes it to create code for targeted platforms. For starters, React. Later Swift, Java, or something else.
-
-Seldon is a machine.
-
-You give it an input, Seldon processes that input, and returns to you an output. Output that is entirely deterministic.
-
-Code that is deterministic. It just works.
+To hack on Seldon itself, clone this repo and run the Editor. See [Run locally](#run-locally). To use Seldon inside your own app, install one of the bundles. See [Use Seldon in your own app](#use-seldon-in-your-own-app).
 
 ---
 
 ## Prerequisites
 
-Install [Node.js](https://nodejs.org/en/download) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) before you run the Editor.
+Install [Node.js](https://nodejs.org/en/download) 22 and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) before you run the Editor. This repo pins Node 22 through [Volta](https://volta.sh/).
 
----
+Some Editor features, folder export and per-project workspace stores, use the browser File System Access API. Use a Chromium browser such as Chrome or Edge for those. Everything else works in any modern browser.
 
-## Run Locally
+## Run locally
 
-Once you have **Node.js** and **npm**, clone the repository from GitHub:
+Once you have Node.js and npm, clone the repository from GitHub:
 
 ```bash
 git clone https://github.com/SeldonDigital/seldon.git
@@ -111,13 +70,65 @@ npm install
 npm run dev
 ```
 
-The Editor is a single-page app built with [Vite](https://vite.dev/) and [React Router](https://reactrouter.com/). Its dependencies install when you run `npm install`. You do not install them separately.
+Open `http://localhost:5173` in your browser. The Editor is now running locally.
 
-`@seldon/core` and `@seldon/factory` are not tied to the editor. If you build your own editor, you can use any React setup, or no React at all for headless tooling.
+The Editor is a single-page app built with [Vite](https://vite.dev/) and [React Router](https://reactrouter.com/). Its dependencies install when you run `npm install` on this repo, so you do not install them separately. Run the Vue build with `npm run dev:vue` on `http://localhost:5174`.
 
----
+`@seldon/core` and `@seldon/factory` are not tied to the Editor. If you build your own editor, use any React setup or no React at all for headless tooling.
 
-Then open `http://localhost:5173` in your browser. You should now have the editor running locally.
+## Use Seldon in your own app
+
+Install one bundle for your case. Each is independent, so you update it on its own.
+
+Headless engine, load, edit, and export with no AI and no editor:
+
+```bash
+npm install @seldon/terminus
+```
+
+```typescript
+import { exportWorkspace, loadWorkspace, workspaceReducer } from "@seldon/terminus"
+```
+
+Headless engine with local-model chat, plus the `seldon-mcp` bin so an AI client can drive the design:
+
+```bash
+npm install @seldon/hari
+```
+
+```typescript
+import { chatToActions, loadWorkspace, workspaceReducer } from "@seldon/hari"
+```
+
+The full platform with the embeddable Editor UI. It ships as source for your bundler, so use it from a bundler-based app such as Vite or Next, not a plain Node script:
+
+```bash
+npm install @seldon/foundation
+```
+
+```typescript
+import { chatToActions, loadWorkspace } from "@seldon/foundation"
+```
+
+Guides for each bundle:
+
+- Terminus, load, edit, and export flow: [packages/bundles/terminus/README.md](packages/bundles/terminus/README.md)
+- Hari, chat and the AI loop: [packages/bundles/hari/README.md](packages/bundles/hari/README.md)
+- Foundation, embedding the Editor: [packages/bundles/foundation/README.md](packages/bundles/foundation/README.md)
+
+## Connect an AI agent
+
+`@seldon/hari` ships the `seldon-mcp` bin. It serves a project's workspace store to an MCP client such as Cursor, Codex CLI, or Claude Code, so an agent reads and edits the design through Core and Factory. From your project root:
+
+```bash
+npm install @seldon/hari
+npx seldon-mcp init
+```
+
+`init` creates the `.seldon/workspaces` store, adds a `seldon` server to `.cursor/mcp.json`, and seeds a starter workspace. Set this up per project, not globally, so the server runs only where the store is.
+
+- Per-client setup and troubleshooting: [packages/bundles/hari/README.md](packages/bundles/hari/README.md)
+- How the MCP server works and its deployment scenarios: [docs/mcp-guide.md](docs/mcp-guide.md)
 
 ---
 
@@ -131,8 +142,6 @@ npm run check
 ```
 
 Unit tests run on [Vitest](https://vitest.dev/) under Node. You do not need another runtime.
-
----
 
 Run a single check for a faster loop.
 
@@ -172,38 +181,33 @@ Reference bindings, which fail when a committed manifest falls behind the code t
 npm run bindings:check
 ```
 
----
-
 Every package also has its own `lint` and `typecheck`. At the root, a plain name targets the React editor and a `:vue` suffix targets the Vue one, so `npm run lint` and `npm run lint:vue` each lint one app. `npm run lint:shared` covers the framework-neutral `packages/editor/shared`.
 
 ---
 
 ## Where to go from here
 
-At the time of this writing, Seldon is just getting off the ground. It is missing features, behaviors, code export for Swift and Java, and other pieces. But rather than wait until it's all done—building all of this in a closed environment—we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
+At the time of this writing, Seldon is just getting off the ground. It is missing a few features, behaviors, code export for Swift and and other platforms. But rather than wait until it's all done, building all of this in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
 
-There's a lot to do. We need feedback on what is working, what is not, and what should be added sooner rather than later. "It's a process," as they say. By the end of the first year, we expect to have a fairly robust codebase that will be able to do a whole host of things not easily possible today—including a robust, locally run Editor that works as well as any design tool on the market. 
-
----
+There's a lot to do. We need feedback on what is working, what is not, and what should be added sooner rather than later. "It's a process," as they say. By the end of the first year, we expect to have a fairly robust codebase that will do a whole host of things not easily possible today, including a robust, locally run Editor that works as well as any design tool on the market.
 
 ### The Vault
 
-If you want the lowdown, these three documents are a great way to get into what this codebase offers, and where it is going.
+If you want the lowdown, these documents are a great way to get into what this codebase offers, and where it is going.
 
-- `packages/core` [packages/core/README.md](packages/core/README.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
-- `packages/editor` [packages/editor/shared/README.md](packages/editor/shared/README.md): Visual editor that runs on localhost
-- `packages/factory` [packages/factory/README.md](packages/factory/README.md): Component Export, CSS, and code generation from a valid workspace.json file
-
----
+- `packages/core` [packages/core/README.md](packages/core/README.md): the workspace, theme, and reducer logic an editor or agent uses to mutate workspace.json files
+- `packages/factory` [packages/factory/README.md](packages/factory/README.md): component export, CSS, and code generation from a valid workspace.json file
+- `packages/editor` [packages/editor/shared/README.md](packages/editor/shared/README.md): the visual editor that runs on localhost
+- `packages/ai` [packages/ai/README.md](packages/ai/README.md): local-model orchestration, the shared tool registry, and the MCP server
 
 ### The Prime Radiant
 
 - `packages/core/workspace` [packages/core/workspace/README.md](packages/core/workspace/README.md): TypeScript shapes for saved workspace files, rules, behaviors, and processing
-- `packages/core/components` [packages/core/components/README.md](packages/core/components/README.md): Schema shapes, hierarchy, and composition rules
-- `packages/core/properties` [packages/core/properties/README.md](packages/core/properties/README.md): Property types and values
-- `packages/core/themes` [packages/core/themes/README.md](packages/core/themes/README.md): Token sections, references, and stock themes
-- `packages/core/font-collections` [packages/core/font-collections/README.md](packages/core/font-collections/README.md): Font family collections, origins, and stacks
-- `packages/core/icon-sets` [packages/core/icon-sets/README.md](packages/core/icon-sets/README.md): Icon set catalog and icon ids
+- `packages/core/components` [packages/core/components/README.md](packages/core/components/README.md): schema shapes, hierarchy, and composition rules
+- `packages/core/properties` [packages/core/properties/README.md](packages/core/properties/README.md): property types and values
+- `packages/core/themes` [packages/core/themes/README.md](packages/core/themes/README.md): token sections, references, and stock themes
+- `packages/core/font-collections` [packages/core/font-collections/README.md](packages/core/font-collections/README.md): font family collections, origins, and stacks
+- `packages/core/icon-sets` [packages/core/icon-sets/README.md](packages/core/icon-sets/README.md): icon set catalog and icon ids
 
 ---
 

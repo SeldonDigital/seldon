@@ -116,3 +116,4 @@ When adding a property:
 4. Update `PROPERTY_DISPLAY_ORDER` and `schemas/data/property-schemas.ts` together.
 5. Export new values from `values/index.ts` and constants from `constants/index.ts` when needed.
 6. Keep option enums or maps beside the value module unless a shared constant is truly needed.
+7. Verify per the Verification section in `.cursor/rules/foundation-engineering.mdc`. Run `npm run format:check`, `npm run lint:all`, and `npm run typecheck:all`, and clear every error and warning before reporting done.

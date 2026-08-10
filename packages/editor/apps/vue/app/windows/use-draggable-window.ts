@@ -7,6 +7,11 @@ import type { Ref } from "vue"
 /** The size every floating window opens at, and the smallest it may be dragged to. */
 export const MIN_WINDOW_SIZE = { width: 300, height: 300 }
 
+/** Bound a value to the inclusive range, used to keep a window inside the viewport. */
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max)
+}
+
 /** Absolute rect of the window in viewport coordinates. */
 interface Rect {
   x: number
@@ -127,15 +132,22 @@ export function useDraggableWindow(options: DraggableWindowOptions) {
       cleanups.push(() => window.removeEventListener("keydown", onKey))
     }
 
+    // Recompute constraints on resize and pull the surface back into view. A
+    // shrunk viewport leaves a resting window past the new edge, and motion only
+    // applies constraints during a drag, so clamp its position here or its title
+    // bar and handles stay off screen and unreachable. A content-sized modal
+    // drags as an offset from center inside its overlay, so skip the clamp.
     const onWindowResize = () => {
       const size = getWindowInnerSize()
+      const maxX = Math.max(0, size.width - width.get())
+      const maxY = Math.max(0, size.height - height.get())
 
-      dragConstraints.value = {
-        top: 0,
-        left: 0,
-        right: size.width - width.get(),
-        bottom: size.height - height.get(),
+      if (!contentSized) {
+        x.set(clamp(x.get(), 0, maxX))
+        y.set(clamp(y.get(), 0, maxY))
       }
+
+      dragConstraints.value = { top: 0, left: 0, right: maxX, bottom: maxY }
     }
 
     window.addEventListener("resize", onWindowResize)

@@ -44,7 +44,9 @@
     "build:packages": "npm run build --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/ai --workspace @seldon/terminus --workspace @seldon/hari",
     "changeset": "changeset",
     "version": "changeset version",
-    "verify:packages": "node scripts/verify-packages.mjs"
+    "verify:packages": "node scripts/verify-packages.mjs",
+    "verdaccio": "npx --yes verdaccio --config verdaccio.config.yml",
+    "release:local": "node scripts/publish-local.mjs"
   },
   "repository": {
     "type": "git",

@@ -53,14 +53,15 @@ The two apps share the same structure and behavior. When you change behavior in 
 
 ### `vite/` — dev-server plugins
 
-The plugins serve local API routes during `dev` and `preview`. Both editors register the same plugins in their `vite.config.ts`.
+The plugins serve local API routes during `dev` and `preview`. This package ships the AI-free plugins. The AI editor-server plugins (`/api/agent` and `/api/mcp`) live in `@seldon/foundation` so the base editor does not pull the AI runtime.
 
 | Route | Plugin | Role |
 | --- | --- | --- |
 | `/api/workspaces` | [workspace-api-plugin.ts](./vite/workspace-api-plugin.ts) | Filesystem workspace store shared across editors |
 | `/api/export` | [export-api-plugin.ts](./vite/export-api-plugin.ts) | Runs the Factory export handler and returns files |
 | `/api/import` | [import-web-api-plugin.ts](./vite/import-web-api-plugin.ts) | Imports a workspace from the web |
-| `/api/agent` | [agent-api-plugin.ts](./vite/agent-api-plugin.ts) | Runs the local AI agent and streams its events |
+| `/api/agent` | `@seldon/foundation` `vite/agent-api-plugin.ts` | Runs the local AI agent and streams its events |
+| `/api/mcp` | `@seldon/foundation` `vite/mcp-api-plugin.ts` | Serves the MCP editor bridge for external agents |
 
 ### `public/` — shared assets
 
@@ -75,7 +76,7 @@ Each app resolves the shared code with path aliases in its `vite.config.ts`:
 - `@seldon/editor` points at this package for `lib/` logic and `vite/` plugins.
 - `@app` points at the app's own `app/` folder.
 - `@seldon/components` points at the app's own generated `seldon/` folder.
-- `@seldon/core`, `@seldon/factory`, and `@seldon/ai` point at their sibling packages.
+- `@seldon/core` and `@seldon/factory` point at their sibling packages. The client-side AI chat helpers under `lib/ai/` use `@seldon/ai` types only, so `@seldon/ai` is an optional peer of this package rather than a runtime dependency.
 
 An app imports shared logic as `@seldon/editor/lib/...`. For example, both apps route an image upload row through `@seldon/editor/lib/dialogs/image-upload-target`.
 
@@ -146,7 +147,7 @@ This is a dev-server capability. A static production build has no Node backend. 
 
 Each editor ships a local AI assistant that edits the workspace through the same action contract. The chat surface posts the message and current workspace to the local `/api/agent` route through the shared [lib/ai/run-agent-chat.ts](./lib/ai/run-agent-chat.ts).
 
-The route is served by [vite/agent-api-plugin.ts](./vite/agent-api-plugin.ts), which bundles the handler in [vite/agent-handler.ts](./vite/agent-handler.ts). The handler runs the agent from `@seldon/ai` in Node against a local Ollama model and streams its events back as newline-delimited JSON for live rendering.
+The route is served by the agent plugin in `@seldon/foundation` (`vite/agent-api-plugin.ts`), which bundles the agent handler from `@seldon/ai` (`server/agent.ts`). The handler runs the agent in Node against a local Ollama model and streams its events back as newline-delimited JSON for live rendering. The base editor stays AI-free; the apps register the foundation plugin in their `vite.config.ts`.
 
 The agent grounds on the workspace but does not mutate it. The turn returns typed **workspace actions**, and the app applies them through the one reducer as a single undo step, exactly like a manual edit. Extra endpoints cover session config and model warm-up.
 

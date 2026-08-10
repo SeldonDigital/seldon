@@ -1,7 +1,6 @@
 {
   "name": "@seldon/factory",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "description": "Seldon factory: exports a workspace to framework components (React, Vue) and emits the bindings scanner and rules.",
   "license": "SEE LICENSE IN ../../license/noncommercial/LICENSE.md",
@@ -27,8 +26,7 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json",
-    "format": "node ../../scripts/format.mjs",
-    "prepublishOnly": "echo 'Publishing @seldon/factory is blocked. See PUBLISHING.md to unlock.' && exit 1"
+    "format": "node ../../scripts/format.mjs"
   },
   "exports": {
     ".": {

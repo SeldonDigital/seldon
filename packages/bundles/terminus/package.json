@@ -1,7 +1,6 @@
 {
   "name": "@seldon/terminus",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "description": "Headless Seldon engine bundle: the workspace engine (@seldon/core) plus the export factory (@seldon/factory).",
   "license": "SEE LICENSE IN ../../../license/noncommercial/LICENSE.md",
@@ -35,8 +34,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "echo 'Publishing @seldon/terminus is blocked. See PUBLISHING.md to unlock.' && exit 1"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@seldon/core": "0.0.0",

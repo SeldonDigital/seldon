@@ -13,7 +13,9 @@
     "jsx": "react-jsx",
     "target": "ES2021",
     "paths": {
-      "@seldon/core/*": ["../core/*"]
+      "@seldon/core/*": ["../core/*"],
+      "@seldon/factory": ["../factory/index.ts"],
+      "@seldon/factory/*": ["../factory/*"]
     }
   },
   "include": ["**/*.ts"],

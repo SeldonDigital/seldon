@@ -12,6 +12,7 @@ import ImageUploadController from "@app/dialogs/image-upload/ImageUploadControll
 import LoadEditorFonts from "@app/editor/LoadEditorFonts.vue"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
+import { useMcpBridge } from "@app/mcp/use-mcp-bridge"
 import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
 import HariController from "@app/palettes/hari/HariController.vue"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
@@ -104,6 +105,8 @@ useWorkspaceAutosave()
 const status = ref<"loading" | "ready" | "missing">("loading")
 
 const workspaceId = computed(() => String(route.params.id))
+
+useMcpBridge(workspaceId)
 
 async function load(id: string): Promise<void> {
   status.value = "loading"

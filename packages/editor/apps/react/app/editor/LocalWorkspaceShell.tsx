@@ -1,6 +1,7 @@
 "use client"
 
 import { Layout as LayoutComponent } from "@app/Layout"
+import { useMcpBridge } from "@app/mcp/use-mcp-bridge"
 import { useWorkspaceAutosave } from "@app/persistence/hooks/use-workspace-autosave"
 import { useWorkspaceSyncStatus } from "@app/project/hooks/use-workspace-sync-status"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
@@ -18,6 +19,7 @@ export function LocalWorkspaceShell({
   const isDirty = useWorkspaceSyncStatus(record.id)
 
   useWorkspaceAutosave(record, workspace, isDirty)
+  useMcpBridge(record.id)
 
   return <LayoutComponent testId="canvas">{children}</LayoutComponent>
 }

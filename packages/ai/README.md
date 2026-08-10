@@ -40,7 +40,12 @@ The package groups a few parts that work together:
 | **Session** | Build the hermetic Pi session and gate thinking | [pi/session.ts](./pi/session.ts) |
 | **System prompt** | Hold the static rules for the agent | [pi/system-prompt.ts](./pi/system-prompt.ts) |
 | **Editor context** | Build the per-turn editor context by scope | [pi/editor-context.ts](./pi/editor-context.ts) |
-| **Tools** | Mutation and read tools the model calls | [pi/tools/](./pi/tools) |
+| **Tools** | Mutation and read tools, shared by Pi and MCP | [tools/](./tools) |
+| **Pi adapter** | Map the shared tools onto one Pi turn | [pi/adapter.ts](./pi/adapter.ts) |
+| **Agent handler** | Run a chat turn and report models for a server route | [server/agent.ts](./server/agent.ts) |
+| **MCP server** | Build a transport-neutral MCP server over a host | [mcp/server.ts](./mcp/server.ts) |
+| **Headless host** | Run the engine in memory over a file-backed store | [mcp/headless-host.ts](./mcp/headless-host.ts) |
+| **Workspace store** | Read and write the shared `.seldon/workspaces` files | [mcp/store.ts](./mcp/store.ts) |
 | **Context sections** | Build the reusable context blocks | [prompt/context-sections/](./prompt/context-sections) |
 | **Repair** | Fix common shape mistakes before validation | [repair/normalize-actions.ts](./repair/normalize-actions.ts) |
 | **Design semantics** | Map a design concept to a property, token, or verb | `@seldon/core` `rules/config/design-semantics.config.ts` |
@@ -48,7 +53,7 @@ The package groups a few parts that work together:
 | **Action schema** | List the allowed actions and their payload specs | [schema/action-schema.ts](./schema/action-schema.ts) |
 | **Model** | Resolve the local Ollama model for Pi | [pi/model.ts](./pi/model.ts) |
 
-The package imports workspace types, catalogs, and compute from `@seldon/core`. It does not fork property or theme rules.
+The package imports workspace types, catalogs, and compute from `@seldon/core`, and the export from `@seldon/factory` for the headless host. It does not fork property or theme rules. The agent handler and MCP server are framework-neutral, so a Node server of any kind can mount them; `@seldon/hari` wires them to stdio and HTTP, and `@seldon/foundation` wires them to the editor dev server.
 
 ---
 
@@ -155,9 +160,9 @@ flowchart TD
   prompt --> loop[Model calls tools until done]
   loop --> read[Read tools return reference data]
   loop --> mutate[Mutation tools propose one action each]
-  mutate --> commit[commit — repair, dry-run through reducer]
-  commit -->|reducer rejects| loop
-  commit -->|validated| accumulate[Record action in the working copy]
+  mutate --> propose[propose — repair, dry-run through reducer]
+  propose -->|reducer rejects| loop
+  propose -->|validated| accumulate[Record action in the working copy]
   loop --> reply[Assistant reply plus accumulated actions]
   reply --> caller[Caller applies actions through the reducer]
 ```
@@ -165,7 +170,7 @@ flowchart TD
 - **Session** is hermetic. [pi/session.ts](./pi/session.ts) turns off every file, skill, and extension tool, exposes only the Seldon tools, and runs the model in memory with compaction and retry off. The system prompt is a stable override, so its prefix stays cache-warm across turns.
 - **Context** is built once per turn by scope. See [Selection Scope](#selection-scope).
 - **Loop** is the model calling tools. Read tools return reference data. Mutation tools each propose one `WorkspaceAction`.
-- **Commit** validates each proposed action. See [Working Copy And Validation](#working-copy-and-validation).
+- **Propose** validates each proposed action. See [Working Copy And Validation](#working-copy-and-validation).
 - **Return** hands back the accumulated actions and a short reply. The caller applies the actions through the reducer. The harness never writes state.
 
 ---
@@ -195,7 +200,7 @@ The context starts at the narrowest useful scope and stays small. An instance tu
 
 The context is a small summary, not the full workspace file. It carries the node tree for the selection's scope with the ids to target, the settable values and value shapes for the selected component, the theme ids, and a scope directive that tells the model how edits behave this turn. The model needs identity and structure, not every property override.
 
-Each part is one context section under [prompt/context-sections/](./prompt/context-sections). [pi/editor-context.ts](./pi/editor-context.ts) builds the compact per-turn context, and the read tools in [pi/tools/context/](./pi/tools/context) surface the larger sections on demand, one tool per file. A section drops out when it has nothing to say. Keeping the heavy lists behind tools keeps the prompt small and the system-prompt cache warm, so the model pulls only what a given edit needs.
+Each part is one context section under [prompt/context-sections/](./prompt/context-sections). [pi/editor-context.ts](./pi/editor-context.ts) builds the compact per-turn context, and the read tools in [tools/discovery.ts](./tools/discovery.ts) surface the larger sections on demand. A section drops out when it has nothing to say. Keeping the heavy lists behind tools keeps the prompt small and the system-prompt cache warm, so the model pulls only what a given edit needs.
 
 ---
 
@@ -211,7 +216,7 @@ the design linter never drift. Three consumers read it:
 - `normalizeActions` resolves a descriptive word to a real theme token against
   the computed theme, so "big" becomes `@fontSize.xxlarge` without the model
   recalling the scale. It only returns a token the theme carries.
-- `commit` runs the design linter, which rejects an edit whose key the component
+- `propose` runs the design linter, which rejects an edit whose key the component
   cannot take, or whose option is out of range, and feeds the exact rule back to
   the model so it retargets.
 
@@ -225,15 +230,15 @@ by hand. `set_properties` stays as the low-level escape hatch.
 The narrow context means the target is not always on screen. Two mechanisms widen the search without bloating every prompt.
 
 - **`widen_scope`** climbs one level up the hierarchy. An instance widens to its parent, then the variant, then the board, then the whole workspace. A resource entry widens to its board's other entries, then the workspace. The model calls it when the current scope lacks the target.
-- **Target resolution** in [pi/tools/resolve-target.ts](./pi/tools/resolve-target.ts) turns a target into a node id, or a single terminal directive when it cannot. A miss returns a clarification, a candidate list, a permission ask, or a not-found. The tool makes no edit on a directive, so a scope miss ends in one deterministic step instead of a re-search loop. Node search also matches a node's visible string values, so a request like "the ABC heading" can find the node by its text.
+- **Target resolution** in [tools/resolve-target.ts](./tools/resolve-target.ts) turns a target into a node id, or a single terminal directive when it cannot. A miss returns a clarification, a candidate list, a permission ask, or a not-found. The tool makes no edit on a directive, so a scope miss ends in one deterministic step instead of a re-search loop. Node search also matches a node's visible string values, so a request like "the ABC heading" can find the node by its text.
 
 ---
 
 ## Working Copy And Validation
 
-The model never writes the workspace. All file tools are off, and each mutation tool only proposes a `WorkspaceAction`. The tools share one in-memory working copy seeded from the request workspace, in [pi/tools/turn-state.ts](./pi/tools/turn-state.ts).
+The model never writes the workspace. All file tools are off, and each mutation tool only proposes a `WorkspaceAction`. The tools share one in-memory working copy seeded from the request workspace, the `EditSession` in [tools/session.ts](./tools/session.ts).
 
-`commit` in [pi/tools/mutations/commit.ts](./pi/tools/mutations/commit.ts) handles each proposed action:
+`EditSession.propose` in [tools/session.ts](./tools/session.ts) handles each proposed action:
 
 1. Run the deterministic shape repair from [repair/normalize-actions.ts](./repair/normalize-actions.ts), which also resolves a descriptive word to a theme token.
 2. Run the design linter from [repair/design-lint.ts](./repair/design-lint.ts). On a violation, record it and throw, so the model reads the exact rule and retargets.
@@ -250,7 +255,7 @@ Adopting is guarded twice. The `set_workspace` dispatch runs the store's verific
 
 ## Tools
 
-Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one tool per file. Read tools are always present. Mutation tools for a resource are gated to that resource's scope, plus workspace, so a node or board turn keeps a small schema.
+Tools come in two groups, defined once in [tools/](./tools) and shared by Pi and MCP. [pi/adapter.ts](./pi/adapter.ts) maps the shared tools onto one Pi turn. Read tools are always present. Mutation tools for a resource are gated to that resource's scope, plus workspace, so a node or board turn keeps a small schema.
 
 **Mutation tools** propose actions from the curated subset in [schema/action-schema.ts](./schema/action-schema.ts).
 

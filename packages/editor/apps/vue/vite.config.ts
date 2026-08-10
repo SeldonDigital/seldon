@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url"
 import vue from "@vitejs/plugin-vue"
 import { defineConfig } from "vite"
 
-import { agentApiPlugin } from "../../shared/vite/agent-api-plugin"
+import { agentApiPlugin } from "../../../bundles/foundation/vite/agent-api-plugin"
+import { mcpApiPlugin } from "../../../bundles/foundation/vite/mcp-api-plugin"
 import { exportApiPlugin } from "../../shared/vite/export-api-plugin"
 import { importWebApiPlugin } from "../../shared/vite/import-web-api-plugin"
 import { workspaceApiPlugin } from "../../shared/vite/workspace-api-plugin"
@@ -28,6 +29,7 @@ export default defineConfig(({ mode }) => ({
     exportApiPlugin({ root: repoRoot }),
     importWebApiPlugin(),
     agentApiPlugin(),
+    mcpApiPlugin({ root: repoRoot }),
   ],
   define: {
     "process.env.NODE_ENV": JSON.stringify(mode),

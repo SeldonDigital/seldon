@@ -1,9 +1,8 @@
 {
   "name": "@seldon/foundation",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
-  "description": "The full Seldon platform: @seldon/hari (engine plus AI) and the embeddable editor library (@seldon/editor). Ships as source for a consumer bundler.",
+  "description": "The full Seldon platform: the workspace engine (@seldon/core), export factory (@seldon/factory), local AI orchestration (@seldon/ai), and the embeddable editor library (@seldon/editor), plus the AI editor-server plugins (agent chat and MCP bridge). Ships as source for a consumer bundler.",
   "license": "SEE LICENSE IN ../../../license/noncommercial/LICENSE.md",
   "repository": {
     "type": "git",
@@ -22,19 +21,31 @@
       "types": "./index.ts",
       "default": "./index.ts"
     },
+    "./vite/*": "./vite/*.ts",
     "./package.json": "./package.json"
   },
   "files": [
     "index.ts",
-    "README.md"
+    "vite",
+    "README.md",
+    "!**/*.test.ts",
+    "!**/*.test.tsx"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json",
-    "prepublishOnly": "echo 'Publishing @seldon/foundation is blocked. See PUBLISHING.md to unlock.' && exit 1"
+    "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@seldon/ai": "0.0.0",
+    "@seldon/core": "0.0.0",
     "@seldon/editor": "0.0.0",
-    "@seldon/hari": "0.0.0"
+    "@seldon/factory": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.8.3",
+    "vite": "^8.0.0"
   }
 }

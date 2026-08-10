@@ -129,6 +129,7 @@ export function useMenuConfig(): MenuConfig {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
+    saveCopyAs,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -286,8 +287,14 @@ export function useMenuConfig(): MenuConfig {
       },
       "separator",
       {
+        id: "save-copy-as",
+        label: "Save a Copy As…",
+        action: saveCopyAs,
+        visibleIn: ["edit"],
+      },
+      {
         id: "export-workspace",
-        label: "Save Workspace As…",
+        label: "Download Workspace…",
         action: exportWorkspaceToFile,
         visibleIn: ["edit"],
       },
@@ -305,6 +312,7 @@ export function useMenuConfig(): MenuConfig {
     openPanel,
     setActiveTool,
     exportWorkspaceToFile,
+    saveCopyAs,
     goToProjects,
     importWorkspaceFromFile,
     linkWorkspace,

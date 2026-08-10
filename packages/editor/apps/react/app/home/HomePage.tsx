@@ -1,6 +1,7 @@
 import { selectFile } from "@seldon/editor/lib/helpers/select-file"
 import { stripPlatformSuffix } from "@seldon/editor/lib/helpers/strip-platform-suffix"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
+import { activateBinding } from "@seldon/editor/lib/storage/workspace-binding-store"
 import {
   createStoredWorkspace,
   deleteStoredWorkspace,
@@ -65,6 +66,10 @@ export default function HomePage() {
       ? parsed
       : setWorkspaceLabel({ value: fileName }, parsed)
 
+    // When this id is already bound to a project store, route the import there
+    // rather than copying into the live store. A no-op when nothing is bound.
+    if (workspace.metadata.id) await activateBinding(workspace.metadata.id)
+
     const match = await findImportMatch(workspace)
 
     if (!match) {
@@ -106,6 +111,17 @@ export default function HomePage() {
     navigate(`/${record.id}`)
   }, [navigate, parseWorkspace])
 
+  // A bound workspace needs its folder grant re-taken before the open reads it,
+  // and a browser only grants during a gesture, so this runs in the click and
+  // navigates once the handle is live for the session.
+  const handleOpen = useCallback(
+    async (ws: StoredWorkspace) => {
+      if (ws.boundProject) await activateBinding(ws.id)
+      navigate(`/${ws.id}`)
+    },
+    [navigate],
+  )
+
   const handleDelete = useCallback(
     async (id: string) => {
       if (!confirm(HOME_CONTENT.deleteConfirm)) return
@@ -121,6 +137,7 @@ export default function HomePage() {
       loading={loading}
       onNew={handleNew}
       onImport={handleImport}
+      onOpen={handleOpen}
       onDelete={handleDelete}
     />
   )

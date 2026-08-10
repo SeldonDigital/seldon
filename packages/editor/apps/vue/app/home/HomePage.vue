@@ -2,6 +2,7 @@
 import { useToastStore } from "@app/toaster/toast-store"
 import { stripPlatformSuffix } from "@seldon/editor/lib/helpers/strip-platform-suffix"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
+import { activateBinding } from "@seldon/editor/lib/storage/workspace-binding-store"
 import {
   createStoredWorkspace,
   deleteStoredWorkspace,
@@ -45,8 +46,17 @@ function workspaceName(record: StoredWorkspace): string {
   return record.workspace.metadata.label || HOME_CONTENT.defaultWorkspaceName
 }
 
-function open(id: string): void {
-  router.push(`/${id}`)
+/** Where a workspace is stored: its bound project, or the editor's live store. */
+function storeLabel(record: StoredWorkspace): string {
+  return record.boundProject ? `Project: ${record.boundProject}` : "Local"
+}
+
+// A bound workspace needs its folder grant re-taken before the open reads it,
+// and a browser only grants during a gesture, so this runs in the click and
+// navigates once the handle is live for the session.
+async function open(record: StoredWorkspace): Promise<void> {
+  if (record.boundProject) await activateBinding(record.id)
+  router.push(`/${record.id}`)
 }
 
 async function remove(id: string): Promise<void> {
@@ -56,7 +66,10 @@ async function remove(id: string): Promise<void> {
 }
 
 async function duplicate(record: StoredWorkspace): Promise<void> {
-  const copy = setWorkspaceLabel({ value: `${workspaceName(record)} copy` }, record.workspace)
+  // A fresh id keeps the copy from overwriting the record it came from, so the
+  // original and the duplicate both survive.
+  const renamed = setWorkspaceLabel({ value: `${workspaceName(record)} copy` }, record.workspace)
+  const copy = withFreshWorkspaceId(renamed)
 
   await createStoredWorkspace(copy)
   await refresh()
@@ -85,6 +98,10 @@ async function onImportFile(event: Event): Promise<void> {
     const named = workspace.metadata.label
       ? workspace
       : setWorkspaceLabel({ value: name }, workspace)
+
+    // When this id is already bound to a project store, route the import there
+    // rather than copying into the live store. A no-op when nothing is bound.
+    if (named.metadata.id) await activateBinding(named.metadata.id)
 
     // A file exported from the editor keeps its `metadata.id`, so it resolves
     // back to the record it came from instead of duplicating. A rename is
@@ -140,7 +157,7 @@ onMounted(refresh)
 <template>
   <main class="home">
     <h1 class="home-title">{{ HOME_CONTENT.title }}</h1>
-    <p class="home-subtitle">{{ HOME_CONTENT.subtitle("React") }}</p>
+    <p class="home-subtitle">{{ HOME_CONTENT.subtitle("Vue") }}</p>
 
     <div class="home-actions">
       <button class="home-create" @click="create">
@@ -168,9 +185,13 @@ onMounted(refresh)
 
     <ul v-else class="home-list">
       <li v-for="ws in workspaces" :key="ws.id" class="home-item">
-        <button class="home-item__open" @click="open(ws.id)">
+        <button class="home-item__open" @click="open(ws)">
           <span class="home-item__name">{{ workspaceName(ws) }}</span>
-          <span class="home-item__meta"> {{ ws.lastEditor ?? "?" }} · {{ ws.updatedAt }} </span>
+          <span class="home-item__meta">
+            <span class="home-item__store">{{ storeLabel(ws) }}</span> ·
+            {{ ws.lastEditor ?? "?" }} ·
+            {{ ws.updatedAt }}
+          </span>
         </button>
         <button class="home-item__action" @click="duplicate(ws)">Duplicate</button>
         <button class="home-item__delete" @click="remove(ws.id)">
@@ -281,6 +302,11 @@ onMounted(refresh)
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
+}
+.home-item__store {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
 }
 .home-item__meta {
   font-size: 0.75rem;

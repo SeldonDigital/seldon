@@ -1,7 +1,20 @@
+import { createEmptyWorkspace } from "@seldon/core"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { restoreWorkspaceNodeIds } from "@seldon/core/workspace/helpers/nodes/restore-entry-node-ids"
 import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
+import {
+  deleteProjectRecord,
+  readProjectRecord,
+  writeProjectRecord,
+} from "./project-workspace-file"
+import {
+  deleteBinding,
+  getActiveHandle,
+  listBindings,
+  touchBinding,
+} from "./workspace-binding-store"
 
+import type { WorkspaceBindingEntry } from "./workspace-binding-store"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
@@ -32,6 +45,11 @@ export type StoredWorkspace = {
   workspace: Workspace
   updatedAt: string
   lastEditor?: EditorId
+  /**
+   * The project folder a bound workspace lives in, for the home label. Absent
+   * for a workspace in the editor's live store. Display only, never persisted.
+   */
+  boundProject?: string
 }
 
 /** A record as it may still sit on disk, before the name moved into the label. */
@@ -71,16 +89,48 @@ function readRecord(record: StoredWorkspaceOnDisk): StoredWorkspace {
   return { ...rest, workspace }
 }
 
+/**
+ * A bound workspace shown on the home list without opening its project folder.
+ * The label and time come from the binding mirror, and the workspace body is a
+ * stand-in the card only reads the label from. Opening it reads the real file.
+ */
+function boundListEntry(binding: WorkspaceBindingEntry): StoredWorkspace {
+  const base = setWorkspaceLabel({ value: binding.label || binding.id }, createEmptyWorkspace())
+  const workspace = { ...base, metadata: { ...base.metadata, id: binding.id } }
+
+  return {
+    id: binding.id,
+    workspace,
+    updatedAt: binding.updatedAt,
+    boundProject: binding.projectName,
+  }
+}
+
 export async function listStoredWorkspaces(): Promise<StoredWorkspace[]> {
   const response = await fetch(BASE)
+  const live = response.ok
+    ? ((await response.json()) as StoredWorkspaceOnDisk[]).map(readRecord)
+    : []
 
-  if (!response.ok) return []
-  const records = (await response.json()) as StoredWorkspaceOnDisk[]
+  const byId = new Map<string, StoredWorkspace>()
 
-  return records.map(readRecord)
+  for (const record of live) byId.set(record.id, record)
+  // Bound entries win, so a workspace migrated to a project store shows its
+  // project rather than a stale live-store copy left behind.
+  for (const binding of await listBindings()) byId.set(binding.id, boundListEntry(binding))
+
+  return [...byId.values()]
 }
 
 export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | undefined> {
+  const handle = getActiveHandle(id)
+
+  if (handle) {
+    const record = await readProjectRecord(handle, id)
+
+    return record ? readRecord(record as unknown as StoredWorkspaceOnDisk) : undefined
+  }
+
   const response = await fetch(`${BASE}/${encodeURIComponent(id)}`)
 
   if (!response.ok) return undefined
@@ -103,6 +153,20 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
     lastEditor: currentEditor,
   }
 
+  const handle = getActiveHandle(id)
+
+  if (handle) {
+    await writeProjectRecord(handle, {
+      id,
+      workspace,
+      updatedAt: stamped.updatedAt,
+      lastEditor: currentEditor,
+    })
+    await touchBinding(id, workspace.metadata.label ?? "", stamped.updatedAt)
+
+    return
+  }
+
   await fetch(`${BASE}/${encodeURIComponent(id)}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -111,6 +175,21 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
 }
 
 export async function deleteStoredWorkspace(id: string): Promise<void> {
+  const handle = getActiveHandle(id)
+
+  if (handle) await deleteProjectRecord(handle, id)
+  await deleteBinding(id)
+  // Also clear any live-store copy, which covers an unbound workspace and a
+  // leftover from before a migrate.
+  await deleteLiveWorkspace(id)
+}
+
+/**
+ * Removes only the editor's live-store copy, never a project store. Export calls
+ * this after writing a workspace into its project folder, so the project store
+ * becomes the single home and no stale live-store duplicate lingers.
+ */
+export async function deleteLiveWorkspace(id: string): Promise<void> {
   await fetch(`${BASE}/${encodeURIComponent(id)}`, { method: "DELETE" })
 }
 

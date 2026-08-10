@@ -1,7 +1,6 @@
 // BESPOKE-VIEW: hand-authored home screen markup. Styling comes from home.css.
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import { type StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
-import { Link } from "react-router"
 
 import "./home.css"
 
@@ -10,6 +9,7 @@ interface HomeViewProps {
   loading: boolean
   onNew: () => void
   onImport: () => void
+  onOpen: (workspace: StoredWorkspace) => void
   onDelete: (id: string) => void
 }
 
@@ -18,8 +18,20 @@ function workspaceName(record: StoredWorkspace): string {
   return record.workspace.metadata.label || HOME_CONTENT.defaultWorkspaceName
 }
 
+/** Where a workspace is stored: its bound project, or the editor's live store. */
+function storeLabel(record: StoredWorkspace): string {
+  return record.boundProject ? `Project: ${record.boundProject}` : "Local"
+}
+
 /** Home screen: create, import, and open recently stored workspaces. */
-export function HomeView({ workspaces, loading, onNew, onImport, onDelete }: HomeViewProps) {
+export function HomeView({
+  workspaces,
+  loading,
+  onNew,
+  onImport,
+  onOpen,
+  onDelete,
+}: HomeViewProps) {
   return (
     <main className="home">
       <header>
@@ -46,12 +58,13 @@ export function HomeView({ workspaces, loading, onNew, onImport, onDelete }: Hom
           <ul className="home-list">
             {workspaces.map((ws) => (
               <li key={ws.id}>
-                <Link to={`/${ws.id}`} className="home-list-link">
+                <button type="button" className="home-list-link" onClick={() => onOpen(ws)}>
                   <span className="home-list-name">{workspaceName(ws)}</span>
                   <span className="home-list-meta">
-                    Updated {new Date(ws.updatedAt).toLocaleString()}
+                    <span className="home-list-store">{storeLabel(ws)}</span> · Updated{" "}
+                    {new Date(ws.updatedAt).toLocaleString()}
                   </span>
-                </Link>
+                </button>
                 <button type="button" className="home-delete" onClick={() => onDelete(ws.id)}>
                   {HOME_CONTENT.deleteButton}
                 </button>

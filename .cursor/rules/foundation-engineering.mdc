@@ -17,7 +17,7 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 - All comments should be about current behavior, not legacy, deprecated, past behavior, or anything that is not relevant going forward. 
 - Do not add comments that are obvious or referential to markdown files. 
 - Add JSDocs as needed.
-- Declare required members before optional ones in every `interface` and object `type`. Put each `field?:` after the required fields. ESLint `@typescript-eslint/member-ordering` enforces this and has no autofix, so `npm run lint:fix` will not repair it. Author the order by hand. See `.cursor/rules/foundation-code-formatting.mdc`.
+- Declare required members before optional ones in every `interface`, object `type`, and class. Put each `field?:` after the required fields. In a class, also declare fields before methods and public members before private ones. Required-before-optional spans methods, so an optional instance field placed before a method trips the rule. Declare such a field required with an explicit `undefined`, such as `allowedNodeIds: Set<string> | undefined = undefined`, so the order stays valid. ESLint `@typescript-eslint/member-ordering` enforces all of this as a warning with no autofix, so `npm run lint:fix` will not repair it. Author the order by hand and clear the warnings. See `.cursor/rules/foundation-code-formatting.mdc`.
 - In `*.schema.ts` files, inline every property and `overrides` object literal at its child. Do not hoist shared schema values into a module `const` and reuse it. The only module-level values are the `schema` export and its `exportConfig`. See `.cursor/rules/foundation-components.mdc`.
 
 ### Naming
@@ -78,7 +78,11 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 
 ### Verification
 
-- After changes, run `tsc` across the whole repo and resolve all type errors before reporting done.
+- Before reporting done, run the same checks CI runs and resolve every error and warning. The checks are `npm run format:check`, `npm run lint:all`, and `npm run typecheck:all`.
+- Run `npm run lint:all`, never the scoped `npm run lint`. The root `lint` script covers one workspace only, so it misses errors in `core`, `factory`, `ai`, and the other packages.
+- Treat every ESLint warning as a failure. `member-ordering` reports as a warning and has no autofix, so a passing exit code can still hide it. Read the whole lint output and clear the warnings before reporting done.
+- Bundle packages typecheck against built types, so run `npm run build:packages` before `npm run typecheck:all` when you touch `core`, `factory`, or `ai`.
+- Nothing is done while a check reports a problem. There is no local commit gate, so an unrun check reaches the branch and turns CI red later.
 - Keep all imports valid and remove dead or redundant code touched by the change.
 
 ### Workflow

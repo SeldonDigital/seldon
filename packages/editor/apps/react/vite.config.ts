@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
-import { agentApiPlugin } from "../../shared/vite/agent-api-plugin"
+import { agentApiPlugin } from "../../../bundles/foundation/vite/agent-api-plugin"
+import { mcpApiPlugin } from "../../../bundles/foundation/vite/mcp-api-plugin"
 import { exportApiPlugin } from "../../shared/vite/export-api-plugin"
 import { importWebApiPlugin } from "../../shared/vite/import-web-api-plugin"
 import { workspaceApiPlugin } from "../../shared/vite/workspace-api-plugin"
@@ -26,6 +27,7 @@ export default defineConfig(({ mode }) => ({
     exportApiPlugin({ root: repoRoot }),
     agentApiPlugin(),
     importWebApiPlugin(),
+    mcpApiPlugin({ root: repoRoot }),
   ],
   define: {
     // @seldon/core reads process.env in browser code. Statically replace

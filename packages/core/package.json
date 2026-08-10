@@ -1,7 +1,6 @@
 {
   "name": "@seldon/core",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "description": "Seldon core: components, properties, themes, and the workspace engine that editors and agents drive through actions.",
   "license": "SEE LICENSE IN ../../license/noncommercial/LICENSE.md",
@@ -25,8 +24,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "node ../../scripts/format.mjs",
     "icons": "node ../../scripts/generate-icons.mjs",
-    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required",
-    "prepublishOnly": "echo 'Publishing @seldon/core is blocked. See PUBLISHING.md to unlock.' && exit 1"
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
   },
   "exports": {
     ".": {

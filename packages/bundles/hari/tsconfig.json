@@ -18,9 +18,8 @@
       "@seldon/factory": ["../../factory/dist/index.d.ts"],
       "@seldon/factory/*": ["../../factory/dist/*"],
       "@seldon/ai": ["../../ai/dist/index.d.ts"],
-      "@seldon/ai/*": ["../../ai/dist/*"],
-      "@seldon/terminus": ["../terminus/dist/index.d.ts"]
+      "@seldon/ai/*": ["../../ai/dist/*"]
     }
   },
-  "include": ["index.ts"]
+  "include": ["index.ts", "bin/**/*.ts"]
 }
