@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto"
 import fs from "node:fs/promises"
 import path from "node:path"
 
@@ -23,6 +24,18 @@ export interface StoreEntry {
   id: string
   workspace: Workspace
   label: string
+}
+
+/** A cheap freshness prefilter derived from the record file's stat. */
+export interface StatToken {
+  mtimeMs: number
+  size: number
+}
+
+/** A read plus the content revision hash of the serialized workspace. */
+export interface RevEntry {
+  entry: StoreEntry
+  rev: string
 }
 
 /**
@@ -58,6 +71,37 @@ export class WorkspaceStore {
     } catch {
       return null
     }
+  }
+
+  /**
+   * The record file's mtime and size, or null when it is absent. A caller
+   * compares this against a cached token to skip a full reload when the file has
+   * not changed, so the hot read path stays a single `stat`.
+   */
+  async statToken(id: string): Promise<StatToken | null> {
+    try {
+      const stat = await fs.stat(this.recordPath(id))
+
+      return { mtimeMs: stat.mtimeMs, size: stat.size }
+    } catch {
+      return null
+    }
+  }
+
+  /**
+   * Reads one workspace and its content revision, or null when absent. The rev
+   * is a hash of the ordered workspace, the same shape {@link write} persists,
+   * so two processes that read the same file compute the same rev. It ignores
+   * `updatedAt`, so a rewrite with identical content keeps the rev stable.
+   */
+  async readWithRev(id: string): Promise<RevEntry | null> {
+    const entry = await this.read(id)
+
+    if (!entry) return null
+    const ordered = orderWorkspaceNodeKeys(entry.workspace)
+    const rev = createHash("sha1").update(JSON.stringify(ordered)).digest("hex")
+
+    return { entry, rev }
   }
 
   /** Persists one workspace atomically, keeping a single `.bak` of the prior file. */

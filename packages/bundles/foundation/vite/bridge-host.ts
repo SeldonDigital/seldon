@@ -201,8 +201,9 @@ export class BridgeHost implements McpHost {
 
   async export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]> {
     // Export always runs headless in the dev server, which has the factory and
-    // filesystem. A connected tab autosaves to the same store, so the headless
-    // read is current.
+    // filesystem. The headless host reads through to the store and reloads on a
+    // content change, so a connected tab's autosave is picked up and the export
+    // reflects the current workspace.
     return this.fallback.export(targetId, options)
   }
 
