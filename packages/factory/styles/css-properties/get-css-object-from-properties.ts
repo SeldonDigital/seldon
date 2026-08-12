@@ -3,7 +3,6 @@ import { debugLog } from "@seldon/core/utils/debug-logger"
 
 import { getBackgroundStyles } from "./get-background-styles"
 import { getBorderStyles } from "./get-border-styles"
-import { getClipStyles } from "./get-clip-styles"
 import { getColorStyles } from "./get-color-styles"
 import { getCornersStyles } from "./get-corners-styles"
 import { getCursorStyles } from "./get-cursor-styles"
@@ -15,11 +14,11 @@ import { getLayoutStyles } from "./get-layout-styles"
 import { getListStyles } from "./get-list-styles"
 import { getMarginStyles } from "./get-margin-styles"
 import { getOpacityStyles } from "./get-opacity-styles"
+import { getOverflowStyles } from "./get-overflow-styles"
 import { getPaddingStyles } from "./get-padding-styles"
 import { getPositionStyles } from "./get-position-styles"
 import { getRotationStyles } from "./get-rotation-styles"
 import { getRTLStyles } from "./get-rtl-styles"
-import { getScrollStyles } from "./get-scroll-styles"
 import { getShadowStyles } from "./get-shadow-styles"
 import { getSizeStyles } from "./get-size-styles"
 import { getTableStyles } from "./get-table-styles"
@@ -102,8 +101,7 @@ export function getCssObjectFromProperties(
         useThemeVariableReferences,
       }),
     ),
-    ...safeGetStyles(() => getScrollStyles({ properties: computedProperties })),
-    ...safeGetStyles(() => getClipStyles({ properties: computedProperties })),
+    ...safeGetStyles(() => getOverflowStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
       getColorStyles({
         properties: computedProperties,
