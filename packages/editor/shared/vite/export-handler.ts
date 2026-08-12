@@ -115,6 +115,9 @@ export async function runExport(
 
   const options: ExportOptions = {
     rootDirectory,
+    // Resolve the destination project's Prettier config so generated files land
+    // formatted the way that project formats its own source.
+    formatConfigRoot: root,
     target: { framework: "react", styles: "css-properties" },
     output: {
       componentsFolder: DEFAULT_COMPONENTS_FOLDER,

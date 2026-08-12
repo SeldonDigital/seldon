@@ -292,6 +292,7 @@ export async function generateThemeStylesheetFiles(
   workspace: Workspace,
   componentsFolder: string,
   exportAllThemes: boolean = true,
+  formatConfigRoot?: string,
 ): Promise<ThemeStylesheetFile[]> {
   let themeIds = Object.keys(workspace.themes ?? {})
 
@@ -317,7 +318,7 @@ export async function generateThemeStylesheetFiles(
     if (!theme) continue
 
     const slug = getThemeSlug(themeId, workspace)
-    const content = await format(generateThemeStylesheet(slug, theme))
+    const content = await format(generateThemeStylesheet(slug, theme), formatConfigRoot)
 
     files.push({
       themeId,

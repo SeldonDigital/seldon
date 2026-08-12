@@ -103,7 +103,7 @@ export async function exportWorkspace(
 
     files.push({
       path: `${componentsFolder}/${EXPORT_MANIFEST_FILENAME}`.replaceAll("//", "/"),
-      content: await formatJson(JSON.stringify(manifest, null, 2)),
+      content: await formatJson(JSON.stringify(manifest, null, 2), options.formatConfigRoot),
     })
   }
 

@@ -163,7 +163,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
 
       if (isFormattableSource(file.path)) {
         if (!isIconExportPath(file.path)) file.content = insertLicense(file.content)
-        if (!options.skipFormat) file.content = await format(file.content)
+        if (!options.skipFormat) file.content = await format(file.content, options)
       }
     }),
   )

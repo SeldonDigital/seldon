@@ -88,6 +88,7 @@ export async function exportReact(
       nodeTreeDepths,
       stateClasses,
       descendantStateClasses,
+      options.formatConfigRoot,
     ),
   })
 
@@ -95,6 +96,7 @@ export async function exportReact(
     workspace,
     options.output.componentsFolder,
     options.exportAllThemes !== false,
+    options.formatConfigRoot,
   )
 
   filesToExport.push(
@@ -208,7 +210,7 @@ export async function exportReact(
       }
 
       if (!options.skipFormat && isFormattableSource(file.path)) {
-        file.content = await format(file.content)
+        file.content = await format(file.content, options)
       }
     }),
   )

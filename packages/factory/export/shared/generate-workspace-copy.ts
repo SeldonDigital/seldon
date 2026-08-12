@@ -34,7 +34,10 @@ export async function generateWorkspaceCopy(
 ): Promise<FileToExport> {
   const fileName = `${getBaseName(workspace)}.${options.target.framework}.json`
   const path = `${options.output.componentsFolder}/${fileName}`.replaceAll("//", "/")
-  const content = await formatJson(JSON.stringify(orderWorkspaceNodeKeys(workspace), null, 2))
+  const content = await formatJson(
+    JSON.stringify(orderWorkspaceNodeKeys(workspace), null, 2),
+    options.formatConfigRoot,
+  )
 
   return { path, content }
 }

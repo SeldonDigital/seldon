@@ -21,6 +21,13 @@ export type ExportOptions = {
   debugMode?: boolean
   assetReader?: ExportAssetReader
   skipFormat?: boolean
+  /**
+   * Absolute path of the repository the export lands in. When set, the export
+   * resolves that repository's Prettier config and layers it over the built-in
+   * defaults, so generated files match how the repository formats its own
+   * source. Unset falls back to the built-in export config.
+   */
+  formatConfigRoot?: string
   /** Opt-in to emitting remote font host links. Off by default to keep exports request-free. */
   enableRemoteFonts?: boolean
   /**

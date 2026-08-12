@@ -15,6 +15,6 @@ import { formatWithPrettier } from "../format-with-prettier"
  *
  * Prettier ends its output with a newline, so a caller adds none.
  */
-export async function formatJson(content: string): Promise<string> {
-  return formatWithPrettier(content, { parser: "json" })
+export async function formatJson(content: string, formatConfigRoot?: string): Promise<string> {
+  return formatWithPrettier(content, { parser: "json" }, formatConfigRoot)
 }
