@@ -223,6 +223,14 @@ export function useCommitPropertyValue(deps: CommitDeps) {
     const fontCtx = deps.fontCollectionEditingContext?.()
     const iconCtx = deps.iconSetEditingContext?.()
 
+    // Layered paint edits materialize a base stack to write back. In a non
+    // Normal interaction state that base must come from the state's own
+    // effective layers, not the Normal stack. Sourcing the Normal stack seeds a
+    // facet edit from the rest layer (a NONE layer for a transparent rest), so
+    // the color never persists. Resolves to Normal for boards and Normal state,
+    // which keeps the rest behavior unchanged.
+    const activeState = getActiveState(subject)
+
     // Layered paint parent row: retype its own layer slot, keeping siblings.
     if (
       property.layerIndex != null &&
@@ -261,7 +269,7 @@ export function useCommitPropertyValue(deps: CommitDeps) {
           (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ?? {}
       }
 
-      const current = coreGetEffectiveProperties(getPropertiesSubjectId(subject), ws)[
+      const current = coreGetEffectiveProperties(getPropertiesSubjectId(subject), ws, activeState)[
         baseKey as keyof Properties
       ]
       const layers = Array.isArray(current)
@@ -450,7 +458,7 @@ export function useCommitPropertyValue(deps: CommitDeps) {
     let effectiveLayers: Record<string, unknown>[] | undefined
 
     if (parsedForUpdate.kind === "layered-facet") {
-      const current = coreGetEffectiveProperties(nodeId, ws)[
+      const current = coreGetEffectiveProperties(nodeId, ws, activeState)[
         parsedForUpdate.root as keyof Properties
       ]
 
