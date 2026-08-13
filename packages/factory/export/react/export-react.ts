@@ -37,6 +37,14 @@ export async function exportReact(
 
   const { parentIndex } = buildExportContext(workspace)
 
+  // Resolve image sources to their exported asset paths before building the
+  // style registry and component trees, so the emitted CSS `background-image`
+  // and component `src` reference the written files instead of inlining the
+  // original data URL.
+  const imagesToExport = await getImagesToExport(workspace, options)
+
+  workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
+
   const {
     nodeIdToClass,
     classes,
@@ -105,10 +113,6 @@ export async function exportReact(
       content: file.content,
     })),
   )
-
-  const imagesToExport = await getImagesToExport(workspace, options)
-
-  workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
   let refSources: RefViewSource[] = []
 

@@ -121,8 +121,10 @@ export async function runExport(
     target: { framework: "react", styles: "css-properties" },
     output: {
       componentsFolder: DEFAULT_COMPONENTS_FOLDER,
-      assetsFolder: `${DEFAULT_COMPONENTS_FOLDER}/assets`,
-      assetPublicPath: `/${DEFAULT_COMPONENTS_FOLDER}/assets`,
+      // Images write to the project's `public/` and are referenced from the site
+      // root, the static-asset convention shared by Vite and Next.js.
+      assetsFolder: "public",
+      assetPublicPath: "/",
     },
     assetReader,
     // Default off so exports stay request-free. Flip to true (or override via
