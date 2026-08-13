@@ -41,11 +41,13 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
 
   const { parentIndex } = buildExportContext(workspace)
 
-  // Resolve image sources to their exported asset paths before building the
+  // Resolve image sources to their exported asset files before building the
   // style registry and component trees, so the emitted CSS `background-image`
   // and component `src` reference the written files instead of inlining the
-  // original data URL.
+  // original data URL. Sources that fail to resolve are dropped, so they keep
+  // their original value and one unreachable image never discards the rest.
   const imagesToExport = await getImagesToExport(workspace, options)
+  const imageFiles = await getFilesToExportFromImagesToExport(imagesToExport, options)
 
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
@@ -142,13 +144,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
     // Failed to generate refs registry
   }
 
-  try {
-    const images = await getFilesToExportFromImagesToExport(imagesToExport, options)
-
-    filesToExport.push(...images)
-  } catch {
-    // Failed to export images
-  }
+  filesToExport.push(...imageFiles)
 
   // License and format every source file, each through the parser its extension
   // calls for. Single-file components go through Prettier's `vue` parser, which

@@ -37,11 +37,13 @@ export async function exportReact(
 
   const { parentIndex } = buildExportContext(workspace)
 
-  // Resolve image sources to their exported asset paths before building the
+  // Resolve image sources to their exported asset files before building the
   // style registry and component trees, so the emitted CSS `background-image`
   // and component `src` reference the written files instead of inlining the
-  // original data URL.
+  // original data URL. Sources that fail to resolve are dropped, so they keep
+  // their original value and one unreachable image never discards the rest.
   const imagesToExport = await getImagesToExport(workspace, options)
+  const imageFiles = await getFilesToExportFromImagesToExport(imagesToExport, options)
 
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
@@ -193,13 +195,7 @@ export async function exportReact(
     // Failed to generate utility files
   }
 
-  try {
-    const images = await getFilesToExportFromImagesToExport(imagesToExport, options)
-
-    filesToExport.push(...images)
-  } catch {
-    // Failed to export images
-  }
+  filesToExport.push(...imageFiles)
 
   // Insert the license header, then run a final format pass so every emitted
   // source file matches the export Prettier config. This normalizes the license

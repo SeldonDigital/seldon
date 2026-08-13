@@ -1,11 +1,17 @@
 import type { ExportOptions, FileToExport, ImageToExportMap } from "../../types"
 
 /**
- * Fetch the source of the external images to export from the workspace values
- * @param imagesToExport - The images to export
- * @returns The files to export
+ * Resolves each image source to its exported asset file. A source that cannot be
+ * read, such as an unreachable URL or a malformed data URL, is dropped from
+ * `imagesToExport` and skipped rather than aborting the whole export. Dropping
+ * it from the map lets the caller leave that source at its original value
+ * instead of rewriting it to a missing asset path, and stops one bad image from
+ * discarding every image that resolved.
+ *
+ * @param imagesToExport - The images to export. Mutated to drop failed sources.
+ * @param options - The export options
+ * @returns The files to export for the sources that resolved
  */
-
 export async function getFilesToExportFromImagesToExport(
   imagesToExport: ImageToExportMap,
   options: ExportOptions,
@@ -13,10 +19,13 @@ export async function getFilesToExportFromImagesToExport(
   const filesToExport: FileToExport[] = []
 
   for (const url of Object.keys(imagesToExport)) {
-    filesToExport.push({
-      content: await getArrayBuffer(url, options.token),
-      path: imagesToExport[url].uploadPath,
-    })
+    try {
+      const content = await getArrayBuffer(url, options.token)
+
+      filesToExport.push({ content, path: imagesToExport[url].uploadPath })
+    } catch {
+      delete imagesToExport[url]
+    }
   }
 
   return filesToExport
