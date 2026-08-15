@@ -189,6 +189,10 @@ export class HeadlessHost implements McpHost {
 
     const exportOptions: ExportOptions = {
       rootDirectory,
+      // Format generated files against the destination project's Prettier config,
+      // so an export lands the way that project formats its own source and a
+      // consumer's format check finds nothing to fix.
+      formatConfigRoot: this.exportRoot,
       target: {
         framework: (options?.framework as ExportOptions["target"]["framework"]) ?? "react",
         styles: (options?.styles as ExportOptions["target"]["styles"]) ?? "css-properties",
@@ -204,6 +208,10 @@ export class HeadlessHost implements McpHost {
     }
 
     const files = await exportWorkspace(state.workspace, exportOptions)
+
+    if (options?.write !== false) {
+      await this.writeExportedFiles(files, options?.outputDir)
+    }
 
     return files.map(toExportedFile)
   }
@@ -384,6 +392,30 @@ export class HeadlessHost implements McpHost {
     this.reseedFromDisk(state, fresh.entry.workspace, fresh.rev, token)
 
     return true
+  }
+
+  /**
+   * Writes exported files to disk under the export root, so an MCP export updates
+   * the consumer project the same way the editor export does. Paths are the
+   * factory's project-relative paths. Text writes as UTF-8; a binary asset, which
+   * the factory returns as an ArrayBuffer, writes as bytes. `outputDir` nests the
+   * whole tree under a subfolder of the export root when set.
+   */
+  private async writeExportedFiles(
+    files: Array<{ path: string; content: string | ArrayBuffer }>,
+    outputDir?: string,
+  ): Promise<void> {
+    const baseDir = outputDir ? path.resolve(this.exportRoot, outputDir) : this.exportRoot
+
+    for (const file of files) {
+      const targetPath = path.join(baseDir, file.path)
+
+      await fs.promises.mkdir(path.dirname(targetPath), { recursive: true })
+      await fs.promises.writeFile(
+        targetPath,
+        typeof file.content === "string" ? file.content : Buffer.from(file.content),
+      )
+    }
   }
 
   /** Serializes work on one target so read-modify-write-persist stays atomic. */
