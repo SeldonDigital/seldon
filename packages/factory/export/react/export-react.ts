@@ -37,6 +37,16 @@ export async function exportReact(
 
   const { parentIndex } = buildExportContext(workspace)
 
+  // Resolve image sources to their exported asset files before building the
+  // style registry and component trees, so the emitted CSS `background-image`
+  // and component `src` reference the written files instead of inlining the
+  // original data URL. Sources that fail to resolve are dropped, so they keep
+  // their original value and one unreachable image never discards the rest.
+  const imagesToExport = await getImagesToExport(workspace, options)
+  const imageFiles = await getFilesToExportFromImagesToExport(imagesToExport, options)
+
+  workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
+
   const {
     nodeIdToClass,
     classes,
@@ -88,6 +98,7 @@ export async function exportReact(
       nodeTreeDepths,
       stateClasses,
       descendantStateClasses,
+      options.formatConfigRoot,
     ),
   })
 
@@ -95,6 +106,7 @@ export async function exportReact(
     workspace,
     options.output.componentsFolder,
     options.exportAllThemes !== false,
+    options.formatConfigRoot,
   )
 
   filesToExport.push(
@@ -103,10 +115,6 @@ export async function exportReact(
       content: file.content,
     })),
   )
-
-  const imagesToExport = await getImagesToExport(workspace, options)
-
-  workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
   let refSources: RefViewSource[] = []
 
@@ -187,13 +195,7 @@ export async function exportReact(
     // Failed to generate utility files
   }
 
-  try {
-    const images = await getFilesToExportFromImagesToExport(imagesToExport, options)
-
-    filesToExport.push(...images)
-  } catch {
-    // Failed to export images
-  }
+  filesToExport.push(...imageFiles)
 
   // Insert the license header, then run a final format pass so every emitted
   // source file matches the export Prettier config. This normalizes the license
@@ -208,7 +210,7 @@ export async function exportReact(
       }
 
       if (!options.skipFormat && isFormattableSource(file.path)) {
-        file.content = await format(file.content)
+        file.content = await format(file.content, options)
       }
     }),
   )

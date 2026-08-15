@@ -169,7 +169,7 @@ ${mapEntries}
       // Pretty-printed and sorted, so it reads and diffs like source in the
       // project it lands in.
       path: `${folder}/registry.json`,
-      content: await formatJson(JSON.stringify(registry, null, 2)),
+      content: await formatJson(JSON.stringify(registry, null, 2), options.formatConfigRoot),
     },
   ]
 }

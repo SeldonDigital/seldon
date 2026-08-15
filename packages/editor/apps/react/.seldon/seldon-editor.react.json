@@ -2,7 +2,7 @@
   "metadata": {
     "version": 20,
     "label": "seldon-editor",
-    "id": "21977883-01e2-4235-a68b-0cd1d77b5514"
+    "id": "2347a3e9-93d1-41b5-b1d7-9cd7fe37c7d4"
   },
   "boards": {
     "seldon": {
@@ -8775,10 +8775,6 @@
           "border": {}
         },
         "focused": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.punch"
-          },
           "border": {
             "color": {
               "type": "theme.categorical",
@@ -23332,12 +23328,7 @@
             "value": "@swatch.primary"
           }
         },
-        "focused": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.punch"
-          }
-        },
+        "focused": {},
         "checked": {
           "color": {
             "type": "theme.categorical",
@@ -48923,8 +48914,8 @@
           "arvo": {
             "700": true,
             "regular": true,
-            "italic": true,
-            "700italic": true
+            "700italic": true,
+            "italic": true
           },
           "abel": {
             "regular": true

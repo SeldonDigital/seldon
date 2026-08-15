@@ -65,10 +65,12 @@ const sdn: BarTopbarProps = {
     "data-seldon-ref": "logo",
   },
   image: {
+    src: "/sdn/assets/image-d998f1f8.svg",
     className: "sdn-image sdn-image--33xp",
     "data-seldon-ref": "logoMark",
   },
   image2: {
+    src: "/sdn/assets/image-804d1718.svg",
     className: "sdn-image sdn-image--dnok",
     "data-seldon-ref": "logoWordmark",
   },

@@ -18,6 +18,14 @@ A helper or function call inside a JSX prop is a violation, even a short one. `c
 
 Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that turns a generated slot on or off carries no logic, so it does not need a name.
 
+### No Raw DOM In Views
+
+A View authors no raw DOM. Do not open a lowercase HTML tag such as `<div>` or a `motion.*` tag in an editor View under `app/`.
+
+- Use a `sdn/` design component for markup. `Frame` is the flexbox container and `Container` is the grid container. Both take a `wrapperElement` prop to choose the element, such as `wrapperElement="section"`.
+- Mark a genuinely hand-authored View as `*.bespoke.tsx`. A bespoke file opts out of the raw-DOM rule. Use it only when no generated component covers the markup, such as a draggable, resizable window in `WindowSurface.bespoke.tsx`.
+- ESLint enforces this in `eslint.config.mjs`. A non-bespoke View that opens a raw tag fails the build, so a passing lint is required, not optional.
+
 ### Ref Maps (`seldonRefs`)
 
 A `seldonRefs` map is read by the bindings scanner, which parses source without running it. Author it so a static read sees every ref. See `packages/factory/bindings/README.md`.

@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs"
 import fs from "node:fs/promises"
-import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import { build } from "esbuild"
@@ -36,8 +35,14 @@ let cachedRunExport: Promise<RunExport> | null = null
  * module with esbuild, then imports it. Bundling resolves the workspace
  * aliases and applies CommonJS interop, mirroring the former Next.js route
  * runtime. Works the same under `vite dev` and `vite preview`.
+ *
+ * The bundle is written under the destination project's `node_modules/.cache`
+ * rather than the OS temp dir. The externals below resolve from the importing
+ * module's location, so a temp-dir bundle can never find the project's Prettier
+ * and the export silently emits unformatted output. Writing inside the project
+ * lets the runtime `import("prettier")` resolve from the project's own install.
  */
-async function loadRunExport(): Promise<RunExport> {
+async function loadRunExport(root: string): Promise<RunExport> {
   // Alias to the monorepo source when it is on disk, so an in-repo export reads
   // live core and factory code. Off the monorepo (an installed editor) the
   // aliases are dropped, so esbuild resolves `@seldon/core` and `@seldon/factory`
@@ -58,7 +63,7 @@ async function loadRunExport(): Promise<RunExport> {
     alias,
     // The bindings scanner and best-effort formatter reach these through the
     // export graph, but the handler never runs them. They resolve from the
-    // consumer's own node_modules at runtime, so leaving them external keeps
+    // project's own node_modules at runtime, so leaving them external keeps
     // esbuild from bundling `@vue/compiler-sfc`'s optional template engines.
     external: [
       "@vue/compiler-sfc",
@@ -68,7 +73,10 @@ async function loadRunExport(): Promise<RunExport> {
     ],
   })
 
-  const outputFile = path.join(os.tmpdir(), `seldon-export-handler-${process.pid}.mjs`)
+  const cacheDir = path.join(root, "node_modules", ".cache", "seldon-export")
+
+  await fs.mkdir(cacheDir, { recursive: true })
+  const outputFile = path.join(cacheDir, `export-handler-${process.pid}.mjs`)
 
   await fs.writeFile(outputFile, result.outputFiles[0].text)
   const mod = (await import(pathToFileURL(outputFile).href)) as {
@@ -78,9 +86,9 @@ async function loadRunExport(): Promise<RunExport> {
   return mod.runExport
 }
 
-function getRunExport(): Promise<RunExport> {
+function getRunExport(root: string): Promise<RunExport> {
   if (!cachedRunExport) {
-    cachedRunExport = loadRunExport()
+    cachedRunExport = loadRunExport(root)
   }
 
   return cachedRunExport
@@ -136,7 +144,7 @@ function createMiddleware(root: string): Connect.NextHandleFunction {
     void (async () => {
       try {
         const body = await readJsonBody(req)
-        const run = await getRunExport()
+        const run = await getRunExport(root)
         const result = await run(body, { root })
 
         sendJson(res, 200, result)

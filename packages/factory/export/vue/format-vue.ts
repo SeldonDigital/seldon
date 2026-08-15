@@ -11,16 +11,19 @@ import { formatWithPrettier } from "../format-with-prettier"
  *
  * Prettier ends its output with a newline, so a caller adds none.
  */
-export async function formatVue(content: string, options?: { skipFormat?: boolean }) {
+export async function formatVue(
+  content: string,
+  options?: { skipFormat?: boolean; formatConfigRoot?: string },
+) {
   if (options?.skipFormat) {
     return content
   }
 
-  const firstPass = await formatWithPrettier(content, { parser: "vue" })
+  const firstPass = await formatWithPrettier(content, { parser: "vue" }, options?.formatConfigRoot)
 
   // Prettier's Vue printer settles on the second pass for a whitespace-sensitive
   // inline slot, where the first pass wraps what the second tightens. Running it
   // twice lands on the same text a consuming repository's own format check
   // produces, so an export leaves nothing for that check to fix.
-  return formatWithPrettier(firstPass, { parser: "vue" })
+  return formatWithPrettier(firstPass, { parser: "vue" }, options?.formatConfigRoot)
 }

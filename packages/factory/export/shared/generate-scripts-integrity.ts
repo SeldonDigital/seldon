@@ -51,6 +51,6 @@ export async function generateScriptsIntegrity(
 
   return {
     path: `${scriptsFolder}/${INTEGRITY_FILE}`,
-    content: await formatJson(JSON.stringify(integrity, null, 2)),
+    content: await formatJson(JSON.stringify(integrity, null, 2), options.formatConfigRoot),
   }
 }

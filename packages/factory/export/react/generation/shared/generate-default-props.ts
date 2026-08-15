@@ -8,8 +8,8 @@ type DefaultPropsValue = Record<
   string | CSSProperties | boolean | number | object | string[] | number[]
 >
 
-/** The authored copy every slot keeps: its text, its icon, and its placeholder. */
-const COPY_PROPS = ["children", "icon", "placeholder"]
+/** The authored copy every slot keeps: its text, its icon, its image, and its placeholder. */
+const COPY_PROPS = ["children", "icon", "placeholder", "src"]
 
 /**
  * Generates the component's default property values (the `sdn` object).

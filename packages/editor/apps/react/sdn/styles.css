@@ -900,7 +900,6 @@ body {
 }
 
 .sdn-input:focus-visible {
-  color: var(--sdn-swatch-punch);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -944,7 +943,6 @@ body {
 }
 
 .sdn-input-checkbox:focus-visible {
-  color: var(--sdn-swatch-punch);
   accent-color: var(--sdn-swatch-punch);
   border-color: var(--sdn-swatch-punch);
 }
@@ -1208,7 +1206,6 @@ body {
 .sdn-list-standard {
   overflow-x: hidden;
   overflow-y: auto;
-  overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
@@ -1223,7 +1220,6 @@ body {
 .sdn-list-standard-catalog {
   overflow-x: hidden;
   overflow-y: auto;
-  overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
@@ -1239,7 +1235,6 @@ body {
 .sdn-list-standard-product-list {
   overflow-x: hidden;
   overflow-y: auto;
-  overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
@@ -1918,10 +1913,6 @@ body {
   border: var(--hairline) solid hsl(from var(--sdn-hc-on-white) h s calc(l + (100 - l) * 0.25));
 }
 
-.sdn-textarea:focus-visible {
-  color: var(--sdn-swatch-punch);
-}
-
 .sdn-textarea[aria-selected="true"] {
   color: var(--sdn-swatch-primary);
 }
@@ -1966,7 +1957,6 @@ body {
   background-color: var(--sdn-swatch-offWhite);
   overflow-x: auto;
   overflow-y: hidden;
-  overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -1985,7 +1975,6 @@ body {
   background-color: var(--sdn-swatch-offWhite);
   overflow-x: auto;
   overflow-y: hidden;
-  overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -2004,7 +1993,6 @@ body {
   background-color: var(--sdn-swatch-offWhite);
   overflow-x: auto;
   overflow-y: hidden;
-  overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -2695,7 +2683,6 @@ body {
   flex: unset;
   overflow-x: hidden;
   overflow-y: auto;
-  overflow: hidden;
   height: fit-content;
   flex-shrink: 0;
   min-height: 0;
@@ -2706,7 +2693,6 @@ body {
 .sdn-frame--evmw {
   overflow-x: hidden;
   overflow-y: auto;
-  overflow: hidden;
   min-height: 0;
   padding: 0;
   margin: 0;
@@ -5174,7 +5160,6 @@ body {
 
 .sdn-combobox-field:focus-visible .sdn-input--stob,
 .sdn-combobox-field:has(:focus-visible) .sdn-input--stob {
-  color: var(--sdn-swatch-punch);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -5190,7 +5175,6 @@ body {
 
 .sdn-combobox-field:focus-visible .sdn-input--yoqi,
 .sdn-combobox-field:has(:focus-visible) .sdn-input--yoqi {
-  color: var(--sdn-swatch-punch);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -6211,7 +6195,6 @@ body {
 
 .sdn-combobox-field-search:focus-visible .sdn-input--yoqi,
 .sdn-combobox-field-search:has(:focus-visible) .sdn-input--yoqi {
-  color: var(--sdn-swatch-punch);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -6923,7 +6906,6 @@ body {
 
 .sdn-item-section:focus-visible .sdn-input--n6aw,
 .sdn-item-section:has(:focus-visible) .sdn-input--n6aw {
-  color: var(--sdn-swatch-punch);
   border-color: var(--sdn-swatch-punch);
 }
 
@@ -8009,7 +7991,6 @@ body {
 
 .sdn-item:focus-visible .sdn-input--n6aw,
 .sdn-item:has(:focus-visible) .sdn-input--n6aw {
-  color: var(--sdn-swatch-punch);
   border-color: var(--sdn-swatch-punch);
 }
 

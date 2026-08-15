@@ -13,6 +13,7 @@ export async function generateComponentStylesheet(
   nodeTreeDepths?: Record<string, number>,
   stateClasses?: StateClasses,
   descendantStateClasses?: DescendantStateClasses,
+  formatConfigRoot?: string,
 ): Promise<string> {
   let stylesheet = ""
 
@@ -28,5 +29,5 @@ export async function generateComponentStylesheet(
     descendantStateClasses,
   )
 
-  return format(stylesheet)
+  return format(stylesheet, formatConfigRoot)
 }

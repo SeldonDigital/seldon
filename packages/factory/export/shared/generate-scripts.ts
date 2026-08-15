@@ -99,7 +99,7 @@ export async function generateScripts(options: ExportOptions): Promise<FileToExp
     files.map(async (file) => {
       file.content = insertLicense(file.content as string)
 
-      if (!options.skipFormat) file.content = await format(file.content as string)
+      if (!options.skipFormat) file.content = await format(file.content as string, options)
     }),
   )
 

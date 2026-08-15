@@ -2,6 +2,7 @@ import {
   imageUploadTargetForKey,
   useImageUploadPanel,
 } from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
+import { getActiveStateForNode } from "@app/workspace/hooks/use-node-active-state"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
@@ -95,6 +96,14 @@ export function useCommitPropertyValue({
     (newValue: string) => {
       const subject = propertySubject ?? selection ?? null
 
+      // Layered paint edits materialize a base stack to write back. In a non
+      // Normal interaction state that base must come from the state's own
+      // effective layers, not the Normal stack. Sourcing the Normal stack seeds
+      // a facet edit from the rest layer (a NONE layer for a transparent rest),
+      // so the color never persists. Resolves to Normal for boards and Normal
+      // state, which keeps the rest behavior unchanged.
+      const activeState = getActiveStateForNode(subject)
+
       // A layered paint parent row (Background/Shadow N) retypes its own layer
       // slot and writes the full stack back, so sibling layers stay intact. The
       // generic compound preset path replaces the whole stack and would drop
@@ -138,9 +147,11 @@ export function useCommitPropertyValue({
             (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ?? {}
         }
 
-        const current = coreGetEffectiveProperties(getPropertiesSubjectId(subject), workspace)[
-          baseKey as keyof Properties
-        ]
+        const current = coreGetEffectiveProperties(
+          getPropertiesSubjectId(subject),
+          workspace,
+          activeState,
+        )[baseKey as keyof Properties]
         const layers = Array.isArray(current)
           ? [...(current as Array<Record<string, unknown>>)]
           : current
@@ -354,9 +365,11 @@ export function useCommitPropertyValue({
       let effectiveLayers: Record<string, unknown>[] | undefined
 
       if (parsedForUpdate.kind === "layered-facet" && subject) {
-        const current = coreGetEffectiveProperties(getPropertiesSubjectId(subject), workspace)[
-          parsedForUpdate.root as keyof Properties
-        ]
+        const current = coreGetEffectiveProperties(
+          getPropertiesSubjectId(subject),
+          workspace,
+          activeState,
+        )[parsedForUpdate.root as keyof Properties]
 
         effectiveLayers = Array.isArray(current)
           ? (current as Record<string, unknown>[])

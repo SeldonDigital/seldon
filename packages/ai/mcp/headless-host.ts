@@ -195,8 +195,10 @@ export class HeadlessHost implements McpHost {
       },
       output: {
         componentsFolder,
-        assetsFolder: `${componentsFolder}/assets`,
-        assetPublicPath: `/${componentsFolder}/assets`,
+        // Images write to the project's `public/` and are referenced from the
+        // site root, the static-asset convention shared by Vite and Next.js.
+        assetsFolder: "public",
+        assetPublicPath: "/",
       },
       assetReader,
     }

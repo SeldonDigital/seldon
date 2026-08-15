@@ -25,7 +25,7 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
 // Default property values
 //
 const sdn: ImageProps = {
-  src: "https://static.seldon.app/background-default-dark.jpg",
+  src: "/sdn/assets/background-default-dark.jpg",
   "aria-hidden": "false",
 }
 
@@ -39,7 +39,7 @@ const sdn: ImageProps = {
  * @example
  * ```tsx
  * <Image
- *   src="https://static.seldon.app/background-default-dark.jpg"
+ *   src="/sdn/assets/background-default-dark.jpg"
  *   aria-hidden="false"
  * />
  * ```
