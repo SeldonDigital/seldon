@@ -68,7 +68,11 @@ interface CheckpointRecord {
 export interface HeadlessHostOptions {
   /** Directory holding the `<id>.json` workspace files. */
   storeDir: string
-  /** Root the factory reads engine assets from during export. Defaults to cwd. */
+  /**
+   * Root an export writes files into and the factory reads engine assets from.
+   * Defaults to the project root derived from the store directory, so an export
+   * lands in the project even when the process runs from another directory.
+   */
   exportRoot?: string
 }
 
@@ -87,6 +91,22 @@ function findMonorepoRoot(start: string): string | null {
     if (parent === current) return null
     current = parent
   }
+}
+
+/**
+ * Derives the project root an export writes into from the store directory. The
+ * store lives at `<project>/.seldon/workspaces`, so the project is the parent of
+ * the nearest `.seldon` segment. Falls back to the current directory when the
+ * path holds no `.seldon` segment. This keeps writes in the project even when the
+ * MCP process is spawned from another directory, which `process.cwd()` would miss.
+ */
+function deriveExportRoot(storeDir: string): string {
+  const segments = path.resolve(storeDir).split(path.sep)
+  const seldonIndex = segments.lastIndexOf(".seldon")
+
+  if (seldonIndex > 0) return segments.slice(0, seldonIndex).join(path.sep) || path.sep
+
+  return process.cwd()
 }
 
 /** Encodes an exported file's contents as text, base64 for binary assets. */
@@ -113,7 +133,7 @@ export class HeadlessHost implements McpHost {
 
   constructor(options: HeadlessHostOptions) {
     this.store = new WorkspaceStore(options.storeDir)
-    this.exportRoot = path.resolve(options.exportRoot ?? process.cwd())
+    this.exportRoot = path.resolve(options.exportRoot ?? deriveExportRoot(options.storeDir))
   }
 
   async listTargets(): Promise<WorkspaceTarget[]> {
