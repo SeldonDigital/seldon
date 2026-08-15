@@ -26,6 +26,8 @@ export interface McpExportOptions {
   framework?: string
   styles?: string
   componentsFolder?: string
+  outputDir?: string
+  write?: boolean
 }
 
 /** One stored checkpoint an agent can restore. */
@@ -295,7 +297,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
     {
       name: "workspace_export",
       description:
-        "Export the target workspace to framework code and return the list of files produced. Pass framework and styles to pick the target.",
+        "Export the target workspace to framework code, write the files into the project, and return the list of files produced. Pass framework and styles to pick the target. Set write to false to list the paths without writing.",
       inputSchema: withHostParams({
         type: "object",
         properties: {
@@ -305,6 +307,16 @@ export function createSeldonMcpServer(host: McpHost): Server {
           },
           styles: { type: "string", description: 'Style output, for example "css-properties".' },
           componentsFolder: { type: "string", description: "Output folder for components." },
+          outputDir: {
+            type: "string",
+            description:
+              "Subfolder of the project to write the export into. Defaults to the project root.",
+          },
+          write: {
+            type: "boolean",
+            description:
+              "Write the files to disk under the project. Defaults to true. Set false to only list the paths.",
+          },
         },
         required: [],
       } as unknown as TSchema),
@@ -312,15 +324,24 @@ export function createSeldonMcpServer(host: McpHost): Server {
         const resolved = await resolveTargetId(args)
 
         if ("directive" in resolved) return resolved.directive
+        const write = args.write !== false
+        const outputDir = args.outputDir as string | undefined
         const files = await host.export(resolved.id, {
           framework: args.framework as string | undefined,
           styles: args.styles as string | undefined,
           componentsFolder: args.componentsFolder as string | undefined,
+          outputDir,
+          write,
         })
 
         if (files.length === 0) return "Export produced no files."
 
-        return `Exported ${files.length} file(s):\n${files.map((f) => `- ${f.path}`).join("\n")}`
+        const location = outputDir ?? "the project root"
+        const header = write
+          ? `Wrote ${files.length} file(s) to ${location}:`
+          : `Exported ${files.length} file(s):`
+
+        return `${header}\n${files.map((f) => `- ${f.path}`).join("\n")}`
       },
     },
     {

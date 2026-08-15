@@ -68,7 +68,11 @@ interface CheckpointRecord {
 export interface HeadlessHostOptions {
   /** Directory holding the `<id>.json` workspace files. */
   storeDir: string
-  /** Root the factory reads engine assets from during export. Defaults to cwd. */
+  /**
+   * Root an export writes files into and the factory reads engine assets from.
+   * Defaults to the project root derived from the store directory, so an export
+   * lands in the project even when the process runs from another directory.
+   */
   exportRoot?: string
 }
 
@@ -87,6 +91,22 @@ function findMonorepoRoot(start: string): string | null {
     if (parent === current) return null
     current = parent
   }
+}
+
+/**
+ * Derives the project root an export writes into from the store directory. The
+ * store lives at `<project>/.seldon/workspaces`, so the project is the parent of
+ * the nearest `.seldon` segment. Falls back to the current directory when the
+ * path holds no `.seldon` segment. This keeps writes in the project even when the
+ * MCP process is spawned from another directory, which `process.cwd()` would miss.
+ */
+function deriveExportRoot(storeDir: string): string {
+  const segments = path.resolve(storeDir).split(path.sep)
+  const seldonIndex = segments.lastIndexOf(".seldon")
+
+  if (seldonIndex > 0) return segments.slice(0, seldonIndex).join(path.sep) || path.sep
+
+  return process.cwd()
 }
 
 /** Encodes an exported file's contents as text, base64 for binary assets. */
@@ -113,7 +133,7 @@ export class HeadlessHost implements McpHost {
 
   constructor(options: HeadlessHostOptions) {
     this.store = new WorkspaceStore(options.storeDir)
-    this.exportRoot = path.resolve(options.exportRoot ?? process.cwd())
+    this.exportRoot = path.resolve(options.exportRoot ?? deriveExportRoot(options.storeDir))
   }
 
   async listTargets(): Promise<WorkspaceTarget[]> {
@@ -189,6 +209,10 @@ export class HeadlessHost implements McpHost {
 
     const exportOptions: ExportOptions = {
       rootDirectory,
+      // Format generated files against the destination project's Prettier config,
+      // so an export lands the way that project formats its own source and a
+      // consumer's format check finds nothing to fix.
+      formatConfigRoot: this.exportRoot,
       target: {
         framework: (options?.framework as ExportOptions["target"]["framework"]) ?? "react",
         styles: (options?.styles as ExportOptions["target"]["styles"]) ?? "css-properties",
@@ -204,6 +228,10 @@ export class HeadlessHost implements McpHost {
     }
 
     const files = await exportWorkspace(state.workspace, exportOptions)
+
+    if (options?.write !== false) {
+      await this.writeExportedFiles(files, options?.outputDir)
+    }
 
     return files.map(toExportedFile)
   }
@@ -384,6 +412,30 @@ export class HeadlessHost implements McpHost {
     this.reseedFromDisk(state, fresh.entry.workspace, fresh.rev, token)
 
     return true
+  }
+
+  /**
+   * Writes exported files to disk under the export root, so an MCP export updates
+   * the consumer project the same way the editor export does. Paths are the
+   * factory's project-relative paths. Text writes as UTF-8; a binary asset, which
+   * the factory returns as an ArrayBuffer, writes as bytes. `outputDir` nests the
+   * whole tree under a subfolder of the export root when set.
+   */
+  private async writeExportedFiles(
+    files: Array<{ path: string; content: string | ArrayBuffer }>,
+    outputDir?: string,
+  ): Promise<void> {
+    const baseDir = outputDir ? path.resolve(this.exportRoot, outputDir) : this.exportRoot
+
+    for (const file of files) {
+      const targetPath = path.join(baseDir, file.path)
+
+      await fs.promises.mkdir(path.dirname(targetPath), { recursive: true })
+      await fs.promises.writeFile(
+        targetPath,
+        typeof file.content === "string" ? file.content : Buffer.from(file.content),
+      )
+    }
   }
 
   /** Serializes work on one target so read-modify-write-persist stays atomic. */
