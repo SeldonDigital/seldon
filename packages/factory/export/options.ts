@@ -83,8 +83,8 @@ export const EXPORT_FLAGS = [
     optionKey: "exportAllFontCollections",
     cliName: "all-fonts",
     default: false,
-    label: "All Used Fonts",
-    ariaLabel: "All Used Fonts",
+    label: "All Fonts",
+    ariaLabel: "All Fonts",
     description: "On emits links for every enabled font family; off emits only fonts a node uses.",
   },
   {
@@ -92,9 +92,9 @@ export const EXPORT_FLAGS = [
     optionKey: "exportAllIconSetIcons",
     cliName: "all-icons",
     default: true,
-    label: "All Enabled Icons",
-    ariaLabel: "All Enabled Icons",
-    description: "Export every enabled icon.",
+    label: "All Icons",
+    ariaLabel: "All Icons",
+    description: "On exports every enabled icon; off exports only icons a component uses.",
   },
   {
     storeKey: "savedWorkspace",
