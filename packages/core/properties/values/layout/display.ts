@@ -7,13 +7,13 @@ import type { EmptyValue } from "../shared/empty/empty"
  * slot, shows only while authoring, or drops out of the tree.
  *
  * - `SHOW`: shown on the canvas and emitted by the factory.
- * - `HIDE`: hidden on the canvas and emitted by the factory as `visibility:
- *   hidden`, so it still occupies layout space.
+ * - `HIDE`: removed from the canvas layout; emitted as an opt-in slot that
+ *   renders nothing by default and can be populated by a caller.
  * - `STUB`: shown on the canvas; emitted as an opt-in slot that renders nothing
  *   by default and can be populated by a caller.
  * - `MOCK`: shown on the canvas but not emitted by the factory, so it exists
  *   only while authoring.
- * - `EXCLUDE`: hidden on the canvas and not emitted by the factory.
+ * - `EXCLUDE`: removed from the canvas layout and not emitted by the factory.
  */
 export enum Display {
   SHOW = "show",

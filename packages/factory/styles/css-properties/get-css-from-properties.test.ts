@@ -46,11 +46,9 @@ describe("getCssFromProperties", () => {
 
   it("scopes the output to the provided class name", () => {
     const props = {
-      display: { type: ValueType.OPTION, value: Display.HIDE },
+      display: { type: ValueType.OPTION, value: Display.EXCLUDE },
     } as unknown as Properties
 
-    expect(getCssFromProperties(props, context(props), "my-node")).toBe(
-      ".my-node {visibility: hidden;}",
-    )
+    expect(getCssFromProperties(props, context(props), "my-node")).toBe(".my-node {display: none;}")
   })
 })

@@ -16,10 +16,8 @@ describe("getDisplayStyles", () => {
     })
   })
 
-  it("maps HIDE to visibility hidden", () => {
-    expect(getDisplayStyles({ properties: display(Display.HIDE) })).toEqual({
-      visibility: "hidden",
-    })
+  it("emits no styles for HIDE, which exports as an opt-in slot", () => {
+    expect(getDisplayStyles({ properties: display(Display.HIDE) })).toEqual({})
   })
 
   it("returns no styles for SHOW", () => {

@@ -2093,15 +2093,6 @@ body {
   border-radius: var(--sdn-corners-tight);
 }
 
-.sdn-button--ls8f {
-  visibility: hidden;
-  padding-top: var(--sdn-cmp-optical-padding-vertical-small);
-  padding-inline-end: var(--sdn-cmp-optical-padding-right-small);
-  padding-bottom: var(--sdn-cmp-optical-padding-vertical-small);
-  padding-inline-start: var(--sdn-cmp-optical-padding-left-small);
-  font-size: var(--sdn-font-size-small);
-}
-
 .sdn-button--rurb {
   padding-top: unset;
   padding-inline-end: unset;
@@ -2531,7 +2522,6 @@ body {
 .sdn-frame--4cb4 {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
   position: absolute;
   inset: -4px;
@@ -2541,7 +2531,6 @@ body {
 .sdn-frame--5puw {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
   position: absolute;
   inset: -32px;
@@ -2552,7 +2541,6 @@ body {
 .sdn-frame--5wjq {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
   position: absolute;
   inset: -16px;
@@ -2719,7 +2707,6 @@ body {
 .sdn-frame--hog9 {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
   position: absolute;
   inset: -8px;
@@ -2883,7 +2870,6 @@ body {
 .sdn-frame--nbi9 {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
   position: absolute;
   inset: -64px;
@@ -2929,7 +2915,6 @@ body {
 .sdn-frame--ozrx {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
   position: absolute;
   inset: -64px;
@@ -2982,7 +2967,6 @@ body {
 .sdn-frame--puja {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
   position: absolute;
   inset: -16px;
@@ -3145,7 +3129,6 @@ body {
 .sdn-frame--ud2b {
   align-self: unset;
   flex: unset;
-  visibility: hidden;
   background-color: color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
   position: absolute;
   inset: -4px;
@@ -3312,7 +3295,6 @@ body {
 }
 
 .sdn-icon--2nwn {
-  visibility: hidden;
   transform: rotate(0deg);
   font-size: var(--sdn-sizes-small);
   color: var(--sdn-hc-on-offBlack);

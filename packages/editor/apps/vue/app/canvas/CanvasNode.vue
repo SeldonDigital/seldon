@@ -47,7 +47,13 @@ const nodeProperties = computed(() =>
   node.value ? getNodeProperties(node.value, props.workspace) : undefined,
 )
 
-const excluded = computed(() => nodeProperties.value?.display?.value === Display.EXCLUDE)
+// Removed from the canvas layout. `HIDE` drops from layout but still exports as
+// an opt-in slot; `EXCLUDE` drops from layout and is not exported.
+const excluded = computed(() => {
+  const display = nodeProperties.value?.display?.value
+
+  return display === Display.HIDE || display === Display.EXCLUDE
+})
 
 const selfPath = computed(() => props.rootPath ?? props.nodeId)
 
