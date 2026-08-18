@@ -116,8 +116,12 @@ export const CanvasNode = memo(function CanvasNode({
 
   const nodeProperties = getNodeProperties(node, workspace)
 
-  // Don't render the node at all if it's set to be hidden
-  if (nodeProperties?.display?.value === Display.EXCLUDE) {
+  // Don't render the node at all when it's removed from the canvas layout.
+  // `HIDE` drops from layout but still exports as an opt-in slot; `EXCLUDE`
+  // drops from layout and is not exported.
+  const displayValue = nodeProperties?.display?.value
+
+  if (displayValue === Display.HIDE || displayValue === Display.EXCLUDE) {
     return null
   }
 

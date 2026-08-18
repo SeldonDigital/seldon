@@ -65,7 +65,10 @@ export function BoardPreviewNode({
 
   const nodeProperties = getNodeProperties(node, workspace)
 
-  if (nodeProperties?.display?.value === Display.EXCLUDE) {
+  if (
+    nodeProperties?.display?.value === Display.HIDE ||
+    nodeProperties?.display?.value === Display.EXCLUDE
+  ) {
     return null
   }
 

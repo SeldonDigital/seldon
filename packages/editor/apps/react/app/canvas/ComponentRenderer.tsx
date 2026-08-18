@@ -148,7 +148,7 @@ export const ComponentRenderer = ({
     [computeContext, properties, className],
   )
 
-  if (properties.display && properties.display.value === Display.EXCLUDE) {
+  if (properties.display?.value === Display.HIDE || properties.display?.value === Display.EXCLUDE) {
     return null
   }
 

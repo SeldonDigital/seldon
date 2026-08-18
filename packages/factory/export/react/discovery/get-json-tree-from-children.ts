@@ -31,6 +31,16 @@ function isExportableCompositionBoard(board: Board): boolean {
   return isComponentBoard(board) || isAuthoredBoard(board)
 }
 
+/**
+ * Display states emitted as an opt-in slot: the node ships in the component but
+ * renders nothing until a caller passes props for it. `STUB` stays visible on
+ * the canvas; `HIDE` is removed from the canvas layout. Both export the same
+ * way, through `mergeOptionalSlot`.
+ */
+function isOptInSlotDisplay(display: unknown): boolean {
+  return display === Display.STUB || display === Display.HIDE
+}
+
 export function getJsonTreeFromChildren(
   variant: EntryNode & { type: "default" | "variant" | "authored" },
   workspace: Workspace,
@@ -45,7 +55,7 @@ export function getJsonTreeFromChildren(
 
   const name = getComponentName(variant, workspace)
   const variantProperties = getNodeProperties(variant, workspace)
-  const variantIsStub = variantProperties.display?.value === Display.STUB
+  const variantIsStub = isOptInSlotDisplay(variantProperties.display?.value)
 
   const childIds = getChildrenIds(board, variant.id)
   const referenceMap: Record<string, string[]> = {}
@@ -130,7 +140,7 @@ export function getJsonTreeFromChildren(
       }
     }
 
-    const isStub = inheritedStub || nodeProperties.display?.value === Display.STUB
+    const isStub = inheritedStub || isOptInSlotDisplay(nodeProperties.display?.value)
 
     const name = getComponentName(node, workspace)
     const catalogId = getNodeCatalogId(node, workspace) ?? node.id
