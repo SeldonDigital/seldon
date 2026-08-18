@@ -50,8 +50,9 @@ export type ExportOptions = {
   exportAllThemes?: boolean
   /**
    * Emit remote font links for every enabled font collection family, even when
-   * no theme references it. On by default. Set to `false` to emit only families
-   * referenced by a theme. Only has an effect when `enableRemoteFonts` is on.
+   * no node uses it. On by default. Set to `false` to emit only the families a
+   * node renders through a direct `font.family` choice. Only has an effect when
+   * `enableRemoteFonts` is on.
    */
   exportAllFontCollections?: boolean
   /**

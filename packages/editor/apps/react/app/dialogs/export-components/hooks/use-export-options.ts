@@ -1,3 +1,4 @@
+import { EXPORT_FLAG_DEFAULTS } from "@seldon/factory/export/options"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
@@ -36,13 +37,7 @@ export const useExportOptions = create<ExportOptionsState>()(
     (set) => ({
       platform: "react",
       framework: "none",
-      includeHidden: false,
-      allThemes: false,
-      allFonts: false,
-      fontLinks: false,
-      allIcons: true,
-      savedWorkspace: true,
-      includeScripts: true,
+      ...EXPORT_FLAG_DEFAULTS,
 
       setPlatform: (value) => set({ platform: value }),
       setFramework: (value) => set({ framework: value }),

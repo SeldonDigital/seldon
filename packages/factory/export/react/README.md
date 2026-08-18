@@ -144,7 +144,7 @@ Two predicates classify a component for the `Type` line in the generated JSDoc. 
 | `assets/get-files-to-export-from-images-to-export.ts` | Reads image files for export |
 | `assets/get-icons.ts` | Reads the icon component file for each used icon id. It resolves each id to a catalog file with `resolveIconExport`, skips ids that do not resolve with a warning, and generates the `IconDefault` component for the default icon |
 | `assets/generate-icon-index.ts` | Writes the icon index file. It writes an export line only for icons that resolve to a catalog file and deduplicates by component name, so the index never references files that were not emitted |
-| `assets/get-fonts-component.ts` | Writes the `Fonts` component. It emits font host links for remote families only when `options.enableRemoteFonts` is set |
+| `assets/get-fonts-component.ts` | Writes the `Fonts` component. It emits font host links for remote families only when `options.enableRemoteFonts` is set. With `exportAllFontCollections` on it links every enabled remote family; with it off it links only families a node renders through a direct `font.family` choice |
 
 The refs registry is shared with the Vue target and lives in [export/shared/generate-refs-registry.ts](../shared/generate-refs-registry.ts). It writes `refs/index.ts` and `refs/registry.json` from the slot data each target collects, and returns an empty list when no node carries a ref, so neither file is emitted unless it has content. See the [factory README](../../README.md) for the emitted shape.
 

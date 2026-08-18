@@ -3,8 +3,13 @@ import merge from "lodash/merge"
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { instantiateFontCollection } from "../../../font-collections/compute"
 import { isSelfHostedRemoteOrigin } from "../../../font-collections/constants"
-import { deriveVariantPreset, getEnabledVariants } from "../../../font-collections/helpers"
+import {
+  deriveVariantPreset,
+  getEnabledVariants,
+  isRemoteFontFamily,
+} from "../../../font-collections/helpers"
 import { sortFontVariants } from "../../../helpers/utils/font-variant"
+import { ValueType } from "../../../properties/constants"
 import { isFontCollectionBoard } from "../../model/components"
 import {
   getFontCollectionTemplateCatalogId,
@@ -17,6 +22,7 @@ import type {
   FontCollectionTemplateId,
   FontFamilyEntry,
 } from "../../../font-collections/types"
+import type { Properties } from "../../../properties/types/properties"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import type { Workspace } from "../../types"
 
@@ -240,6 +246,39 @@ export class WorkspaceFontCollectionService {
    */
   public collectWorkspaceFamilies(workspace: Workspace): WorkspaceFontFamily[] {
     return this.collectWorkspaceFamilyGroups(workspace).flat()
+  }
+
+  /**
+   * Remote family names set directly on any node's `font.family` facet, scanned
+   * across the base `overrides` and every state bag. A concrete `option` or
+   * `exact` value that names a packaged remote family counts as in use. A
+   * theme-resolved value, such as `@fontFamily.primary` or a `font.preset`
+   * recipe, is not a direct family choice, so it is skipped. Export uses this to
+   * emit font host links for only the families a project actually renders.
+   */
+  public collectUsedRemoteFontFamilies(workspace: Workspace): Set<string> {
+    const used = new Set<string>()
+
+    const scan = (properties: Properties | undefined): void => {
+      const family = properties?.font?.family
+
+      if (!family) return
+      if (family.type !== ValueType.OPTION && family.type !== ValueType.EXACT) return
+      if (typeof family.value !== "string" || !isRemoteFontFamily(family.value)) return
+
+      used.add(family.value)
+    }
+
+    for (const node of Object.values(workspace.nodes)) {
+      if (!node) continue
+      scan(node.overrides)
+
+      for (const stateProperties of Object.values(node.states ?? {})) {
+        scan(stateProperties)
+      }
+    }
+
+    return used
   }
 
   /** Catalog ids of font collections present in the workspace. */

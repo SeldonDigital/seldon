@@ -7,6 +7,7 @@ import {
   createNodeExportAssetReader,
   createResolvedExportAssetReader,
   exportWorkspace,
+  toExportScopeOptions,
 } from "@seldon/factory"
 
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
@@ -225,6 +226,9 @@ export class HeadlessHost implements McpHost {
         assetPublicPath: "/",
       },
       assetReader,
+      // Scope flags come from the shared descriptors, so an agent export matches
+      // the editor dialog and the CLI. Omitted flags fall back to the defaults.
+      ...toExportScopeOptions(options ?? {}),
     }
 
     const files = await exportWorkspace(state.workspace, exportOptions)

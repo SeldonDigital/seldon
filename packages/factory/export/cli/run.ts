@@ -12,63 +12,55 @@ import {
   hasExportCollisions,
   parseExportManifest,
 } from "../manifest"
+import {
+  EXPORT_FLAGS,
+  EXPORT_FLAG_BY_CLI_NAME,
+  EXPORT_FLAG_DEFAULTS,
+  toExportScopeOptions,
+} from "../options"
 import { PLATFORMS } from "../platforms/registry"
 import { FRAMEWORK_IDS, resolveOutputLayout } from "../presets"
 import { createResolvedExportAssetReader } from "../resolved-asset-reader"
 
 import type { ExportManifest } from "../manifest"
+import type { ExportScopeFlags } from "../options"
 import type { FrameworkId } from "../presets"
 import type { FileToExport, PlatformId } from "../types"
 
 const PLATFORM_IDS = Object.keys(PLATFORMS) as PlatformId[]
 
 /**
- * Maps each boolean flag to the {@link CliConfig} key it sets and the option it
- * feeds. Every flag accepts `--name` (true) and `--no-name` (false).
+ * Maps each `--kebab` flag to the {@link CliConfig} key it sets. Every flag
+ * accepts `--name` (true) and `--no-name` (false). Derived from the shared
+ * export flag descriptors so the CLI cannot drift from the editor and MCP.
  */
-const BOOLEAN_FLAGS: Record<string, keyof CliConfig> = {
-  hidden: "includeHidden",
-  "all-themes": "allThemes",
-  "all-fonts": "allFonts",
-  "font-links": "fontLinks",
-  "all-icons": "allIcons",
-  "saved-workspace": "savedWorkspace",
-  scripts: "includeScripts",
-}
+const BOOLEAN_FLAGS: Record<string, keyof ExportScopeFlags> = EXPORT_FLAG_BY_CLI_NAME
 
-interface CliConfig {
+interface CliConfig extends ExportScopeFlags {
   platform: PlatformId
   framework: FrameworkId
   input: string
   out: string
-  includeHidden: boolean
-  allThemes: boolean
-  allFonts: boolean
-  fontLinks: boolean
-  allIcons: boolean
-  savedWorkspace: boolean
-  includeScripts: boolean
   overwrite: boolean
   componentsFolder?: string
   assetsFolder?: string
   assetPublicPath?: string
 }
 
-/** Defaults match the editor's export dialog defaults. */
+/** Defaults match the editor's export dialog defaults, from the shared source. */
 const DEFAULT_CONFIG: CliConfig = {
+  ...EXPORT_FLAG_DEFAULTS,
   platform: "react",
   framework: "none",
   input: "",
   out: process.cwd(),
-  includeHidden: false,
-  allThemes: false,
-  allFonts: false,
-  fontLinks: false,
-  allIcons: true,
-  savedWorkspace: true,
-  includeScripts: true,
   overwrite: false,
 }
+
+/** One aligned `--flag  description` help line per scope flag. */
+const SCOPE_FLAG_HELP = EXPORT_FLAGS.map(
+  (flag) => `      --${flag.cliName.padEnd(17)}${flag.description}`,
+).join("\n")
 
 const HELP = `seldon-export - export a Seldon workspace to framework components
 
@@ -91,13 +83,7 @@ Layout overrides (advanced, override the framework layout):
       --asset-public-path <url>
 
 Scope flags (each also has a --no- form):
-      --hidden               Include components hidden in the editor.
-      --all-themes           Export every workspace theme.
-      --all-fonts            Emit links for every enabled font family.
-      --font-links           Emit remote font host links.
-      --all-icons            Export every enabled icon (default on).
-      --saved-workspace      Emit a copy of the workspace (default on).
-      --scripts              Emit the bindings scanner scripts (default on).
+${SCOPE_FLAG_HELP}
 
 Overwrite:
   -y, --yes, --force         Overwrite an export another workspace owns in the
@@ -223,13 +209,7 @@ export async function runExportCli(argv: string[]): Promise<void> {
       assetsFolder: config.assetsFolder ?? layout.assetsFolder,
       assetPublicPath: config.assetPublicPath ?? layout.assetPublicPath,
     },
-    includeHiddenComponents: config.includeHidden,
-    exportAllThemes: config.allThemes,
-    exportAllFontCollections: config.allFonts,
-    enableRemoteFonts: config.fontLinks,
-    exportAllIconSetIcons: config.allIcons,
-    includeWorkspace: config.savedWorkspace,
-    includeScripts: config.includeScripts,
+    ...toExportScopeOptions(config),
   })
 
   await guardExportCollisions(files, outRoot, config.overwrite)

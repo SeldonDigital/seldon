@@ -58,40 +58,15 @@ const COMPONENTS_FOLDER = "sdn"
 /** Editor apps this script can export, each a folder under `apps/`. */
 const PLATFORMS = ["react", "vue"]
 
-/** Built-in scope defaults, matching the editor Export dialog defaults. */
-const DEFAULT_CONFIG = {
-  includeHidden: false,
-  allThemes: false,
-  allFonts: false,
-  fontLinks: false,
-  allIcons: true,
-  savedWorkspace: true,
-  includeScripts: true,
-}
-
-/**
- * Maps each boolean flag name to the config key it sets. Each maps to `--name`
- * (true) and `--no-name` (false).
- */
-const BOOLEAN_FLAGS = {
-  hidden: "includeHidden",
-  "all-themes": "allThemes",
-  "all-fonts": "allFonts",
-  "font-links": "fontLinks",
-  "all-icons": "allIcons",
-  "saved-workspace": "savedWorkspace",
-  scripts: "includeScripts",
-}
-
-function printHelp() {
+function printHelp(booleanFlags) {
   const lines = [
     "Usage: node ../../shared/scripts/export-seldon.mjs --platform <react|vue> [flags]",
     "",
-    "Exports the selected editor's own component library. Scope defaults are built",
-    "in and shared by both editors; flags override per run.",
+    "Exports the selected editor's own component library. Scope defaults are shared",
+    "with the editor dialog, the CLI, and the MCP host; flags override per run.",
     "",
     `  --platform <${PLATFORMS.join("|")}>   editor to export (required)`,
-    ...Object.keys(BOOLEAN_FLAGS).map((name) => `  --${name} / --no-${name}`),
+    ...Object.keys(booleanFlags).map((name) => `  --${name} / --no-${name}`),
     "  --use-committed                    skip the live .seldon copy, use the committed snapshot",
     "  --help                             show this message",
   ]
@@ -115,11 +90,12 @@ function resolveEditor(platform) {
 }
 
 /**
- * Layers flag overrides over the built-in defaults. Unknown flags stop the run
- * so a typo cannot silently export the wrong scope. Returns the platform
- * separately from the scope config.
+ * Layers flag overrides over the shared defaults. Unknown flags stop the run so
+ * a typo cannot silently export the wrong scope. Returns the platform separately
+ * from the scope config. `defaults` and `booleanFlags` come from the shared
+ * export flag descriptors the handler re-exports.
  */
-function resolveArgs(argv) {
+function resolveArgs(argv, defaults, booleanFlags) {
   let platform
   let useCommitted = false
   const overrides = {}
@@ -128,7 +104,7 @@ function resolveArgs(argv) {
     const arg = argv[index]
 
     if (arg === "--help" || arg === "-h") {
-      printHelp()
+      printHelp(booleanFlags)
       process.exit(0)
     }
 
@@ -143,7 +119,7 @@ function resolveArgs(argv) {
     }
 
     const name = arg.replace(/^--(no-)?/, "")
-    const key = BOOLEAN_FLAGS[name]
+    const key = booleanFlags[name]
 
     if (!arg.startsWith("--") || !key) {
       throw new Error(`Unknown flag "${arg}". Run with --help to list flags.`)
@@ -153,7 +129,7 @@ function resolveArgs(argv) {
   }
 
   const editor = resolveEditor(platform)
-  const config = { ...DEFAULT_CONFIG, ...overrides }
+  const config = { ...defaults, ...overrides }
 
   return { platform, useCommitted, config, editor }
 }
@@ -262,9 +238,22 @@ async function resolveInputWorkspaceText(workspaceFile, useCommittedFlag) {
 }
 
 async function main() {
-  const { platform, useCommitted, config, editor } = resolveArgs(process.argv.slice(2))
+  // Load the handler first so the shared export flag descriptors it re-exports
+  // drive argument parsing, keeping this script in step with the editor, CLI,
+  // and MCP host.
+  const {
+    runExport,
+    loadWorkspace,
+    EXPORT_FLAG_DEFAULTS,
+    EXPORT_FLAG_BY_CLI_NAME,
+    toExportScopeOptions,
+  } = await loadHandler()
+  const { platform, useCommitted, config, editor } = resolveArgs(
+    process.argv.slice(2),
+    EXPORT_FLAG_DEFAULTS,
+    EXPORT_FLAG_BY_CLI_NAME,
+  )
   const { editorRoot, workspaceFile } = editor
-  const { runExport, loadWorkspace } = await loadHandler()
   // Read through Core so the file is migrated and verified before it is exported.
   const workspace = loadWorkspace(await resolveInputWorkspaceText(workspaceFile, useCommitted))
 
@@ -278,17 +267,10 @@ async function main() {
         componentsFolder: COMPONENTS_FOLDER,
       },
 
-      includeHiddenComponents: config.includeHidden,
-      exportAllThemes: config.allThemes,
-      exportAllFontCollections: config.allFonts,
-      enableRemoteFonts: config.fontLinks,
-      exportAllIconSetIcons: config.allIcons,
-      includeWorkspace: config.savedWorkspace,
-
       // With `includeScripts` on, this editor keeps the bindings scanner it
       // hands to any other project. `npm run bindings` runs it to write
       // `sdn/refs/bindings.json`, which the connections overlay reads.
-      includeScripts: config.includeScripts,
+      ...toExportScopeOptions(config),
     },
   }
 

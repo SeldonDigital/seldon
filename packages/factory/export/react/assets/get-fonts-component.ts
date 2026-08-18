@@ -1,8 +1,5 @@
-import { getRemoteFontUrl, isRemoteFontFamily } from "@seldon/core"
-import {
-  workspaceFontCollectionService,
-  workspaceThemeService,
-} from "@seldon/core/workspace/services"
+import { getRemoteFontUrl } from "@seldon/core"
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 
 import { format } from "../format"
 
@@ -10,14 +7,14 @@ import type { ExportOptions, FileToExport } from "../../types"
 import type { Workspace } from "@seldon/core"
 
 /**
- * Builds the exported `Fonts` component from the workspace's font collections
- * and themes.
+ * Builds the exported `Fonts` component from the workspace's font collections.
  *
  * Local and system families need no network request, so they emit nothing here.
  * Remote families only emit a font host link when `options.enableRemoteFonts` is
- * set. Links come from two sources: enabled remote families on font collection
- * boards, and remote families referenced by a theme's font slots (so a Google
- * font used only through a theme still loads).
+ * set. `exportAllFontCollections` then selects the family scope: on, every
+ * enabled remote family on a font collection board emits a link, whether or not
+ * the project uses it; off, only the families a node actually renders through a
+ * direct `font.family` choice emit a link.
  */
 export async function getFontsComponent(
   workspace: Workspace,
@@ -42,13 +39,10 @@ export async function getFontsComponent(
       links.push(`    <link rel="stylesheet" href="${url}" />`)
     }
 
-    // 1. Enabled remote families on font collection boards. On by default; when
-    //    `exportAllFontCollections` is off, skip this source so only families a
-    //    theme references (source 2) emit a link.
     if (options.exportAllFontCollections !== false) {
-      const families = workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
-
-      for (const family of families) {
+      // Every enabled remote family on a font collection board, whether or not
+      // the project uses it.
+      for (const family of workspaceFontCollectionService.collectWorkspaceFamilies(workspace)) {
         if (family.origin === "local") continue
         const enabled = enabledByFamily[family.name]
 
@@ -56,23 +50,12 @@ export async function getFontsComponent(
         if (enabled && enabled.length === 0) continue
         pushFamily(family.name, enabled)
       }
-    }
-
-    // 2. Remote families referenced by a theme's font slots. These load even when
-    //    the family is not an enabled board family, so themed text renders.
-    //    Board-enabled variants are used when known; otherwise every weight loads.
-    for (const themeId of Object.keys(workspace.themes ?? {})) {
-      const theme = workspaceThemeService.getTheme(themeId, workspace)
-
-      if (!theme?.fontFamily) continue
-
-      for (const slot of [
-        theme.fontFamily.parameters.primary,
-        theme.fontFamily.parameters.secondary,
-      ]) {
-        const familyName = typeof slot?.parameters === "string" ? slot.parameters : undefined
-
-        if (!familyName || !isRemoteFontFamily(familyName)) continue
+    } else {
+      // Only the remote families a node renders through a direct `font.family`
+      // choice, so an export scoped to used fonts stays request-minimal.
+      for (const familyName of workspaceFontCollectionService.collectUsedRemoteFontFamilies(
+        workspace,
+      )) {
         pushFamily(familyName, enabledByFamily[familyName])
       }
     }

@@ -3,6 +3,7 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
 import { exportWorkspace } from "@seldon/factory/export/export-workspace"
+import { EXPORT_FLAG_DEFAULTS, toExportScopeOptions } from "@seldon/factory/export/options"
 import { createResolvedExportAssetReader } from "@seldon/factory/export/resolved-asset-reader"
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 import { DEFAULT_COMPONENTS_FOLDER } from "../lib/export/constants"
@@ -12,8 +13,15 @@ import type { ExportAssetReader } from "@seldon/factory/export/asset-reader"
 import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 
 // Re-exported so the `export-seldon` scripts, which bundle this module to reach
-// `runExport`, can read a workspace file through Core instead of `JSON.parse`.
+// `runExport`, can read a workspace file through Core instead of `JSON.parse`
+// and derive their scope flags from the shared export flag descriptors.
 export { loadWorkspace }
+export {
+  EXPORT_FLAG_BY_CLI_NAME,
+  EXPORT_FLAG_DEFAULTS,
+  EXPORT_FLAGS,
+  toExportScopeOptions,
+} from "@seldon/factory/export/options"
 
 export type WireFile = {
   path: string
@@ -127,12 +135,10 @@ export async function runExport(
       assetPublicPath: "/",
     },
     assetReader,
-    // Default off so exports stay request-free. Flip to true (or override via
-    // body.options once the export options UI exists) to emit Google font links.
-    enableRemoteFonts: false,
-    // Default on so the export ships every icon enabled in the workspace's icon
-    // sets. Override via body.options to tree-shake to only icons components use.
-    exportAllIconSetIcons: true,
+    // Scope defaults come from the shared export flag descriptors, so this
+    // handler stays in step with the editor dialog, the CLI, and the MCP host.
+    // `body.options` overrides them per request.
+    ...toExportScopeOptions(EXPORT_FLAG_DEFAULTS),
     ...body.options,
   }
 

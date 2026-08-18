@@ -1,3 +1,4 @@
+import { EXPORT_FLAG_DEFAULTS } from "@seldon/factory/export/options"
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
 
@@ -41,13 +42,13 @@ export const useExportOptionsStore = defineStore("export-options", () => {
 
   const platform = ref<PlatformId>(persisted.platform ?? "vue")
   const framework = ref<FrameworkId>(persisted.framework ?? "none")
-  const includeHidden = ref(persisted.includeHidden ?? false)
-  const allThemes = ref(persisted.allThemes ?? false)
-  const allFonts = ref(persisted.allFonts ?? false)
-  const fontLinks = ref(persisted.fontLinks ?? false)
-  const allIcons = ref(persisted.allIcons ?? true)
-  const savedWorkspace = ref(persisted.savedWorkspace ?? true)
-  const includeScripts = ref(persisted.includeScripts ?? true)
+  const includeHidden = ref(persisted.includeHidden ?? EXPORT_FLAG_DEFAULTS.includeHidden)
+  const allThemes = ref(persisted.allThemes ?? EXPORT_FLAG_DEFAULTS.allThemes)
+  const allFonts = ref(persisted.allFonts ?? EXPORT_FLAG_DEFAULTS.allFonts)
+  const fontLinks = ref(persisted.fontLinks ?? EXPORT_FLAG_DEFAULTS.fontLinks)
+  const allIcons = ref(persisted.allIcons ?? EXPORT_FLAG_DEFAULTS.allIcons)
+  const savedWorkspace = ref(persisted.savedWorkspace ?? EXPORT_FLAG_DEFAULTS.savedWorkspace)
+  const includeScripts = ref(persisted.includeScripts ?? EXPORT_FLAG_DEFAULTS.includeScripts)
 
   watch(
     [
