@@ -441,7 +441,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportAllFonts",
   },
   textLabel14: {
-    children: "All Enabled Fonts",
+    children: "All Fonts",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--s1qr",

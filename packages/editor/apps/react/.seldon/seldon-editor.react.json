@@ -28422,7 +28422,7 @@
         },
         "content": {
           "type": "exact",
-          "value": "All Enabled Fonts"
+          "value": "All Fonts"
         },
         "width": {
           "type": "option",

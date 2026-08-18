@@ -131,7 +131,7 @@ const sdn: DialogProps = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button--ls8f",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon4: {
     icon: "seldon-component",
@@ -145,7 +145,7 @@ const sdn: DialogProps = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
-    className: "sdn-button sdn-button--ls8f",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon5: {
     icon: "seldon-component",
@@ -305,10 +305,10 @@ export function Dialog({
   const icon3Props = mergeOptionalSlot(sdn.icon3, icon3, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
   const button2Props = mergeOptionalSlot(sdn.button2, button2, seldonRefs)
-  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+  const icon4Props = mergeOptionalSlot(sdn.icon4, icon4, seldonRefs)
   const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
   const button3Props = mergeOptionalSlot(sdn.button3, button3, seldonRefs)
-  const icon5Props = mergeSlot(sdn.icon5, icon5, seldonRefs)
+  const icon5Props = mergeOptionalSlot(sdn.icon5, icon5, seldonRefs)
   const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
   const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
   const button4Props = mergeOptionalSlot(sdn.button4, button4, seldonRefs)
