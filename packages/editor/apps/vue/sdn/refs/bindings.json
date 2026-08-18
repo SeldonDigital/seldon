@@ -11447,13 +11447,13 @@
         {
           "file": "app/canvas/CanvasNode.vue",
           "component": "CanvasNode",
-          "line": 139,
+          "line": 145,
           "expression": "iconSymbol",
           "inputs": [
             {
               "name": "iconSymbol",
               "declaredAt": {
-                "line": 90,
+                "line": 96,
                 "kind": "const",
                 "via": "computed"
               }
