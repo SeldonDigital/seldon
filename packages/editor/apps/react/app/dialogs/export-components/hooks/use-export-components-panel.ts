@@ -7,11 +7,13 @@ import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-d
 import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import { FRAMEWORK_IDS, resolveOutputLayout } from "@seldon/factory/export/presets"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { useExportOptions } from "./use-export-options"
 
+import type { WorkspaceExportSettings } from "@seldon/core"
 import type { FrameworkId } from "@seldon/factory/export/presets"
+import type { PlatformId } from "@seldon/factory/export/types"
 
 /** Upper bound on a workspace name, matching the inline title rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
@@ -72,28 +74,154 @@ export function useExportComponentsPanel() {
 
   const isOpen = activePanel === "export-components"
 
-  // Platform and the scope toggles come from a persisted store, so reopening the
-  // dialog restores the last-used selections instead of the defaults.
+  // The workspace's saved settings are the source of truth, so the target and
+  // scope travel with the file and the CLI and MCP export it the same way. The
+  // persisted store only seeds a workspace that has none yet, so a brand-new
+  // file opens on the last-used selections instead of the defaults.
   const {
-    platform,
-    setPlatform,
-    framework,
-    setFramework,
-    includeHidden,
-    setIncludeHidden,
-    allThemes,
-    setAllThemes,
-    allFonts,
-    setAllFonts,
-    fontLinks,
-    setFontLinks,
-    allIcons,
-    setAllIcons,
-    savedWorkspace,
-    setSavedWorkspace,
-    includeScripts,
-    setIncludeScripts,
+    platform: storedPlatform,
+    setPlatform: setStoredPlatform,
+    framework: storedFramework,
+    setFramework: setStoredFramework,
+    includeHidden: storedIncludeHidden,
+    setIncludeHidden: setStoredIncludeHidden,
+    allThemes: storedAllThemes,
+    setAllThemes: setStoredAllThemes,
+    allFonts: storedAllFonts,
+    setAllFonts: setStoredAllFonts,
+    fontLinks: storedFontLinks,
+    setFontLinks: setStoredFontLinks,
+    allIcons: storedAllIcons,
+    setAllIcons: setStoredAllIcons,
+    savedWorkspace: storedSavedWorkspace,
+    setSavedWorkspace: setStoredSavedWorkspace,
+    includeScripts: storedIncludeScripts,
+    setIncludeScripts: setStoredIncludeScripts,
   } = useExportOptions()
+
+  const saved = workspace.metadata.exportSettings
+
+  const platform = (saved?.platform as PlatformId | undefined) ?? storedPlatform
+  const framework = (saved?.framework as FrameworkId | undefined) ?? storedFramework
+  const includeHidden = saved?.includeHidden ?? storedIncludeHidden
+  const allThemes = saved?.allThemes ?? storedAllThemes
+  const allFonts = saved?.allFonts ?? storedAllFonts
+  const fontLinks = saved?.fontLinks ?? storedFontLinks
+  const allIcons = saved?.allIcons ?? storedAllIcons
+  const savedWorkspace = saved?.savedWorkspace ?? storedSavedWorkspace
+  const includeScripts = saved?.includeScripts ?? storedIncludeScripts
+
+  const settingsSnapshot = useMemo<WorkspaceExportSettings>(
+    () => ({
+      platform,
+      framework,
+      outputFolder: saved?.outputFolder,
+      fontLinks,
+      allFonts,
+      allIcons,
+      allThemes,
+      includeHidden,
+      savedWorkspace,
+      includeScripts,
+    }),
+    [
+      platform,
+      framework,
+      saved,
+      fontLinks,
+      allFonts,
+      allIcons,
+      allThemes,
+      includeHidden,
+      savedWorkspace,
+      includeScripts,
+    ],
+  )
+
+  // Writes the full settings snapshot with the change applied, so the workspace
+  // always carries a complete block once the dialog is touched. The store update
+  // keeps the last-used seed current for the next brand-new workspace.
+  const commit = useCallback(
+    (patch: Partial<WorkspaceExportSettings>) => {
+      dispatch({
+        type: "set_workspace_export_settings",
+        payload: { value: { ...settingsSnapshot, ...patch } },
+      })
+    },
+    [dispatch, settingsSnapshot],
+  )
+
+  const setPlatform = useCallback(
+    (value: PlatformId) => {
+      setStoredPlatform(value)
+      commit({ platform: value })
+    },
+    [setStoredPlatform, commit],
+  )
+
+  const setFramework = useCallback(
+    (value: FrameworkId) => {
+      setStoredFramework(value)
+      commit({ framework: value })
+    },
+    [setStoredFramework, commit],
+  )
+
+  const setIncludeHidden = useCallback(
+    (value: boolean) => {
+      setStoredIncludeHidden(value)
+      commit({ includeHidden: value })
+    },
+    [setStoredIncludeHidden, commit],
+  )
+
+  const setAllThemes = useCallback(
+    (value: boolean) => {
+      setStoredAllThemes(value)
+      commit({ allThemes: value })
+    },
+    [setStoredAllThemes, commit],
+  )
+
+  const setAllFonts = useCallback(
+    (value: boolean) => {
+      setStoredAllFonts(value)
+      commit({ allFonts: value })
+    },
+    [setStoredAllFonts, commit],
+  )
+
+  const setFontLinks = useCallback(
+    (value: boolean) => {
+      setStoredFontLinks(value)
+      commit({ fontLinks: value })
+    },
+    [setStoredFontLinks, commit],
+  )
+
+  const setAllIcons = useCallback(
+    (value: boolean) => {
+      setStoredAllIcons(value)
+      commit({ allIcons: value })
+    },
+    [setStoredAllIcons, commit],
+  )
+
+  const setSavedWorkspace = useCallback(
+    (value: boolean) => {
+      setStoredSavedWorkspace(value)
+      commit({ savedWorkspace: value })
+    },
+    [setStoredSavedWorkspace, commit],
+  )
+
+  const setIncludeScripts = useCallback(
+    (value: boolean) => {
+      setStoredIncludeScripts(value)
+      commit({ includeScripts: value })
+    },
+    [setStoredIncludeScripts, commit],
+  )
 
   const [directory, setDirectory] = useState<FileSystemDirectoryHandle | null>(null)
 
@@ -176,6 +304,9 @@ export function useExportComponentsPanel() {
     if (exporting) return
 
     commitWorkspaceName()
+    // Persist the exact settings this export used, so an untouched dialog still
+    // writes a complete block the CLI and MCP can honor.
+    commit({})
     await exportToFolder(
       {
         target: { framework: platform, styles: "css-properties" },
@@ -194,6 +325,7 @@ export function useExportComponentsPanel() {
   }, [
     exporting,
     commitWorkspaceName,
+    commit,
     exportToFolder,
     platform,
     framework,

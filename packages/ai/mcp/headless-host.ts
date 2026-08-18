@@ -4,10 +4,13 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 
 import {
+  FRAMEWORK_IDS,
   createNodeExportAssetReader,
   createResolvedExportAssetReader,
   exportWorkspace,
+  resolveOutputLayout,
   toExportScopeOptions,
+  workspaceExportScopeFlags,
 } from "@seldon/factory"
 
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
@@ -25,12 +28,23 @@ import type {
 } from "./server"
 import type { StatToken } from "./store"
 import type { Workspace } from "@seldon/core/workspace/types"
-import type { ExportOptions } from "@seldon/factory"
+import type { ExportOptions, FrameworkId, OutputLayout } from "@seldon/factory"
 
 /** How many revisions the per-target undo history keeps in memory. */
 const HISTORY_LIMIT = 100
 
 const DEFAULT_COMPONENTS_FOLDER = "components"
+
+/**
+ * Resolves the output layout for a framework id saved on the workspace, guarding
+ * an unknown value so a bad string falls back to the host defaults rather than
+ * an undefined layout.
+ */
+function resolveSavedOutputLayout(framework: string | undefined): OutputLayout | undefined {
+  if (!framework || !(FRAMEWORK_IDS as string[]).includes(framework)) return undefined
+
+  return resolveOutputLayout(framework as FrameworkId)
+}
 
 /** The live state the host holds for one workspace between calls. */
 interface TargetState {
@@ -206,7 +220,13 @@ export class HeadlessHost implements McpHost {
       ? createNodeExportAssetReader(monorepoRoot)
       : createResolvedExportAssetReader(pathToFileURL(path.join(this.exportRoot, "index.js")).href)
 
-    const componentsFolder = options?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
+    // Settings saved on the workspace act as defaults, so an agent export matches
+    // what the editor last chose. Explicit call options still win over them.
+    const settings = state.workspace.metadata.exportSettings
+    const layout = resolveSavedOutputLayout(settings?.framework)
+    const componentsFolder =
+      options?.componentsFolder ?? layout?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
+    const outputDir = options?.outputDir ?? settings?.outputFolder
 
     const exportOptions: ExportOptions = {
       rootDirectory,
@@ -215,26 +235,32 @@ export class HeadlessHost implements McpHost {
       // consumer's format check finds nothing to fix.
       formatConfigRoot: this.exportRoot,
       target: {
-        framework: (options?.framework as ExportOptions["target"]["framework"]) ?? "react",
+        framework:
+          (options?.framework as ExportOptions["target"]["framework"]) ??
+          (settings?.platform as ExportOptions["target"]["framework"]) ??
+          "react",
         styles: (options?.styles as ExportOptions["target"]["styles"]) ?? "css-properties",
       },
       output: {
         componentsFolder,
         // Images write to the project's `public/` and are referenced from the
         // site root, the static-asset convention shared by Vite and Next.js.
-        assetsFolder: "public",
-        assetPublicPath: "/",
+        assetsFolder: layout?.assetsFolder ?? "public",
+        assetPublicPath: layout?.assetPublicPath ?? "/",
       },
       assetReader,
-      // Scope flags come from the shared descriptors, so an agent export matches
-      // the editor dialog and the CLI. Omitted flags fall back to the defaults.
-      ...toExportScopeOptions(options ?? {}),
+      // Scope flags layer call options over the workspace-saved flags, then the
+      // shared defaults fill anything neither set, so every surface agrees.
+      ...toExportScopeOptions({
+        ...workspaceExportScopeFlags(state.workspace),
+        ...(options ?? {}),
+      }),
     }
 
     const files = await exportWorkspace(state.workspace, exportOptions)
 
     if (options?.write !== false) {
-      await this.writeExportedFiles(files, options?.outputDir)
+      await this.writeExportedFiles(files, outputDir)
     }
 
     return files.map(toExportedFile)

@@ -17,6 +17,7 @@ import {
   EXPORT_FLAG_BY_CLI_NAME,
   EXPORT_FLAG_DEFAULTS,
   toExportScopeOptions,
+  workspaceExportScopeFlags,
 } from "../options"
 import { PLATFORMS } from "../platforms/registry"
 import { FRAMEWORK_IDS, resolveOutputLayout } from "../presets"
@@ -26,6 +27,7 @@ import type { ExportManifest } from "../manifest"
 import type { ExportScopeFlags } from "../options"
 import type { FrameworkId } from "../presets"
 import type { FileToExport, PlatformId } from "../types"
+import type { Workspace } from "@seldon/core"
 
 const PLATFORM_IDS = Object.keys(PLATFORMS) as PlatformId[]
 
@@ -92,11 +94,13 @@ Overwrite:
   -h, --help                 Show this message.`
 
 /**
- * Parses argv over {@link DEFAULT_CONFIG}. Unknown flags and invalid enum values
- * stop the run so a typo cannot silently export the wrong scope or framework.
+ * Parses argv into just the values the flags set, leaving everything else
+ * unset. Unknown flags and invalid enum values stop the run so a typo cannot
+ * silently export the wrong scope or framework. The caller layers these over the
+ * defaults and any workspace-saved settings.
  */
-export function parseCliArgs(argv: string[]): CliConfig {
-  const config: CliConfig = { ...DEFAULT_CONFIG }
+export function parseCliOverrides(argv: string[]): Partial<CliConfig> {
+  const config: Partial<CliConfig> = {}
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index]
@@ -184,21 +188,63 @@ export function parseCliArgs(argv: string[]): CliConfig {
 }
 
 /**
+ * Parses argv over {@link DEFAULT_CONFIG}, without any workspace-saved settings.
+ * Kept for callers that only need the resolved flags from argv.
+ */
+export function parseCliArgs(argv: string[]): CliConfig {
+  return { ...DEFAULT_CONFIG, ...parseCliOverrides(argv) }
+}
+
+/**
+ * Maps a workspace's saved export settings to CLI config fields, so a workspace
+ * carries its own target and scope defaults. Only valid target ids pass through.
+ * The output root stays a CLI concern, so `outputFolder` is not applied here.
+ */
+function workspaceConfigOverrides(workspace: Workspace): Partial<CliConfig> {
+  const settings = workspace.metadata.exportSettings
+
+  if (!settings) return {}
+
+  const overrides: Partial<CliConfig> = { ...workspaceExportScopeFlags(workspace) }
+
+  if (settings.platform && PLATFORM_IDS.includes(settings.platform as PlatformId)) {
+    overrides.platform = settings.platform as PlatformId
+  }
+
+  if (settings.framework && FRAMEWORK_IDS.includes(settings.framework as FrameworkId)) {
+    overrides.framework = settings.framework as FrameworkId
+  }
+
+  return overrides
+}
+
+/**
  * Runs the export end to end: read the workspace through core, generate files
  * with the factory, then write them under the output root. Assets resolve from
  * the installed `@seldon/core` through {@link createResolvedExportAssetReader},
  * so the command works from any consumer project.
  */
 export async function runExportCli(argv: string[]): Promise<void> {
-  const config = parseCliArgs(argv)
+  const cliOverrides = parseCliOverrides(argv)
+  const input = cliOverrides.input ?? DEFAULT_CONFIG.input
 
-  if (!config.input) {
+  if (!input) {
     throw new Error("Missing required --input <workspace.json>. Run with --help for usage.")
+  }
+
+  const workspace = loadWorkspace(fs.readFileSync(path.resolve(input), "utf8"))
+
+  // Precedence: an explicit CLI flag wins over a workspace-saved setting, which
+  // wins over the shared default. So a workspace carries its own target and
+  // scope, and a flag still overrides it for a one-off export.
+  const config: CliConfig = {
+    ...DEFAULT_CONFIG,
+    ...workspaceConfigOverrides(workspace),
+    ...cliOverrides,
   }
 
   const layout = resolveOutputLayout(config.framework)
   const outRoot = path.resolve(config.out)
-  const workspace = loadWorkspace(fs.readFileSync(path.resolve(config.input), "utf8"))
 
   const files = await exportWorkspace(workspace, {
     rootDirectory: outRoot,

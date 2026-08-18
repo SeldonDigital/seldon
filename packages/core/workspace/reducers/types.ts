@@ -16,6 +16,7 @@ import type { RepeatEditorData } from "../helpers/nodes/node-repeat"
 import type { InstanceId, VariantId } from "../helpers/rules/workspace-node-ids"
 import type { BoardKey } from "../model/components"
 import type { EntryNodeId, EntryNodeLevel } from "../model/entry-node"
+import type { WorkspaceExportSettings } from "../model/export-settings"
 import type { NodeState } from "../model/node-state"
 import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
@@ -241,6 +242,10 @@ export type WorkspaceMetadataActions =
   | {
       type: "set_workspace_license"
       payload: { value: WorkspaceStringMap | undefined }
+    }
+  | {
+      type: "set_workspace_export_settings"
+      payload: { value: WorkspaceExportSettings | undefined }
     }
   | { type: "reset_workspace_owner"; payload: Record<string, never> }
   | { type: "reset_workspace_label"; payload: Record<string, never> }

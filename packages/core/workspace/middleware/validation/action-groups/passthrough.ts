@@ -10,6 +10,7 @@ const PASSTHROUGH_ACTION_TYPES = new Set<Action["type"]>([
   "set_workspace_intent",
   "set_workspace_tags",
   "set_workspace_license",
+  "set_workspace_export_settings",
   "reset_workspace_owner",
   "reset_workspace_label",
   "normalize_metadata_version",

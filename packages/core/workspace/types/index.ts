@@ -5,6 +5,7 @@
  * `WORKSPACE.md` and `workspace/model/*`.
  */
 export type { WorkspaceStringMap } from "../model"
+export type { WorkspaceExportSettings } from "../model"
 export type { WorkspaceMetadata } from "../model"
 export type { ComponentTreeRef } from "../model"
 export type {

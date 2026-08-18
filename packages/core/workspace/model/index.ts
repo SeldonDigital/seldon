@@ -1,4 +1,5 @@
 export type { WorkspaceStringMap } from "./string-maps"
+export type { WorkspaceExportSettings } from "./export-settings"
 export type { WorkspaceMetadata } from "./metadata"
 export type {
   ComponentTreeRef,

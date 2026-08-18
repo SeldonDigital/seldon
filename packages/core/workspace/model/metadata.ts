@@ -1,3 +1,4 @@
+import type { WorkspaceExportSettings } from "./export-settings"
 import type { CustomState } from "./node-state"
 import type { WorkspaceStringMap } from "./string-maps"
 
@@ -23,4 +24,10 @@ export interface WorkspaceMetadata {
    * names cannot appear here.
    */
   customStates?: CustomState[]
+  /**
+   * Export target and scope choices saved with the workspace, so the editor,
+   * the CLI, and the MCP host export it the same way. Absent fields fall back to
+   * each surface's default.
+   */
+  exportSettings?: WorkspaceExportSettings
 }

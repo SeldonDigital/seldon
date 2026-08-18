@@ -118,6 +118,7 @@ import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
 import { setThemeScaleSlot } from "./handlers/set/set-theme-scale-slot"
 import { setWorkspace } from "./handlers/set/set-workspace"
+import { setWorkspaceExportSettings } from "./handlers/set/set-workspace-export-settings"
 import { setWorkspaceIntent } from "./handlers/set/set-workspace-intent"
 import { setWorkspaceLabel } from "./handlers/set/set-workspace-label"
 import { setWorkspaceLastUpdate } from "./handlers/set/set-workspace-last-update"
@@ -149,6 +150,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setWorkspaceTags(action.payload, workspace)
     case "set_workspace_license":
       return setWorkspaceLicense(action.payload, workspace)
+    case "set_workspace_export_settings":
+      return setWorkspaceExportSettings(action.payload, workspace)
 
     case "reset_workspace_owner":
       return resetWorkspaceOwner(action.payload, workspace)

@@ -1,4 +1,5 @@
 import type { ExportOptions } from "./types"
+import type { Workspace } from "@seldon/core"
 
 /**
  * The boolean scope toggles an export exposes, keyed the way the editor dialog
@@ -139,4 +140,25 @@ export function toExportScopeOptions(flags: Partial<ExportScopeFlags>): ExportSc
     (options, flag) => ({ ...options, [flag.optionKey]: resolved[flag.storeKey] }),
     {} as ExportScopeOptions,
   )
+}
+
+/**
+ * Reads the export scope flags saved on a workspace, in
+ * `metadata.exportSettings`. Returns only the booleans present, so a caller can
+ * layer its own overrides on top before mapping to {@link ExportScopeOptions}.
+ * The target fields (`platform`, `framework`, `outputFolder`) are read directly
+ * by each surface and are not part of the scope flags.
+ */
+export function workspaceExportScopeFlags(workspace: Workspace): Partial<ExportScopeFlags> {
+  const settings = workspace.metadata.exportSettings
+
+  if (!settings) return {}
+
+  return EXPORT_FLAGS.reduce((flags, flag) => {
+    const value = settings[flag.storeKey]
+
+    if (typeof value === "boolean") flags[flag.storeKey] = value
+
+    return flags
+  }, {} as Partial<ExportScopeFlags>)
 }

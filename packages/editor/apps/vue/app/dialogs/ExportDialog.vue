@@ -20,9 +20,11 @@ import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 
 import type { MenuEntry } from "@app/menus/types"
+import type { WorkspaceExportSettings } from "@seldon/core"
 import type { LocalExportOptions } from "@seldon/editor/lib/export/run-local-export"
 import type { ExportFlagDescriptor, ExportScopeFlags } from "@seldon/factory/export/options"
 import type { FrameworkId } from "@seldon/factory/export/presets"
+import type { PlatformId } from "@seldon/factory/export/types"
 import type { CSSProperties } from "vue"
 
 /** Upper bound on a workspace name, matching the inline project rename. */
@@ -96,6 +98,59 @@ const {
   includeScripts,
 } = storeToRefs(options)
 const directory = ref<FileSystemDirectoryHandle | null>(null)
+
+/** The store's current selections as one settings block, ready to persist. */
+function buildExportSettings(): WorkspaceExportSettings {
+  return {
+    platform: platform.value,
+    framework: framework.value,
+    outputFolder: workspace.value.metadata.exportSettings?.outputFolder,
+    fontLinks: fontLinks.value,
+    allFonts: allFonts.value,
+    allIcons: allIcons.value,
+    allThemes: allThemes.value,
+    includeHidden: includeHidden.value,
+    savedWorkspace: savedWorkspace.value,
+    includeScripts: includeScripts.value,
+  }
+}
+
+/** Seeds the store from the workspace's saved settings when it has any. */
+function seedFromWorkspace(): void {
+  const saved = workspace.value.metadata.exportSettings
+
+  if (!saved) return
+
+  if (saved.platform) platform.value = saved.platform as PlatformId
+  if (saved.framework) framework.value = saved.framework as FrameworkId
+  if (saved.includeHidden !== undefined) includeHidden.value = saved.includeHidden
+  if (saved.allThemes !== undefined) allThemes.value = saved.allThemes
+  if (saved.allFonts !== undefined) allFonts.value = saved.allFonts
+  if (saved.fontLinks !== undefined) fontLinks.value = saved.fontLinks
+  if (saved.allIcons !== undefined) allIcons.value = saved.allIcons
+  if (saved.savedWorkspace !== undefined) savedWorkspace.value = saved.savedWorkspace
+  if (saved.includeScripts !== undefined) includeScripts.value = saved.includeScripts
+}
+
+// Metadata is the source of truth. A store change writes the full settings block
+// to the workspace, so the target and scope travel with the file and the CLI and
+// MCP export it the same way.
+watch(
+  [
+    platform,
+    framework,
+    includeHidden,
+    allThemes,
+    allFonts,
+    fontLinks,
+    allIcons,
+    savedWorkspace,
+    includeScripts,
+  ],
+  () => {
+    dispatch({ type: "set_workspace_export_settings", payload: { value: buildExportSettings() } })
+  },
+)
 
 // Holds what the user typed, including an empty string, so clearing the field
 // does not snap back to the stored name mid-edit.
@@ -215,6 +270,9 @@ async function chooseDirectory(): Promise<void> {
 async function runExport(): Promise<void> {
   if (isExporting.value) return
   commitName()
+  // Persist the exact settings this export used, so an untouched dialog still
+  // writes a complete block the CLI and MCP can honor.
+  dispatch({ type: "set_workspace_export_settings", payload: { value: buildExportSettings() } })
   const options: LocalExportOptions = {
     target: { framework: platform.value, styles: "css-properties" },
     output: resolveOutputLayout(framework.value),
@@ -272,6 +330,8 @@ watch(isOpen, (open) => {
 
   x.set(0)
   y.set(0)
+
+  seedFromWorkspace()
 
   const id = workspaceId.value
 

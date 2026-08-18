@@ -1463,6 +1463,27 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "$ref": "#/definitions/WorkspaceExportSettings"
+            }
+          },
+          "required": ["value"],
+          "type": "object"
+        },
+        "type": {
+          "const": "set_workspace_export_settings",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
           "$ref": "#/definitions/Record<string,never>"
         },
         "type": {
@@ -4050,8 +4071,8 @@
               "type": "string"
             },
             "origin": {
-              "description": "Where a font family loads from.\n\n- `local` renders from fonts already on the device and never makes a network request.\n- `remote` may load from a font host such as Google Fonts.",
-              "enum": ["local", "remote"],
+              "description": "Where a font family loads from.\n\n- `local` renders from fonts already on the device and never makes a network request.\n- `remote` may load from Google Fonts.\n- `fontshare` may load from Fontshare (Indian Type Foundry).\n\n`remote` and `fontshare` are both self-hosted for the canvas: their woff2 files are\nmaterialized into the editor's local font cache, and export emits the matching font\nhost link.",
+              "enum": ["fontshare", "local", "remote"],
               "type": "string"
             },
             "stack": {
@@ -7821,7 +7842,7 @@
       "type": "object"
     },
     "Display": {
-      "description": "Whether the node appears on the canvas, stays hidden, renders as an opt-in\nslot, shows only while authoring, or drops out of the tree.\n\n- `SHOW`: shown on the canvas and emitted by the factory.\n- `HIDE`: hidden on the canvas and emitted by the factory as `visibility:\n  hidden`, so it still occupies layout space.\n- `STUB`: shown on the canvas; emitted as an opt-in slot that renders nothing\n  by default and can be populated by a caller.\n- `MOCK`: shown on the canvas but not emitted by the factory, so it exists\n  only while authoring.\n- `EXCLUDE`: hidden on the canvas and not emitted by the factory.",
+      "description": "Whether the node appears on the canvas, stays hidden, renders as an opt-in\nslot, shows only while authoring, or drops out of the tree.\n\n- `SHOW`: shown on the canvas and emitted by the factory.\n- `HIDE`: removed from the canvas layout; emitted as an opt-in slot that\n  renders nothing by default and can be populated by a caller.\n- `STUB`: shown on the canvas; emitted as an opt-in slot that renders nothing\n  by default and can be populated by a caller.\n- `MOCK`: shown on the canvas but not emitted by the factory, so it exists\n  only while authoring.\n- `EXCLUDE`: removed from the canvas layout and not emitted by the factory.",
       "enum": ["show", "hide", "stub", "mock", "exclude"],
       "type": "string"
     },
@@ -16657,6 +16678,43 @@
       ],
       "type": "object"
     },
+    "WorkspaceExportSettings": {
+      "additionalProperties": false,
+      "description": "Export target and scope choices saved with a workspace, so the editor, the\nCLI, and the MCP host export a workspace the same way without re-specifying\noptions each time. Every field is optional; an absent field falls back to the\nexport surface default.\n\n`platform`, `framework`, and `outputFolder` are opaque strings at the\nworkspace boundary, matching how the factory names its export target\nframework, output layout, and destination folder. The boolean keys mirror the\nfactory's export scope flags one to one, so a surface can feed them straight\ninto the shared flag mapping.",
+      "properties": {
+        "allFonts": {
+          "type": "boolean"
+        },
+        "allIcons": {
+          "type": "boolean"
+        },
+        "allThemes": {
+          "type": "boolean"
+        },
+        "fontLinks": {
+          "type": "boolean"
+        },
+        "framework": {
+          "type": "string"
+        },
+        "includeHidden": {
+          "type": "boolean"
+        },
+        "includeScripts": {
+          "type": "boolean"
+        },
+        "outputFolder": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "savedWorkspace": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
     "WorkspaceMetadata": {
       "additionalProperties": false,
       "properties": {
@@ -16666,6 +16724,14 @@
             "$ref": "#/definitions/CustomState"
           },
           "type": "array"
+        },
+        "exportSettings": {
+          "$ref": "#/definitions/WorkspaceExportSettings",
+          "description": "Export target and scope choices saved with the workspace, so the editor,\nthe CLI, and the MCP host export it the same way. Absent fields fall back to\neach surface's default."
+        },
+        "id": {
+          "description": "Stable workspace identity. Written into every persisted file so a live-store\nrecord and an exported workspace copy resolve to the same workspace. The\nmigration backfills it on load and the store stamps it on create, so a\npersisted workspace always carries one; it stays optional on the type only\nto spare in-memory and fixture literals that predate an id.",
+          "type": "string"
         },
         "intent": {
           "type": "string"

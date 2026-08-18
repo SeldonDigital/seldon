@@ -294,6 +294,10 @@ const CASES: Array<[string, WorkspaceAction, Workspace?]> = [
   ["set_workspace_intent", act("set_workspace_intent", { value: "Intent" })],
   ["set_workspace_tags", act("set_workspace_tags", { value: ["a", "b"] })],
   ["set_workspace_license", act("set_workspace_license", { value: { name: "MIT" } })],
+  [
+    "set_workspace_export_settings",
+    act("set_workspace_export_settings", { value: { platform: "react", fontLinks: true } }),
+  ],
 
   // Workspace metadata resets.
   ["reset_workspace_owner", act("reset_workspace_owner", {})],
