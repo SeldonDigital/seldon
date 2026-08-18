@@ -111,7 +111,7 @@ type ExportOptions = {
 
 `enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
 
-`exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set one to `false` to emit only what a component or theme references.
+`exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set `exportAllIconSetIcons` or `exportAllThemes` to `false` to emit only what a component or theme references. Set `exportAllFontCollections` to `false` to emit only the font families a node renders through a direct `font.family` choice.
 
 `includeHiddenComponents`, `includeWorkspace`, and `includeScripts` are off by default.
 

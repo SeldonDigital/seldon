@@ -4,6 +4,7 @@ import { MenuController } from "@app/menus/MenuController"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { DialogExportComponent } from "@seldon/components/modules/DialogExportComponent"
+import { EXPORT_FLAGS } from "@seldon/factory/export/options"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
@@ -15,7 +16,19 @@ import {
 
 import type { MenuEntry } from "@app/menus/types"
 import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
+import type { ExportFlagDescriptor, ExportScopeFlags } from "@seldon/factory/export/options"
 import type { CSSProperties, ChangeEvent, KeyboardEvent, MouseEvent, PointerEvent } from "react"
+
+/**
+ * Every scope flag keyed by its store name, so the dialog reads its group label
+ * and aria-label from the shared export flag descriptors. This keeps the copy in
+ * step with the CLI and the MCP host, and it means a flag rename lands here
+ * without editing the design.
+ */
+const EXPORT_FLAG = EXPORT_FLAGS.reduce(
+  (lookup, flag) => ({ ...lookup, [flag.storeKey]: flag }),
+  {} as Record<keyof ExportScopeFlags, ExportFlagDescriptor>,
+)
 
 /**
  * Gate for the Export Components dialog. Mounts the dialog only while the
@@ -174,10 +187,10 @@ function ExportComponentsDialog({
   // `.cursor/rules/foundation-editor-jsx.mdc`. Display-only slots turn on with an empty
   // object; behavior rides in per ref.
   const seldonRefs: SeldonRefs = {
-    exportTitle: {},
+    exportTitle: { children: "Export Components" },
 
     exportWorkspaceName: {},
-    exportWorkspaceNameLabel: {},
+    exportWorkspaceNameLabel: { children: "Workspace Name" },
     exportWorkspaceNameField: {
       value: workspaceName,
       placeholder: "Untitled workspace",
@@ -188,7 +201,7 @@ function ExportComponentsDialog({
     },
 
     exportFramework: {},
-    exportFrameworkLabel: {},
+    exportFrameworkLabel: { children: "Framework" },
     exportFrameworkCombobox: {},
     exportFrameworkField: {
       value: frameworkLabel,
@@ -199,7 +212,7 @@ function ExportComponentsDialog({
     },
 
     exportPlatform: {},
-    exportPlatformLabel: {},
+    exportPlatformLabel: { children: "Platform" },
     exportPlatformCombobox: {},
     exportPlatformField: {
       value: platformLabel,
@@ -210,7 +223,7 @@ function ExportComponentsDialog({
     },
 
     exportProjectFolder: {},
-    exportProjectFolderLabel: {},
+    exportProjectFolderLabel: { children: "Project Folder" },
     exportProjectFolderField: {
       value: directoryLabel,
       placeholder: "Choose a folder…",
@@ -220,86 +233,88 @@ function ExportComponentsDialog({
     },
 
     exportFieldset: {},
+    exportFieldsetLabel: { children: "Include" },
 
     // Scope groups. Every key is spelled out, never built in a loop, so the
-    // bindings scanner records each ref. The container holds the radiogroup role,
-    // each row widens the hit area, and each native input holds the group name
-    // plus checked state.
-    exportFontLinks: { role: "radiogroup", "aria-label": "Generate Google Font API Links" },
-    exportFontLinksLabel: {},
+    // bindings scanner records each ref. The container holds the radiogroup role
+    // and its label, each row widens the hit area, and each native input holds
+    // the group name plus checked state. Group label and aria-label come from
+    // the shared export flag descriptors so the copy matches the CLI and MCP.
+    exportFontLinks: { role: "radiogroup", "aria-label": EXPORT_FLAG.fontLinks.ariaLabel },
+    exportFontLinksLabel: { children: EXPORT_FLAG.fontLinks.label },
     exportFontLinksYes: radioRow(() => setFontLinks(true)),
     exportFontLinksYesInput: radioInput("export-font-links", fontLinks, () => setFontLinks(true)),
-    exportFontLinksYesText: {},
+    exportFontLinksYesText: { children: "Yes" },
     exportFontLinksNo: radioRow(() => setFontLinks(false)),
     exportFontLinksNoInput: radioInput("export-font-links", !fontLinks, () => setFontLinks(false)),
-    exportFontLinksNoText: {},
+    exportFontLinksNoText: { children: "No" },
 
-    exportHidden: { role: "radiogroup", "aria-label": "Hidden Components" },
-    exportHiddenLabel: {},
+    exportHidden: { role: "radiogroup", "aria-label": EXPORT_FLAG.includeHidden.ariaLabel },
+    exportHiddenLabel: { children: EXPORT_FLAG.includeHidden.label },
     exportHiddenYes: radioRow(() => setIncludeHidden(true)),
     exportHiddenYesInput: radioInput("export-hidden", includeHidden, () => setIncludeHidden(true)),
-    exportHiddenYesText: {},
+    exportHiddenYesText: { children: "Yes" },
     exportHiddenNo: radioRow(() => setIncludeHidden(false)),
     exportHiddenNoInput: radioInput("export-hidden", !includeHidden, () => setIncludeHidden(false)),
-    exportHiddenNoText: {},
+    exportHiddenNoText: { children: "No" },
 
-    exportAllThemes: { role: "radiogroup", "aria-label": "All Themes" },
-    exportAllThemesLabel: {},
+    exportAllThemes: { role: "radiogroup", "aria-label": EXPORT_FLAG.allThemes.ariaLabel },
+    exportAllThemesLabel: { children: EXPORT_FLAG.allThemes.label },
     exportAllThemesYes: radioRow(() => setAllThemes(true)),
     exportAllThemesYesInput: radioInput("export-all-themes", allThemes, () => setAllThemes(true)),
-    exportAllThemesYesText: {},
+    exportAllThemesYesText: { children: "Yes" },
     exportAllThemesNo: radioRow(() => setAllThemes(false)),
     exportAllThemesNoInput: radioInput("export-all-themes", !allThemes, () => setAllThemes(false)),
-    exportAllThemesNoText: {},
+    exportAllThemesNoText: { children: "No" },
 
-    exportAllFonts: { role: "radiogroup", "aria-label": "All Enabled Fonts" },
-    exportAllFontsLabel: {},
+    exportAllFonts: { role: "radiogroup", "aria-label": EXPORT_FLAG.allFonts.ariaLabel },
+    exportAllFontsLabel: { children: EXPORT_FLAG.allFonts.label },
     exportAllFontsYes: radioRow(() => setAllFonts(true)),
     exportAllFontsYesInput: radioInput("export-all-fonts", allFonts, () => setAllFonts(true)),
-    exportAllFontsYesText: {},
+    exportAllFontsYesText: { children: "Yes" },
     exportAllFontsNo: radioRow(() => setAllFonts(false)),
     exportAllFontsNoInput: radioInput("export-all-fonts", !allFonts, () => setAllFonts(false)),
-    exportAllFontsNoText: {},
+    exportAllFontsNoText: { children: "No" },
 
-    exportAllIcons: { role: "radiogroup", "aria-label": "All Enabled Icons" },
-    exportAllIconsLabel: {},
+    exportAllIcons: { role: "radiogroup", "aria-label": EXPORT_FLAG.allIcons.ariaLabel },
+    exportAllIconsLabel: { children: EXPORT_FLAG.allIcons.label },
     exportAllIconsYes: radioRow(() => setAllIcons(true)),
     exportAllIconsYesInput: radioInput("export-all-icons", allIcons, () => setAllIcons(true)),
-    exportAllIconsYesText: {},
+    exportAllIconsYesText: { children: "Yes" },
     exportAllIconsNo: radioRow(() => setAllIcons(false)),
     exportAllIconsNoInput: radioInput("export-all-icons", !allIcons, () => setAllIcons(false)),
-    exportAllIconsNoText: {},
+    exportAllIconsNoText: { children: "No" },
 
-    exportWorkspace: { role: "radiogroup", "aria-label": "Workspace File" },
-    exportWorkspaceLabel: {},
+    exportWorkspace: { role: "radiogroup", "aria-label": EXPORT_FLAG.savedWorkspace.ariaLabel },
+    exportWorkspaceLabel: { children: EXPORT_FLAG.savedWorkspace.label },
     exportWorkspaceYes: radioRow(() => setSavedWorkspace(true)),
     exportWorkspaceYesInput: radioInput("export-saved-workspace", savedWorkspace, () =>
       setSavedWorkspace(true),
     ),
-    exportWorkspaceYesText: {},
+    exportWorkspaceYesText: { children: "Yes" },
     exportWorkspaceNo: radioRow(() => setSavedWorkspace(false)),
     exportWorkspaceNoInput: radioInput("export-saved-workspace", !savedWorkspace, () =>
       setSavedWorkspace(false),
     ),
-    exportWorkspaceNoText: {},
+    exportWorkspaceNoText: { children: "No" },
 
-    exportScripts: { role: "radiogroup", "aria-label": "CLI Utility Scripts" },
-    exportScriptsLabel: {},
+    exportScripts: { role: "radiogroup", "aria-label": EXPORT_FLAG.includeScripts.ariaLabel },
+    exportScriptsLabel: { children: EXPORT_FLAG.includeScripts.label },
     exportScriptsYes: radioRow(() => setIncludeScripts(true)),
     exportScriptsYesInput: radioInput("export-scripts", includeScripts, () =>
       setIncludeScripts(true),
     ),
-    exportScriptsYesText: {},
+    exportScriptsYesText: { children: "Yes" },
     exportScriptsNo: radioRow(() => setIncludeScripts(false)),
     exportScriptsNoInput: radioInput("export-scripts", !includeScripts, () =>
       setIncludeScripts(false),
     ),
-    exportScriptsNoText: {},
+    exportScriptsNoText: { children: "No" },
 
     exportCancel: { onClick: cancel },
-    exportCancelLabel: {},
+    exportCancelLabel: { children: "Cancel" },
     exportConfirm: { onClick: save, "aria-disabled": exporting, style: confirmStyle },
-    exportConfirmLabel: {},
+    exportConfirmLabel: { children: "Export" },
   }
 
   return (

@@ -28424,7 +28424,7 @@
           },
           "content": {
             "type": "exact",
-            "value": "All Enabled Fonts"
+            "value": "All Fonts"
           },
           "width": {
             "type": "option",
@@ -49042,6 +49042,6 @@
     },
     "media": {}
   },
-  "updatedAt": "2026-08-13T15:44:49.106Z",
+  "updatedAt": "2026-08-18T13:41:40.702Z",
   "lastEditor": "react"
 }

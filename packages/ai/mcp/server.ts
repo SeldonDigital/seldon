@@ -1,10 +1,12 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js"
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js"
+import { EXPORT_FLAGS } from "@seldon/factory"
 
 import { SELDON_TOOLS, SELDON_TOOLS_BY_NAME } from "../tools"
 
 import type { EditSession, SelectionContext, ToolContext } from "../tools"
 import type { Tool } from "@modelcontextprotocol/sdk/types.js"
+import type { ExportScopeFlags } from "@seldon/factory"
 import type { TSchema } from "typebox"
 
 /** One workspace an MCP host can address, with its current routing. */
@@ -21,8 +23,12 @@ export interface ExportedFile {
   contents: string
 }
 
-/** Options a caller may pass to an export. Framework and styles pick the target. */
-export interface McpExportOptions {
+/**
+ * Options a caller may pass to an export. Framework and styles pick the target;
+ * the {@link ExportScopeFlags} choose the scope, matching the editor dialog and
+ * the CLI. An omitted flag falls back to the shared default.
+ */
+export interface McpExportOptions extends Partial<ExportScopeFlags> {
   framework?: string
   styles?: string
   componentsFolder?: string
@@ -129,6 +135,31 @@ interface HostTool {
 }
 
 const OBJECT_SCHEMA: JsonObjectSchema = { type: "object", properties: {}, required: [] }
+
+/**
+ * JSON schema properties for the export scope flags, derived from the shared
+ * export flag descriptors so the `workspace_export` tool matches the editor
+ * dialog and the CLI.
+ */
+const exportScopeFlagSchema: Record<string, { type: "boolean"; description: string }> =
+  Object.fromEntries(
+    EXPORT_FLAGS.map(
+      (flag) => [flag.storeKey, { type: "boolean", description: flag.description }] as const,
+    ),
+  )
+
+/** Reads the boolean export scope flags a caller passed, ignoring the rest. */
+function readExportScopeFlags(args: Record<string, unknown>): Partial<ExportScopeFlags> {
+  const flags: Partial<ExportScopeFlags> = {}
+
+  for (const flag of EXPORT_FLAGS) {
+    const value = args[flag.storeKey]
+
+    if (typeof value === "boolean") flags[flag.storeKey] = value
+  }
+
+  return flags
+}
 
 /**
  * Builds a configured MCP `Server` from a host, transport-agnostic. It registers
@@ -317,6 +348,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
             description:
               "Write the files to disk under the project. Defaults to true. Set false to only list the paths.",
           },
+          ...exportScopeFlagSchema,
         },
         required: [],
       } as unknown as TSchema),
@@ -332,6 +364,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
           componentsFolder: args.componentsFolder as string | undefined,
           outputDir,
           write,
+          ...readExportScopeFlags(args),
         })
 
         if (files.length === 0) return "Export produced no files."
