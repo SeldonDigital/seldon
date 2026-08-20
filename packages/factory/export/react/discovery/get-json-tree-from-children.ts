@@ -7,7 +7,10 @@ import { WrapperElement } from "@seldon/core/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
-import { getEffectiveNodeLevel } from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
+import {
+  getEffectiveNodeLevel,
+  isEffectivelyAuthoredNode,
+} from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
@@ -204,6 +207,20 @@ export function getJsonTreeFromChildren(
     const childComponentId = getComponentIdOrThrow(node, workspace)
     const childSchemaVariantId = getSchemaVariantId(node, childComponentId, workspace)
 
+    const childProps = {
+      ...getChildNodeProps(nodeProperties),
+      ...getAriaAttributeProps(nodeProperties),
+    }
+
+    // Authored components flatten their root to a fixed primitive and drop
+    // `wrapperElement` from their exported Props (see getComponentsToExport). A
+    // child resolving to an authored component must not bake `wrapperElement`
+    // into its slot default, or the default references a prop the child's Props
+    // omits.
+    if (isEffectivelyAuthoredNode(node, workspace)) {
+      delete childProps.wrapperElement
+    }
+
     return {
       name,
       componentId: childComponentId,
@@ -215,10 +232,7 @@ export function getJsonTreeFromChildren(
         interfaceName,
         referenceName,
         path,
-        props: {
-          ...getChildNodeProps(nodeProperties),
-          ...getAriaAttributeProps(nodeProperties),
-        },
+        props: childProps,
       },
       children,
       classNames: [...new Set(classNamesArray)],
