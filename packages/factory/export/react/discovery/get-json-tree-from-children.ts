@@ -7,6 +7,7 @@ import { WrapperElement } from "@seldon/core/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
+import { getEffectiveNodeLevel } from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
@@ -201,7 +202,6 @@ export function getJsonTreeFromChildren(
     }
 
     const childComponentId = getComponentIdOrThrow(node, workspace)
-    const childSchema = getComponentSchema(childComponentId)
     const childSchemaVariantId = getSchemaVariantId(node, childComponentId, workspace)
 
     return {
@@ -210,7 +210,7 @@ export function getJsonTreeFromChildren(
       schemaVariantId: childSchemaVariantId,
       nodeId: node.id,
       ref: node.ref,
-      level: childSchema.level,
+      level: getEffectiveNodeLevel(node, workspace),
       dataBinding: {
         interfaceName,
         referenceName,
