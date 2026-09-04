@@ -109,7 +109,7 @@ type ExportOptions = {
 }
 ```
 
-`enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
+`enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx` or `Fonts.vue`.
 
 `exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set `exportAllIconSetIcons` or `exportAllThemes` to `false` to emit only what a component or theme references. Set `exportAllFontCollections` to `false` to emit only the font families a node renders through a direct `font.family` choice.
 
@@ -186,7 +186,7 @@ icons/index.ts                         # icon index, re-exports the emitted icon
 refs/index.ts                          # ref registry, emitted only when nodes carry refs
 refs/registry.json                     # the same registry as data, for tools that do not parse TypeScript
 utils/class-name.ts                    # combineClassNames helper
-Fonts.tsx                              # font loading component
+Fonts.tsx                              # font loading component, Fonts.vue on a Vue export
 styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
 {workspace-label}.json                 # workspace copy, emitted only with includeWorkspace

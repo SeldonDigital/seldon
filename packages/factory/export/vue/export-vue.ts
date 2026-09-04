@@ -19,11 +19,13 @@ import {
 } from "../react/generation/inserts/insert-license"
 import { generateRefsRegistry } from "../shared/generate-refs-registry"
 import { generateFrameComponent } from "./assets/generate-frame"
+import { getFontsComponent } from "./assets/get-fonts-component"
 import { getVueIcons } from "./assets/get-vue-icons"
 import { getVueUtilityFiles } from "./assets/get-vue-utility-files"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { formatVue } from "./format-vue"
 import { generateComponentFiles } from "./generation/generate-component-files"
+import { generateReadmeFile } from "./generation/generate-readme-file"
 
 import type { RefViewSource } from "../shared/generate-refs-registry"
 import type { ExportOptions, FileToExport } from "../types"
@@ -33,7 +35,8 @@ import type { Workspace } from "@seldon/core"
  * Exports a workspace to a Vue project. This is the Vue analog of
  * {@link exportReact}: it reuses the shared CSS pipeline, theme stylesheets,
  * discovery IR, style registry, and refs registry verbatim, and emits `.vue`
- * single-file components in place of `.tsx`.
+ * single-file components in place of `.tsx`. It also writes `Fonts.vue` and a
+ * Vue package README.
  */
 export async function exportVue(input: Workspace, options: ExportOptions): Promise<FileToExport[]> {
   const filesToExport: FileToExport[] = []
@@ -93,6 +96,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
       nodeTreeDepths,
       stateClasses,
       descendantStateClasses,
+      options.formatConfigRoot,
     ),
   })
 
@@ -100,6 +104,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
     workspace,
     options.output.componentsFolder,
     options.exportAllThemes !== false,
+    options.formatConfigRoot,
   )
 
   filesToExport.push(...themeStylesheets)
@@ -142,6 +147,18 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
     filesToExport.push(...(await generateRefsRegistry(refSources, nodeIdToClass, options)))
   } catch {
     // Failed to generate refs registry
+  }
+
+  try {
+    filesToExport.push(getFontsComponent(workspace, options))
+  } catch {
+    // Failed to generate fonts component
+  }
+
+  try {
+    filesToExport.push(generateReadmeFile(options))
+  } catch {
+    // Failed to generate README
   }
 
   filesToExport.push(...imageFiles)
