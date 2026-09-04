@@ -1,3 +1,4 @@
+import { exportHtml } from "../html/export-html"
 import { exportReact } from "../react/export-react"
 import { exportVue } from "../vue/export-vue"
 
@@ -55,10 +56,19 @@ export const PLATFORMS: Record<PlatformId, PlatformDefinition> = {
     styles: "css-properties",
     export: exportVue,
   },
+  html: {
+    id: "html",
+    label: "HTML+CSS",
+    status: "available",
+    styles: "css-properties",
+    export: exportHtml,
+  },
 }
 
-/** Ordered list of platforms for menus and pickers. */
-export const PLATFORM_LIST: PlatformDefinition[] = Object.values(PLATFORMS)
+/** Platforms for menus and pickers, sorted by label. */
+export const PLATFORM_LIST: PlatformDefinition[] = Object.values(PLATFORMS).sort((a, b) =>
+  a.label.localeCompare(b.label),
+)
 
 /** Look up a platform definition by id. */
 export function getPlatform(id: PlatformId): PlatformDefinition | undefined {

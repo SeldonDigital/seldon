@@ -22,6 +22,30 @@ export function insertLicense(source: string) {
   })
 }
 
+export const HTML_LICENSE_HEADER = `<!--
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ -->
+`
+
+/**
+ * Prepends the license as an HTML comment. Idempotent: a source that already
+ * carries the header is returned unchanged.
+ */
+export function insertHtmlLicense(source: string): string {
+  if (source.includes(HTML_LICENSE_HEADER.trim())) return source
+
+  return `${HTML_LICENSE_HEADER}${source}`
+}
+
 /**
  * Inserts the license header inside a single-file component's first `<script>`
  * block, so Prettier's `vue` parser keeps it as a JS block comment instead of

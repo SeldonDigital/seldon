@@ -334,7 +334,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
         properties: {
           framework: {
             type: "string",
-            description: 'Export framework, for example "react" or "vue".',
+            description: 'Export framework, for example "react", "vue", or "html".',
           },
           styles: { type: "string", description: 'Style output, for example "css-properties".' },
           componentsFolder: { type: "string", description: "Output folder for components." },

@@ -18,7 +18,7 @@ import type { PlatformId } from "@seldon/factory/export/types"
 /** Upper bound on a workspace name, matching the inline title rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
 
-/** Platforms shown in the dialog picker, in registry order. */
+/** Platforms shown in the dialog picker, sorted by label. */
 export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
   id: platform.id,
   label: platform.label,
