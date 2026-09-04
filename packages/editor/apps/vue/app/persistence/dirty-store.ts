@@ -4,7 +4,9 @@ import { ref } from "vue"
 /**
  * Tracks whether the in-memory workspace has unsaved edits relative to the
  * persisted copy. The dispatch pipeline marks it dirty; the save pipeline clears
- * it. Mirrors the React `setIsLocalWorkspaceDirty` sync flag.
+ * it. Autosave writes only while dirty. Remote refresh reads it so a local edit
+ * is never overwritten by a newer store file. Mirrors the React
+ * `setIsLocalWorkspaceDirty` sync flag.
  */
 export const useDirtyStore = defineStore("dirty", () => {
   const isDirty = ref(false)
