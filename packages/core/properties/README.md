@@ -344,7 +344,7 @@ Properties that control the visual appearance and styling of components.
 | └ `corners.bottomRight` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
 | `borderCollapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 
-`borderTop`, `borderRight`, `borderBottom`, and `borderLeft` are each a `compound` with the same facets as `border.*`: `preset`, `style`, `color`, `width`, `brightness`, `opacity`.
+`borderTop`, `borderRight`, `borderBottom`, and `borderLeft` are each a `compound` with the same facets as `border.*`: `preset`, `style`, `color`, `width`, `brightness`, `opacity`. An unset side reads as Default. Set a side even when `border` is None. Export emits that side's CSS in that case.
 
 ---
 

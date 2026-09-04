@@ -36,6 +36,7 @@ import {
   validatePropertyValue,
 } from "@seldon/core/properties/schemas/helpers"
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
+import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
 import { getPropertiesSubjectId } from "./flat-property"
 import { resolveMatchSiblingLock } from "./match-color-lock"
 import { resolvePropertyValueForDisplay } from "./properties-read"
@@ -116,8 +117,8 @@ function hasCompoundPresetOptions(
     return false
   }
 
-  // Check if theme has a section for this property (e.g., theme.border)
-  const section = (theme as Record<string, unknown>)[propertyKey]
+  const sectionKey = getBuiltInLookSectionForPropertyKey(propertyKey) ?? propertyKey
+  const section = (theme as Record<string, unknown>)[sectionKey]
 
   if (!section || typeof section !== "object") {
     return false

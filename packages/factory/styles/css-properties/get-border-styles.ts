@@ -1,6 +1,7 @@
 import { ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+import { isBuiltInClearedLookToken } from "@seldon/core/themes/looks"
 
 import { getComputedCssValue } from "../computed-variables"
 import { getBorderWidthCSSValue } from "./get-border-width-css-value"
@@ -67,6 +68,18 @@ export function getBorderStyles({
 }
 
 /**
+ * A cleared `@border.none` on `border` does not paint any side. Side compounds
+ * stay independent, so they still resolve when that all-sides look is none.
+ */
+function shorthandAppliesToSides(shorthand: BorderCompound | undefined): boolean {
+  const preset = resolveValue(shorthand?.preset)
+
+  if (!preset) return true
+
+  return !isBuiltInClearedLookToken("border", preset.value)
+}
+
+/**
  * Resolve the styles for one border side, layering the side compound over the
  * `border` shorthand and finally the theme border preset.
  */
@@ -80,15 +93,17 @@ function getBorderSideStyles(
 ): CSSObject {
   const capitalizedSide = side.charAt(0).toUpperCase() + side.slice(1)
   const styles: CSSObject = {}
-
-  const preset = resolveValue(sideBorder?.preset) || resolveValue(shorthand?.preset)
+  const inheritShorthand = shorthandAppliesToSides(shorthand)
+  const preset =
+    resolveValue(sideBorder?.preset) ||
+    (inheritShorthand ? resolveValue(shorthand?.preset) : undefined)
   const themeBorder: ThemeBorder | undefined = preset
     ? getThemeOption(preset.value, theme)
     : undefined
 
   const width =
     resolveValue(sideBorder?.width) ||
-    resolveValue(shorthand?.width) ||
+    (inheritShorthand ? resolveValue(shorthand?.width) : undefined) ||
     resolveValue(themeBorder?.parameters.width)
 
   if (width) {
@@ -101,7 +116,7 @@ function getBorderSideStyles(
 
   const style =
     resolveValue(sideBorder?.style) ||
-    resolveValue(shorthand?.style) ||
+    (inheritShorthand ? resolveValue(shorthand?.style) : undefined) ||
     resolveValue(themeBorder?.parameters.style)
 
   if (style) {
@@ -110,17 +125,17 @@ function getBorderSideStyles(
 
   const color =
     resolveValue(sideBorder?.color) ||
-    resolveValue(shorthand?.color) ||
+    (inheritShorthand ? resolveValue(shorthand?.color) : undefined) ||
     resolveValue(themeBorder?.parameters.color)
 
   const brightness =
     resolveValue(sideBorder?.brightness) ||
-    resolveValue(shorthand?.brightness) ||
+    (inheritShorthand ? resolveValue(shorthand?.brightness) : undefined) ||
     resolveValue(themeBorder?.parameters.brightness)
 
   const opacity =
     resolveValue(sideBorder?.opacity) ||
-    resolveValue(shorthand?.opacity) ||
+    (inheritShorthand ? resolveValue(shorthand?.opacity) : undefined) ||
     resolveValue(themeBorder?.parameters.opacity)
 
   if (color) {
@@ -139,7 +154,7 @@ function getBorderSideStyles(
     // skipping EMPTY cells the same way `resolveValue` does.
     const original = [
       computeContext?.properties[SIDE_COMPOUND_KEY[side]]?.color,
-      computeContext?.properties.border?.color,
+      inheritShorthand ? computeContext?.properties.border?.color : undefined,
       themeBorder?.parameters.color,
     ].find((cell) => !!cell && cell.type !== ValueType.EMPTY)
     const themed =
