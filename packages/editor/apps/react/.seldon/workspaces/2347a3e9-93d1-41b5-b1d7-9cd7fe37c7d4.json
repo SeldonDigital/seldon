@@ -6360,6 +6360,17 @@
                     ]
                   },
                   {
+                    "id": "component-dialog-25s2rXij",
+                    "children": [
+                      {
+                        "id": "component-dialog-GTortoeA"
+                      },
+                      {
+                        "id": "component-dialog-0nrLqbP5"
+                      }
+                    ]
+                  },
+                  {
                     "id": "component-panel-4PTSuHoi",
                     "children": [
                       {
@@ -28621,7 +28632,7 @@
           },
           "content": {
             "type": "exact",
-            "value": "Platform"
+            "value": "Component Type"
           },
           "margin": {
             "left": {
@@ -47891,7 +47902,7 @@
           },
           "content": {
             "type": "exact",
-            "value": "Project Folder"
+            "value": "Root Folder"
           },
           "margin": {
             "left": {
@@ -47973,7 +47984,7 @@
           },
           "content": {
             "type": "exact",
-            "value": "Framework"
+            "value": "App Framework"
           },
           "margin": {
             "left": {
@@ -48285,6 +48296,88 @@
           "symbol": {
             "type": "option",
             "value": "material-keyboardArrowDown"
+          }
+        },
+        "origin": "user"
+      },
+      "component-dialog-25s2rXij": {
+        "ref": "exportOutputFolder",
+        "type": "instance",
+        "level": "element",
+        "label": "Form Control",
+        "theme": null,
+        "template": "node:component-formControl-default",
+        "overrides": {},
+        "origin": "user"
+      },
+      "component-dialog-GTortoeA": {
+        "ref": "exportOutputFolderLabel",
+        "type": "instance",
+        "level": "primitive",
+        "label": "Label",
+        "theme": null,
+        "template": "node:component-text-FWkWXaWz",
+        "overrides": {
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "font": {
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          },
+          "content": {
+            "type": "exact",
+            "value": "Export To"
+          },
+          "margin": {
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@margin.cozy"
+            }
+          }
+        },
+        "origin": "user"
+      },
+      "component-dialog-0nrLqbP5": {
+        "ref": "exportOutputFolderField",
+        "type": "instance",
+        "level": "primitive",
+        "label": "Input",
+        "theme": null,
+        "template": "node:component-input-8UX3fonQ",
+        "overrides": {
+          "font": {
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          },
+          "border": {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.primary"
+            }
+          },
+          "height": {
+            "type": "theme.ordinal",
+            "value": "@dimension.medium"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            }
           }
         },
         "origin": "user"
@@ -49042,6 +49135,6 @@
     },
     "media": {}
   },
-  "updatedAt": "2026-08-18T15:36:39.991Z",
+  "updatedAt": "2026-09-05T09:52:04.265Z",
   "lastEditor": "react"
 }

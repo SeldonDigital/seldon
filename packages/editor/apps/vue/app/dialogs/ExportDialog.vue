@@ -11,6 +11,7 @@ import { useDraggableWindow } from "@app/windows/use-draggable-window"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import DialogExportComponent from "@seldon/components/modules/DialogExportComponent.vue"
+import { scanExportRoot } from "@seldon/editor/lib/export/scan-export-root"
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { EXPORT_FLAGS } from "@seldon/factory/export/options"
@@ -98,13 +99,17 @@ const {
   includeScripts,
 } = storeToRefs(options)
 const directory = ref<FileSystemDirectoryHandle | null>(null)
+const outputFolder = ref(workspace.value.metadata.exportSettings?.outputFolder ?? "")
+const platformTouched = ref(false)
+const frameworkTouched = ref(false)
+const outputFolderTouched = ref(false)
 
 /** The store's current selections as one settings block, ready to persist. */
 function buildExportSettings(): WorkspaceExportSettings {
   return {
     platform: platform.value,
     framework: framework.value,
-    outputFolder: workspace.value.metadata.exportSettings?.outputFolder,
+    outputFolder: outputFolder.value || undefined,
     fontLinks: fontLinks.value,
     allFonts: allFonts.value,
     allIcons: allIcons.value,
@@ -118,6 +123,11 @@ function buildExportSettings(): WorkspaceExportSettings {
 /** Seeds the store from the workspace's saved settings when it has any. */
 function seedFromWorkspace(): void {
   const saved = workspace.value.metadata.exportSettings
+
+  platformTouched.value = false
+  frameworkTouched.value = false
+  outputFolderTouched.value = false
+  outputFolder.value = saved?.outputFolder ?? ""
 
   if (!saved) return
 
@@ -139,6 +149,7 @@ watch(
   [
     platform,
     framework,
+    outputFolder,
     includeHidden,
     allThemes,
     allFonts,
@@ -186,6 +197,7 @@ const platformItems = computed<MenuEntry[]>(() =>
     activeMarker: "bullet",
     disabled: !option.available,
     onSelect: () => {
+      platformTouched.value = true
       platform.value = option.id
     },
   })),
@@ -200,6 +212,7 @@ const frameworkItems = computed<MenuEntry[]>(() =>
     activeMarker: "bullet",
     disabled: !option.available,
     onSelect: () => {
+      frameworkTouched.value = true
       framework.value = option.id
     },
   })),
@@ -228,6 +241,11 @@ function onNameInput(event: Event): void {
   const value = (event.target as HTMLInputElement).value
   nameDraft.value = value
   dispatch({ type: "set_workspace_label", payload: { value } })
+}
+
+function onOutputFolderInput(event: Event): void {
+  outputFolderTouched.value = true
+  outputFolder.value = (event.target as HTMLInputElement).value
 }
 
 /** Settles the trimmed name the field shows into the workspace label. */
@@ -262,6 +280,14 @@ async function chooseDirectory(): Promise<void> {
   const id = workspaceId.value
 
   if (id) await saveExportTarget(id, picked)
+
+  const scan = await scanExportRoot(picked, id, workspace.value.metadata.label)
+
+  if (!platformTouched.value && scan.platform) platform.value = scan.platform
+  if (!frameworkTouched.value && scan.framework) framework.value = scan.framework
+  if (!outputFolderTouched.value && scan.hasOwnedExport) {
+    outputFolder.value = scan.outputFolder ?? ""
+  }
 }
 
 // The Export button dims while an export runs, but the guard is here so a second
@@ -283,6 +309,7 @@ async function runExport(): Promise<void> {
     exportAllIconSetIcons: allIcons.value,
     includeWorkspace: savedWorkspace.value,
     includeScripts: includeScripts.value,
+    outputFolder: outputFolder.value,
   }
 
   await exportToFolder(options, directory.value ?? undefined)
@@ -316,6 +343,9 @@ function closeUnlessExporting(): void {
 function reset(): void {
   directory.value = null
   nameDraft.value = null
+  platformTouched.value = false
+  frameworkTouched.value = false
+  outputFolderTouched.value = false
 }
 
 function close(): void {
@@ -393,8 +423,18 @@ const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
     style: styles.opaque,
   },
 
+  exportProjectFolder: {},
+  exportProjectFolderLabel: { children: "Root Folder" },
+  exportProjectFolderField: {
+    value: directoryLabel.value,
+    placeholder: "Choose a folder…",
+    readonly: true,
+    onClick: chooseDirectory,
+    style: styles.opaquePointer,
+  },
+
   exportFramework: {},
-  exportFrameworkLabel: { children: "Framework" },
+  exportFrameworkLabel: { children: "App Framework" },
   exportFrameworkCombobox: {},
   exportFrameworkField: {
     value: frameworkLabel.value,
@@ -405,7 +445,7 @@ const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
   },
 
   exportPlatform: {},
-  exportPlatformLabel: { children: "Platform" },
+  exportPlatformLabel: { children: "Component Type" },
   exportPlatformCombobox: {},
   exportPlatformField: {
     value: platformLabel.value,
@@ -415,14 +455,13 @@ const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
     style: styles.opaquePointer,
   },
 
-  exportProjectFolder: {},
-  exportProjectFolderLabel: { children: "Project Folder" },
-  exportProjectFolderField: {
-    value: directoryLabel.value,
-    placeholder: "Choose a folder…",
-    readonly: true,
-    onClick: chooseDirectory,
-    style: styles.opaquePointer,
+  exportOutputFolder: {},
+  exportOutputFolderLabel: { children: "Export To" },
+  exportOutputFolderField: {
+    value: outputFolder.value,
+    placeholder: "Project root",
+    onInput: onOutputFolderInput,
+    style: styles.opaque,
   },
 
   exportFieldset: {},

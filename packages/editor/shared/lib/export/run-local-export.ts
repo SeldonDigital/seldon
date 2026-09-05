@@ -8,6 +8,11 @@ import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
  */
 export type LocalExportOptions = Partial<Omit<ExportOptions, "output">> & {
   output?: Partial<ExportOptions["output"]>
+  /**
+   * Project-relative folder generated files nest under. The workspace source
+   * and the store stay at the picked project root. Empty means the root.
+   */
+  outputFolder?: string
 }
 
 type WireFile = {
@@ -51,10 +56,11 @@ export async function runLocalExport(
   workspace: Workspace,
   options?: LocalExportOptions,
 ): Promise<FileToExport[]> {
+  const { outputFolder: _outputFolder, ...factoryOptions } = options ?? {}
   const response = await fetch("/api/export", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(options ? { workspace, options } : { workspace }),
+    body: JSON.stringify(options ? { workspace, options: factoryOptions } : { workspace }),
   })
 
   if (!response.ok) {

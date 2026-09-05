@@ -208,7 +208,7 @@ The topbar holds the menus and tools. Dialogs cover catalog inserts, component c
 - **Export code to a folder**: generate framework and CSS files into a chosen directory.
 - **Ask the AI assistant**: open the chat, describe a change, and let the agent apply workspace actions as one undo step.
 
-Folder export runs through the local export route. [lib/export/run-local-export.ts](./lib/export/run-local-export.ts) posts the workspace to `/api/export`, which [vite/export-api-plugin.ts](./vite/export-api-plugin.ts) serves by bundling the Factory export handler. The app then writes the returned files to the folder the browser picks. The JSON download stays available as the version-control handoff artifact.
+Folder export runs through the local export route. [lib/export/run-local-export.ts](./lib/export/run-local-export.ts) posts the workspace to `/api/export`, which [vite/export-api-plugin.ts](./vite/export-api-plugin.ts) serves by bundling the Factory export handler. The app then writes the returned files to the folder the browser picks. `.seldon` stays at that project root. Generated files nest under `exportSettings.outputFolder` when that field is set. The JSON download stays available as the version-control handoff artifact.
 
 ---
 

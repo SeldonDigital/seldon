@@ -62,6 +62,9 @@ export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> 
   formControl4?: FormControlProps | null
   textLabel4?: TextLabelProps | null
   input4?: InputProps | null
+  formControl5?: FormControlProps | null
+  textLabel28?: TextLabelProps | null
+  input5?: InputProps | null
   formControlRadio?: FormControlRadioProps | null
   textLabel5?: TextLabelProps | null
   frame2?: FrameProps | null
@@ -184,7 +187,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportFramework",
   },
   textLabel2: {
-    children: "Framework",
+    children: "App Framework",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -217,7 +220,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportPlatform",
   },
   textLabel3: {
-    children: "Platform",
+    children: "Component Type",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -250,7 +253,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportProjectFolder",
   },
   textLabel4: {
-    children: "Project Folder",
+    children: "Root Folder",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -261,6 +264,24 @@ const sdn: DialogExportComponentProps = {
     type: "text",
     className: "sdn-input sdn-input--j1ro",
     "data-seldon-ref": "exportProjectFolderField",
+  },
+  formControl5: {
+    "aria-hidden": "false",
+    className: "sdn-form-control sdn-form-control--vmxp",
+    "data-seldon-ref": "exportOutputFolder",
+  },
+  textLabel28: {
+    children: "Export To",
+    htmlElement: "label",
+    "aria-hidden": "false",
+    className: "sdn-text-label sdn-text-label--l6fl",
+    "data-seldon-ref": "exportOutputFolderLabel",
+  },
+  input5: {
+    placeholder: "Project root",
+    type: "text",
+    className: "sdn-input sdn-input--j1ro",
+    "data-seldon-ref": "exportOutputFolderField",
   },
   formControlRadio: {
     "aria-hidden": "false",
@@ -704,6 +725,9 @@ const sdn: DialogExportComponentProps = {
  *     FormControl                          formControl                      -> exportWorkspaceName
  *       TextLabel                          textLabel                        -> exportWorkspaceNameLabel
  *       Input                              input                            -> exportWorkspaceNameField
+ *     FormControl                          formControl4                     -> exportProjectFolder
+ *       TextLabel                          textLabel4                       -> exportProjectFolderLabel
+ *       Input                              input4                           -> exportProjectFolderField
  *     FormControl                          formControl2                     -> exportFramework
  *       TextLabel                          textLabel2                       -> exportFrameworkLabel
  *       ComboboxField                      comboboxField                    -> exportFrameworkCombobox
@@ -716,9 +740,9 @@ const sdn: DialogExportComponentProps = {
  *         Input                            input3                           -> exportPlatformField
  *         ButtonIconic                     buttonIconic2
  *           Icon                           icon2
- *     FormControl                          formControl4                     -> exportProjectFolder
- *       TextLabel                          textLabel4                       -> exportProjectFolderLabel
- *       Input                              input4                           -> exportProjectFolderField
+ *     FormControl                          formControl5                     -> exportOutputFolder
+ *       TextLabel                          textLabel28                      -> exportOutputFolderLabel
+ *       Input                              input5                           -> exportOutputFolderField
  *     FormControlRadio                     formControlRadio                 -> exportFontLinks
  *       TextLabel                          textLabel5                       -> exportFontLinksLabel
  *       Frame                              frame2                           -> exportFontLinksRadios
@@ -849,6 +873,9 @@ export function DialogExportComponent({
   formControl4,
   textLabel4,
   input4,
+  formControl5,
+  textLabel28,
+  input5,
   formControlRadio,
   textLabel5,
   frame2,
@@ -951,6 +978,9 @@ export function DialogExportComponent({
   const formControl4Props = mergeOptionalSlot(sdn.formControl4, formControl4, seldonRefs)
   const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
   const input4Props = mergeSlot(sdn.input4, input4, seldonRefs)
+  const formControl5Props = mergeOptionalSlot(sdn.formControl5, formControl5, seldonRefs)
+  const textLabel28Props = mergeOptionalSlot(sdn.textLabel28, textLabel28, seldonRefs)
+  const input5Props = mergeSlot(sdn.input5, input5, seldonRefs)
   const formControlRadioProps = mergeOptionalSlot(
     sdn.formControlRadio,
     formControlRadio,
@@ -1173,6 +1203,12 @@ export function DialogExportComponent({
                 {inputProps !== null && <Input {...inputProps} />}
               </FormControl>
             )}
+            {formControl4Props !== null && (
+              <FormControl {...formControl4Props}>
+                {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                {input4Props !== null && <Input {...input4Props} />}
+              </FormControl>
+            )}
             {formControl2Props !== null && (
               <FormControl {...formControl2Props}>
                 {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
@@ -1201,10 +1237,10 @@ export function DialogExportComponent({
                 )}
               </FormControl>
             )}
-            {formControl4Props !== null && (
-              <FormControl {...formControl4Props}>
-                {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
-                {input4Props !== null && <Input {...input4Props} />}
+            {formControl5Props !== null && (
+              <FormControl {...formControl5Props}>
+                {textLabel28Props !== null && <TextLabel {...textLabel28Props} />}
+                {input5Props !== null && <Input {...input5Props} />}
               </FormControl>
             )}
             {formControlRadioProps !== null && (

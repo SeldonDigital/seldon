@@ -74,6 +74,8 @@ function ExportComponentsDialog({
   setSavedWorkspace,
   includeScripts,
   setIncludeScripts,
+  outputFolder,
+  setOutputFolder,
   directory,
   chooseDirectory,
   exporting,
@@ -156,6 +158,11 @@ function ExportComponentsDialog({
     [setWorkspaceName],
   )
 
+  const changeOutputFolder = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => setOutputFolder(event.target.value),
+    [setOutputFolder],
+  )
+
   // Renaming the stored record is a write to the dev server, so it waits for the
   // user to finish rather than firing on every keystroke.
   const commitNameOnEnter = useCallback(
@@ -200,8 +207,18 @@ function ExportComponentsDialog({
       style: styles.opaque,
     },
 
+    exportProjectFolder: {},
+    exportProjectFolderLabel: { children: "Root Folder" },
+    exportProjectFolderField: {
+      value: directoryLabel,
+      placeholder: "Choose a folder…",
+      readOnly: true,
+      onClick: chooseDirectory,
+      style: styles.opaquePointer,
+    },
+
     exportFramework: {},
-    exportFrameworkLabel: { children: "Framework" },
+    exportFrameworkLabel: { children: "App Framework" },
     exportFrameworkCombobox: {},
     exportFrameworkField: {
       value: frameworkLabel,
@@ -212,7 +229,7 @@ function ExportComponentsDialog({
     },
 
     exportPlatform: {},
-    exportPlatformLabel: { children: "Platform" },
+    exportPlatformLabel: { children: "Component Type" },
     exportPlatformCombobox: {},
     exportPlatformField: {
       value: platformLabel,
@@ -222,14 +239,13 @@ function ExportComponentsDialog({
       style: styles.opaquePointer,
     },
 
-    exportProjectFolder: {},
-    exportProjectFolderLabel: { children: "Project Folder" },
-    exportProjectFolderField: {
-      value: directoryLabel,
-      placeholder: "Choose a folder…",
-      readOnly: true,
-      onClick: chooseDirectory,
-      style: styles.opaquePointer,
+    exportOutputFolder: {},
+    exportOutputFolderLabel: { children: "Export To" },
+    exportOutputFolderField: {
+      value: outputFolder,
+      placeholder: "Project root",
+      onChange: changeOutputFolder,
+      style: styles.opaque,
     },
 
     exportFieldset: {},

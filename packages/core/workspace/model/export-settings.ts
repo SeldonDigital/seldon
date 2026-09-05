@@ -6,9 +6,10 @@
  *
  * `platform`, `framework`, and `outputFolder` are opaque strings at the
  * workspace boundary, matching how the factory names its export target
- * framework, output layout, and destination folder. The boolean keys mirror the
- * factory's export scope flags one to one, so a surface can feed them straight
- * into the shared flag mapping.
+ * framework, output layout, and destination folder. The editor and the MCP
+ * host nest generated files under `outputFolder` and keep `.seldon` at the
+ * project root. The boolean keys mirror the factory's export scope flags one
+ * to one, so a surface can feed them straight into the shared flag mapping.
  */
 export interface WorkspaceExportSettings {
   platform?: string
