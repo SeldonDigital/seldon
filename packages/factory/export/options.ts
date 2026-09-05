@@ -1,3 +1,5 @@
+import { DEFAULT_WORKSPACE_EXPORT_SETTINGS } from "@seldon/core"
+
 import type { ExportOptions } from "./types"
 import type { Workspace } from "@seldon/core"
 
@@ -56,7 +58,7 @@ export const EXPORT_FLAGS = [
     storeKey: "fontLinks",
     optionKey: "enableRemoteFonts",
     cliName: "font-links",
-    default: false,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.fontLinks,
     label: "Generate Google Font API Links",
     ariaLabel: "Generate Google Font API Links",
     description: "Emit remote font host links.",
@@ -65,7 +67,7 @@ export const EXPORT_FLAGS = [
     storeKey: "includeHidden",
     optionKey: "includeHiddenComponents",
     cliName: "hidden",
-    default: false,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.includeHidden,
     label: "Hidden Components",
     ariaLabel: "Hidden Components",
     description: "Include components hidden in the editor.",
@@ -74,7 +76,7 @@ export const EXPORT_FLAGS = [
     storeKey: "allThemes",
     optionKey: "exportAllThemes",
     cliName: "all-themes",
-    default: false,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.allThemes,
     label: "All Themes",
     ariaLabel: "All Themes",
     description: "Export every workspace theme.",
@@ -83,7 +85,7 @@ export const EXPORT_FLAGS = [
     storeKey: "allFonts",
     optionKey: "exportAllFontCollections",
     cliName: "all-fonts",
-    default: false,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.allFonts,
     label: "All Fonts",
     ariaLabel: "All Fonts",
     description: "On emits links for every enabled font family; off emits only fonts a node uses.",
@@ -92,7 +94,7 @@ export const EXPORT_FLAGS = [
     storeKey: "allIcons",
     optionKey: "exportAllIconSetIcons",
     cliName: "all-icons",
-    default: true,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.allIcons,
     label: "All Icons",
     ariaLabel: "All Icons",
     description: "On exports every enabled icon; off exports only icons a component uses.",
@@ -101,7 +103,7 @@ export const EXPORT_FLAGS = [
     storeKey: "savedWorkspace",
     optionKey: "includeWorkspace",
     cliName: "saved-workspace",
-    default: true,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.savedWorkspace,
     label: "Workspace File",
     ariaLabel: "Workspace File",
     description: "Emit a copy of the workspace.",
@@ -110,7 +112,7 @@ export const EXPORT_FLAGS = [
     storeKey: "includeScripts",
     optionKey: "includeScripts",
     cliName: "scripts",
-    default: true,
+    default: DEFAULT_WORKSPACE_EXPORT_SETTINGS.includeScripts,
     label: "CLI Utility Scripts",
     ariaLabel: "CLI Utility Scripts",
     description: "Emit the bindings scanner scripts.",
@@ -146,8 +148,8 @@ export function toExportScopeOptions(flags: Partial<ExportScopeFlags>): ExportSc
  * Reads the export scope flags saved on a workspace, in
  * `metadata.exportSettings`. Returns only the booleans present, so a caller can
  * layer its own overrides on top before mapping to {@link ExportScopeOptions}.
- * The target fields (`platform`, `framework`, `outputFolder`) are read directly
- * by each surface and are not part of the scope flags.
+ * After create or load the block is complete. The target fields (`platform`,
+ * `framework`, `outputFolder`) are applied by each write surface.
  */
 export function workspaceExportScopeFlags(workspace: Workspace): Partial<ExportScopeFlags> {
   const settings = workspace.metadata.exportSettings
@@ -161,4 +163,27 @@ export function workspaceExportScopeFlags(workspace: Workspace): Partial<ExportS
 
     return flags
   }, {} as Partial<ExportScopeFlags>)
+}
+
+/**
+ * Resolves scope options for an export. Saved workspace flags fill first, then
+ * any boolean the caller passed wins, so Hari, the CLI, and the MCP host apply
+ * the same file.
+ */
+export function applyWorkspaceExportScope(
+  workspace: Workspace,
+  overrides: Partial<ExportScopeOptions> = {},
+): ExportScopeOptions {
+  const fromCaller: Partial<ExportScopeFlags> = {}
+
+  for (const flag of EXPORT_FLAGS) {
+    const value = overrides[flag.optionKey]
+
+    if (typeof value === "boolean") fromCaller[flag.storeKey] = value
+  }
+
+  return toExportScopeOptions({
+    ...workspaceExportScopeFlags(workspace),
+    ...fromCaller,
+  })
 }

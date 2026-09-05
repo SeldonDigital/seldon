@@ -26,8 +26,8 @@ export interface WorkspaceMetadata {
   customStates?: CustomState[]
   /**
    * Export target and scope choices saved with the workspace, so the editor,
-   * the CLI, and the MCP host export it the same way. Absent fields fall back to
-   * each surface's default.
+   * the CLI, and the MCP host export it the same way. A new workspace seeds a
+   * complete block. Load fills any missing field from the shared defaults.
    */
   exportSettings?: WorkspaceExportSettings
 }

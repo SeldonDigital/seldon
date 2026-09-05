@@ -121,7 +121,7 @@ Metadata describes the **workspace file as a whole**: who it belongs to, how it 
 
 Metadata does not define boards, themes, font collections, icon sets, or media. That structure lives in `boards`, as well as in `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`.
 
-Programs change each metadata field with its own action: `set_workspace_owner`, `set_workspace_label`, `set_workspace_version`, `set_workspace_last_update`, `set_workspace_intent`, `set_workspace_tags`, `set_workspace_license`.
+Programs change each metadata field with its own action: `set_workspace_owner`, `set_workspace_label`, `set_workspace_version`, `set_workspace_last_update`, `set_workspace_intent`, `set_workspace_tags`, `set_workspace_license`, `set_workspace_export_settings`.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -133,6 +133,7 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `license` | `object` | Optional workspace-level licensing metadata. |
 | `customStates` | `object[]` | Optional workspace-wide custom interaction states. Each entry is `{ key, label, description? }` with no render data. See **Interaction States** under **Nodes**. |
+| `exportSettings` | `object` | Export target and scope choices. A new workspace seeds a complete block. Load fills any missing field from the shared defaults. The editor, the CLI, and the MCP host read and write this block so every export matches. |
 
 ```json
 {

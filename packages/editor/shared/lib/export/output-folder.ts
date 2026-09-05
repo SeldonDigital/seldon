@@ -1,22 +1,8 @@
+import { normalizeOutputFolder } from "@seldon/core"
+
 import type { FileToExport } from "@seldon/factory/export/types"
 
-/**
- * Normalizes a project-relative output folder. Empty means the project root.
- * Rejects a path that climbs out of the root, so a typed value cannot write
- * outside the folder the user picked.
- */
-export function normalizeOutputFolder(value: string | undefined): string {
-  if (!value) return ""
-
-  const segments = value
-    .replaceAll("\\", "/")
-    .split("/")
-    .filter((segment) => segment && segment !== ".")
-
-  if (segments.some((segment) => segment === "..")) return ""
-
-  return segments.join("/")
-}
+export { normalizeOutputFolder }
 
 /**
  * Joins an output folder and a layout folder into one project-relative path.

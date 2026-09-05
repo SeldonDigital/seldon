@@ -1,4 +1,11 @@
 export type { WorkspaceStringMap } from "./string-maps"
+export {
+  DEFAULT_WORKSPACE_EXPORT_SETTINGS,
+  completeExportSettings,
+  exportSettingsEqual,
+  hasCompleteExportSettings,
+  normalizeOutputFolder,
+} from "./export-settings"
 export type { WorkspaceExportSettings } from "./export-settings"
 export type { WorkspaceMetadata } from "./metadata"
 export type {

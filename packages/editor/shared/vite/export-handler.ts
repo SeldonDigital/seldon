@@ -3,7 +3,6 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
 import { exportWorkspace } from "@seldon/factory/export/export-workspace"
-import { EXPORT_FLAG_DEFAULTS, toExportScopeOptions } from "@seldon/factory/export/options"
 import { createResolvedExportAssetReader } from "@seldon/factory/export/resolved-asset-reader"
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 import { DEFAULT_COMPONENTS_FOLDER } from "../lib/export/constants"
@@ -135,10 +134,8 @@ export async function runExport(
       assetPublicPath: "/",
     },
     assetReader,
-    // Scope defaults come from the shared export flag descriptors, so this
-    // handler stays in step with the editor dialog, the CLI, and the MCP host.
-    // `body.options` overrides them per request.
-    ...toExportScopeOptions(EXPORT_FLAG_DEFAULTS),
+    // Scope flags come from the workspace inside `exportWorkspace`. Request
+    // options override only the keys this call sets.
     ...body.options,
   }
 

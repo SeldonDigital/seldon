@@ -1,4 +1,5 @@
 import { EXPORT_MANIFEST_FILENAME, buildExportManifest } from "./manifest"
+import { applyWorkspaceExportScope } from "./options"
 import { PLATFORMS } from "./platforms/registry"
 import { formatJson } from "./shared/format-json"
 import { generateWorkspaceCopy } from "./shared/generate-workspace-copy"
@@ -50,6 +51,7 @@ export async function exportWorkspace(
   const options: ExportOptions = {
     assetReader,
     ...opts,
+    ...applyWorkspaceExportScope(workspace, opts),
     output: { componentsFolder, assetsFolder, assetPublicPath },
   }
 

@@ -45,6 +45,13 @@ export {
   ensureWorkspaceEditableThemeEntry,
 } from "./workspace/helpers/themes/workspace-editable-theme"
 export { createEmptyWorkspace } from "./workspace/helpers/create-empty-workspace"
+export {
+  DEFAULT_WORKSPACE_EXPORT_SETTINGS,
+  completeExportSettings,
+  exportSettingsEqual,
+  hasCompleteExportSettings,
+  normalizeOutputFolder,
+} from "./workspace/model/export-settings"
 export { loadWorkspace } from "./workspace/reducers/load-workspace"
 export { applyActions } from "./workspace/reducers/apply-actions"
 export { workspaceReducer } from "./workspace/reducers/reducer"

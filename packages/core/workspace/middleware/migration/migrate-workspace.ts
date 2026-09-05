@@ -19,6 +19,7 @@ import { migrateV18UniqueNodeRefs } from "./steps/migrate-00018-unique-node-refs
 import { migrateV19ListboxToMenu } from "./steps/migrate-00019-listbox-to-menu"
 import { migrateV20WorkspaceId } from "./steps/migrate-00020-workspace-id"
 import { repairBoardOrder } from "./steps/repair-board-order"
+import { repairExportSettings } from "./steps/repair-export-settings"
 
 import type { Workspace } from "../../model/workspace"
 
@@ -81,6 +82,9 @@ if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
  * `migrateV20WorkspaceId` runs here too so a file already at the current version
  * but lacking `metadata.id`, including a freshly created workspace, still gains
  * one. It only mints when the id is absent, so a re-run never changes it.
+ *
+ * `repairExportSettings` fills missing export flags from the shared defaults so
+ * an older file exports the same way as a newly created one.
  */
 const REPAIR_STEPS: MigrationStep[] = [
   migrateV3ThemeRenames,
@@ -90,6 +94,7 @@ const REPAIR_STEPS: MigrationStep[] = [
   migrateV19ListboxToMenu,
   migrateV20WorkspaceId,
   repairBoardOrder,
+  repairExportSettings,
 ]
 
 /**
