@@ -83,10 +83,20 @@ const optionsStyle = {
 // The content reaches every slot by ref name. Every slot on a menu row is opt-in,
 // so each keeps a positional enabler; without one the slot would not render.
 function optionRefs(option: ComboboxOptionItem): Record<string, Record<string, unknown>> {
+  const optionIcon = { icon: props.resolveIcon?.(option.value) ?? "seldon-component" }
+  const optionLabel = { children: option.name }
+
+  if (option.annotation) {
+    return {
+      optionIcon,
+      optionLabel,
+      optionAnnotation: { children: option.annotation },
+    }
+  }
+
   return {
-    optionIcon: { icon: props.resolveIcon?.(option.value) ?? "seldon-component" },
-    optionLabel: { children: option.name },
-    optionAnnotation: { children: option.annotation },
+    optionIcon,
+    optionLabel,
   }
 }
 

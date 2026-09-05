@@ -4,7 +4,10 @@ import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-componen
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { isHSLObject, isLCHObject, isRGBObject } from "@seldon/core/helpers/type-guards"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
-import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
+import {
+  getBuiltInLookSectionForPropertyKey,
+  isBuiltInLookSection,
+} from "@seldon/core/themes/looks"
 
 import { Unit } from "../../../properties/constants/shared/units"
 import { ValueType } from "../../../properties/constants/shared/value-types"
@@ -180,7 +183,7 @@ export function formatCompoundDisplay(
 
   const builtInSection = getBuiltInLookSectionForPropertyKey(propertyKey)
 
-  if (builtInSection) {
+  if (builtInSection && isBuiltInLookSection(propertyKey)) {
     return builtInSection === "font" ? "Normal" : "None"
   }
 

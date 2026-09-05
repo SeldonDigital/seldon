@@ -54,4 +54,24 @@ describe("getBorderStyles", () => {
   it("returns no styles when no border is set", () => {
     expect(getBorderStyles(context({} as unknown as Properties))).toEqual({})
   })
+
+  it("emits a side look when border is the cleared none look", () => {
+    const properties = {
+      border: {
+        preset: { type: ValueType.THEME_CATEGORICAL, value: "@border.none" },
+      },
+      borderLeft: {
+        preset: { type: ValueType.THEME_CATEGORICAL, value: "@border.hairline" },
+      },
+    } as unknown as Properties
+
+    const styles = getBorderStyles(context(properties))
+
+    expect(styles.borderLeftWidth).toBe("var(--hairline)")
+    expect(styles.borderLeftStyle).toBe("solid")
+    expect(styles.borderLeftColor).toBeDefined()
+    expect(styles.borderTopWidth).toBeUndefined()
+    expect(styles.borderRightWidth).toBeUndefined()
+    expect(styles.borderBottomWidth).toBeUndefined()
+  })
 })

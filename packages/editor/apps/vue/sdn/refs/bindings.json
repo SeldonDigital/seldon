@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "vue",
-  "scannedFiles": 195,
+  "scannedFiles": 197,
   "refs": {
     "boardState": [
       {
@@ -1043,14 +1043,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 486,
+        "line": 525,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.allFonts.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1069,7 +1069,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1083,14 +1083,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 487,
+        "line": 526,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.allFonts.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1104,7 +1104,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1118,21 +1118,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 495,
+        "line": 534,
         "conditional": false,
         "expression": "radioRow(() => (allFonts.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "allFonts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1145,21 +1145,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 496,
+        "line": 535,
         "conditional": false,
         "expression": "radioInput( \"export-all-fonts\", !allFonts.value, () => (allFonts.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "allFonts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1172,7 +1172,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 501,
+        "line": 540,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -1189,21 +1189,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 488,
+        "line": 527,
         "conditional": false,
         "expression": "radioRow(() => (allFonts.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "allFonts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1216,21 +1216,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 489,
+        "line": 528,
         "conditional": false,
         "expression": "radioInput( \"export-all-fonts\", allFonts.value, () => (allFonts.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "allFonts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1243,7 +1243,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 494,
+        "line": 533,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -1260,14 +1260,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 503,
+        "line": 542,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.allIcons.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1286,7 +1286,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1300,14 +1300,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 504,
+        "line": 543,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.allIcons.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1321,7 +1321,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1335,21 +1335,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 512,
+        "line": 551,
         "conditional": false,
         "expression": "radioRow(() => (allIcons.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "allIcons",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1362,21 +1362,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 513,
+        "line": 552,
         "conditional": false,
         "expression": "radioInput( \"export-all-icons\", !allIcons.value, () => (allIcons.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "allIcons",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1389,7 +1389,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 518,
+        "line": 557,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -1406,21 +1406,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 505,
+        "line": 544,
         "conditional": false,
         "expression": "radioRow(() => (allIcons.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "allIcons",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1433,21 +1433,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 506,
+        "line": 545,
         "conditional": false,
         "expression": "radioInput( \"export-all-icons\", allIcons.value, () => (allIcons.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "allIcons",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1460,7 +1460,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 511,
+        "line": 550,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -1477,14 +1477,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 469,
+        "line": 508,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.allThemes.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1503,7 +1503,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1517,14 +1517,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 470,
+        "line": 509,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.allThemes.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1538,7 +1538,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1552,21 +1552,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 478,
+        "line": 517,
         "conditional": false,
         "expression": "radioRow(() => (allThemes.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "allThemes",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1579,21 +1579,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 479,
+        "line": 518,
         "conditional": false,
         "expression": "radioInput( \"export-all-themes\", !allThemes.value, () => (allThemes.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "allThemes",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1606,7 +1606,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 484,
+        "line": 523,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -1623,21 +1623,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 471,
+        "line": 510,
         "conditional": false,
         "expression": "radioRow(() => (allThemes.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "allThemes",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1650,21 +1650,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 472,
+        "line": 511,
         "conditional": false,
         "expression": "radioInput( \"export-all-themes\", allThemes.value, () => (allThemes.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "allThemes",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1677,7 +1677,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 477,
+        "line": 516,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -1694,14 +1694,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 554,
+        "line": 593,
         "conditional": false,
         "expression": "{ onClick: cancel }",
         "inputs": [
           {
             "name": "cancel",
             "declaredAt": {
-              "line": 296,
+              "line": 323,
               "kind": "function"
             }
           }
@@ -1714,7 +1714,7 @@
               {
                 "name": "cancel",
                 "declaredAt": {
-                  "line": 296,
+                  "line": 323,
                   "kind": "function"
                 }
               }
@@ -1727,7 +1727,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 555,
+        "line": 594,
         "conditional": false,
         "expression": "{ children: \"Cancel\" }",
         "inputs": [],
@@ -1744,21 +1744,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 556,
+        "line": 595,
         "conditional": false,
         "expression": "{ onClick: runExport, \"aria-disabled\": isExporting.value, style: isExporting.value ? styles.busy : undefined, }",
         "inputs": [
           {
             "name": "runExport",
             "declaredAt": {
-              "line": 270,
+              "line": 296,
               "kind": "function"
             }
           },
           {
             "name": "isExporting",
             "declaredAt": {
-              "line": 80,
+              "line": 81,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1766,7 +1766,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 345,
+              "line": 375,
               "kind": "const"
             }
           }
@@ -1779,7 +1779,7 @@
               {
                 "name": "runExport",
                 "declaredAt": {
-                  "line": 270,
+                  "line": 296,
                   "kind": "function"
                 }
               }
@@ -1792,7 +1792,7 @@
               {
                 "name": "isExporting",
                 "declaredAt": {
-                  "line": 80,
+                  "line": 81,
                   "kind": "const",
                   "via": "storeToRefs"
                 }
@@ -1806,7 +1806,7 @@
               {
                 "name": "isExporting",
                 "declaredAt": {
-                  "line": 80,
+                  "line": 81,
                   "kind": "const",
                   "via": "storeToRefs"
                 }
@@ -1814,7 +1814,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 345,
+                  "line": 375,
                   "kind": "const"
                 }
               }
@@ -1827,7 +1827,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 561,
+        "line": 600,
         "conditional": false,
         "expression": "{ children: \"Export\" }",
         "inputs": [],
@@ -1844,7 +1844,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 428,
+        "line": 467,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -1855,7 +1855,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 429,
+        "line": 468,
         "conditional": false,
         "expression": "{ children: \"Include\" }",
         "inputs": [],
@@ -1872,14 +1872,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 435,
+        "line": 474,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.fontLinks.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1898,7 +1898,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1912,14 +1912,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 436,
+        "line": 475,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.fontLinks.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -1933,7 +1933,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -1947,21 +1947,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 444,
+        "line": 483,
         "conditional": false,
         "expression": "radioRow(() => (fontLinks.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "fontLinks",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -1974,21 +1974,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 445,
+        "line": 484,
         "conditional": false,
         "expression": "radioInput( \"export-font-links\", !fontLinks.value, () => (fontLinks.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "fontLinks",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2001,7 +2001,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 450,
+        "line": 489,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -2018,21 +2018,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 437,
+        "line": 476,
         "conditional": false,
         "expression": "radioRow(() => (fontLinks.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "fontLinks",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2045,21 +2045,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 438,
+        "line": 477,
         "conditional": false,
         "expression": "radioInput( \"export-font-links\", fontLinks.value, () => (fontLinks.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "fontLinks",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2072,7 +2072,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 443,
+        "line": 482,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -2089,7 +2089,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 396,
+        "line": 436,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -2100,7 +2100,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 398,
+        "line": 438,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -2111,14 +2111,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 399,
+        "line": 439,
         "conditional": false,
         "expression": "{ value: frameworkLabel.value, readonly: true, onClick: openFramework, \"aria-expanded\": frameworkOpen.value, style: styles.opaquePointer, }",
         "inputs": [
           {
             "name": "frameworkLabel",
             "declaredAt": {
-              "line": 165,
+              "line": 176,
               "kind": "const",
               "via": "computed"
             }
@@ -2126,14 +2126,14 @@
           {
             "name": "openFramework",
             "declaredAt": {
-              "line": 218,
+              "line": 231,
               "kind": "function"
             }
           },
           {
             "name": "frameworkOpen",
             "declaredAt": {
-              "line": 177,
+              "line": 188,
               "kind": "const",
               "via": "ref"
             }
@@ -2141,7 +2141,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 345,
+              "line": 375,
               "kind": "const"
             }
           }
@@ -2154,7 +2154,7 @@
               {
                 "name": "frameworkLabel",
                 "declaredAt": {
-                  "line": 165,
+                  "line": 176,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -2173,7 +2173,7 @@
               {
                 "name": "openFramework",
                 "declaredAt": {
-                  "line": 218,
+                  "line": 231,
                   "kind": "function"
                 }
               }
@@ -2186,7 +2186,7 @@
               {
                 "name": "frameworkOpen",
                 "declaredAt": {
-                  "line": 177,
+                  "line": 188,
                   "kind": "const",
                   "via": "ref"
                 }
@@ -2200,7 +2200,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 345,
+                  "line": 375,
                   "kind": "const"
                 }
               }
@@ -2213,14 +2213,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 397,
+        "line": 437,
         "conditional": false,
-        "expression": "{ children: \"Framework\" }",
+        "expression": "{ children: \"App Framework\" }",
         "inputs": [],
         "props": [
           {
             "key": "children",
-            "expression": "\"Framework\"",
+            "expression": "\"App Framework\"",
             "inputs": []
           }
         ]
@@ -2230,14 +2230,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 452,
+        "line": 491,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.includeHidden.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -2256,7 +2256,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -2270,14 +2270,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 453,
+        "line": 492,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.includeHidden.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -2291,7 +2291,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -2305,21 +2305,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 461,
+        "line": 500,
         "conditional": false,
         "expression": "radioRow(() => (includeHidden.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "includeHidden",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2332,21 +2332,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 462,
+        "line": 501,
         "conditional": false,
         "expression": "radioInput( \"export-hidden\", !includeHidden.value, () => (includeHidden.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "includeHidden",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2359,7 +2359,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 467,
+        "line": 506,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -2376,21 +2376,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 454,
+        "line": 493,
         "conditional": false,
         "expression": "radioRow(() => (includeHidden.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "includeHidden",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2403,21 +2403,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 455,
+        "line": 494,
         "conditional": false,
         "expression": "radioInput( \"export-hidden\", includeHidden.value, () => (includeHidden.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "includeHidden",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2430,7 +2430,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 460,
+        "line": 499,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -2443,11 +2443,119 @@
         ]
       }
     ],
+    "exportOutputFolder": [
+      {
+        "file": "app/dialogs/ExportDialog.vue",
+        "component": "ExportDialog",
+        "line": 458,
+        "conditional": false,
+        "expression": "{}",
+        "inputs": [],
+        "props": []
+      }
+    ],
+    "exportOutputFolderField": [
+      {
+        "file": "app/dialogs/ExportDialog.vue",
+        "component": "ExportDialog",
+        "line": 460,
+        "conditional": false,
+        "expression": "{ value: outputFolder.value, placeholder: \"Project root\", onInput: onOutputFolderInput, style: styles.opaque, }",
+        "inputs": [
+          {
+            "name": "outputFolder",
+            "declaredAt": {
+              "line": 102,
+              "kind": "const",
+              "via": "ref"
+            }
+          },
+          {
+            "name": "onOutputFolderInput",
+            "declaredAt": {
+              "line": 246,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 375,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "outputFolder.value",
+            "inputs": [
+              {
+                "name": "outputFolder",
+                "declaredAt": {
+                  "line": 102,
+                  "kind": "const",
+                  "via": "ref"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "\"Project root\"",
+            "inputs": []
+          },
+          {
+            "key": "onInput",
+            "expression": "onOutputFolderInput",
+            "inputs": [
+              {
+                "name": "onOutputFolderInput",
+                "declaredAt": {
+                  "line": 246,
+                  "kind": "function"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.opaque",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 375,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exportOutputFolderLabel": [
+      {
+        "file": "app/dialogs/ExportDialog.vue",
+        "component": "ExportDialog",
+        "line": 459,
+        "conditional": false,
+        "expression": "{ children: \"Export To\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "children",
+            "expression": "\"Export To\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
     "exportPlatform": [
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 407,
+        "line": 447,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -2458,7 +2566,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 409,
+        "line": 449,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -2469,14 +2577,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 410,
+        "line": 450,
         "conditional": false,
         "expression": "{ value: platformLabel.value, readonly: true, onClick: openPlatform, \"aria-expanded\": platformOpen.value, style: styles.opaquePointer, }",
         "inputs": [
           {
             "name": "platformLabel",
             "declaredAt": {
-              "line": 162,
+              "line": 173,
               "kind": "const",
               "via": "computed"
             }
@@ -2484,14 +2592,14 @@
           {
             "name": "openPlatform",
             "declaredAt": {
-              "line": 211,
+              "line": 224,
               "kind": "function"
             }
           },
           {
             "name": "platformOpen",
             "declaredAt": {
-              "line": 175,
+              "line": 186,
               "kind": "const",
               "via": "ref"
             }
@@ -2499,7 +2607,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 345,
+              "line": 375,
               "kind": "const"
             }
           }
@@ -2512,7 +2620,7 @@
               {
                 "name": "platformLabel",
                 "declaredAt": {
-                  "line": 162,
+                  "line": 173,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -2531,7 +2639,7 @@
               {
                 "name": "openPlatform",
                 "declaredAt": {
-                  "line": 211,
+                  "line": 224,
                   "kind": "function"
                 }
               }
@@ -2544,7 +2652,7 @@
               {
                 "name": "platformOpen",
                 "declaredAt": {
-                  "line": 175,
+                  "line": 186,
                   "kind": "const",
                   "via": "ref"
                 }
@@ -2558,7 +2666,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 345,
+                  "line": 375,
                   "kind": "const"
                 }
               }
@@ -2571,14 +2679,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 408,
+        "line": 448,
         "conditional": false,
-        "expression": "{ children: \"Platform\" }",
+        "expression": "{ children: \"Component Type\" }",
         "inputs": [],
         "props": [
           {
             "key": "children",
-            "expression": "\"Platform\"",
+            "expression": "\"Component Type\"",
             "inputs": []
           }
         ]
@@ -2588,7 +2696,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 418,
+        "line": 426,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -2599,14 +2707,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 420,
+        "line": 428,
         "conditional": false,
         "expression": "{ value: directoryLabel.value, placeholder: \"Choose a folder…\", readonly: true, onClick: chooseDirectory, style: styles.opaquePointer, }",
         "inputs": [
           {
             "name": "directoryLabel",
             "declaredAt": {
-              "line": 161,
+              "line": 172,
               "kind": "const",
               "via": "computed"
             }
@@ -2614,14 +2722,14 @@
           {
             "name": "chooseDirectory",
             "declaredAt": {
-              "line": 251,
+              "line": 269,
               "kind": "function"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 345,
+              "line": 375,
               "kind": "const"
             }
           }
@@ -2634,7 +2742,7 @@
               {
                 "name": "directoryLabel",
                 "declaredAt": {
-                  "line": 161,
+                  "line": 172,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -2658,7 +2766,7 @@
               {
                 "name": "chooseDirectory",
                 "declaredAt": {
-                  "line": 251,
+                  "line": 269,
                   "kind": "function"
                 }
               }
@@ -2671,7 +2779,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 345,
+                  "line": 375,
                   "kind": "const"
                 }
               }
@@ -2684,14 +2792,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 419,
+        "line": 427,
         "conditional": false,
-        "expression": "{ children: \"Project Folder\" }",
+        "expression": "{ children: \"Root Folder\" }",
         "inputs": [],
         "props": [
           {
             "key": "children",
-            "expression": "\"Project Folder\"",
+            "expression": "\"Root Folder\"",
             "inputs": []
           }
         ]
@@ -2701,14 +2809,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 537,
+        "line": 576,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.includeScripts.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -2727,7 +2835,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -2741,14 +2849,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 538,
+        "line": 577,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.includeScripts.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -2762,7 +2870,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -2776,21 +2884,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 546,
+        "line": 585,
         "conditional": false,
         "expression": "radioRow(() => (includeScripts.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "includeScripts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2803,21 +2911,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 547,
+        "line": 586,
         "conditional": false,
         "expression": "radioInput( \"export-scripts\", !includeScripts.value, () => (includeScripts.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "includeScripts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2830,7 +2938,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 552,
+        "line": 591,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -2847,21 +2955,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 539,
+        "line": 578,
         "conditional": false,
         "expression": "radioRow(() => (includeScripts.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "includeScripts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2874,21 +2982,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 540,
+        "line": 579,
         "conditional": false,
         "expression": "radioInput( \"export-scripts\", includeScripts.value, () => (includeScripts.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "includeScripts",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -2901,7 +3009,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 545,
+        "line": 584,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -2918,7 +3026,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 383,
+        "line": 413,
         "conditional": false,
         "expression": "{ children: \"Export Components\" }",
         "inputs": [],
@@ -2935,14 +3043,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 520,
+        "line": 559,
         "conditional": false,
         "expression": "{ role: \"radiogroup\", \"aria-label\": EXPORT_FLAG.savedWorkspace.ariaLabel }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -2961,7 +3069,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -2975,14 +3083,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 521,
+        "line": 560,
         "conditional": false,
         "expression": "{ children: EXPORT_FLAG.savedWorkspace.label }",
         "inputs": [
           {
             "name": "EXPORT_FLAG",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "const",
               "via": "EXPORT_FLAGS.reduce"
             }
@@ -2996,7 +3104,7 @@
               {
                 "name": "EXPORT_FLAG",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "const",
                   "via": "EXPORT_FLAGS.reduce"
                 }
@@ -3010,7 +3118,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 385,
+        "line": 415,
         "conditional": false,
         "expression": "{}",
         "inputs": [],
@@ -3021,14 +3129,14 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 387,
+        "line": 417,
         "conditional": false,
         "expression": "{ value: workspaceName.value, placeholder: \"Untitled workspace\", onInput: onNameInput, onBlur: commitName, onKeydown: commitNameOnEnter, style: styles.opaque, }",
         "inputs": [
           {
             "name": "workspaceName",
             "declaredAt": {
-              "line": 159,
+              "line": 170,
               "kind": "const",
               "via": "computed"
             }
@@ -3036,28 +3144,28 @@
           {
             "name": "onNameInput",
             "declaredAt": {
-              "line": 227,
+              "line": 240,
               "kind": "function"
             }
           },
           {
             "name": "commitName",
             "declaredAt": {
-              "line": 234,
+              "line": 252,
               "kind": "function"
             }
           },
           {
             "name": "commitNameOnEnter",
             "declaredAt": {
-              "line": 242,
+              "line": 260,
               "kind": "function"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 345,
+              "line": 375,
               "kind": "const"
             }
           }
@@ -3070,7 +3178,7 @@
               {
                 "name": "workspaceName",
                 "declaredAt": {
-                  "line": 159,
+                  "line": 170,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -3089,7 +3197,7 @@
               {
                 "name": "onNameInput",
                 "declaredAt": {
-                  "line": 227,
+                  "line": 240,
                   "kind": "function"
                 }
               }
@@ -3102,7 +3210,7 @@
               {
                 "name": "commitName",
                 "declaredAt": {
-                  "line": 234,
+                  "line": 252,
                   "kind": "function"
                 }
               }
@@ -3115,7 +3223,7 @@
               {
                 "name": "commitNameOnEnter",
                 "declaredAt": {
-                  "line": 242,
+                  "line": 260,
                   "kind": "function"
                 }
               }
@@ -3128,7 +3236,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 345,
+                  "line": 375,
                   "kind": "const"
                 }
               }
@@ -3141,7 +3249,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 386,
+        "line": 416,
         "conditional": false,
         "expression": "{ children: \"Workspace Name\" }",
         "inputs": [],
@@ -3158,21 +3266,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 529,
+        "line": 568,
         "conditional": false,
         "expression": "radioRow(() => (savedWorkspace.value = false))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "savedWorkspace",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -3185,21 +3293,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 530,
+        "line": 569,
         "conditional": false,
         "expression": "radioInput( \"export-saved-workspace\", !savedWorkspace.value, () => (savedWorkspace.value = false), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "savedWorkspace",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -3212,7 +3320,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 535,
+        "line": 574,
         "conditional": false,
         "expression": "{ children: \"No\" }",
         "inputs": [],
@@ -3229,21 +3337,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 522,
+        "line": 561,
         "conditional": false,
         "expression": "radioRow(() => (savedWorkspace.value = true))",
         "inputs": [
           {
             "name": "radioRow",
             "declaredAt": {
-              "line": 363,
+              "line": 393,
               "kind": "function"
             }
           },
           {
             "name": "savedWorkspace",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -3256,21 +3364,21 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 523,
+        "line": 562,
         "conditional": false,
         "expression": "radioInput( \"export-saved-workspace\", savedWorkspace.value, () => (savedWorkspace.value = true), )",
         "inputs": [
           {
             "name": "radioInput",
             "declaredAt": {
-              "line": 368,
+              "line": 398,
               "kind": "function"
             }
           },
           {
             "name": "savedWorkspace",
             "declaredAt": {
-              "line": 89,
+              "line": 90,
               "kind": "const",
               "via": "storeToRefs"
             }
@@ -3283,7 +3391,7 @@
       {
         "file": "app/dialogs/ExportDialog.vue",
         "component": "ExportDialog",
-        "line": 528,
+        "line": 567,
         "conditional": false,
         "expression": "{ children: \"Yes\" }",
         "inputs": [],
@@ -6886,7 +6994,7 @@
       {
         "file": "app/menus/ComboboxOptions.vue",
         "component": "ComboboxOptions",
-        "line": 89,
+        "line": 93,
         "conditional": false,
         "expression": "{ children: option.annotation }",
         "inputs": [
@@ -6919,82 +7027,72 @@
       {
         "file": "app/menus/ComboboxOptions.vue",
         "component": "ComboboxOptions",
-        "line": 87,
+        "line": 91,
         "conditional": false,
-        "expression": "{ icon: props.resolveIcon?.(option.value) ?? \"seldon-component\" }",
+        "expression": "optionIcon",
         "inputs": [
           {
-            "name": "props",
+            "name": "optionIcon",
             "declaredAt": {
-              "line": 27,
-              "kind": "const",
-              "via": "defineProps"
-            }
-          },
-          {
-            "name": "option",
-            "declaredAt": {
-              "line": 48,
-              "kind": "parameter"
+              "line": 86,
+              "kind": "const"
             }
           }
         ],
-        "props": [
+        "props": []
+      },
+      {
+        "file": "app/menus/ComboboxOptions.vue",
+        "component": "ComboboxOptions",
+        "line": 98,
+        "conditional": false,
+        "expression": "optionIcon",
+        "inputs": [
           {
-            "key": "icon",
-            "expression": "props.resolveIcon?.(option.value) ?? \"seldon-component\"",
-            "inputs": [
-              {
-                "name": "props",
-                "declaredAt": {
-                  "line": 27,
-                  "kind": "const",
-                  "via": "defineProps"
-                }
-              },
-              {
-                "name": "option",
-                "declaredAt": {
-                  "line": 48,
-                  "kind": "parameter"
-                }
-              }
-            ]
+            "name": "optionIcon",
+            "declaredAt": {
+              "line": 86,
+              "kind": "const"
+            }
           }
-        ]
+        ],
+        "props": []
       }
     ],
     "optionLabel": [
       {
         "file": "app/menus/ComboboxOptions.vue",
         "component": "ComboboxOptions",
-        "line": 88,
+        "line": 92,
         "conditional": false,
-        "expression": "{ children: option.name }",
+        "expression": "optionLabel",
         "inputs": [
           {
-            "name": "option",
+            "name": "optionLabel",
             "declaredAt": {
-              "line": 48,
-              "kind": "parameter"
+              "line": 87,
+              "kind": "const"
             }
           }
         ],
-        "props": [
+        "props": []
+      },
+      {
+        "file": "app/menus/ComboboxOptions.vue",
+        "component": "ComboboxOptions",
+        "line": 99,
+        "conditional": false,
+        "expression": "optionLabel",
+        "inputs": [
           {
-            "key": "children",
-            "expression": "option.name",
-            "inputs": [
-              {
-                "name": "option",
-                "declaredAt": {
-                  "line": 48,
-                  "kind": "parameter"
-                }
-              }
-            ]
+            "name": "optionLabel",
+            "declaredAt": {
+              "line": 87,
+              "kind": "const"
+            }
           }
-        ]
+        ],
+        "props": []
       }
     ],
     "paletteClose": [
@@ -11351,13 +11449,13 @@
         {
           "file": "app/dialogs/ExportDialog.vue",
           "component": "ExportDialog",
-          "line": 577,
+          "line": 616,
           "expression": "isExporting",
           "inputs": [
             {
               "name": "isExporting",
               "declaredAt": {
-                "line": 80,
+                "line": 81,
                 "kind": "const",
                 "via": "storeToRefs"
               }
@@ -11370,13 +11468,13 @@
         {
           "file": "app/dialogs/ExportDialog.vue",
           "component": "ExportDialog",
-          "line": 578,
+          "line": 617,
           "expression": "barHandle",
           "inputs": [
             {
               "name": "barHandle",
               "declaredAt": {
-                "line": 372,
+                "line": 402,
                 "kind": "const",
                 "via": "computed"
               }
@@ -11389,7 +11487,7 @@
         {
           "file": "app/dialogs/ExportDialog.vue",
           "component": "ExportDialog",
-          "line": 576,
+          "line": 615,
           "expression": "\"export-components-dialog\"",
           "inputs": [],
           "spread": false
@@ -12800,7 +12898,7 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 203,
+          "line": 213,
           "expression": "option.value === value || undefined",
           "inputs": [
             {
@@ -12825,7 +12923,7 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 205,
+          "line": 215,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12835,7 +12933,7 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 206,
+          "line": 216,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12845,13 +12943,13 @@
         {
           "file": "app/menus/ComboboxOptions.vue",
           "component": "ComboboxOptions",
-          "line": 207,
+          "line": 217,
           "expression": "optionAnnotationSlot(option)",
           "inputs": [
             {
               "name": "optionAnnotationSlot",
               "declaredAt": {
-                "line": 94,
+                "line": 104,
                 "kind": "function"
               }
             },

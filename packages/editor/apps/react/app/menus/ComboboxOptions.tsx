@@ -21,6 +21,7 @@ import { createPortal } from "react-dom"
 
 import type { ComboboxOptionItem, OptionIconRender } from "./types"
 import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
 import type { CSSProperties, MouseEvent, ReactNode } from "react"
 
 interface Position {
@@ -60,6 +61,29 @@ const OPTION_ANNOTATION_CLASS = "sdn-text-label sdn-text-label--lqmh"
 // top menu/toast tier (z-50). The backdrop sits one step under the panel.
 const OPTIONS_BACKDROP_Z_INDEX = 44
 const OPTIONS_PANEL_Z_INDEX = 45
+
+/**
+ * Slot refs for one option row. The annotation ref is omitted when the option
+ * has none, so mergeOptionalSlot does not opt the slot in and show "Label".
+ */
+function optionSlotRefs(
+  icon: IconProps["icon"],
+  name: string,
+  annotation: string | undefined,
+): SeldonRefs {
+  if (annotation) {
+    return {
+      optionIcon: { icon },
+      optionLabel: { children: name },
+      optionAnnotation: { children: annotation },
+    }
+  }
+
+  return {
+    optionIcon: { icon },
+    optionLabel: { children: name },
+  }
+}
 
 const backdropStyle: CSSProperties = {
   position: "fixed",
@@ -137,12 +161,11 @@ export function ComboboxOptions({
     const annotationSlot = option.annotation ? {} : undefined
 
     if (icon.kind === "iconId") {
-      // The content reaches every slot by ref name.
-      const optionRefs = {
-        optionIcon: { icon: icon.icon as IconProps["icon"] },
-        optionLabel: { children: option.name },
-        optionAnnotation: { children: option.annotation },
-      }
+      const optionRefs = optionSlotRefs(
+        icon.icon as IconProps["icon"],
+        option.name,
+        option.annotation,
+      )
 
       return (
         <MenuItemOption

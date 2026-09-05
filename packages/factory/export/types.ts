@@ -73,7 +73,7 @@ export type ExportOptions = {
  * Identifier for an export platform. Adding a platform means adding an id here
  * and a matching entry in the platform registry (`platforms/registry.ts`).
  */
-export type PlatformId = "react" | "swift" | "vue" | "svelte"
+export type PlatformId = "react" | "swift" | "vue" | "svelte" | "html"
 
 /** Whether a platform can export today or is registered for a future release. */
 export type PlatformStatus = "available" | "planned"

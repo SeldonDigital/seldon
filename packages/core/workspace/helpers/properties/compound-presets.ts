@@ -1,6 +1,8 @@
 import {
   getBuiltInLookSectionForPropertyKey,
+  getThemeLookPickerToken,
   getThemeLookSection,
+  isBuiltInClearedLookToken,
   isThemeLookPreset,
   readPresetThemeLookRef,
   resolveBuiltInLookApplyName,
@@ -141,8 +143,12 @@ function matchThemePreset(
     return null
   }
 
-  for (const presetValue of Object.values(themeSection)) {
+  for (const [id, presetValue] of Object.entries(themeSection)) {
     if (!isThemeLookPreset(presetValue) || !presetValue.parameters) {
+      continue
+    }
+
+    if (isBuiltInClearedLookToken(propertyKey, getThemeLookPickerToken(propertyKey, id))) {
       continue
     }
 

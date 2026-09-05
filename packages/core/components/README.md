@@ -205,7 +205,7 @@ A schema's defaults sit on top of the same four property shapes the rest of the 
 
 Borders are a special case. Most of the time a component just wants one border that wraps the whole element, so a schema declares a single `border` compound and that's the end of it. But some components need to style individual sides differently, such as a divider line under a row, a left rail on a card, or a top stripe on a banner. For those, the schema declares four additional sibling compounds `borderTop`, `borderRight`, `borderBottom`, and `borderLeft` so each side can carry its own values.
 
-A component that does not declare the per-side compounds intentionally cannot have its sides styled independently. That is a capability decision made at authoring time, not a runtime restriction.
+A component that does not declare the per-side compounds intentionally cannot have its sides styled independently. That is a capability decision made at authoring time, not a runtime restriction. An unset side reads as Default. Set a side even when `border` is None.
 
 ---
 

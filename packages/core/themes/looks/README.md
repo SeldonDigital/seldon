@@ -32,7 +32,7 @@ flowchart LR
 | `getBuiltInLookId` | `built-in-looks.ts` | Returns the reserved cleared id for a section (`none` or `normal`), or `null` for `gradient`. Used by pickers and validation. |
 | `getBuiltInLookToken` | `built-in-looks.ts` | Returns the full `@` token for a built-in cleared look, or `null` for `gradient`. Used when matching preset refs. |
 | `isBuiltInLookSection` | `built-in-looks.ts` | Type guard for a look section name. Used when parsing `@` paths. |
-| `getBuiltInLookSectionForPropertyKey` | `built-in-looks.ts` | Maps a compound property key to a look section. Maps border shorthands to `border` and `background` to `gradient`. Used by editor property UI. |
+| `getBuiltInLookSectionForPropertyKey` | `built-in-looks.ts` | Maps a compound property key to a look section. Maps `border` and the four border-side compounds to `border`, and `background` to `gradient`. Used by editor property UI. |
 | `injectBuiltInLooks` | `built-in-looks.ts` | Inserts the cleared look cell into each cleared-look section, then fills missing reserved ids. Called from `computeTheme` in `helpers/compute-theme.ts`. |
 | `buildEmptyLookParameters` | `look-facets.ts` | Every facet of a look section set to the EMPTY property value. Used by injection and custom-token payload defaults. |
 | `RESERVED_LOOK_IDS` | `built-in-looks.ts` | Reserved look ids per section. Used by injection and reserved-name checks. |

@@ -14,6 +14,7 @@ const PARSER_PROBE_EXTENSION: Record<string, string> = {
   css: ".css",
   json: ".json",
   vue: ".vue",
+  html: ".html",
 }
 
 let prettierModule: PrettierApi | null | undefined

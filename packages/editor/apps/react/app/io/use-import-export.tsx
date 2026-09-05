@@ -7,6 +7,7 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { DEFAULT_COMPONENTS_FOLDER } from "@seldon/editor/lib/export/constants"
+import { joinExportPath, prefixExportPaths } from "@seldon/editor/lib/export/output-folder"
 import {
   findEmittedManifest,
   readExistingManifest,
@@ -181,7 +182,12 @@ export function useImportExport() {
         const framework = options?.target?.framework ?? "react"
 
         const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
-        const files = await runLocalExport(workspace, { ...options, includeWorkspace: false })
+        const outputFolder =
+          options?.outputFolder ?? workspace.metadata.exportSettings?.outputFolder
+        const files = prefixExportPaths(
+          await runLocalExport(workspace, { ...options, includeWorkspace: false }),
+          outputFolder,
+        )
 
         if (!(await confirmExportCollisions(directory, files))) {
           addToast("Export cancelled")
@@ -213,7 +219,10 @@ export function useImportExport() {
         // the project reports about its own use of the generated components, and
         // so the dialog offers the same folder next time.
         if (workspaceId) {
-          const componentsFolder = options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
+          const componentsFolder = joinExportPath(
+            outputFolder,
+            options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER,
+          )
 
           await saveExportTarget(workspaceId, directory)
           await linkExportedFolder(workspaceId, directory, componentsFolder)

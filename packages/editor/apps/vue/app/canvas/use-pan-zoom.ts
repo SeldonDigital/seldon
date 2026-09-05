@@ -1,3 +1,4 @@
+import { useCanvasResizeAnchor } from "@app/canvas/use-canvas-resize-anchor"
 import { useZoomControlsStore } from "@app/canvas/zoom-controls-store"
 import { createPanZoomEngine } from "@seldon/editor/lib/canvas/pan-zoom/pan-zoom-engine"
 import { onBeforeUnmount, onMounted, ref, watch } from "vue"
@@ -13,7 +14,8 @@ const ZOOM_STEP = 1.2
  * `createPanZoomEngine`. Wheel with Ctrl/Cmd zooms toward the cursor; a plain
  * wheel pans; holding space or the middle button drags to pan. Watches the
  * zoom-controls store counters so the topbar buttons and shortcuts drive the
- * same transform.
+ * same transform. {@link useCanvasResizeAnchor} holds the board still when a
+ * sidebar or palette changes the pane width.
  */
 export function usePanZoom(viewport: Ref<HTMLElement | null>) {
   const engine = createPanZoomEngine({
@@ -39,6 +41,11 @@ export function usePanZoom(viewport: Ref<HTMLElement | null>) {
   }
 
   const unsubscribe = engine.subscribe(sync)
+
+  useCanvasResizeAnchor(
+    () => engine.getTransform(),
+    (x, y, nextScale) => engine.setTransform(x, y, nextScale),
+  )
 
   watch(
     () => zoom.zoomInCounter,

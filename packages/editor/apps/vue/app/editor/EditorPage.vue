@@ -15,7 +15,9 @@ import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mod
 import { useMcpBridge } from "@app/mcp/use-mcp-bridge"
 import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
 import HariController from "@app/palettes/hari/HariController.vue"
+import { useDirtyStore } from "@app/persistence/dirty-store"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
+import { useWorkspaceRemoteRefresh } from "@app/persistence/use-workspace-remote-refresh"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PanelPropertyController from "@app/sidebars/properties/PanelPropertyController.vue"
@@ -31,6 +33,9 @@ import { useRoute } from "vue-router"
 const route = useRoute()
 const history = useHistoryStore()
 const save = useWorkspaceSaveStore()
+const dirty = useDirtyStore()
+const { record } = storeToRefs(save)
+const { isDirty } = storeToRefs(dirty)
 const config = useEditorConfigStore()
 const { workspace } = useWorkspace()
 
@@ -101,6 +106,7 @@ function startPropertiesResize(event: PointerEvent): void {
 
 useEditorShortcuts()
 useWorkspaceAutosave()
+useWorkspaceRemoteRefresh(record, isDirty)
 
 const status = ref<"loading" | "ready" | "missing">("loading")
 
@@ -110,14 +116,14 @@ useMcpBridge(workspaceId)
 
 async function load(id: string): Promise<void> {
   status.value = "loading"
-  const record = await getStoredWorkspace(id)
-  if (!record) {
+  const stored = await getStoredWorkspace(id)
+  if (!stored) {
     status.value = "missing"
     return
   }
-  save.setRecord(record)
-  history.reset(record.workspace)
-  save.markLoaded(record.id)
+  save.setRecord(stored)
+  history.reset(stored.workspace)
+  save.markLoaded(stored.id)
   status.value = "ready"
 }
 

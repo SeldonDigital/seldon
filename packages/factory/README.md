@@ -1,6 +1,6 @@
 # Seldon · Factory
 
-Seldon Factory turns a valid Seldon workspace into production code. It consumes a **workspace** object and produces a list of files. React is the current output target. It produces React components, CSS, and processed assets. Other targets such as Swift and Java are planned. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
+Seldon Factory turns a valid Seldon workspace into production code. It consumes a **workspace** object and produces a list of files. Available targets are React, Vue, and HTML+CSS. Other targets such as Swift are planned. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
 
 Core owns design-time state and rules. Factory owns export and production code generation.
 
@@ -19,9 +19,11 @@ Factory groups four areas that work together:
 
 Bindings is the only area that reads a project's source rather than a workspace. It runs in the project it scans, never in the editor.
 
-The export stage splits into two subsystems with their own guides:
+The export stage splits into subsystems with their own guides:
 
 - **[React export](./export/react/README.md)** generates components with TypeScript interfaces.
+- **[Vue export](./export/vue/)** generates single-file components.
+- **[HTML+CSS export](./export/html/README.md)** generates flattened HTML fragments.
 - **[CSS export](./export/css/README.md)** generates stylesheets with theme variables and cascade ordering.
 
 Factory imports compute logic from `@seldon/core`. It does not fork property or theme rules.
@@ -77,9 +79,9 @@ npx seldon-export --input .seldon/my-app.react.json --framework next --platform 
 npx seldon-export --input .seldon/my-app.react.json
 ```
 
-`--platform` selects the framework (`react`, `vue`). `--framework` selects the project layout (`none`, `vite`, `next`, `nuxt`, `sveltekit`, `astro`, `remix`). Run `seldon-export --help` for every flag.
+`--platform` selects the framework (`react`, `vue`, `html`). `--framework` selects the project layout (`none`, `vite`, `next`, `nuxt`, `sveltekit`, `astro`, `remix`). Run `seldon-export --help` for every flag.
 
-`exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and dispatches by `target.framework`. React is the only implemented target today, so it delegates to React generation when `target.framework` is `"react"` and throws for any other framework. Future targets such as Swift and Java add their own generation branches here.
+`exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and dispatches by `target.framework`. Available platforms are React, Vue, and HTML+CSS. Planned platforms such as Swift throw until they ship.
 
 ### Export options
 
@@ -109,7 +111,7 @@ type ExportOptions = {
 }
 ```
 
-`enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
+`enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in `Fonts.tsx`, `Fonts.vue`, or `fonts.html`.
 
 `exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set `exportAllIconSetIcons` or `exportAllThemes` to `false` to emit only what a component or theme references. Set `exportAllFontCollections` to `false` to emit only the font families a node renders through a direct `font.family` choice.
 
@@ -177,6 +179,7 @@ Factory produces a component library under `output.componentsFolder`, with image
 
 ```
 {level-plural}/{Name}.tsx              # primitives, elements, parts, modules, frames, screens
+{level-plural}/{Name}.html             # flattened HTML+CSS fragment, same tree, no includes
 frames/Frame.tsx                       # generated universal container, wraps HTML.Div
 frames/Container.tsx                   # frame-level component, an instance of {level-plural}/{Name}.tsx
 native-react/HTML.{Tag}.tsx            # native HTML primitive components, such as HTML.Div
@@ -186,7 +189,7 @@ icons/index.ts                         # icon index, re-exports the emitted icon
 refs/index.ts                          # ref registry, emitted only when nodes carry refs
 refs/registry.json                     # the same registry as data, for tools that do not parse TypeScript
 utils/class-name.ts                    # combineClassNames helper
-Fonts.tsx                              # font loading component
+Fonts.tsx                              # font loading component, Fonts.vue on Vue, fonts.html on HTML+CSS
 styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
 {workspace-label}.json                 # workspace copy, emitted only with includeWorkspace

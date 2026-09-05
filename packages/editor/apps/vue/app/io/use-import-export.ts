@@ -6,6 +6,7 @@ import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { DEFAULT_COMPONENTS_FOLDER } from "@seldon/editor/lib/export/constants"
+import { joinExportPath, prefixExportPaths } from "@seldon/editor/lib/export/output-folder"
 import {
   findEmittedManifest,
   readExistingManifest,
@@ -175,7 +176,12 @@ export function useImportExport() {
       const framework = options?.target?.framework ?? "vue"
 
       const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
-      const files = await runLocalExport(workspace.value, { ...options, includeWorkspace: false })
+      const outputFolder =
+        options?.outputFolder ?? workspace.value.metadata.exportSettings?.outputFolder
+      const files = prefixExportPaths(
+        await runLocalExport(workspace.value, { ...options, includeWorkspace: false }),
+        outputFolder,
+      )
 
       if (!(await confirmExportCollisions(directory, files))) {
         toast.addToast("Export cancelled")
@@ -211,7 +217,10 @@ export function useImportExport() {
       const id = workspaceId.value
 
       if (id) {
-        const componentsFolder = options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
+        const componentsFolder = joinExportPath(
+          outputFolder,
+          options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER,
+        )
 
         await saveExportTarget(id, directory)
         await projectLink.linkExportedFolder(id, directory, componentsFolder)

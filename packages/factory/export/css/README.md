@@ -92,7 +92,7 @@ Component classes reference theme tokens through CSS custom properties. `buildSt
 
 ## Class Deduplication
 
-`buildStyleRegistry` reuses a class when another node has the same CSS and the same catalog id. Deduplication stays within one component type, but it does cross variants of that component. When two variants of the same component resolve to identical CSS, the later variant reuses the earlier variant's class and emits no class of its own. This keeps the component stylesheet smaller. Consumers that reference class names by hand must resync after an export, because a style edit can merge or split classes.
+`buildStyleRegistry` reuses a class when another node has the same CSS and the same catalog id. Deduplication stays within one component type, but it does cross variants of that component. When two variants of the same component resolve to identical CSS, the later variant reuses the earlier variant's class and emits no class of its own. This keeps the component stylesheet smaller. Do not reference a generated instance class or a shared style class in app CSS. A style edit can merge or split those classes. Select a node with a `data-seldon-ref` name or an app class.
 
 ---
 

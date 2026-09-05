@@ -399,7 +399,7 @@ Always provide meaningful labels and ARIA attributes:
 ### Styling Issues
 - Import \`styles.css\` and each \`styles/{slug}.css\` file your workspace exports
 - Check CSS class conflicts with your existing styles
-- Use browser dev tools to inspect generated class names (instance classes end with a short hash like \`sdn-button-iconic--abc12\`)
+- Select a node by \`data-seldon-ref\` or by an app class you pass in. Do not target a generated instance class. Those names change when styles merge or split.
 
 ### TypeScript Errors
 - Ensure you're importing the correct prop interfaces

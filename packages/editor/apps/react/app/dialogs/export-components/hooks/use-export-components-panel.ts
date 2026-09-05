@@ -3,11 +3,12 @@ import { useExportCancel, useExportStatus } from "@app/io/export-status-store"
 import { useImportExport } from "@app/io/use-import-export"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { scanExportRoot } from "@seldon/editor/lib/export/scan-export-root"
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import { FRAMEWORK_IDS, resolveOutputLayout } from "@seldon/factory/export/presets"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { useExportOptions } from "./use-export-options"
 
@@ -18,7 +19,7 @@ import type { PlatformId } from "@seldon/factory/export/types"
 /** Upper bound on a workspace name, matching the inline title rename. */
 const MAX_WORKSPACE_NAME_LENGTH = 200
 
-/** Platforms shown in the dialog picker, in registry order. */
+/** Platforms shown in the dialog picker, sorted by label. */
 export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
   id: platform.id,
   label: platform.label,
@@ -103,6 +104,7 @@ export function useExportComponentsPanel() {
 
   const platform = (saved?.platform as PlatformId | undefined) ?? storedPlatform
   const framework = (saved?.framework as FrameworkId | undefined) ?? storedFramework
+  const outputFolder = saved?.outputFolder ?? ""
   const includeHidden = saved?.includeHidden ?? storedIncludeHidden
   const allThemes = saved?.allThemes ?? storedAllThemes
   const allFonts = saved?.allFonts ?? storedAllFonts
@@ -115,7 +117,7 @@ export function useExportComponentsPanel() {
     () => ({
       platform,
       framework,
-      outputFolder: saved?.outputFolder,
+      outputFolder: outputFolder || undefined,
       fontLinks,
       allFonts,
       allIcons,
@@ -127,6 +129,7 @@ export function useExportComponentsPanel() {
     [
       platform,
       framework,
+      outputFolder,
       saved,
       fontLinks,
       allFonts,
@@ -151,8 +154,13 @@ export function useExportComponentsPanel() {
     [dispatch, settingsSnapshot],
   )
 
+  const platformTouched = useRef(false)
+  const frameworkTouched = useRef(false)
+  const outputFolderTouched = useRef(false)
+
   const setPlatform = useCallback(
     (value: PlatformId) => {
+      platformTouched.current = true
       setStoredPlatform(value)
       commit({ platform: value })
     },
@@ -161,10 +169,19 @@ export function useExportComponentsPanel() {
 
   const setFramework = useCallback(
     (value: FrameworkId) => {
+      frameworkTouched.current = true
       setStoredFramework(value)
       commit({ framework: value })
     },
     [setStoredFramework, commit],
+  )
+
+  const setOutputFolder = useCallback(
+    (value: string) => {
+      outputFolderTouched.current = true
+      commit({ outputFolder: value || undefined })
+    },
+    [commit],
   )
 
   const setIncludeHidden = useCallback(
@@ -256,6 +273,9 @@ export function useExportComponentsPanel() {
   const reset = useCallback(() => {
     setDirectory(null)
     setNameDraft(null)
+    platformTouched.current = false
+    frameworkTouched.current = false
+    outputFolderTouched.current = false
   }, [])
 
   const close = useCallback(() => {
@@ -296,7 +316,26 @@ export function useExportComponentsPanel() {
     setDirectory(picked)
 
     if (workspaceId) await saveExportTarget(workspaceId, picked)
-  }, [workspaceId])
+
+    const scan = await scanExportRoot(picked, workspaceId, workspace.metadata.label)
+    const patch: Partial<WorkspaceExportSettings> = {}
+
+    if (!platformTouched.current && scan.platform) {
+      setStoredPlatform(scan.platform)
+      patch.platform = scan.platform
+    }
+
+    if (!frameworkTouched.current && scan.framework) {
+      setStoredFramework(scan.framework)
+      patch.framework = scan.framework
+    }
+
+    if (!outputFolderTouched.current && scan.hasOwnedExport) {
+      patch.outputFolder = scan.outputFolder || undefined
+    }
+
+    if (Object.keys(patch).length > 0) commit(patch)
+  }, [workspaceId, workspace.metadata.label, setStoredPlatform, setStoredFramework, commit])
 
   // The dialog dims while an export runs, but the guard is here so a second run
   // cannot start however the click arrived.
@@ -318,6 +357,7 @@ export function useExportComponentsPanel() {
         exportAllIconSetIcons: allIcons,
         includeWorkspace: savedWorkspace,
         includeScripts,
+        outputFolder,
       },
       directory ?? undefined,
     )
@@ -336,6 +376,7 @@ export function useExportComponentsPanel() {
     allIcons,
     savedWorkspace,
     includeScripts,
+    outputFolder,
     directory,
     close,
   ])
@@ -363,6 +404,8 @@ export function useExportComponentsPanel() {
     setSavedWorkspace,
     includeScripts,
     setIncludeScripts,
+    outputFolder,
+    setOutputFolder,
     directory,
     chooseDirectory,
     exporting,
