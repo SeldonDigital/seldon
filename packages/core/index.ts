@@ -44,6 +44,7 @@ export {
   WORKSPACE_EDITABLE_THEME_ENTRY_ID,
   ensureWorkspaceEditableThemeEntry,
 } from "./workspace/helpers/themes/workspace-editable-theme"
+export { canMutateThemeTokens } from "./workspace/helpers/themes/can-mutate-theme-tokens"
 export { createEmptyWorkspace } from "./workspace/helpers/create-empty-workspace"
 export {
   DEFAULT_WORKSPACE_EXPORT_SETTINGS,

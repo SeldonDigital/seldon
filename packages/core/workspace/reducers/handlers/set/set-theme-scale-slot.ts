@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import { getComputedTheme } from "../../../compute"
-import { isEntryThemeDefault } from "../../../model/entry-theme"
+import { canMutateThemeTokens } from "../../../helpers/themes/can-mutate-theme-tokens"
 import { buildScaleCell } from "../shared/build-scale-cell"
 import { appendCustomToken } from "../shared/theme-custom-token"
 
@@ -33,7 +33,7 @@ function getEffectiveScaleName(
  * exact px/rem length built from the payload. Replacing the whole cell means
  * switching directions never leaves a stale `step` or `unit/value`. Preserves
  * the token's existing `name`/`intent` so it keeps its label across edits.
- * No-ops when the entry is missing or marked `type: "default"`.
+ * No-ops when the target is missing or a stock catalog default.
  */
 export function setThemeScaleSlot(
   payload: ExtractPayload<"set_theme_scale_slot">,
@@ -44,7 +44,7 @@ export function setThemeScaleSlot(
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
 
-    if (!entry || isEntryThemeDefault(entry)) return
+    if (!entry || !canMutateThemeTokens(workspace, payload.themeId)) return
 
     const sectionBag = (entry.overrides as Record<string, unknown>)[payload.section]
     const existing =

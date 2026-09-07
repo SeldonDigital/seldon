@@ -1,16 +1,17 @@
 import { produce } from "immer"
 
 import { getComputedTheme } from "../../../compute"
-import { isEntryThemeDefault } from "../../../model/entry-theme"
+import { canMutateThemeTokens } from "../../../helpers/themes/can-mutate-theme-tokens"
 import { workspaceMutationService } from "../../../services"
 import { removeCustomToken } from "../shared/theme-custom-token"
 
 import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
- * Removes a custom swatch from a variant theme entry's `overrides.swatch` bag.
- * First inlines the swatch's resolved color into any property that referenced it via
- * `@swatch.<key>`, then drops the slot. No-ops when the entry is missing or marked `type: "default"`.
+ * Removes a custom swatch from a theme entry's `overrides.swatch` bag. First
+ * inlines the swatch's resolved color into any property that referenced it via
+ * `@swatch.<key>`, then drops the slot. No-ops when the target is missing or a
+ * stock catalog default.
  */
 export function removeThemeCustomSwatch(
   payload: ExtractPayload<"remove_theme_custom_swatch">,
@@ -18,7 +19,7 @@ export function removeThemeCustomSwatch(
 ): Workspace {
   const entry = workspace.themes[payload.themeId]
 
-  if (!entry || isEntryThemeDefault(entry)) return workspace
+  if (!entry || !canMutateThemeTokens(workspace, payload.themeId)) return workspace
 
   const theme = getComputedTheme(payload.themeId, workspace as never)
   const workspaceWithoutRefs = workspaceMutationService.replaceSwatchRefsWithExactColor(

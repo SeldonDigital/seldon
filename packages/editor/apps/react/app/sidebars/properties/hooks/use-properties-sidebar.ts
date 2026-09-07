@@ -34,6 +34,7 @@ import { getFontFamilyWebsiteUrl } from "@seldon/core/font-collections"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
+import { canMutateThemeTokens } from "@seldon/core/workspace/helpers/themes/can-mutate-theme-tokens"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -282,7 +283,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
   const canAddCustom = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return false
 
-    return workspace.themes[activeThemeEntryId]?.type === "variant"
+    return canMutateThemeTokens(workspace, activeThemeEntryId)
   }, [isThemeEditingMode, activeThemeEntryId, workspace])
 
   const themeEditingContext = useMemo((): ThemeEditingContext | null => {

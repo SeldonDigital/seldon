@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import { TokenType } from "../../../../themes/constants/token-type"
-import { isEntryThemeDefault } from "../../../model/entry-theme"
+import { canMutateThemeTokens } from "../../../helpers/themes/can-mutate-theme-tokens"
 import { workspaceThemeService } from "../../../services"
 import { buildScaleCell } from "../shared/build-scale-cell"
 import { appendCustomToken } from "../shared/theme-custom-token"
@@ -66,10 +66,10 @@ function buildCustomTokenCell(
 }
 
 /**
- * Appends a custom token (`custom1`, `custom2`, ...) to the variant theme entry's
+ * Appends a custom token (`custom1`, `custom2`, ...) to the theme entry's
  * `overrides[section]` bag. The cell shape follows the section's token table:
- * swatch, look, modulated, exact, or a discriminated scale cell. No-ops when the
- * target entry is missing or marked `type: "default"`.
+ * swatch, look, modulated, exact, or a discriminated scale cell. No-ops when
+ * the target is missing or a stock catalog default.
  */
 export function addThemeCustomToken(
   section: ThemeCustomTokenSection,
@@ -79,7 +79,7 @@ export function addThemeCustomToken(
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
 
-    if (!entry || isEntryThemeDefault(entry)) return
+    if (!entry || !canMutateThemeTokens(workspace, payload.themeId)) return
 
     const id = workspaceThemeService.getNextCustomTokenIdForTheme(draft, payload.themeId, section)
 

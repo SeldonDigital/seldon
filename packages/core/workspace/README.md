@@ -41,7 +41,7 @@ Board keys are camelCase slugs unique across the workspace, referencing their so
 
 ### Catalog alignment
 
-Every **`node`** marked with **`type: "default"`**, every **`theme`** with **`type: "default"`**, and the **first** entry in each board's **`variants`** array always match the schemas from the catalog.
+Every **`node`** marked with **`type: "default"`**, every stock **`theme`** with **`type: "default"`**, and the **first** entry in each board's **`variants`** array always match the schemas from the catalog. An authored theme's default owns its tokens. It may change reserved values and add custom tokens. Variants of that theme still layer overrides.
 
 **All structure** must match the catalog, including nested **`children`** on component catalog rows, theme tokens defined by stock templates, and resource variant lists for font-collection, icon-set, and media boards.
 

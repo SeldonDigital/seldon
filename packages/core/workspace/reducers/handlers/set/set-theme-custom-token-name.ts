@@ -1,14 +1,14 @@
 import { produce } from "immer"
 
-import { isEntryThemeDefault } from "../../../model/entry-theme"
+import { canMutateThemeTokens } from "../../../helpers/themes/can-mutate-theme-tokens"
 import { appendCustomToken } from "../shared/theme-custom-token"
 
 import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Renames a custom token by writing `${section}.${key}.name`. The `customN` key
- * never changes, so references stay stable. No-ops when the entry is missing,
- * marked `type: "default"`, or the target cell does not exist.
+ * never changes, so references stay stable. No-ops when the target is missing,
+ * a stock catalog default, or the cell does not exist.
  */
 export function setThemeCustomTokenName(
   payload: ExtractPayload<"set_theme_custom_token_name">,
@@ -17,7 +17,7 @@ export function setThemeCustomTokenName(
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
 
-    if (!entry || isEntryThemeDefault(entry)) return
+    if (!entry || !canMutateThemeTokens(workspace, payload.themeId)) return
 
     const sectionBag = (entry.overrides as Record<string, unknown>)[payload.section]
     const existing =

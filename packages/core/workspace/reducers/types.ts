@@ -32,14 +32,14 @@ export type InsertDefaultInstance = {
   index?: number
 }
 
-/** Common fields on every `add_theme_custom_*` payload. Targets one variant theme entry in `workspace.themes`. */
+/** Common fields on every `add_theme_custom_*` payload. Targets a writable theme entry in `workspace.themes`. */
 type AddThemeCustomBase = {
   themeId: string
   name: string
   intent?: string
 }
 
-/** Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry. */
+/** Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry. */
 type RemoveThemeCustomBase = {
   themeId: string
   key: ThemeCustomSwatchId
