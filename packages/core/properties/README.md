@@ -128,7 +128,7 @@ Properties use seven value types to handle different data sources and behaviors:
 | Value type | Meaning |
 | --- | --- |
 | `EMPTY` | Unset: resolved by the platform or defaults. Inheritance from parents or platform defaults can apply. |
-| `INHERIT` | Explicitly uses the parent component's value, forming a direct parent to child inheritance chain. |
+| `INHERIT` | Explicitly uses the parent component's value. `computeProperties` copies the first contributing ancestor value on the read side. A look preset set to inherit copies the parent compound. |
 | `EXACT` | A concrete value such as a color, size, or text with no reference to another property or theme. |
 | `OPTION` | One of a fixed set of allowed choices. |
 | `COMPUTED` | Derived from other properties through math or functions, such as width as 80% of the parent. |

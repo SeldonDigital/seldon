@@ -1,4 +1,11 @@
-import { FontStyle, TextAlign, TextCasing, TextDecoration, ValueType } from "@seldon/core"
+import {
+  FontStyle,
+  HtmlElement,
+  TextAlign,
+  TextCasing,
+  TextDecoration,
+  ValueType,
+} from "@seldon/core"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import { resolveFontSize } from "@seldon/core/helpers/resolution/resolve-font-size"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
@@ -10,7 +17,31 @@ import { getThemeTokenVarReference } from "./get-theme-token-reference"
 
 import type { StyleGenerationContext } from "../types"
 import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 import type { ThemeFont } from "@seldon/core/themes/types"
+
+const TEXT_WRAPPER_ELEMENTS = new Set<string>([
+  HtmlElement.H1,
+  HtmlElement.H2,
+  HtmlElement.H3,
+  HtmlElement.H4,
+  HtmlElement.H5,
+  HtmlElement.H6,
+  HtmlElement.P,
+  HtmlElement.LI,
+  HtmlElement.DT,
+  HtmlElement.DD,
+])
+
+const TEXT_WRAPPER_LINE_HEIGHT = 1
+
+function isTextWrapperWithoutContent(properties: Properties): boolean {
+  if (properties.content !== undefined) return false
+
+  const tag = properties.htmlElement?.value
+
+  return typeof tag === "string" && TEXT_WRAPPER_ELEMENTS.has(tag)
+}
 
 /**
  * Physical text-align choices mapped to logical CSS values. left and right
@@ -161,8 +192,11 @@ export function getTextStyles({
     }
   }
 
-  // Only apply if font.lineHeight is defined in the schema
-  if (lineHeight && properties.font?.lineHeight) {
+  // A Heading, Paragraph, or List Item wrapper keeps a 1 line-height so its
+  // strut cannot hide the Text child's line-height. The child paints the look.
+  if (isTextWrapperWithoutContent(properties)) {
+    styles.lineHeight = TEXT_WRAPPER_LINE_HEIGHT
+  } else if (lineHeight && properties.font?.lineHeight) {
     if (lineHeight.type === ValueType.EXACT) {
       styles.lineHeight = getCssValue(lineHeight)
     } else if (lineHeight.type === ValueType.THEME_ORDINAL) {

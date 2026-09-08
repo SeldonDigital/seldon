@@ -1,3 +1,5 @@
+import { isComputedValue } from "../../helpers/type-guards/value/is-computed-value"
+import { isInheritValue } from "../../helpers/type-guards/value/is-inherit-value"
 import { ComputedFunction, ValueType } from "../constants"
 import { LAYERED_PAINT_KEYS, isObjectFacetMapProperty } from "../types/property-keys"
 import { computeAutoFit } from "./compute-auto-fit"
@@ -6,6 +8,7 @@ import { computeLayeredPaintStack } from "./compute-layered-paint"
 import { computeMatchColor } from "./compute-match-color"
 import { applyMatchColorMirror } from "./compute-match-color-mirror"
 import { computeOpticalPadding } from "./compute-optical-padding"
+import { inheritLookCompound, resolveInheritSource } from "./resolve-inherit"
 
 import type { Properties } from "../types/properties"
 import type {
@@ -45,12 +48,36 @@ function setSubPropertyValue(
   compoundValue[subKey] = value
 }
 
+function resolveTaggedValue(value: Value, context: ComputeContext, keys: ComputeKeys): Value {
+  if (isInheritValue(value)) {
+    const path = keys.subPropertyKey
+      ? `${keys.propertyKey}.${keys.subPropertyKey}`
+      : String(keys.propertyKey)
+    const inherited = resolveInheritSource(path, context)
+
+    if (!inherited) return value
+
+    if (isComputedValue(inherited.value)) {
+      return dispatchComputed(inherited.value, inherited.source, keys)
+    }
+
+    return inherited.value
+  }
+
+  if (isComputedValue(value)) {
+    return dispatchComputed(value, context, keys)
+  }
+
+  return value
+}
+
 /**
  * Returns a new `Properties` object with the same top-level keys as `inputProperties`. Every
- * `COMPUTED` value at the top level, under object facet maps (`border`, `font`, `margin`, …) per
- * {@link isObjectFacetMapProperty}, or inside each entry of `background` / `shadow`
- * layer arrays (see {@link computeLayeredPaintStack}), is replaced by the engine result. Other
- * values are copied through. Does not mutate `inputProperties`.
+ * `COMPUTED` or `INHERIT` value at the top level, under object facet maps (`border`, `font`,
+ * `margin`, …) per {@link isObjectFacetMapProperty}, or inside each entry of `background` /
+ * `shadow` layer arrays (see {@link computeLayeredPaintStack}), is replaced by the resolved
+ * result. An `INHERIT` look preset copies the parent compound first. Other values are copied
+ * through. Does not mutate `inputProperties`.
  *
  * @param inputProperties - Node properties after merge with defaults where your pipeline does that
  * @param context - This node's properties, optional parent chain, and theme for engines
@@ -85,7 +112,10 @@ export function computeProperties(
     }
 
     if (isObjectFacetMapProperty(propertyKey)) {
-      const compoundValue = value as Record<string, Value>
+      const authoredCompound = value as Record<string, Value>
+      const compoundValue = isInheritValue(authoredCompound.preset)
+        ? inheritLookCompound(propertyKey, authoredCompound, context)
+        : authoredCompound
 
       Object.entries(compoundValue).forEach(([sk, subpropertyValue]) => {
         const subPropertyKey = sk as SubPropertyKey
@@ -103,21 +133,14 @@ export function computeProperties(
           propertyKey,
         ) as Record<string, Value>
 
-        if (
-          subpropertyValue &&
-          typeof subpropertyValue === "object" &&
-          "type" in subpropertyValue &&
-          subpropertyValue.type === ValueType.COMPUTED
-        ) {
-          const resolved = dispatchComputed(subpropertyValue as ComputedValue, context, {
+        setSubPropertyValue(
+          currentCompoundValue,
+          subPropertyKey,
+          resolveTaggedValue(subpropertyValue as Value, context, {
             propertyKey,
-            subPropertyKey: subPropertyKey,
-          })
-
-          setSubPropertyValue(currentCompoundValue, subPropertyKey, resolved)
-        } else {
-          setSubPropertyValue(currentCompoundValue, subPropertyKey, subpropertyValue as Value)
-        }
+            subPropertyKey,
+          }),
+        )
       })
 
       const resolvedCompound = getCompoundPropertyValue(computedProperties, propertyKey) as
@@ -128,21 +151,9 @@ export function computeProperties(
         applyMatchColorMirror(compoundValue, resolvedCompound, context)
       }
     } else {
-      if (
-        value &&
-        typeof value === "object" &&
-        "type" in value &&
-        value.type === ValueType.COMPUTED
-      ) {
-        const computedValue = value as ComputedValue
-        const computedResult = dispatchComputed(computedValue, context, {
-          propertyKey,
-        })
-
-        Object.assign(computedProperties, { [propertyKey]: computedResult })
-      } else {
-        Object.assign(computedProperties, { [propertyKey]: value })
-      }
+      Object.assign(computedProperties, {
+        [propertyKey]: resolveTaggedValue(value as Value, context, { propertyKey }),
+      })
     }
   })
 

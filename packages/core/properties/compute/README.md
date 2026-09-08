@@ -2,13 +2,13 @@
 
 Some property values should not be frozen. They should react to their surroundings. A button sizes its text to the control. A label turns black or white so it stays readable on whatever sits behind it. A border matches the fill it wraps. Computed properties capture these reactions as small rules instead of fixed values.
 
-A computed property stores the name of a rule, not an answer. At compute time each rule reads the current node, its ancestors, and the active theme, then produces a concrete value. Change the surface or swap the theme, and every dependent value follows. This folder holds the compute functions that turn each `ValueType.COMPUTED` value on a merged `Properties` object into a resolved, tagged value.
+A computed property stores the name of a rule, not an answer. At compute time each rule reads the current node, its ancestors, and the active theme, then produces a concrete value. Change the surface or swap the theme, and every dependent value follows. This folder holds the compute functions that turn each `ValueType.COMPUTED` and `ValueType.INHERIT` value on a merged `Properties` object into a resolved, tagged value.
 
 ---
 
 ## Pipeline
 
-`computeProperties` walks one properties object and resolves every computed value. It takes the merged properties and a `ComputeContext`. The context holds this node's properties, an optional parent context, and the resolved theme. The walk copies plain values through and sends each computed value to `dispatchComputed`.
+`computeProperties` walks one properties object and resolves every computed and inherit value. It takes the merged properties and a `ComputeContext`. The context holds this node's properties, an optional parent context, and the resolved theme. The walk copies plain values through. It sends each computed value to `dispatchComputed`. It replaces each inherit value from the parent chain.
 
 `dispatchComputed` reads the stored function key and calls the matching compute function:
 
@@ -17,7 +17,7 @@ A computed property stores the name of a rule, not an answer. At compute time ea
 - `OPTICAL_PADDING` calls `computeOpticalPadding`.
 - `MATCH_COLOR` calls `computeMatchColor`.
 
-The walk handles three shapes. Top-level atomic cells resolve directly. Object facet maps such as `border`, `font`, and `margin` resolve each facet. Layered paint arrays such as `background` and `shadow` resolve each layer through `computeLayeredPaintStack`.
+The walk handles three shapes. Top-level atomic cells resolve directly. Object facet maps such as `border`, `font`, and `margin` resolve each facet. When a look `preset` is inherit, the walk copies the parent compound first, then overlays authored child facets. Layered paint arrays such as `background` and `shadow` resolve each layer through `computeLayeredPaintStack`.
 
 A computed schema entry stores only the function. It does not author a `basedOn` path or a `factor`.
 
@@ -53,6 +53,8 @@ Compute functions read source values through `getBasedOnValue`. A `basedOn` path
 `parseBasedOnPath` splits a path into its anchor and a layer-0-anchored lookup path. It maps a schema-style paint path such as `background.color` to the runtime path `background.0.color`.
 
 `resolveBasedOnWithAnchor` walks the parent chain. A `#parent.` path walks up while the hit is missing, `EMPTY`, `INHERIT`, or explicit `transparent`. A `#self.` path reads the node first. When the node's own value does not contribute, it falls back to the same parent walk. A background layer with `kind: none` does not contribute even when its `color` facet still carries a leftover swatch.
+
+`resolveInheritSource` walks `parentContext` for a property path. It skips missing, `EMPTY`, and `INHERIT` cells. `inheritLookCompound` copies the nearest parent look when `preset` is inherit. Results stay in memory. They are not written to the workspace.
 
 Compute functions read their tunable values from the theme Computed groups, not from the schema:
 

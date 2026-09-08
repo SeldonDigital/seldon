@@ -31,6 +31,15 @@ function isEmptyTaggedValue(value: unknown): boolean {
   )
 }
 
+function isInheritTaggedValue(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    "type" in value &&
+    (value as { type: unknown }).type === ValueType.INHERIT
+  )
+}
+
 function isFacetObject(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value) && !("type" in value)
 }
@@ -39,14 +48,40 @@ function isFacetObject(value: unknown): value is Record<string, unknown> {
  * Expands a single compound layer that carries a theme-categorical preset
  * facet. The look's parameters fill the section's facets, facets the look does
  * not define become explicit EMPTY, and the layer's own non-EMPTY facets win
- * over the look. The preset facet is kept for preset matching.
+ * over the look. An INHERIT preset clears leftover facets the same way so a
+ * prior look cannot leak. The preset facet is kept for preset matching.
  */
+function expandInheritLayer(
+  section: BuiltInLookSection,
+  layer: Record<string, unknown>,
+): Record<string, unknown> {
+  const facets: Record<string, unknown> = {}
+
+  for (const entry of LOOK_FACETS[section]) {
+    facets[entry.facet] = EMPTY_VALUE
+  }
+
+  for (const [facetKey, value] of Object.entries(layer)) {
+    if (facetKey === "preset") continue
+
+    if (value !== undefined && !isEmptyTaggedValue(value)) {
+      facets[facetKey] = value
+    }
+  }
+
+  return { preset: layer.preset, ...facets }
+}
+
 function expandLayer(
   section: BuiltInLookSection,
   propertyKey: string,
   layer: Record<string, unknown>,
   theme: Theme,
 ): Record<string, unknown> {
+  if (isInheritTaggedValue(layer.preset)) {
+    return expandInheritLayer(section, layer)
+  }
+
   const presetRef = readPresetThemeLookRef(layer)
 
   if (!presetRef) return layer
@@ -105,7 +140,10 @@ function expandPropertyValue(
 }
 
 function layerHasPresetRef(value: unknown): boolean {
-  return isFacetObject(value) && readPresetThemeLookRef(value) !== null
+  return (
+    isFacetObject(value) &&
+    (readPresetThemeLookRef(value) !== null || isInheritTaggedValue(value.preset))
+  )
 }
 
 /** True when any look-bridged compound in the snapshot carries a preset ref. */
