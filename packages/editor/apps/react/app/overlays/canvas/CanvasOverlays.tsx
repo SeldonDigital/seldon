@@ -24,6 +24,7 @@ import { CanvasDragLayer } from "./select/CanvasDragLayer"
 import { HoverOverlay } from "./select/HoverOverlay"
 import { NodeWireframe } from "./select/NodeWireframe"
 import { SelectionOverlay } from "./select/SelectionOverlay"
+import { TextEditOverlay } from "./select/TextEditOverlay.bespoke"
 import { TokenConnector } from "./token-badges/TokenConnector"
 
 export function CanvasOverlays() {
@@ -93,6 +94,8 @@ export function CanvasOverlays() {
   // Nodes reorder by dragging under the select tool. Theme boards are previews
   // with no node tree to reorder.
   const dragLayer = activeTool === "select" && !activeBoardIsTheme ? <CanvasDragLayer /> : null
+  const textEditOverlay =
+    activeTool === "select" && !activeBoardIsTheme ? <TextEditOverlay /> : null
 
   return (
     <>
@@ -117,6 +120,7 @@ export function CanvasOverlays() {
       {refBadges}
       {tokenBadges}
       {dragLayer}
+      {textEditOverlay}
     </>
   )
 }

@@ -267,6 +267,7 @@ export function getNodeIdAddedByAction(
     case "move_instance":
     case "reorder_instance_in_parent":
     case "remove_instance":
+    case "replace_instance":
     case "remove_variant":
       return null
 

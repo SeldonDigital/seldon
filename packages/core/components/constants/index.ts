@@ -140,6 +140,13 @@ export const NATIVE_REACT_PRIMITIVES: Record<
     },
     wrapperElementOption: WrapperElement.BLOCKQUOTE,
   },
+  HTMLBold: {
+    types: {
+      generic: "HTMLAttributes",
+      parameter: "HTMLElement",
+    },
+    htmlElementOption: HtmlElement.B,
+  },
   HTMLButton: {
     types: {
       generic: "ButtonHTMLAttributes",
@@ -187,6 +194,13 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       parameter: "HTMLElement",
     },
     htmlElementOption: HtmlElement.DT,
+  },
+  HTMLEmphasis: {
+    types: {
+      generic: "HTMLAttributes",
+      parameter: "HTMLElement",
+    },
+    htmlElementOption: HtmlElement.EM,
   },
   HTMLFieldset: {
     types: {

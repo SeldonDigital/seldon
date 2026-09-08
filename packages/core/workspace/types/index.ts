@@ -95,6 +95,7 @@ export type { InstanceId, NodePath, VariantId } from "../helpers/rules/workspace
 export type {
   ExtractPayload,
   InsertDefaultInstance,
+  ReplaceInstance,
   ScaleTokenInput,
   ScaleTokenSection,
   ThemeCustomTokenSection,

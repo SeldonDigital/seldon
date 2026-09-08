@@ -33,7 +33,10 @@ export function getTextStyles({
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
   const preset = resolveValue(properties.font?.preset)
-  const themeFont = preset ? (getThemeOption(preset.value, theme) as ThemeFont) : undefined
+  const themeFont =
+    preset && typeof preset.value === "string"
+      ? (getThemeOption(preset.value, theme) as ThemeFont)
+      : undefined
 
   const family =
     resolveFontFamily({ fontFamily: properties.font?.family, theme }) ||

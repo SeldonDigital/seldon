@@ -1,4 +1,5 @@
 import type { EmptyValue } from "../../shared/empty/empty"
+import type { InheritValue } from "../../shared/inherit/inherit"
 import type { LetterSpacingValue } from "../letter-spacing"
 import type { TextCaseValue } from "../text-casing"
 import type { FontValue } from "./font"
@@ -9,7 +10,7 @@ import type { FontWeightValue } from "./font-weight"
 import type { LineHeightValue } from "./line-height"
 
 export type FontCompound = {
-  preset?: FontValue | EmptyValue
+  preset?: FontValue | EmptyValue | InheritValue
   family?: FontFamilyValue | EmptyValue
   style?: FontStyleValue | EmptyValue
   weight?: FontWeightValue | EmptyValue

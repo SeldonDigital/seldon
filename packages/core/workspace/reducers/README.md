@@ -205,6 +205,7 @@ Every non-swatch `remove_theme_custom_*` action routes through one generic handl
 | `insert_variant_instance` | `insertVariantInstance` | `insert-variant-instance.ts` |
 | `insert_duplicate_instance` | `insertDuplicateInstance` | `insert-duplicate-instance.ts` |
 | `insert_default_instance` | `insertDefaultInstance` | `insert-default-instance.ts` |
+| `replace_instance` | `replaceInstance` | `replace-instance.ts` |
 
 ---
 

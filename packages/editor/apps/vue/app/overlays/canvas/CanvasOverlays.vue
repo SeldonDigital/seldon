@@ -20,6 +20,7 @@ import RefConnector from "./ref-badges/RefConnector.vue"
 import HoverOverlay from "./select/HoverOverlay.vue"
 import NodeWireframe from "./select/NodeWireframe.vue"
 import SelectionOverlay from "./select/SelectionOverlay.vue"
+import TextEditOverlay from "./select/TextEditOverlay.bespoke.vue"
 import TokenConnector from "./token-badges/TokenConnector.vue"
 
 const props = defineProps<{
@@ -79,6 +80,9 @@ const showSelectHover = computed(
     !hoverCoincidesWithSelection.value,
 )
 const showInsertHover = computed(() => activeTool.value === "component")
+const showTextEditOverlay = computed(
+  () => activeTool.value === "select" && !activeBoardIsTheme.value,
+)
 
 // Badges stay drawn through a pan or zoom, unlike the boxes above, which hide
 // until it settles. Hiding them would take the open card with them, and the badges
@@ -125,4 +129,5 @@ const drawTokenBadges = computed(() => anyTokenGroupEnabled.value && !activeBoar
   <HoverOverlay v-else-if="showInsertHover" :rect="hoverRect" :colors="hoverColors" />
   <RefConnector v-if="drawRefBadges" />
   <TokenConnector v-if="drawTokenBadges" />
+  <TextEditOverlay v-if="showTextEditOverlay" />
 </template>

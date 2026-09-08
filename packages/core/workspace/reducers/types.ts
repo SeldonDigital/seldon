@@ -32,6 +32,14 @@ export type InsertDefaultInstance = {
   index?: number
 }
 
+/** Swaps one instance for a catalog tree at the same parent and index. */
+export type ReplaceInstance = {
+  instanceId: InstanceId
+  boardKey: BoardKey
+  variantFallbacks?: string[]
+  content?: string
+}
+
 /** Common fields on every `add_theme_custom_*` payload. Targets a writable theme entry in `workspace.themes`. */
 type AddThemeCustomBase = {
   themeId: string
@@ -387,6 +395,10 @@ export type BoardStructureActions =
   | {
       type: "insert_default_instance"
       payload: InsertDefaultInstance
+    }
+  | {
+      type: "replace_instance"
+      payload: ReplaceInstance
     }
   | {
       type: "add_component_and_insert_default_instance"

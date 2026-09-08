@@ -150,6 +150,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "insert_variant_instance":
     case "insert_duplicate_instance":
     case "insert_default_instance":
+    case "replace_instance":
     case "move_instance":
       validateInsertMutation(workspace, action)
 

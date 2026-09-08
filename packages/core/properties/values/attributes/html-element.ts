@@ -17,6 +17,8 @@ export enum HtmlElement {
   PRE = "pre",
   CODE = "code",
   SPAN = "span",
+  B = "b",
+  EM = "em",
   LABEL = "label",
   DIV = "div",
   SECTION = "section",

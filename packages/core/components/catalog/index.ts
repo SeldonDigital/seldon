@@ -68,6 +68,10 @@ import {
   schema as ordinalChipSchema,
 } from "./elements/OrdinalChip.schema"
 import {
+  exportConfig as paragraphExportConfig,
+  schema as paragraphSchema,
+} from "./elements/Paragraph.schema"
+import {
   exportConfig as sectionExportConfig,
   schema as sectionSchema,
 } from "./elements/Section.schema"
@@ -283,6 +287,7 @@ const elements: ComponentSchema[] = [
   comboboxFieldSchema,
   navSchema,
   listSchema,
+  paragraphSchema,
   sectionSchema,
   selectSchema,
   tableGridSchema,
@@ -412,6 +417,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.COMBOBOX_FIELD]: comboboxFieldExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
+  [ComponentId.PARAGRAPH]: paragraphExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_GRID]: tableGridExportConfig,
   [ComponentId.TABLE_HEAD]: tableHeadExportConfig,

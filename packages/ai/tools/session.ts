@@ -58,6 +58,7 @@ function getActionAnchor(action: WorkspaceAction): ActionAnchor {
     case "duplicate_node":
       return { kind: "node", id: p.nodeId }
     case "remove_instance":
+    case "replace_instance":
     case "move_instance":
     case "reorder_instance_in_parent":
     case "move_instance_directional":

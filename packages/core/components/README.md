@@ -90,6 +90,8 @@ type ComponentSchema = PrimitiveComponentSchema | ComplexComponentSchema
 
 The split exists because primitives are leaves. A `Text`, an `Icon`, or an `Image` component cannot hold anything inside it, so its schema has no `default` field. A primitive may still declare leaf `variants` that carry only root property overrides, never child trees. Every complex component declares a `default` composition tree as its main shape and may declare alternate `variants` of itself.
 
+A Paragraph is an element that wraps Text runs. Unmarked copy stays a Text primitive. Applying a range mark replaces that Text with a Paragraph. Each run is a Text child. The run uses `htmlElement` `span`, `b`, or `em`. Combined bold and italic uses one tag plus the other axis on `font.weight` or `font.style`. Leave `orientation` and `align` empty so the Paragraph stays in native inline flow.
+
 A complex schema's first level mirrors how the workspace stores nodes. A board has one default variant plus zero or more user variants. See [`workspace/model/entry-node.ts`](../workspace/model/entry-node.ts), where `EntryNodeType = "default" | "variant" | "instance"`. The schema bakes the same split in at authoring time. `default` is the main tree. Each `variants[]` entry is an alternate complete tree of the same component. For example, `Button` ships a default tree plus `label`, `iconic`, `tools`, and `segmented` variant trees.
 
 Composition trees are **fully flattened**. A parent declares the entire descendant tree it owns. An intermediate schema is only kept in the catalog when it is genuinely reusable across multiple parents. Single-parent intermediates are dissolved into the parent.
