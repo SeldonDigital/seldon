@@ -57,6 +57,7 @@ import {
   trackLabelSchema,
 } from "../../values/attributes/media"
 import { placeholderSchema } from "../../values/attributes/placeholder"
+import { runsSchema } from "../../values/attributes/runs"
 import { sourceSchema } from "../../values/attributes/source"
 import { symbolSchema } from "../../values/attributes/symbol"
 import { wrapperElementSchema } from "../../values/attributes/wrapper-element"
@@ -137,6 +138,7 @@ const PROPERTY_SCHEMAS_RAW = {
   htmlElement: htmlElementSchema,
   wrapperElement: wrapperElementSchema,
   content: contentSchema,
+  runs: runsSchema,
   symbol: symbolSchema,
   source: sourceSchema,
   imageFit: imageFitSchema,

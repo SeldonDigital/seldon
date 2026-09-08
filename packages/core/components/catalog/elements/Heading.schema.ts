@@ -4,24 +4,29 @@ import * as Seldon from "../../constants"
 import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "List",
-  id: Seldon.ComponentId.LIST,
-  intent:
-    "Displays a list of items. Renders as an unordered bulleted list or an ordered numbered list.",
-  tags: ["list", "ul", "ol", "element", "bulleted", "numbered", "sequence", "text", "UI"],
+  name: "Heading",
+  id: Seldon.ComponentId.HEADING,
+  intent: "One heading block. Children are inline Text runs for plain, bold, and italic spans.",
+  tags: ["heading", "text", "inline", "element", "typography", "UI"],
   level: Seldon.ComponentLevel.ELEMENT,
-  icon: Seldon.ComponentIcon.COMPONENT,
+  icon: Seldon.ComponentIcon.TEXT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     htmlElement: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.HtmlElement.UL,
+      value: Sdn.HtmlElement.H1,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: { type: Sdn.ValueType.EMPTY, value: null },
     align: { type: Sdn.ValueType.EMPTY, value: null },
-    width: { type: Sdn.ValueType.EMPTY, value: null },
-    height: { type: Sdn.ValueType.EMPTY, value: null },
+    width: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
+    },
+    height: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FIT,
+    },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -35,17 +40,10 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     gap: { type: Sdn.ValueType.EMPTY, value: null },
-    wrapChildren: { type: Sdn.ValueType.OPTION, value: false },
+    wrapChildren: { type: Sdn.ValueType.EMPTY, value: null },
+    color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    listStyleType: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.ListStyleType.DISC,
-    },
-    listStylePosition: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.ListStylePosition.OUTSIDE,
-    },
     background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
@@ -96,7 +94,29 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
+    font: {
+      preset: {
+        type: Sdn.ValueType.THEME_CATEGORICAL,
+        value: "@font.display",
+      },
+      family: { type: Sdn.ValueType.EMPTY, value: null },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      weight: { type: Sdn.ValueType.EMPTY, value: null },
+      size: { type: Sdn.ValueType.EMPTY, value: null },
+      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+    },
+    textDecoration: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.TextDecoration.NONE,
+    },
+    textAlign: { type: Sdn.ValueType.OPTION, value: Sdn.TextAlign.LEFT },
+    wrapText: {
+      type: Sdn.ValueType.OPTION,
+      value: true,
+    },
+    lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
@@ -119,87 +139,97 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LIST_ITEM,
-        children: [
-          {
-            component: Seldon.ComponentId.TEXT,
-            overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
-            },
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.SPAN },
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value:
+              "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
           },
-        ],
-      },
-      {
-        component: Seldon.ComponentId.LIST_ITEM,
-        children: [
-          {
-            component: Seldon.ComponentId.TEXT,
-            overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
-            },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          font: {
+            preset: { type: Sdn.ValueType.INHERIT, value: null },
           },
-        ],
-      },
-      {
-        component: Seldon.ComponentId.LIST_ITEM,
-        children: [
-          {
-            component: Seldon.ComponentId.TEXT,
-            overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
-            },
-          },
-        ],
+        },
       },
     ],
   },
   variants: [
     {
-      id: "ordered",
-      label: "Ordered",
-      intent: "Displays a numbered list of items with sequential meaning.",
+      id: "display",
+      label: "Display",
+      intent: "Large format text for page-level headings or prominent statements.",
+    },
+    {
+      id: "heading",
+      label: "Heading",
+      intent: "Standard heading element to structure content hierarchy.",
       overrides: {
-        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.OL },
-        listStyleType: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.ListStyleType.DECIMAL,
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H2 },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.heading",
+          },
         },
       },
-      children: [
-        {
-          component: Seldon.ComponentId.LIST_ITEM,
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              overrides: {
-                content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
-              },
-            },
-          ],
+    },
+    {
+      id: "subheading",
+      label: "Subheading",
+      intent: "Secondary heading to support or extend a main heading.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H3 },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.subheading",
+          },
         },
-        {
-          component: Seldon.ComponentId.LIST_ITEM,
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              overrides: {
-                content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
-              },
-            },
-          ],
+      },
+    },
+    {
+      id: "title",
+      label: "Title",
+      intent: "Prominent title text used at the top of sections or views.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H4 },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.title",
+          },
         },
-        {
-          component: Seldon.ComponentId.LIST_ITEM,
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              overrides: {
-                content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
-              },
-            },
-          ],
+      },
+    },
+    {
+      id: "subtitle",
+      label: "Subtitle",
+      intent: "Displays supporting text under a main title or heading.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H5 },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.subtitle",
+          },
         },
-      ],
+      },
+    },
+    {
+      id: "callout",
+      label: "Callout",
+      intent: "Highlights important messages or warnings within a UI.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H6 },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.callout",
+          },
+        },
+      },
     },
   ],
 } as const satisfies ComponentSchema

@@ -3,12 +3,13 @@ import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import {
+  applyTextEditPlan,
   clearTextEditSession,
+  resolveTextEditSelection,
+  rootIdForCreatedNode,
   startTextEditSession,
   textEditSessionStore,
 } from "@seldon/editor/lib/canvas/text-edit"
-
-import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 
 import type { InstanceId, VariantId } from "@seldon/core"
 import type { TextEditPlan, TextEditSession } from "@seldon/editor/lib/canvas/text-edit"
@@ -18,9 +19,19 @@ export function useTextEditSession() {
   const dispatch = useDispatch()
   const selection = useSelectionStore()
 
+  function pinSelection(
+    nodeId: string,
+    rootId: string | null,
+    workspace = getCurrentWorkspace(),
+  ): void {
+    const pinned = resolveTextEditSelection(workspace, nodeId, rootId)
+
+    selection.selectNode(pinned.nodeId as VariantId | InstanceId, pinned.rootId)
+  }
+
   function begin(next: TextEditSession): void {
     startTextEditSession(next)
-    selection.selectNode(next.nodeId as VariantId | InstanceId, next.rootId)
+    pinSelection(next.nodeId, next.rootId)
   }
 
   function end(): void {
@@ -28,32 +39,49 @@ export function useTextEditSession() {
   }
 
   function commitPlan(plan: TextEditPlan): void {
-    if (plan.actions.length === 0) {
+    const current = textEditSessionStore.getState().session
+    const workspace = getCurrentWorkspace()
+
+    if (plan.actions.length === 0 && !plan.liveEnter && !plan.liveMark) {
       if (plan.nextNodeId) {
-        const current = textEditSessionStore.getState().session
+        const rootId = current
+          ? rootIdForCreatedNode(workspace, current, plan.nextNodeId)
+          : plan.nextNodeId
 
         startTextEditSession({
           nodeId: plan.nextNodeId,
-          rootId: current?.rootId ?? null,
+          rootId,
+          caretOffset: plan.nextOffset,
         })
-        selection.selectNode(plan.nextNodeId as VariantId | InstanceId, current?.rootId ?? null)
+        pinSelection(plan.nextNodeId, rootId, workspace)
       }
 
       return
     }
 
-    const next = applyActions(getCurrentWorkspace(), plan.actions)
+    let applied
 
-    dispatch({ type: "set_workspace", payload: { workspace: next } })
+    try {
+      applied = applyTextEditPlan(workspace, plan)
+    } catch {
+      return
+    }
 
-    if (plan.nextNodeId) {
-      const current = textEditSessionStore.getState().session
+    dispatch({ type: "set_workspace", payload: { workspace: applied.workspace } })
+
+    if (applied.nextNodeId) {
+      const rootId = current
+        ? rootIdForCreatedNode(applied.workspace, current, applied.nextNodeId)
+        : applied.nextNodeId
 
       startTextEditSession({
-        nodeId: plan.nextNodeId,
-        rootId: current?.rootId ?? null,
+        nodeId: applied.nextNodeId,
+        rootId,
+        caretOffset: applied.nextOffset,
       })
-      selection.selectNode(plan.nextNodeId as VariantId | InstanceId, current?.rootId ?? null)
+      pinSelection(applied.nextNodeId, rootId, applied.workspace)
+    } else {
+      clearTextEditSession()
     }
   }
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons.bespoke"
+import { canvasContentRuns } from "@seldon/editor/lib/canvas/content-runs"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import React, { useMemo } from "react"
@@ -51,6 +52,7 @@ import { HTMLSection } from "@seldon/core/components/native-react/HTML.Section"
 import { HTMLSelect } from "@seldon/core/components/native-react/HTML.Select"
 import { HTMLSource } from "@seldon/core/components/native-react/HTML.Source"
 import { HTMLSpan } from "@seldon/core/components/native-react/HTML.Span"
+import { HTMLStrong } from "@seldon/core/components/native-react/HTML.Strong"
 import { HTMLSvg } from "@seldon/core/components/native-react/HTML.Svg"
 import { HTMLTable } from "@seldon/core/components/native-react/HTML.Table"
 import { HTMLTbody } from "@seldon/core/components/native-react/HTML.Tbody"
@@ -204,9 +206,14 @@ export const ComponentRenderer = ({
   )
 
   function renderChildren() {
-    /**
-     * If this is a text component, we want to render the text value
-     */
+    const runs = canvasContentRuns(properties)
+
+    if (runs) {
+      return runs.map((run) =>
+        React.createElement(run.tag, { key: run.key, style: run.style }, run.value),
+      )
+    }
+
     if (properties.content?.value) {
       return removeNewLines(properties.content.value)
     }
@@ -363,6 +370,7 @@ export const PRIMITIVES: Record<
   HTMLSelect: HTMLSelect,
   HTMLSource: HTMLSource,
   HTMLSpan: HTMLSpan,
+  HTMLStrong: HTMLStrong,
   HTMLSvg: HTMLSvg,
   HTMLTable: HTMLTable,
   HTMLTbody: HTMLTbody,

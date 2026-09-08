@@ -3,6 +3,7 @@ import { createStore } from "../store/observable"
 export interface TextEditSession {
   nodeId: string
   rootId: string | null
+  caretOffset?: number
 }
 
 export interface TextEditSessionState {

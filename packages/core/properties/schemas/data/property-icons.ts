@@ -29,6 +29,7 @@
 export const PROPERTY_ICONS: Record<string, string> = {
   // Attributes
   content: "material-textSelectStart",
+  runs: "material-textSelectStart",
   altText: "seldon-text",
   ariaLabel: "seldon-text",
   ariaHidden: "material-radioButtonUnchecked",

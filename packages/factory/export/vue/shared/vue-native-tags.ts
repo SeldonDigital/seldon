@@ -51,6 +51,7 @@ export const NATIVE_VUE_TAGS: Record<NativeReactPrimitive, string> = {
   HTMLSelect: "select",
   HTMLSource: "source",
   HTMLSpan: "span",
+  HTMLStrong: "strong",
   HTMLSvg: "svg",
   HTMLTable: "table",
   HTMLTbody: "tbody",

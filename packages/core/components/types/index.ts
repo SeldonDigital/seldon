@@ -152,6 +152,7 @@ export type NativeReactPrimitive =
   | "HTMLSelect"
   | "HTMLSource"
   | "HTMLSpan"
+  | "HTMLStrong"
   | "HTMLSvg"
   | "HTMLTable"
   | "HTMLTbody"

@@ -1,42 +1,51 @@
-import { ComponentId } from "@seldon/core/components/constants"
-import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
-import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
-import { contentAction, emptyPlan, getCatalogId } from "./helpers"
+import { getEffectiveNodeProperties } from "@seldon/core/workspace/compute"
+import { contentAndRunsAction, emptyPlan } from "./helpers"
+import { applyRunText, runId } from "./runs"
 
 import type { TextEditPlan } from "./types"
-import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
-/** Commits typed copy. A Paragraph flattens to its first run so marks drop on type. */
+/** Commits typed copy on the session primitive. */
 export function planTypeInput(workspace: Workspace, nodeId: string, content: string): TextEditPlan {
   const node = workspace.nodes[nodeId]
 
   if (!node) return emptyPlan(nodeId, content.length)
 
-  const catalogId = getCatalogId(node, workspace)
-
-  if (catalogId === ComponentId.PARAGRAPH) {
-    const board = getBoardByNodeId(workspace, nodeId)
-    const childIds = board ? getChildrenIds(board, nodeId) : []
-    const firstChild = childIds[0]
-
-    if (!firstChild) return emptyPlan(nodeId, content.length)
-
-    const actions: WorkspaceAction[] = [contentAction(firstChild, content)]
-
-    for (const extraId of childIds.slice(1)) {
-      actions.push({ type: "remove_instance", payload: { instanceId: extraId } })
-    }
-
-    return {
-      actions,
-      nextNodeId: nodeId,
-      nextOffset: content.length,
-    }
-  }
-
   return {
-    actions: [contentAction(nodeId, content)],
+    actions: [
+      contentAndRunsAction(nodeId, [
+        {
+          id: runId(nodeId, 0),
+          content,
+          tag: "span",
+          bold: false,
+          italic: false,
+        },
+      ]),
+    ],
     nextNodeId: nodeId,
     nextOffset: content.length,
+  }
+}
+
+/** Commits typed copy on one run of the session primitive. */
+export function planTypeRun(
+  workspace: Workspace,
+  nodeId: string,
+  runId: string,
+  content: string,
+  caretOffset: number,
+): TextEditPlan {
+  const node = workspace.nodes[nodeId]
+
+  if (!node) return emptyPlan(nodeId, caretOffset)
+
+  const properties = getEffectiveNodeProperties(nodeId, workspace)
+  const nextRuns = applyRunText(properties, runId, content)
+
+  return {
+    actions: [contentAndRunsAction(nodeId, nextRuns)],
+    nextNodeId: nodeId,
+    nextOffset: caretOffset,
   }
 }

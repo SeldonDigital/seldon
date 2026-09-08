@@ -17,6 +17,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Link",
     },
+    runs: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,

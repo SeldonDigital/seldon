@@ -6,10 +6,9 @@ import type { ComponentExport, ComponentSchema } from "../../types"
 export const schema = {
   name: "List Item",
   id: Seldon.ComponentId.LIST_ITEM,
-  intent:
-    "Text item inside a list. Renders as li in ordered and unordered lists, or as dt and dd in description lists.",
-  tags: ["list text", "li", "dt", "dd", "list item", "description", "primitive", "text"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
+  intent: "One list item block. Children are inline Text runs for plain, bold, and italic spans.",
+  tags: ["list text", "li", "dt", "dd", "list item", "description", "element", "text"],
+  level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.TEXT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
@@ -17,11 +16,9 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.HtmlElement.LI,
     },
-    content: {
-      type: Sdn.ValueType.EXACT,
-      value: "List item",
-    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
@@ -36,10 +33,9 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    color: {
-      type: Sdn.ValueType.COMPUTED,
-      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-    },
+    gap: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapChildren: { type: Sdn.ValueType.EMPTY, value: null },
+    color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
@@ -134,6 +130,24 @@ export const schema = {
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.SPAN },
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value: "List item",
+          },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          font: {
+            preset: { type: Sdn.ValueType.INHERIT, value: null },
+          },
+        },
+      },
+    ],
+  },
   variants: [
     {
       id: "term",
@@ -141,7 +155,6 @@ export const schema = {
       intent: "Term or label in a description list.",
       overrides: {
         htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.DT },
-        content: { type: Sdn.ValueType.EXACT, value: "Term" },
         font: {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -149,6 +162,22 @@ export const schema = {
           },
         },
       },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          overrides: {
+            htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.SPAN },
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Term",
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            font: {
+              preset: { type: Sdn.ValueType.INHERIT, value: null },
+            },
+          },
+        },
+      ],
     },
     {
       id: "details",
@@ -156,17 +185,26 @@ export const schema = {
       intent: "Definition or detail content in a description list.",
       overrides: {
         htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.DD },
-        content: { type: Sdn.ValueType.EXACT, value: "Details" },
         margin: {
           bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
         },
-        font: {
-          preset: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.body",
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          overrides: {
+            htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.SPAN },
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Details",
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            font: {
+              preset: { type: Sdn.ValueType.INHERIT, value: null },
+            },
           },
         },
-      },
+      ],
     },
   ],
 } as const satisfies ComponentSchema

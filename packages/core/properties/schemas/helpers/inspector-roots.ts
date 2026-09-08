@@ -18,6 +18,9 @@ const COMPOUND_ROOTS = PROPERTY_COMPOUND_CATALOG.map((entry) => entry.key).filte
  */
 const STANDALONE_DESPITE_PREFIX = new Set<string>(["borderCollapse"])
 
+/** Canvas-authored inline marks. Not a properties-panel row. */
+const HIDDEN_INSPECTOR_KEYS = new Set<string>(["runs"])
+
 /** Compound parents ordered longest-first so `borderTop*` matches before `border*`. */
 const FOLDABLE_PARENTS = [...FOLDED_BORDER_SIDES, ...COMPOUND_ROOTS].sort(
   (a, b) => b.length - a.length,
@@ -51,6 +54,8 @@ export function getInspectorRootPropertyKeys(): string[] {
 
   for (const block of PROPERTY_DISPLAY_ORDER) {
     for (const key of block.keys) {
+      if (HIDDEN_INSPECTOR_KEYS.has(key)) continue
+
       const root = foldToInspectorRoot(key)
 
       if (!seen.has(root)) {

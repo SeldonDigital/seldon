@@ -6,6 +6,7 @@ import {
   getCanvasSelectionElements,
   getUnionRect,
 } from "@seldon/editor/lib/canvas/overlay/selection-target"
+import { textEditSessionStore } from "@seldon/editor/lib/canvas/text-edit"
 import { useEffect, useRef } from "react"
 import { useControls, useTransformContext } from "react-zoom-pan-pinch"
 
@@ -82,6 +83,7 @@ export function CanvasScrollToSelection() {
 
   useEffect(() => {
     if (!autoScrollToSelection || !selectionId) return
+    if (textEditSessionStore.getState().session) return
 
     const canvasEl = document.getElementById("canvas")
 

@@ -28,6 +28,7 @@ flowchart LR
 | `HtmlElementValue` | `attributes/html-element.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `htmlElementSchema` | `attributes/html-element.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `contentSchema` | `attributes/content.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `runsSchema` | `attributes/runs.ts` | Defines validation and storage for inline span, b, em, and strong fragments on a content-bearing primitive. |
 | `SymbolOptionValue` | `attributes/symbol.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `SymbolValue` | `attributes/symbol.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `symbolSchema` | `attributes/symbol.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |

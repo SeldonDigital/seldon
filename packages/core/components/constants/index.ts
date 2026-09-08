@@ -411,6 +411,13 @@ export const NATIVE_REACT_PRIMITIVES: Record<
     },
     htmlElementOption: HtmlElement.SPAN,
   },
+  HTMLStrong: {
+    types: {
+      generic: "HTMLAttributes",
+      parameter: "HTMLElement",
+    },
+    htmlElementOption: HtmlElement.STRONG,
+  },
   HTMLSvg: {
     types: {
       generic: "SVGAttributes",

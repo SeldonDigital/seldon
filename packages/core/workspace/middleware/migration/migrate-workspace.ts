@@ -18,13 +18,14 @@ import { migrateV17DropInitialOverrides } from "./steps/migrate-00017-drop-initi
 import { migrateV18UniqueNodeRefs } from "./steps/migrate-00018-unique-node-refs"
 import { migrateV19ListboxToMenu } from "./steps/migrate-00019-listbox-to-menu"
 import { migrateV20WorkspaceId } from "./steps/migrate-00020-workspace-id"
+import { migrateV21ContentRuns } from "./steps/migrate-00021-content-runs"
 import { repairBoardOrder } from "./steps/repair-board-order"
 import { repairExportSettings } from "./steps/repair-export-settings"
 
 import type { Workspace } from "../../model/workspace"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 20
+export const CURRENT_WORKSPACE_VERSION = 21
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -49,6 +50,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   18: migrateV18UniqueNodeRefs,
   19: migrateV19ListboxToMenu,
   20: migrateV20WorkspaceId,
+  21: migrateV21ContentRuns,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {

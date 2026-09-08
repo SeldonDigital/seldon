@@ -13,7 +13,7 @@ import {
   isEditableControlNodeSelected,
 } from "@seldon/editor/lib/canvas/dom/editable-control"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
-import { resolveTextEditTarget } from "@seldon/editor/lib/canvas/text-edit"
+import { resolveTextEditStart } from "@seldon/editor/lib/canvas/text-edit"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { getSelectionTarget, selectFromTarget } from "@seldon/editor/lib/workspace/selection-dom"
@@ -193,25 +193,23 @@ export function useCanvasTracking() {
       return
     }
 
+    clearPendingSelect()
+    const editStart = resolveTextEditStart(workspace.value, event.target, selection.selectedNodeId)
+
+    if (editStart) {
+      event.preventDefault()
+      beginTextEdit(editStart)
+
+      return
+    }
+
     // Direct select mode selects the exact node on every click, so a double
     // click has nothing deeper to drill into.
     if (config.directSelect) return
 
-    const target = getSelectionTarget(event.target as Element | null)
+    const target = getSelectionTarget(event.target)
 
     if (!target || target.kind !== "node") return
-
-    clearPendingSelect()
-    const editTarget = resolveTextEditTarget(workspace.value, target.id)
-
-    if (editTarget) {
-      beginTextEdit({
-        nodeId: editTarget,
-        rootId: target.rootId ?? null,
-      })
-
-      return
-    }
 
     const clickedRootId = target.rootId ?? target.id
     const drilled = resolveCanvasNodeSelection(clickedRootId, selection.selectedNodeRootId, "drill")

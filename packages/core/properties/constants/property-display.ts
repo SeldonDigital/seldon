@@ -31,6 +31,7 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "htmlElement",
       "wrapperElement",
       "content",
+      "runs",
       "symbol",
       "source",
       "imageFit",

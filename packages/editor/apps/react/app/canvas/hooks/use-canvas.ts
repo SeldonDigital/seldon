@@ -21,7 +21,7 @@ import {
 import { resolveCanvasPlacement } from "@seldon/editor/lib/canvas/drag/canvas-placement"
 import { getSlotIndex } from "@seldon/editor/lib/canvas/drag/drop-slot"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
-import { resolveTextEditTarget } from "@seldon/editor/lib/canvas/text-edit"
+import { resolveTextEditStart } from "@seldon/editor/lib/canvas/text-edit"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
@@ -369,25 +369,23 @@ export function useCanvas() {
         return
       }
 
+      clearPendingSelect()
+      const editStart = resolveTextEditStart(workspace, event.target, selectedNodeId)
+
+      if (editStart) {
+        event.preventDefault()
+        beginTextEdit(editStart)
+
+        return
+      }
+
       // Direct select mode selects the exact node on every click, so a double
       // click has nothing deeper to drill into.
       if (directSelect) return
 
-      const target = getSelectionTarget(event.target as Element)
+      const target = getSelectionTarget(event.target)
 
       if (!target || target.kind !== "node") return
-
-      clearPendingSelect()
-      const editTarget = resolveTextEditTarget(workspace, target.id)
-
-      if (editTarget) {
-        beginTextEdit({
-          nodeId: editTarget,
-          rootId: target.rootId ?? null,
-        })
-
-        return
-      }
 
       const clickedRootId = target.rootId ?? target.id
       const drilled = resolveCanvasNodeSelection(clickedRootId, selectedNodeRootId, "drill")
