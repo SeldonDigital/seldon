@@ -112,39 +112,6 @@ export function contentAndRunsAction(nodeId: string, runs: TextEditRun[]): Works
   }
 }
 
-export function insertSiblingAction(
-  workspace: Workspace,
-  boardKey: string,
-  parentId: string,
-  index: number,
-): WorkspaceAction {
-  if (workspace.boards[boardKey]) {
-    return {
-      type: "insert_default_instance",
-      payload: {
-        parentId,
-        boardKey,
-        index,
-      },
-    }
-  }
-
-  return {
-    type: "add_component_and_insert_default_instance",
-    payload: {
-      boardKey,
-      target: {
-        parentId,
-        index,
-      },
-    },
-  }
-}
-
-export function siblingBoardKey(): string {
-  return ComponentId.TEXT
-}
-
 export function canInsertTextSibling(workspace: Workspace, nodeId: string): boolean {
   const node = workspace.nodes[nodeId]
   const placement = getParentAndIndex(workspace, nodeId)

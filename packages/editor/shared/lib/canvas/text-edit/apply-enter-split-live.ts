@@ -1,13 +1,7 @@
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
-import {
-  canInsertTextSibling,
-  contentAndRunsAction,
-  getParentAndIndex,
-  insertSiblingAction,
-  siblingBoardKey,
-} from "./helpers"
+import { canInsertTextSibling, contentAndRunsAction, getParentAndIndex } from "./helpers"
 import { readSessionRuns, splitEditRuns } from "./runs"
 
 import type { TextEditLiveEnter } from "./types"
@@ -50,18 +44,31 @@ export function applyEnterSplitLive(
   const { before, after } = splitEditRuns(runs, offset)
   const beforeIds = childIds(workspace, placement.parentId)
   let next = applyOrSame(workspace, [
-    contentAndRunsAction(liveEnter.nodeId, before),
-    insertSiblingAction(workspace, siblingBoardKey(), placement.parentId, placement.index + 1),
+    {
+      type: "insert_duplicate_instance",
+      payload: {
+        instanceId: liveEnter.nodeId,
+        target: {
+          parentId: placement.parentId,
+          index: placement.index + 1,
+        },
+      },
+    },
   ])
   const createdId = firstNewId(beforeIds, childIds(next, placement.parentId))
 
-  if (createdId) {
-    next = applyOrSame(next, [contentAndRunsAction(createdId, after)])
+  if (!createdId) {
+    return { workspace, nextNodeId: null, nextOffset: offset }
   }
+
+  next = applyOrSame(next, [
+    contentAndRunsAction(liveEnter.nodeId, before),
+    contentAndRunsAction(createdId, after),
+  ])
 
   return {
     workspace: next,
-    nextNodeId: createdId ?? null,
+    nextNodeId: createdId,
     nextOffset: 0,
   }
 }

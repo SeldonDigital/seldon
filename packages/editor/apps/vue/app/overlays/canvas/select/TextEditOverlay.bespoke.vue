@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTextEditOverlay } from "./hooks/use-text-edit-overlay"
 
-const { fieldRef, overlayStyle, overlayTag, showOverlay, onInput, onKeydown, onBlur } =
+const { fieldRef, nodeId, overlayStyle, overlayTag, showOverlay, onInput, onKeydown, onBlur } =
   useTextEditOverlay()
 </script>
 
@@ -9,6 +9,7 @@ const { fieldRef, overlayStyle, overlayTag, showOverlay, onInput, onKeydown, onB
   <component
     v-if="showOverlay"
     :is="overlayTag"
+    :key="nodeId"
     ref="fieldRef"
     contenteditable="true"
     :style="overlayStyle"

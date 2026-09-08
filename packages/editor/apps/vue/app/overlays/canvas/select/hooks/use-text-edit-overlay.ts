@@ -214,14 +214,20 @@ export function useTextEditOverlay() {
 
     const field = event.currentTarget as HTMLElement
     const caret = readTextEditCaret(field)
-    const runId = caret.runId ?? runs.value[0]?.id
-
-    if (!runId) return
-
-    const element = field.querySelector(`[data-seldon-text-run="${runId}"]`)
+    const currentRuns = runs.value
+    const known = caret.runId ? currentRuns.find((run) => run.id === caret.runId) : currentRuns[0]
+    const runId = known?.id ?? currentRuns[0]?.id
+    const element = runId ? field.querySelector(`[data-seldon-text-run="${runId}"]`) : null
     const text = element?.textContent ?? field.textContent ?? ""
+
+    if (!known || !runId) {
+      commitAndKeepFocus(planTypeInput(workspace.value, current.nodeId, text))
+
+      return
+    }
+
     const list = matchListPrefix(text)
-    const previous = runs.value.find((run) => run.id === runId)?.content ?? ""
+    const previous = known.content
     const wasList = matchListPrefix(previous)
 
     if (list && !wasList) {
@@ -336,6 +342,7 @@ export function useTextEditOverlay() {
 
   return {
     fieldRef,
+    nodeId,
     overlayStyle,
     overlayTag,
     showOverlay,

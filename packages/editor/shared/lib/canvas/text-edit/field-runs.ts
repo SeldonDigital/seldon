@@ -30,6 +30,11 @@ export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void
 
       replacement.setAttribute(RUN_ATTR, run.id)
       replacement.textContent = run.content
+
+      if (!replacement.firstChild) {
+        replacement.appendChild(document.createTextNode(""))
+      }
+
       element.replaceWith(replacement)
       placeChild(field, replacement, i)
       continue
@@ -39,6 +44,10 @@ export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void
 
     if (element.textContent !== run.content) {
       element.textContent = run.content
+    }
+
+    if (!element.firstChild) {
+      element.appendChild(document.createTextNode(""))
     }
 
     placeChild(field, element, i)
