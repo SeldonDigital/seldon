@@ -22,15 +22,6 @@ const TEXT_ELEMENTS: readonly HtmlElement[] = [
 
 const PARAGRAPH_ELEMENTS: readonly HtmlElement[] = [HtmlElement.P]
 
-const HEADING_ELEMENTS: readonly HtmlElement[] = [
-  HtmlElement.H1,
-  HtmlElement.H2,
-  HtmlElement.H3,
-  HtmlElement.H4,
-  HtmlElement.H5,
-  HtmlElement.H6,
-]
-
 /**
  * HTML elements each `returns: "htmlElement"` component can render as.
  * Drives the generated switch statement, its native-react imports, and the
@@ -39,7 +30,6 @@ const HEADING_ELEMENTS: readonly HtmlElement[] = [
 export const HTML_ELEMENT_OPTIONS: Partial<Record<ComponentId, readonly HtmlElement[]>> = {
   [ComponentId.TEXT]: TEXT_ELEMENTS,
   [ComponentId.PARAGRAPH]: PARAGRAPH_ELEMENTS,
-  [ComponentId.HEADING]: HEADING_ELEMENTS,
   [ComponentId.OPTION_GROUP]: [HtmlElement.OPTGROUP],
   [ComponentId.LIST]: [HtmlElement.UL, HtmlElement.OL],
   [ComponentId.LIST_ITEM]: [HtmlElement.LI, HtmlElement.DT, HtmlElement.DD],

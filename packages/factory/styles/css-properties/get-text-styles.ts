@@ -192,8 +192,8 @@ export function getTextStyles({
     }
   }
 
-  // A Heading, Paragraph, or List Item wrapper keeps a 1 line-height so its
-  // strut cannot hide the Text child's line-height. The child paints the look.
+  // A Paragraph or List Item wrapper keeps a 1 line-height so its strut cannot
+  // hide the Text child's line-height. The child paints the look.
   if (isTextWrapperWithoutContent(properties)) {
     styles.lineHeight = TEXT_WRAPPER_LINE_HEIGHT
   } else if (lineHeight && properties.font?.lineHeight) {

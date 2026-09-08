@@ -43,7 +43,6 @@ export enum ComponentId {
   FORM_CONTROL = "formControl",
   FRAME = "frame",
   HEADER = "header",
-  HEADING = "heading",
   HR = "hr",
   ICON = "icon",
   IMAGE = "image",

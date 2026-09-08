@@ -26,7 +26,6 @@ export const TEXT_EDITABLE_IDS = new Set<ComponentId>([
 ])
 
 export const TEXT_EDIT_PARENT_IDS = new Set<ComponentId>([
-  ComponentId.HEADING,
   ComponentId.PARAGRAPH,
   ComponentId.LIST_ITEM,
 ])

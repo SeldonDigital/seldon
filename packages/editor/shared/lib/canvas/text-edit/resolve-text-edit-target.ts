@@ -70,7 +70,7 @@ export function rootIdForCreatedNode(
 
 /**
  * Returns the content-bearing primitive that owns a canvas text-edit session.
- * A Heading, Paragraph, or List Item opens its Text child.
+ * A Paragraph or List Item opens its Text child.
  */
 export function resolveTextEditTarget(workspace: Workspace, nodeId: string): string | null {
   const node = workspace.nodes[nodeId]

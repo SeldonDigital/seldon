@@ -48,10 +48,6 @@ import {
   exportConfig as headerExportConfig,
   schema as headerSchema,
 } from "./elements/Header.schema"
-import {
-  exportConfig as headingExportConfig,
-  schema as headingSchema,
-} from "./elements/Heading.schema"
 import { exportConfig as itemExportConfig, schema as itemSchema } from "./elements/Item.schema"
 import { exportConfig as listExportConfig, schema as listSchema } from "./elements/List.schema"
 import {
@@ -284,7 +280,6 @@ const elements: ComponentSchema[] = [
   formControlSchema,
   optionGroupSchema,
   headerSchema,
-  headingSchema,
   descriptionListSchema,
   itemSchema,
   menuItemSchema,
@@ -415,7 +410,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER]: headerExportConfig,
-  [ComponentId.HEADING]: headingExportConfig,
   [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.MENU_ITEM]: menuItemExportConfig,
