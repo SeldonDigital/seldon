@@ -26,6 +26,7 @@ export type SeldonRef =
   | "createComponentLevel"
   | "createComponentName"
   | "createComponentTags"
+  | "Default"
   | "dialogCancel"
   | "dialogConfirm"
   | "dialogContent"
@@ -91,6 +92,9 @@ export type SeldonRef =
   | "exportHiddenYes"
   | "exportHiddenYesInput"
   | "exportHiddenYesText"
+  | "exportOutputFolder"
+  | "exportOutputFolderField"
+  | "exportOutputFolderLabel"
   | "exportPlatform"
   | "exportPlatformCombobox"
   | "exportPlatformField"
@@ -234,6 +238,7 @@ export type SeldonRef =
   | "propertyTogglePanelIcon"
   | "propertyToggleRow"
   | "propertyToggleSwitch"
+  | "propertyValueAnnotation"
   | "propertyValueField"
   | "propertyValueIcon"
   | "propertyValueLabel"
@@ -528,6 +533,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  Default: {
+    component: "Input",
+    nodeId: "component-input-9VQUhF1b",
+    className: "sdn-input sdn-input--9vqu",
+    views: [
+      {
+        component: "FormControlCombobox",
+        file: "elements/FormControlCombobox.tsx",
+        slot: "input",
+        type: "InputProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   dialogCancel: {
     component: "Button",
     nodeId: "component-bar-oHXIPFr4",
@@ -676,7 +695,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel14",
+        slot: "textLabel15",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -718,7 +737,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel16",
+        slot: "textLabel17",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -774,7 +793,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel15",
+        slot: "textLabel16",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -802,7 +821,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel17",
+        slot: "textLabel18",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -844,7 +863,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel19",
+        slot: "textLabel20",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -900,7 +919,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel18",
+        slot: "textLabel19",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -928,7 +947,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel11",
+        slot: "textLabel12",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -970,7 +989,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel13",
+        slot: "textLabel14",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1026,7 +1045,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel12",
+        slot: "textLabel13",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1054,7 +1073,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel26",
+        slot: "textLabel27",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1096,7 +1115,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel27",
+        slot: "textLabel28",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1152,7 +1171,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel5",
+        slot: "textLabel6",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1194,7 +1213,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel7",
+        slot: "textLabel8",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1250,7 +1269,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel6",
+        slot: "textLabel7",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1334,7 +1353,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel8",
+        slot: "textLabel9",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1376,7 +1395,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel10",
+        slot: "textLabel11",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1432,7 +1451,49 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel9",
+        slot: "textLabel10",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportOutputFolder: {
+    component: "FormControl",
+    nodeId: "component-panel-25s2rXij",
+    className: "sdn-form-control sdn-form-control--vmxp",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "formControl5",
+        type: "FormControlProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  exportOutputFolderField: {
+    component: "Input",
+    nodeId: "component-panel-0nrLqbP5",
+    className: "sdn-input sdn-input--j1ro",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "input5",
+        type: "InputProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  exportOutputFolderLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-GTortoeA",
+    className: "sdn-text-label sdn-text-label--l6fl",
+    views: [
+      {
+        component: "DialogExportComponent",
+        file: "modules/DialogExportComponent.tsx",
+        slot: "textLabel5",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1558,7 +1619,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel23",
+        slot: "textLabel24",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1600,7 +1661,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel25",
+        slot: "textLabel26",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1656,7 +1717,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel24",
+        slot: "textLabel25",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1698,7 +1759,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel20",
+        slot: "textLabel21",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1782,7 +1843,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel22",
+        slot: "textLabel23",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1838,7 +1899,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel21",
+        slot: "textLabel22",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -3436,6 +3497,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/ItemPropertyToggle.tsx",
         slot: "toggleSwitch",
         type: "ToggleSwitchProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyValueAnnotation: {
+    component: "TextLabel",
+    nodeId: "component-text-tWUVkEq7",
+    className: "sdn-text-label sdn-text-label--twuv",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],

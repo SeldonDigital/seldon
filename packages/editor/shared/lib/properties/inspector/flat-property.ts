@@ -48,6 +48,11 @@ export interface FlatProperty {
   /** When set, the value cell renders as a link to this URL (read-only rows). */
   linkHref?: string
   /**
+   * Resolved value shown beside a theme scale step, such as `16px · 1rem`.
+   * Present on modulated theme rows only.
+   */
+  annotation?: string
+  /**
    * Paint-layer slot for a layered paint parent row (`background`/`gradient`/
    * `shadow`). Lets the picker and commit target the right layer while leaving
    * the others intact. Absent on non-layered and facet rows.
