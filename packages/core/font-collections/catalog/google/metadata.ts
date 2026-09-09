@@ -279,6 +279,12 @@ export const googleFontMetadata: Record<string, FontFamilyMeta> = {
     description:
       "Lora is a well-balanced contemporary serif with roots in calligraphy. It is a text typeface with moderate contrast well suited for body text.",
   },
+  "major-mono-display": {
+    category: "Monospace",
+    designer: "Emre Parlak",
+    description:
+      "Majör Mono Display is a monospaced geometric sans serif all-uppercase typeface which also has a complete set of constructivist display characters with a playful attitude. It has many OpenType features, but the basic stylistic sets, serious sans serif, and playful display designs, are encoded as lowercase and uppercase characters. This makes it a great choice for playful web typography, especially at large point-sizes.",
+  },
   manrope: {
     category: "Sans Serif",
     designer: "Mikhail Sharanda",
