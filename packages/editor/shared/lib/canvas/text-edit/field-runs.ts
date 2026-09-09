@@ -2,7 +2,7 @@ import { runStart } from "./runs"
 
 import type { TextEditRange, TextEditRun } from "./types"
 
-const RUN_ATTR = "data-seldon-text-run"
+export const TEXT_EDIT_RUN_ATTR = "data-seldon-text-run"
 
 export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void {
   const nextIds = new Set(runs.map((run) => run.id))
@@ -13,7 +13,7 @@ export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void
       continue
     }
 
-    const runId = child.getAttribute(RUN_ATTR)
+    const runId = child.getAttribute(TEXT_EDIT_RUN_ATTR)
 
     if (!runId || !nextIds.has(runId)) {
       child.remove()
@@ -22,13 +22,13 @@ export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void
 
   for (let i = 0; i < runs.length; i += 1) {
     const run = runs[i]!
-    const existing = field.querySelector(`[${RUN_ATTR}="${run.id}"]`)
+    const existing = field.querySelector(`[${TEXT_EDIT_RUN_ATTR}="${run.id}"]`)
     const element = existing instanceof HTMLElement ? existing : document.createElement(run.tag)
 
     if (element.tagName.toLowerCase() !== run.tag) {
       const replacement = document.createElement(run.tag)
 
-      replacement.setAttribute(RUN_ATTR, run.id)
+      replacement.setAttribute(TEXT_EDIT_RUN_ATTR, run.id)
       replacement.textContent = run.content
 
       if (!replacement.firstChild) {
@@ -40,7 +40,7 @@ export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void
       continue
     }
 
-    element.setAttribute(RUN_ATTR, run.id)
+    element.setAttribute(TEXT_EDIT_RUN_ATTR, run.id)
 
     if (element.textContent !== run.content) {
       element.textContent = run.content
@@ -83,7 +83,7 @@ export function readTextEditCaret(field: HTMLElement): {
   const local = offsetInRun(runElement, range.startContainer, range.startOffset)
 
   return {
-    runId: runElement.getAttribute(RUN_ATTR),
+    runId: runElement.getAttribute(TEXT_EDIT_RUN_ATTR),
     local,
     blockOffset: textLengthBefore(field, runElement, 0) + local,
   }
@@ -114,7 +114,9 @@ export function setTextEditCaret(
   blockOffset: number,
 ): void {
   const hit = caretHit(runs, blockOffset)
-  const runElement = hit ? field.querySelector(`[${RUN_ATTR}="${hit.id}"]`) : field.lastElementChild
+  const runElement = hit
+    ? field.querySelector(`[${TEXT_EDIT_RUN_ATTR}="${hit.id}"]`)
+    : field.lastElementChild
 
   if (!(runElement instanceof HTMLElement)) {
     field.focus({ preventScroll: true })
@@ -184,7 +186,7 @@ function runElementFromNode(node: Node, field: HTMLElement): HTMLElement | null 
   let current: Node | null = node
 
   while (current && current !== field) {
-    if (current instanceof HTMLElement && current.hasAttribute(RUN_ATTR)) {
+    if (current instanceof HTMLElement && current.hasAttribute(TEXT_EDIT_RUN_ATTR)) {
       return current
     }
 

@@ -8,20 +8,13 @@ import {
   getCachedTextEditFieldStyle,
   getTextEditCanvasElement,
   hideCanvasNodeForTextEdit,
-  matchListPrefix,
   overlayHtmlElement,
   paintTextEditRuns,
-  planApplyMark,
-  planConvertToList,
-  planEnterSplit,
-  planTypeInput,
-  planTypeRun,
+  planFlushCurrentRun,
+  planOverlayInput,
+  planOverlayKeydown,
   readSessionRuns,
-  readTextEditCaret,
-  readTextEditFieldLines,
   readTextEditFieldStyle,
-  readTextEditRange,
-  resolveTextEditArrow,
   setTextEditCaret,
   textEditPaintKey,
 } from "@seldon/editor/lib/canvas/text-edit"
@@ -29,7 +22,7 @@ import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-st
 import { computed, nextTick, onScopeDispose, ref, watch } from "vue"
 
 import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
-import type { TextEditPlan, TextMark } from "@seldon/editor/lib/canvas/text-edit"
+import type { TextEditPlan } from "@seldon/editor/lib/canvas/text-edit"
 import type { CSSProperties } from "vue"
 
 export function useTextEditOverlay() {
@@ -116,28 +109,7 @@ export function useTextEditOverlay() {
 
     if (!current || !field) return null
 
-    const caret = readTextEditCaret(field)
-    const currentRuns = runs.value
-    const run = caret.runId ? currentRuns.find((item) => item.id === caret.runId) : currentRuns[0]
-
-    if (!run || !caret.runId) {
-      const first = currentRuns[0]
-
-      if (!first) return null
-
-      const text = field.textContent ?? ""
-
-      if (text === first.content && currentRuns.length === 1) return null
-
-      return planTypeInput(workspace.value, current.nodeId, text)
-    }
-
-    const element = field.querySelector(`[data-seldon-text-run="${caret.runId}"]`)
-    const text = element?.textContent ?? ""
-
-    if (text === run.content) return null
-
-    return planTypeRun(workspace.value, current.nodeId, caret.runId, text, caret.blockOffset)
+    return planFlushCurrentRun(workspace.value, current.nodeId, runs.value, field)
   }
 
   function closeSession(): void {
@@ -212,38 +184,14 @@ export function useTextEditOverlay() {
 
     if (!current) return
 
-    const field = event.currentTarget as HTMLElement
-    const caret = readTextEditCaret(field)
-    const currentRuns = runs.value
-    const known = caret.runId ? currentRuns.find((run) => run.id === caret.runId) : currentRuns[0]
-    const runId = known?.id ?? currentRuns[0]?.id
-    const element = runId ? field.querySelector(`[data-seldon-text-run="${runId}"]`) : null
-    const text = element?.textContent ?? field.textContent ?? ""
+    const plan = planOverlayInput(
+      workspace.value,
+      current.nodeId,
+      runs.value,
+      event.currentTarget as HTMLElement,
+    )
 
-    if (!known || !runId) {
-      commitAndKeepFocus(planTypeInput(workspace.value, current.nodeId, text))
-
-      return
-    }
-
-    const list = matchListPrefix(text)
-    const previous = known.content
-    const wasList = matchListPrefix(previous)
-
-    if (list && !wasList) {
-      const flatten = planTypeInput(workspace.value, current.nodeId, list.rest)
-      const converted = planConvertToList(workspace.value, current.nodeId, list.ordered)
-
-      commitAndKeepFocus({
-        actions: [...flatten.actions, ...converted.actions],
-        nextNodeId: converted.nextNodeId,
-        nextOffset: converted.nextOffset,
-      })
-
-      return
-    }
-
-    commitAndKeepFocus(planTypeRun(workspace.value, current.nodeId, runId, text, caret.blockOffset))
+    if (plan) commitAndKeepFocus(plan)
   }
 
   function onKeydown(event: KeyboardEvent): void {
@@ -251,83 +199,31 @@ export function useTextEditOverlay() {
 
     if (!current) return
 
-    const field = event.currentTarget as HTMLElement
-    const range = readTextEditRange(field)
-    const value = field.textContent ?? ""
+    const result = planOverlayKeydown(
+      workspace.value,
+      current.nodeId,
+      runs.value,
+      event.currentTarget as HTMLElement,
+      {
+        key: event.key,
+        metaKey: event.metaKey,
+        ctrlKey: event.ctrlKey,
+        altKey: event.altKey,
+        shiftKey: event.shiftKey,
+      },
+    )
 
-    if (event.key === "Escape") {
-      event.preventDefault()
+    if (result.kind === "none") return
+
+    event.preventDefault()
+
+    if (result.kind === "close") {
       closeSession()
 
       return
     }
 
-    if (
-      !event.metaKey &&
-      !event.ctrlKey &&
-      !event.altKey &&
-      !event.shiftKey &&
-      (event.key === "ArrowLeft" ||
-        event.key === "ArrowRight" ||
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown")
-    ) {
-      const target = resolveTextEditArrow(
-        workspace.value,
-        current.nodeId,
-        event.key,
-        { start: range.start, end: range.end, value },
-        readTextEditFieldLines(field),
-      )
-
-      if (target) {
-        event.preventDefault()
-        const typed = flushCurrentRun()
-
-        commitAndKeepFocus({
-          actions: typed?.actions ?? [],
-          nextNodeId: target.nodeId,
-          nextOffset: target.offset,
-        })
-      }
-
-      return
-    }
-
-    if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
-      event.preventDefault()
-      closeSession()
-
-      return
-    }
-
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault()
-      const typed = flushCurrentRun()
-      const split = planEnterSplit(workspace.value, current.nodeId, range.start)
-
-      commitAndKeepFocus({
-        ...split,
-        actions: [...(typed?.actions ?? []), ...split.actions],
-      })
-
-      return
-    }
-
-    const useMeta = event.metaKey || event.ctrlKey
-    const key = event.key.toLowerCase()
-
-    if (useMeta && (key === "b" || key === "i")) {
-      event.preventDefault()
-      const mark: TextMark = key === "b" ? "bold" : "italic"
-      const typed = flushCurrentRun()
-      const marked = planApplyMark(workspace.value, current.nodeId, range, mark)
-
-      commitAndKeepFocus({
-        ...marked,
-        actions: [...(typed?.actions ?? []), ...marked.actions],
-      })
-    }
+    commitAndKeepFocus(result.plan)
   }
 
   function onBlur(): void {

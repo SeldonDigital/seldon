@@ -97,25 +97,33 @@ export function CanvasOverlays() {
   const textEditOverlay =
     activeTool === "select" && !activeBoardIsTheme ? <TextEditOverlay /> : null
 
+  const showWireframeNodes = activeTool === "select" && showWireframes && !isTransforming
+  const wireframeItems = visibleNodes
+    .filter((node) => nodeBelongsToActiveBoard(node.id))
+    .map((node) => ({
+      nodeId: node.id,
+      isSelected: selectedNodeId === node.id,
+    }))
+  const wireframes = showWireframeNodes
+    ? wireframeItems.map((item) => (
+        <NodeWireframe key={item.nodeId} nodeId={item.nodeId} isSelected={item.isSelected} />
+      ))
+    : null
+
+  const showSelectionChrome =
+    showSelection && activeTool === "select" && !isDragging && !activeBoardIsTheme
+  const selectionOverlay = showSelectionChrome ? (
+    <SelectionOverlay wireframe={showWireframes} />
+  ) : null
+  const hoverOverlay = showSelectionChrome ? <HoverOverlay wireframe={showWireframes} /> : null
+  const insertOverlay = activeTool === "component" && hasHoverState ? <InsertOverlay /> : null
+
   return (
     <>
-      {activeTool === "select" &&
-        showWireframes &&
-        !isTransforming &&
-        visibleNodes.map((node) => {
-          if (!nodeBelongsToActiveBoard(node.id)) return null
-
-          return (
-            <NodeWireframe key={node.id} nodeId={node.id} isSelected={selectedNodeId === node.id} />
-          )
-        })}
-      {showSelection && activeTool === "select" && !isDragging && !activeBoardIsTheme && (
-        <SelectionOverlay wireframe={showWireframes} />
-      )}
-      {showSelection && activeTool === "select" && !isDragging && !activeBoardIsTheme && (
-        <HoverOverlay wireframe={showWireframes} />
-      )}
-      {activeTool === "component" && hasHoverState && <InsertOverlay />}
+      {wireframes}
+      {selectionOverlay}
+      {hoverOverlay}
+      {insertOverlay}
       {highlightConnectors}
       {refBadges}
       {tokenBadges}

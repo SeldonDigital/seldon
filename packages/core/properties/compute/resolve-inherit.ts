@@ -68,6 +68,22 @@ function findParentLookCompound(
   return null
 }
 
+function overlayAuthoredFacets(
+  inherited: Record<string, Value>,
+  child: Record<string, Value>,
+): Record<string, Value> {
+  const next = { ...inherited }
+
+  for (const [facet, value] of Object.entries(child)) {
+    if (facet === "preset") continue
+    if (!value || isEmptyValue(value) || isInheritValue(value)) continue
+
+    next[facet] = value
+  }
+
+  return next
+}
+
 /**
  * Copies the nearest parent look compound, then overlays the child's authored
  * facets. An INHERIT preset is not written back. Child EMPTY and INHERIT
@@ -82,16 +98,7 @@ export function inheritLookCompound(
 
   if (!inherited) return child
 
-  const next: Record<string, Value> = { ...inherited }
-
-  for (const [facet, value] of Object.entries(child)) {
-    if (facet === "preset") continue
-    if (!value || isEmptyValue(value) || isInheritValue(value)) continue
-
-    next[facet] = value
-  }
-
-  return next
+  return overlayAuthoredFacets(inherited, child)
 }
 
 /**
@@ -118,16 +125,7 @@ export function inheritPaintLayer(
       }
 
       if (Object.values(parentLayer).some((value) => isContributingValue(value))) {
-        const next: Record<string, Value> = { ...parentLayer }
-
-        for (const [facet, value] of Object.entries(child)) {
-          if (facet === "preset") continue
-          if (!value || isEmptyValue(value) || isInheritValue(value)) continue
-
-          next[facet] = value
-        }
-
-        return next
+        return overlayAuthoredFacets(parentLayer, child)
       }
     }
 

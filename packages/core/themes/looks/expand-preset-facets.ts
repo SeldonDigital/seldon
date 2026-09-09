@@ -1,3 +1,4 @@
+import { isInheritValue } from "../../helpers/type-guards/value/is-inherit-value"
 import { ValueType } from "../../properties/constants"
 import { getBuiltInLookSectionForPropertyKey } from "./built-in-looks"
 import { LOOK_FACETS } from "./look-facets"
@@ -28,15 +29,6 @@ function isEmptyTaggedValue(value: unknown): boolean {
     typeof value === "object" &&
     "type" in value &&
     (value as { type: unknown }).type === ValueType.EMPTY
-  )
-}
-
-function isInheritTaggedValue(value: unknown): boolean {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    "type" in value &&
-    (value as { type: unknown }).type === ValueType.INHERIT
   )
 }
 
@@ -78,7 +70,7 @@ function expandLayer(
   layer: Record<string, unknown>,
   theme: Theme,
 ): Record<string, unknown> {
-  if (isInheritTaggedValue(layer.preset)) {
+  if (isInheritValue(layer.preset)) {
     return expandInheritLayer(section, layer)
   }
 
@@ -141,8 +133,7 @@ function expandPropertyValue(
 
 function layerHasPresetRef(value: unknown): boolean {
   return (
-    isFacetObject(value) &&
-    (readPresetThemeLookRef(value) !== null || isInheritTaggedValue(value.preset))
+    isFacetObject(value) && (readPresetThemeLookRef(value) !== null || isInheritValue(value.preset))
   )
 }
 

@@ -8,16 +8,18 @@ export function TextEditOverlay() {
   const { fieldRef, nodeId, overlayStyle, overlayTag, showOverlay, onInput, onKeyDown, onBlur } =
     useTextEditOverlay()
 
-  if (!showOverlay) return null
+  const overlay = showOverlay
+    ? createElement(overlayTag, {
+        key: nodeId,
+        ref: fieldRef,
+        contentEditable: true,
+        suppressContentEditableWarning: true,
+        style: overlayStyle,
+        onInput,
+        onKeyDown,
+        onBlur,
+      })
+    : null
 
-  return createElement(overlayTag, {
-    key: nodeId,
-    ref: fieldRef,
-    contentEditable: true,
-    suppressContentEditableWarning: true,
-    style: overlayStyle,
-    onInput,
-    onKeyDown,
-    onBlur,
-  })
+  return overlay
 }

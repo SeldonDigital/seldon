@@ -8,6 +8,7 @@ export {
 } from "./field-style"
 export { buildTextEditOverlayStyle } from "./overlay-style"
 export {
+  TEXT_EDIT_RUN_ATTR,
   blockOffsetForRun,
   paintTextEditRuns,
   readTextEditCaret,
@@ -21,8 +22,10 @@ export { isTextEditableNode } from "./is-text-editable-node"
 export { planApplyMark } from "./plan-apply-mark"
 export { planConvertToList } from "./plan-convert-to-list"
 export { planEnterSplit } from "./plan-enter-split"
+export { planFlushCurrentRun, planOverlayInput, planOverlayKeydown } from "./plan-overlay-commands"
 export { planTypeInput, planTypeRun } from "./plan-type-input"
 export { resolveTextEditArrow } from "./resolve-text-edit-arrow"
+export { resolveTextEditCommit } from "./resolve-text-edit-commit"
 export {
   pathToSelectionNode,
   resolveTextEditSelection,
@@ -35,6 +38,8 @@ export { clearTextEditSession, startTextEditSession, textEditSessionStore } from
 
 export type { TextEditFieldStyle } from "./field-style"
 export type { AppliedTextEditPlan } from "./apply-text-edit-plan"
+export type { TextEditOverlayKey, TextEditOverlayKeyResult } from "./plan-overlay-commands"
+export type { TextEditCommit } from "./resolve-text-edit-commit"
 export type {
   TextEditLiveEnter,
   TextEditLiveMark,

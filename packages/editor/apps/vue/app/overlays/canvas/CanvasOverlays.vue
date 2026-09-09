@@ -103,6 +103,10 @@ const anyTokenGroupEnabled = computed(
     showEffectsBadges.value,
 )
 const drawTokenBadges = computed(() => anyTokenGroupEnabled.value && !activeBoardIsTheme.value)
+
+function wireframeSelected(id: string): boolean {
+  return selectedNodeId.value === id
+}
 </script>
 
 <template>
@@ -111,7 +115,7 @@ const drawTokenBadges = computed(() => anyTokenGroupEnabled.value && !activeBoar
       v-for="id in visibleNodeIds"
       :key="id"
       :node-id="id"
-      :is-selected="selectedNodeId === id"
+      :is-selected="wireframeSelected(id)"
     />
   </template>
   <SelectionOverlay
