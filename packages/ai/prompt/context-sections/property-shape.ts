@@ -40,7 +40,7 @@ export function propertyShapeSection(catalogIds: Set<string>): string[] {
     if (!schema?.properties) continue
 
     for (const key of Object.keys(schema.properties)) {
-      if (propertyShape(key) !== "atomic") present.add(key)
+      if (key === "runs" || propertyShape(key) !== "atomic") present.add(key)
     }
   }
 
@@ -53,6 +53,13 @@ export function propertyShapeSection(catalogIds: Set<string>): string[] {
     const look = isLook(key, facets)
 
     if (look) hasLook = true
+
+    if (key === "runs") {
+      body.push(
+        '- runs: exact list of inline fragments [{ "value": string, "htmlElement": "span"|"b"|"em"|"strong" }]. Prefer set_text_runs. Never put HTML in content.',
+      )
+      continue
+    }
 
     if (shape === "layered" && key === "background") {
       body.push(

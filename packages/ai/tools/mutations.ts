@@ -3,6 +3,7 @@ import { Type } from "typebox"
 import { findComponentSchema } from "@seldon/core/components/catalog"
 import { getPropertyOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import { getCatalogKeyForPropertyPath } from "@seldon/core/properties/schemas/helpers/property-path"
+import { contentFromRuns } from "@seldon/core/properties/values"
 import {
   listReservedStateNames,
   listSpacingFeels,
@@ -27,6 +28,7 @@ import { withCreatedIdentity } from "./created-nodes"
 
 import type { SeldonTool } from "./context"
 import type { TargetSpec } from "./resolve-target"
+import type { ContentRun, RunHtmlElement } from "@seldon/core/properties/values"
 import type { CustomStateChoice } from "@seldon/core/rules/config/design-semantics.resolve"
 import type { Theme } from "@seldon/core/themes/types"
 import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
@@ -241,6 +243,39 @@ const ROLES = [
   "tagline",
   "code",
 ] as const
+
+/** Inline tags a content run may render as. */
+const RUN_TAGS = ["span", "b", "em", "strong"] as const
+
+/** Reads a tool `runs` argument into stored fragments, or an error. */
+function parseTextRuns(raw: unknown): { runs: ContentRun[]; error?: string } {
+  if (!Array.isArray(raw)) {
+    return { runs: [], error: "runs must be an array of { value, htmlElement }." }
+  }
+
+  const runs: ContentRun[] = []
+
+  for (const item of raw) {
+    if (!item || typeof item !== "object") {
+      return { runs: [], error: "Each run must be { value, htmlElement }." }
+    }
+
+    const value = (item as { value?: unknown }).value
+    const htmlElement = (item as { htmlElement?: unknown }).htmlElement
+
+    if (typeof value !== "string") {
+      return { runs: [], error: "Each run needs a string value." }
+    }
+
+    if (!(RUN_TAGS as readonly string[]).includes(htmlElement as string)) {
+      return { runs: [], error: "Each run htmlElement must be span, b, em, or strong." }
+    }
+
+    runs.push({ value, htmlElement: htmlElement as RunHtmlElement })
+  }
+
+  return { runs }
+}
 
 /** Weight names that map to the theme font weight scale ids. */
 const WEIGHTS = [
@@ -648,11 +683,77 @@ const setTextRole = defineSeldonTool({
     }),
 })
 
+const setTextRuns = defineSeldonTool({
+  name: "set_text_runs",
+  label: "Set Text Runs",
+  description:
+    "Set inline marks on a content-bearing primitive. Pass an ordered list of { value, htmlElement } fragments (span, b, em, strong). The tool writes content as the joined plain text and runs as the mark list. Never put HTML in content. Target Text, Link, Cite, Blockquote, or Legend, not a Paragraph or List Item wrapper. Use set_emphasis to change the whole node's weight.",
+  kind: "write",
+  parameters: Type.Object({
+    target: Type.Union([Type.Literal("selection"), Type.Object({ nodeId: Type.String() })], {
+      description: '"selection" for the selected node, or { "nodeId" } from the context.',
+    }),
+    runs: Type.Array(
+      Type.Object({
+        value: Type.String({ description: "Plain text of this fragment." }),
+        htmlElement: Type.Union(
+          RUN_TAGS.map((tag) => Type.Literal(tag)),
+          { description: "Inline tag for this fragment: span, b, em, or strong." },
+        ),
+      }),
+    ),
+    scope: Type.Optional(
+      Type.Union([Type.Literal("instance"), Type.Literal("all")], {
+        description:
+          'Optional. "instance" overrides just this node; "all" edits the shared component source so every instance follows. Omit it and the tool decides from the selection scope, defaulting to a local override.',
+      }),
+    ),
+    match: Type.Optional(
+      Type.String({ description: "Label or catalog id to locate the node when out of scope." }),
+    ),
+  }),
+  run: (ctx, params) => {
+    const rawRuns = params.runs
+    const parsed = parseTextRuns(rawRuns)
+
+    if (parsed.error) return parsed.error
+
+    const resolution = ctx.resolveTarget(
+      params.target as TargetSpec,
+      params.match as string | undefined,
+    )
+
+    if (resolution.kind === "message") return resolution.text
+
+    const facts = componentFacts(ctx.getWorkspace(), resolution.nodeId)
+
+    if (!facts?.keys.has("runs")) {
+      return `Node ${resolution.nodeId}${facts?.catalogId ? ` [${facts.catalogId}]` : ""} has no runs property. Inline marks live on Text, Link, Cite, Blockquote, or Legend. Edit that primitive, not a Paragraph or List Item wrapper.`
+    }
+
+    const content = contentFromRuns(parsed.runs)
+    const runsProperty =
+      parsed.runs.length === 0
+        ? { type: "empty", value: null }
+        : { type: "exact", value: parsed.runs }
+
+    return ctx.applyPropertyEdit({
+      target: params.target as TargetSpec,
+      scope: params.scope as "instance" | "all" | undefined,
+      match: params.match as string | undefined,
+      properties: {
+        content: { type: "exact", value: content },
+        runs: runsProperty,
+      },
+    })
+  },
+})
+
 const setEmphasis = defineSeldonTool({
   name: "set_emphasis",
   label: "Set Emphasis",
   description:
-    "Set a text node's weight (bold, light, and so on) as a theme weight token. Use this to make text bold or lighter instead of set_properties.",
+    "Set a text node's weight (bold, light, and so on) as a theme weight token. Use this to make the whole node bold or lighter. To bold or italicize part of the string, use set_text_runs.",
   kind: "write",
   parameters: Type.Object({
     target: Type.Union([Type.Literal("selection"), Type.Object({ nodeId: Type.String() })], {
@@ -1102,6 +1203,7 @@ export const MUTATION_TOOLS: SeldonTool[] = [
   setBoardLabel,
   applyActionsTool,
   setTextRole,
+  setTextRuns,
   setEmphasis,
   setDirection,
   nudge,

@@ -139,6 +139,16 @@ function coerceTree(
   repairs: ActionRepair[],
   theme?: Theme,
 ): unknown {
+  if (path === "runs" && Array.isArray(value)) {
+    repairs.push({
+      actionType,
+      propertyKey: path,
+      reason: "wrapped a bare run list into an exact value",
+    })
+
+    return { type: "exact", value }
+  }
+
   if (Array.isArray(value)) {
     return value.map((item, index) =>
       coerceTree(`${path}.${index}`, item, actionType, repairs, theme),

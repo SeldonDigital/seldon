@@ -19,7 +19,21 @@ export const designSemantics: DesignSemanticsConfig = {
       id: "text",
       phrases: ["text", "content", "label text", "copy", "wording", "caption"],
       candidates: ["content"],
-      note: 'Visible text is the "content" property on a Text node. There is no "text" key.',
+      note: 'Visible text is the "content" property on a Text node. There is no "text" key. Inline bold or italic on part of the string is the "runs" property. Use set_text_runs and never put HTML in content.',
+    },
+    {
+      id: "runs",
+      phrases: [
+        "inline mark",
+        "inline bold",
+        "inline italic",
+        "bold a word",
+        "italicize a word",
+        "text runs",
+        "runs",
+      ],
+      candidates: ["runs"],
+      note: 'Inline marks are the "runs" property on Text, Link, Cite, Blockquote, or Legend. Use set_text_runs with { value, htmlElement } fragments (span, b, em, strong). Whole-node weight is font.weight via set_emphasis. Target the primitive, not a Paragraph or List Item wrapper.',
     },
     {
       id: "icon",

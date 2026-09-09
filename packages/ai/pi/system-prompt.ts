@@ -189,6 +189,7 @@ Other tools:
 
 Examples (a request maps to one tool call):
 - "make this text bold": set_emphasis { "target": "selection", "weight": "bold" }.
+- "bold the word Launch in this line": set_text_runs { "target": "selection", "runs": [{ "value": "Launch", "htmlElement": "strong" }, { "value": " the product", "htmlElement": "span" }] }. Inline marks live on Text, Link, Cite, Blockquote, or Legend, not a Paragraph or List Item wrapper. Never put HTML in content.
 - "make the heading right to left": set_direction { "target": "selection", "direction": "rtl" }.
 - "make the title bigger": set_properties { "target": "selection", "properties": { "font": { "size": "large" } } }. The word "large" resolves to the theme size token; you need not write "@fontSize.large".
 - "add more space between these" / "make it tighter": nudge, a relative step on the current value, e.g. nudge { "target": "selection", "concept": "spacing", "direction": "increase" } or nudge { "target": "selection", "concept": "tighten" }. Use nudge for relative changes; use set_properties for an absolute value.

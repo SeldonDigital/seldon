@@ -78,6 +78,7 @@ const BASE_MUTATION_NAMES = [
 /** The intent verb tool names, present in component scopes. */
 const COMPONENT_VERB_NAMES = [
   "set_text_role",
+  "set_text_runs",
   "set_emphasis",
   "set_direction",
   "nudge",
