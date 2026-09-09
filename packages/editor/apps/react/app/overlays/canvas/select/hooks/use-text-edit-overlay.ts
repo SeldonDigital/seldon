@@ -35,7 +35,10 @@ export function useTextEditOverlay() {
   const ignoreBlurRef = useRef(false)
   const closingRef = useRef(false)
   const fieldRef = useRef<HTMLElement>(null)
+  const workspaceRef = useRef(workspace)
   const [styleVersion, setStyleVersion] = useState(0)
+
+  workspaceRef.current = workspace
 
   if (lastRectRef.current.nodeId !== nodeId) {
     lastRectRef.current = { nodeId, rect: measuredRect }
@@ -140,11 +143,13 @@ export function useTextEditOverlay() {
   useLayoutEffect(() => {
     const field = fieldRef.current
 
-    if (!field || !showOverlay) return
+    if (!field || !showOverlay || !nodeId) return
 
-    paintTextEditRuns(field, runs)
-    setTextEditCaret(field, runs, caretOffset ?? field.textContent?.length ?? 0)
-  }, [caretOffset, paintKey, runs, showOverlay])
+    const nextRuns = readSessionRuns(workspaceRef.current, nodeId)
+
+    paintTextEditRuns(field, nextRuns)
+    setTextEditCaret(field, nextRuns, caretOffset ?? field.textContent?.length ?? 0)
+  }, [caretOffset, nodeId, paintKey, showOverlay])
 
   const onInput = useCallback(
     (event: FormEvent<HTMLElement>) => {

@@ -182,6 +182,10 @@ export function splitEditRuns(
   const before = [...runs.slice(0, hit.index), ...(left.content.length > 0 ? [left] : [])]
   const after = [...(right.content.length > 0 ? [right] : []), ...runs.slice(hit.index + 1)]
 
+  if (after.length === 0) {
+    return { before, after: [{ ...current, content: "" }] }
+  }
+
   return { before, after }
 }
 

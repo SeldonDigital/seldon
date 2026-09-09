@@ -68,14 +68,15 @@ export function planOverlayInput(
   field: HTMLElement,
 ): TextEditPlan | null {
   const caret = readTextEditCaret(field)
-  const known = caret.runId ? runs.find((run) => run.id === caret.runId) : runs[0]
-  const runId = known?.id ?? runs[0]?.id
-  const element = runId ? runElement(field, runId) : null
-  const text = element?.textContent ?? field.textContent ?? ""
+  const known = caret.runId ? runs.find((run) => run.id === caret.runId) : undefined
 
-  if (!known || !runId) {
-    return planTypeInput(workspace, nodeId, text)
+  if (!known) {
+    return planTypeInput(workspace, nodeId, field.textContent ?? "")
   }
+
+  const element = runElement(field, known.id)
+  const text = element?.textContent ?? field.textContent ?? ""
+  const runId = known.id
 
   const list = matchListPrefix(text)
   const wasList = matchListPrefix(known.content)

@@ -163,6 +163,9 @@ export function overlayHtmlElement(workspace: Workspace, nodeId: string): string
 /** Changes when a primitive's run paint changes, so the overlay recopies type. */
 export function textEditPaintKey(workspace: Workspace, nodeId: string): string {
   return readSessionRuns(workspace, nodeId)
-    .map((run) => `${run.id}:${run.tag}:${run.bold ? "b" : ""}:${run.italic ? "i" : ""}`)
+    .map(
+      (run) =>
+        `${run.id}:${run.tag}:${run.bold ? "b" : ""}:${run.italic ? "i" : ""}:${run.content}`,
+    )
     .join("|")
 }

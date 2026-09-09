@@ -54,7 +54,11 @@ export function paintTextEditRuns(field: HTMLElement, runs: TextEditRun[]): void
   }
 
   if (runs.length === 0) {
-    field.textContent = ""
+    const placeholder = document.createElement("span")
+
+    placeholder.setAttribute(TEXT_EDIT_RUN_ATTR, "empty")
+    placeholder.appendChild(document.createTextNode(""))
+    field.replaceChildren(placeholder)
   }
 }
 
@@ -114,9 +118,13 @@ export function setTextEditCaret(
   blockOffset: number,
 ): void {
   const hit = caretHit(runs, blockOffset)
-  const runElement = hit
-    ? field.querySelector(`[${TEXT_EDIT_RUN_ATTR}="${hit.id}"]`)
-    : field.lastElementChild
+  const queried = hit ? field.querySelector(`[${TEXT_EDIT_RUN_ATTR}="${hit.id}"]`) : null
+  const runElement =
+    queried instanceof HTMLElement
+      ? queried
+      : field.lastElementChild instanceof HTMLElement
+        ? field.lastElementChild
+        : field.firstElementChild
 
   if (!(runElement instanceof HTMLElement)) {
     field.focus({ preventScroll: true })

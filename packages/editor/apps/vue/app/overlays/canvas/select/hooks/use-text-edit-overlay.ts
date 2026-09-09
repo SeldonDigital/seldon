@@ -159,7 +159,7 @@ export function useTextEditOverlay() {
     { immediate: true },
   )
 
-  watch([showOverlay, paintKey, runs, () => session.value?.caretOffset], async ([visible]) => {
+  watch([showOverlay, paintKey, () => session.value?.caretOffset], async ([visible]) => {
     if (!visible) return
 
     await nextTick()
@@ -167,12 +167,10 @@ export function useTextEditOverlay() {
 
     if (!field) return
 
-    paintTextEditRuns(field, runs.value)
-    setTextEditCaret(
-      field,
-      runs.value,
-      session.value?.caretOffset ?? field.textContent?.length ?? 0,
-    )
+    const nextRuns = runs.value
+
+    paintTextEditRuns(field, nextRuns)
+    setTextEditCaret(field, nextRuns, session.value?.caretOffset ?? field.textContent?.length ?? 0)
   })
 
   onScopeDispose(() => {
