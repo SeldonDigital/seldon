@@ -7,7 +7,7 @@ export type BackgroundImageValue = ImageSourceValue
 /** Validates image source storage on one background paint layer. */
 export const backgroundImageSchema: PropertySchema = {
   name: "backgroundImage",
-  description: "Sets the file path or web address this layer uses as its picture.",
+  description: "Sets the file path, web address, or data URL this layer uses as its picture.",
   supports: ["empty", "inherit", "exact"] as const,
   validation: {
     empty: () => true,
@@ -18,6 +18,8 @@ export const backgroundImageSchema: PropertySchema = {
       return (
         value.startsWith("url(") ||
         value.startsWith("http") ||
+        value.startsWith("data:") ||
+        value.startsWith("blob:") ||
         value.startsWith("/") ||
         value.startsWith("./")
       )
