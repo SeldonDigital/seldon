@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "vue",
-  "scannedFiles": 197,
+  "scannedFiles": 200,
   "refs": {
     "boardState": [
       {
@@ -8069,66 +8069,6 @@
         "props": []
       }
     ],
-    "propertyActions": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 151,
-        "conditional": false,
-        "expression": "actionsMenu.buttonIconic.value",
-        "inputs": [
-          {
-            "name": "actionsMenu",
-            "declaredAt": {
-              "line": 87,
-              "kind": "const",
-              "via": "useRowActionsMenu"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyDisclosure": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 143,
-        "conditional": false,
-        "expression": "view.listItemProps.value.buttonIconic",
-        "inputs": [
-          {
-            "name": "view",
-            "declaredAt": {
-              "line": 49,
-              "kind": "const",
-              "via": "useRowProperty"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyDisclosureIcon": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 144,
-        "conditional": false,
-        "expression": "view.listItemProps.value.icon",
-        "inputs": [
-          {
-            "name": "view",
-            "declaredAt": {
-              "line": 49,
-              "kind": "const",
-              "via": "useRowProperty"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
     "propertyFilter": [
       {
         "file": "app/sidebars/properties/PropertiesSidebar.vue",
@@ -8183,26 +8123,6 @@
               "line": 23,
               "kind": "const",
               "via": "usePropertiesPanel"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyLabel": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 145,
-        "conditional": false,
-        "expression": "nameLabelSlot.value",
-        "inputs": [
-          {
-            "name": "nameLabelSlot",
-            "declaredAt": {
-              "line": 95,
-              "kind": "const",
-              "via": "computed"
             }
           }
         ],
@@ -8496,7 +8416,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 164,
+        "line": 177,
         "conditional": false,
         "expression": "actionsMenu.buttonIconic.value",
         "inputs": [
@@ -8516,7 +8436,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 158,
+        "line": 171,
         "conditional": false,
         "expression": "view.listItemProps.value.buttonIconic",
         "inputs": [
@@ -8536,7 +8456,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 159,
+        "line": 172,
         "conditional": false,
         "expression": "view.listItemProps.value.icon",
         "inputs": [
@@ -8556,7 +8476,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 162,
+        "line": 175,
         "conditional": false,
         "expression": "valueIconProps.value ?? {}",
         "inputs": [
@@ -8576,7 +8496,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 160,
+        "line": 173,
         "conditional": false,
         "expression": "nameLabelSlot.value",
         "inputs": [
@@ -8596,7 +8516,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 161,
+        "line": 174,
         "conditional": false,
         "expression": "comboboxFieldProps.value",
         "inputs": [
@@ -8616,7 +8536,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 163,
+        "line": 176,
         "conditional": false,
         "expression": "valueLabelProps.value",
         "inputs": [
@@ -8636,7 +8556,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 199,
+        "line": 212,
         "conditional": false,
         "expression": "actionsMenu.buttonIconic.value",
         "inputs": [
@@ -8656,7 +8576,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 194,
+        "line": 207,
         "conditional": false,
         "expression": "view.listItemProps.value.buttonIconic",
         "inputs": [
@@ -8676,7 +8596,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 195,
+        "line": 208,
         "conditional": false,
         "expression": "view.listItemProps.value.icon",
         "inputs": [
@@ -8696,14 +8616,14 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 197,
+        "line": 210,
         "conditional": false,
         "expression": "toggleIconProps.value ?? {}",
         "inputs": [
           {
             "name": "toggleIconProps",
             "declaredAt": {
-              "line": 168,
+              "line": 181,
               "kind": "const",
               "via": "computed"
             }
@@ -8716,7 +8636,7 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 196,
+        "line": 209,
         "conditional": false,
         "expression": "nameProps.value",
         "inputs": [
@@ -8803,116 +8723,16 @@
       {
         "file": "app/sidebars/properties/Property.vue",
         "component": "Property",
-        "line": 198,
+        "line": 211,
         "conditional": false,
         "expression": "toggleSwitchProps.value",
         "inputs": [
           {
             "name": "toggleSwitchProps",
             "declaredAt": {
-              "line": 173,
+              "line": 186,
               "kind": "const",
               "via": "computed"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyValueField": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 146,
-        "conditional": false,
-        "expression": "comboboxFieldProps.value",
-        "inputs": [
-          {
-            "name": "comboboxFieldProps",
-            "declaredAt": {
-              "line": 123,
-              "kind": "const",
-              "via": "computed"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyValueIcon": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 147,
-        "conditional": false,
-        "expression": "valueIconProps.value ?? {}",
-        "inputs": [
-          {
-            "name": "valueIconProps",
-            "declaredAt": {
-              "line": 102,
-              "kind": "const",
-              "via": "computed"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyValueLabel": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 148,
-        "conditional": false,
-        "expression": "valueLabelProps.value",
-        "inputs": [
-          {
-            "name": "valueLabelProps",
-            "declaredAt": {
-              "line": 107,
-              "kind": "const",
-              "via": "computed"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyValueMenu": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 149,
-        "conditional": false,
-        "expression": "view.listItemProps.value.buttonIconic2",
-        "inputs": [
-          {
-            "name": "view",
-            "declaredAt": {
-              "line": 49,
-              "kind": "const",
-              "via": "useRowProperty"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "propertyValueMenuIcon": [
-      {
-        "file": "app/sidebars/properties/Property.vue",
-        "component": "Property",
-        "line": 150,
-        "conditional": false,
-        "expression": "view.listItemProps.value.icon3",
-        "inputs": [
-          {
-            "name": "view",
-            "declaredAt": {
-              "line": 49,
-              "kind": "const",
-              "via": "useRowProperty"
             }
           }
         ],
@@ -11545,13 +11365,13 @@
         {
           "file": "app/canvas/CanvasNode.vue",
           "component": "CanvasNode",
-          "line": 145,
+          "line": 150,
           "expression": "iconSymbol",
           "inputs": [
             {
               "name": "iconSymbol",
               "declaredAt": {
-                "line": 96,
+                "line": 101,
                 "kind": "const",
                 "via": "computed"
               }
@@ -12379,7 +12199,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 338,
+          "line": 351,
           "expression": "hideDisclosure ? null : undefined",
           "inputs": [
             {
@@ -12398,13 +12218,13 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 336,
+          "line": 349,
           "expression": "isDraggable",
           "inputs": [
             {
               "name": "isDraggable",
               "declaredAt": {
-                "line": 234,
+                "line": 247,
                 "kind": "const",
                 "via": "computed"
               }
@@ -12417,7 +12237,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 328,
+          "line": 341,
           "expression": "\"\"",
           "inputs": [],
           "spread": false
@@ -12427,7 +12247,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 340,
+          "line": 353,
           "expression": "valueIconSlot",
           "inputs": [
             {
@@ -12446,7 +12266,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 339,
+          "line": 352,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12458,7 +12278,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 317,
+          "line": 330,
           "expression": "hideDisclosure ? null : {}",
           "inputs": [
             {
@@ -12477,7 +12297,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 322,
+          "line": 335,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12487,7 +12307,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 318,
+          "line": 331,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12497,7 +12317,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 320,
+          "line": 333,
           "expression": "valueIconSlot",
           "inputs": [
             {
@@ -12516,7 +12336,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 319,
+          "line": 332,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12526,7 +12346,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 321,
+          "line": 334,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12538,7 +12358,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 301,
+          "line": 314,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12548,7 +12368,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 306,
+          "line": 319,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12558,7 +12378,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 302,
+          "line": 315,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12568,7 +12388,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 304,
+          "line": 317,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12578,7 +12398,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 303,
+          "line": 316,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -12588,7 +12408,7 @@
         {
           "file": "app/sidebars/properties/Property.vue",
           "component": "Property",
-          "line": 305,
+          "line": 318,
           "expression": "{}",
           "inputs": [],
           "spread": false
