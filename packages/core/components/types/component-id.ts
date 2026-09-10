@@ -59,6 +59,7 @@ export enum ComponentId {
   NAV = "nav",
   OPTION_GROUP = "optionGroup",
   ORDINAL_CHIP = "ordinalChip",
+  PARAGRAPH = "paragraph",
   ORDINAL_SPECIMEN = "ordinalSpecimen",
   SANDBOX = "sandbox",
   SCREEN = "screen",

@@ -29,6 +29,7 @@
  *       Input            input2               -> propertyValueLabel
  *       ButtonIconic     buttonIconic2        -> propertyValueMenu
  *         Icon           icon3                -> propertyValueMenuIcon
+ *     TextLabel          textLabel            -> propertyValueAnnotation
  *   ButtonIconic         buttonIconic3        -> propertyActions
  *     Icon               icon4
  *
@@ -41,6 +42,7 @@
  *   formControlCombobox="{}"
  *   input="{}"
  *   comboboxField="{}"
+ *   textLabel="{}"
  *   buttonIconic2={() => {}}
  * />
  * ```
@@ -55,6 +57,7 @@ import ButtonIconic from "../elements/ButtonIconic.vue"
 import ComboboxField from "../elements/ComboboxField.vue"
 import FormControlCombobox from "../elements/FormControlCombobox.vue"
 import Input from "../primitives/Input.vue"
+import TextLabel from "../primitives/TextLabel.vue"
 import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
@@ -68,6 +71,7 @@ const props = defineProps<{
   input2?: Record<string, unknown> | null
   buttonIconic2?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
+  textLabel?: Record<string, unknown> | null
   buttonIconic3?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -127,6 +131,11 @@ const sdn: Record<string, any> = {
     className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "propertyValueMenuIcon",
   },
+  textLabel: {
+    children: "Annotation",
+    className: "sdn-text-label sdn-text-label--twuv",
+    "data-seldon-ref": "propertyValueAnnotation",
+  },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
     "data-seldon-ref": "propertyActions",
@@ -157,6 +166,9 @@ const buttonIconic2Props = computed(() =>
   mergeSlot(sdn.buttonIconic2, props.buttonIconic2, props.seldonRefs),
 )
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
 const buttonIconic3Props = computed(() =>
   mergeSlot(sdn.buttonIconic3, props.buttonIconic3, props.seldonRefs),
 )
@@ -184,6 +196,7 @@ const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldon
           :buttonIconic="buttonIconic2Props"
           :icon2="icon3Props"
         />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       </FormControlCombobox>
       <ButtonIconic
         v-if="buttonIconic3Props !== null"

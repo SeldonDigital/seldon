@@ -13,6 +13,7 @@ import { getFamilyNameByValue } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
+import { getThemeValueAnnotation } from "@seldon/core/helpers/theme/get-theme-value-annotation"
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { ValueType } from "@seldon/core/properties"
 import { capitalize } from "@seldon/core/themes/helpers/capitalize"
@@ -31,6 +32,19 @@ const CONTROL_TYPE_MAP: Record<NonNullable<ThemeTokenSchema["controlType"]>, Con
   text: "text",
   combo: "combo",
   menu: "menu",
+}
+
+/** A scale `.step` key such as `size.tiny.step` maps to `@size.tiny`. */
+function themeScaleSlotRef(key: string): string | undefined {
+  const parts = key.split(".")
+
+  if (parts.length !== 3 || parts[2] !== "step") return undefined
+
+  const [section, slot] = parts
+
+  if (!section || !slot) return undefined
+
+  return `@${section}.${slot}`
 }
 
 /**
@@ -202,6 +216,13 @@ function createFlatPropertyFromSchema(
 
   if (units) {
     flatProperty.units = units
+  }
+
+  const scaleRef = themeScaleSlotRef(schema.key)
+  const annotation = scaleRef ? getThemeValueAnnotation(scaleRef, theme) : undefined
+
+  if (annotation) {
+    flatProperty.annotation = annotation
   }
 
   return flatProperty

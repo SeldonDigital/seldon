@@ -26,6 +26,7 @@ import { duplicateTheme } from "./handlers/duplicate/duplicate-theme"
 import { insertDefaultInstance } from "./handlers/insert/insert-default-instance"
 import { insertDuplicateInstance } from "./handlers/insert/insert-duplicate-instance"
 import { insertVariantInstance } from "./handlers/insert/insert-variant-instance"
+import { replaceInstance } from "./handlers/insert/replace-instance"
 import { moveInstance } from "./handlers/move/move-instance"
 import { moveInstanceDirectional } from "./handlers/move/move-instance-directional"
 import { normalizeMetadataVersion } from "./handlers/normalize/normalize-metadata-version"
@@ -348,6 +349,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return insertDuplicateInstance(action.payload, workspace)
     case "insert_default_instance":
       return insertDefaultInstance(action.payload, workspace)
+    case "replace_instance":
+      return replaceInstance(action.payload, workspace)
 
     case "reset_theme_tokens":
       return resetThemeTokens(action.payload, workspace)

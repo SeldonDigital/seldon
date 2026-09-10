@@ -1,6 +1,7 @@
 "use client"
 
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons.bespoke"
+import { canvasContentRuns } from "@seldon/editor/lib/canvas/content-runs"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import React, { useMemo } from "react"
@@ -13,6 +14,7 @@ import { HTMLAnchor } from "@seldon/core/components/native-react/HTML.Anchor"
 import { HTMLArticle } from "@seldon/core/components/native-react/HTML.Article"
 import { HTMLAside } from "@seldon/core/components/native-react/HTML.Aside"
 import { HTMLBlockquote } from "@seldon/core/components/native-react/HTML.Blockquote"
+import { HTMLBold } from "@seldon/core/components/native-react/HTML.Bold"
 import { HTMLButton } from "@seldon/core/components/native-react/HTML.Button"
 import { HTMLCite } from "@seldon/core/components/native-react/HTML.Cite"
 import { HTMLCode } from "@seldon/core/components/native-react/HTML.Code"
@@ -20,6 +22,7 @@ import { HTMLDd } from "@seldon/core/components/native-react/HTML.Dd"
 import { HTMLDiv } from "@seldon/core/components/native-react/HTML.Div"
 import { HTMLDl } from "@seldon/core/components/native-react/HTML.Dl"
 import { HTMLDt } from "@seldon/core/components/native-react/HTML.Dt"
+import { HTMLEmphasis } from "@seldon/core/components/native-react/HTML.Emphasis"
 import { HTMLFieldset } from "@seldon/core/components/native-react/HTML.Fieldset"
 import { HTMLFigure } from "@seldon/core/components/native-react/HTML.Figure"
 import { HTMLFooter } from "@seldon/core/components/native-react/HTML.Footer"
@@ -49,6 +52,7 @@ import { HTMLSection } from "@seldon/core/components/native-react/HTML.Section"
 import { HTMLSelect } from "@seldon/core/components/native-react/HTML.Select"
 import { HTMLSource } from "@seldon/core/components/native-react/HTML.Source"
 import { HTMLSpan } from "@seldon/core/components/native-react/HTML.Span"
+import { HTMLStrong } from "@seldon/core/components/native-react/HTML.Strong"
 import { HTMLSvg } from "@seldon/core/components/native-react/HTML.Svg"
 import { HTMLTable } from "@seldon/core/components/native-react/HTML.Table"
 import { HTMLTbody } from "@seldon/core/components/native-react/HTML.Tbody"
@@ -202,9 +206,14 @@ export const ComponentRenderer = ({
   )
 
   function renderChildren() {
-    /**
-     * If this is a text component, we want to render the text value
-     */
+    const runs = canvasContentRuns(properties)
+
+    if (runs) {
+      return runs.map((run) =>
+        React.createElement(run.tag, { key: run.key, style: run.style }, run.value),
+      )
+    }
+
     if (properties.content?.value) {
       return removeNewLines(properties.content.value)
     }
@@ -323,6 +332,7 @@ export const PRIMITIVES: Record<
   HTMLArticle: HTMLArticle,
   HTMLAside: HTMLAside,
   HTMLBlockquote: HTMLBlockquote,
+  HTMLBold: HTMLBold,
   HTMLButton: HTMLButton,
   HTMLCite: HTMLCite,
   HTMLCode: HTMLCode,
@@ -330,6 +340,7 @@ export const PRIMITIVES: Record<
   HTMLDiv: HTMLDiv,
   HTMLDl: HTMLDl,
   HTMLDt: HTMLDt,
+  HTMLEmphasis: HTMLEmphasis,
   HTMLFieldset: HTMLFieldset,
   HTMLFigure: HTMLFigure,
   HTMLFooter: HTMLFooter,
@@ -359,6 +370,7 @@ export const PRIMITIVES: Record<
   HTMLSelect: HTMLSelect,
   HTMLSource: HTMLSource,
   HTMLSpan: HTMLSpan,
+  HTMLStrong: HTMLStrong,
   HTMLSvg: HTMLSvg,
   HTMLTable: HTMLTable,
   HTMLTbody: HTMLTbody,

@@ -54,6 +54,7 @@ flowchart LR
 | `isThemeLookPresetSchemaName` | `resolve-theme-look.ts` | Tells whether a schema name is a `*Preset` look schema. Used when wiring property schemas. |
 | `resolveBuiltInLookApplyName` | `resolve-theme-look.ts` | Maps UI labels such as `None` or `Normal` to built-in apply names. Used when applying built-in clears from the editor. |
 | `readPresetThemeLookRef` | `resolve-theme-look.ts` | Reads `preset` as a `THEME_CATEGORICAL` look ref from a compound layer. Used when resolving layered paint presets. |
+| `expandLookPresetFacets` | `expand-preset-facets.ts` | Expands a named look into compound facets. An inherit preset clears leftover facets so a prior look cannot leak. |
 
 ---
 

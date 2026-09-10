@@ -1,12 +1,14 @@
 import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { getIconData } from "@seldon/core/icon-sets/data"
 
+import { serializeRunsToHtml } from "../../shared/content-runs"
 import { NATIVE_VUE_TAGS } from "../../vue/shared/vue-native-tags"
 
 import type { NodeIdToClass } from "../../css/types"
 import type { ComponentToExport, DataBinding, JSONTreeNode } from "../../types"
 import type { ComponentExport, NativeReactPrimitive } from "@seldon/core/components/types"
 import type { IconId } from "@seldon/core/icon-sets"
+import type { ContentRun } from "@seldon/core/properties"
 
 /**
  * Void HTML elements cannot hold children or text. They emit as self-closing
@@ -71,10 +73,11 @@ function nodeToHtml(node: JSONTreeNode, indent: number, context: WalkContext): s
   }
 
   const children = Array.isArray(node.children) ? node.children : []
-  const text = readText(node.dataBinding.props)
+  const runHtml = readRunsHtml(node.dataBinding.props)
+  const text = runHtml === undefined ? readText(node.dataBinding.props) : undefined
 
   if (children.length === 0) {
-    const body = text === undefined ? "" : escapeText(text)
+    const body = runHtml ?? (text === undefined ? "" : escapeText(text))
 
     return `${pad}<${tag}${attrString}>${body}</${tag}>\n`
   }
@@ -177,6 +180,14 @@ function iconSvg(node: JSONTreeNode, context: WalkContext): string {
   const refAttr = node.ref ? ` data-seldon-ref="${escapeAttr(node.ref)}"` : ""
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${escapeAttr(viewBox)}" fill="currentColor" height="1em" width="1em"${classAttr}${refAttr} aria-hidden="true">${body}</svg>`
+}
+
+function readRunsHtml(props: DataBinding["props"]): string | undefined {
+  const runs = props.runs?.value
+
+  if (!Array.isArray(runs) || runs.length === 0) return undefined
+
+  return serializeRunsToHtml(runs as ContentRun[])
 }
 
 function readText(props: DataBinding["props"]): string | undefined {

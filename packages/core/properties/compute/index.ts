@@ -10,6 +10,7 @@ export { computeMatchColor } from "./compute-match-color"
 
 export { computeProperties } from "./compute-properties"
 export { getBasedOnValue, resolveBasedOnWithAnchor } from "./get-based-on-value"
+export { inheritLookCompound, inheritPaintLayer, resolveInheritSource } from "./resolve-inherit"
 export type { ResolvedBasedOnWithAnchor } from "./get-based-on-value"
 export { readAnchoredLayerPercentage } from "./compute-layer-color"
 export { resolveHighContrastSource } from "./resolve-high-contrast-source"

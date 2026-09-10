@@ -4,6 +4,7 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 
 import {
+  EXPORT_FLAGS,
   FRAMEWORK_IDS,
   createNodeExportAssetReader,
   createResolvedExportAssetReader,
@@ -13,6 +14,7 @@ import {
   workspaceExportScopeFlags,
 } from "@seldon/factory"
 
+import { normalizeOutputFolder, workspaceReducer } from "@seldon/core"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 
 import { EditSession, safeApply } from "../tools"
@@ -27,7 +29,7 @@ import type {
   WorkspaceTarget,
 } from "./server"
 import type { StatToken } from "./store"
-import type { Workspace } from "@seldon/core/workspace/types"
+import type { Workspace, WorkspaceExportSettings } from "@seldon/core/workspace/types"
 import type { ExportOptions, FrameworkId, OutputLayout } from "@seldon/factory"
 
 /** How many revisions the per-target undo history keeps in memory. */
@@ -44,6 +46,35 @@ function resolveSavedOutputLayout(framework: string | undefined): OutputLayout |
   if (!framework || !(FRAMEWORK_IDS as string[]).includes(framework)) return undefined
 
   return resolveOutputLayout(framework as FrameworkId)
+}
+
+/**
+ * Collects the export settings an MCP export should write back. Only fields the
+ * caller passed are included. `framework` on this tool is the export platform.
+ */
+function exportSettingsFromMcpOptions(options?: McpExportOptions): WorkspaceExportSettings {
+  const patch: WorkspaceExportSettings = {}
+
+  if (!options) return patch
+
+  if (options.framework) patch.platform = options.framework
+
+  if (options.outputDir !== undefined) {
+    patch.outputFolder = normalizeOutputFolder(options.outputDir)
+  }
+
+  for (const flag of EXPORT_FLAGS) {
+    const value = options[flag.storeKey]
+
+    if (typeof value === "boolean") patch[flag.storeKey] = value
+  }
+
+  return patch
+}
+
+/** True when an MCP export passed at least one setting that should be saved. */
+function hasExportSettingsPatch(patch: WorkspaceExportSettings): boolean {
+  return Object.keys(patch).length > 0
 }
 
 /** The live state the host holds for one workspace between calls. */
@@ -214,6 +245,23 @@ export class HeadlessHost implements McpHost {
 
   async export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]> {
     const state = await this.getState(targetId)
+    const persistPatch = exportSettingsFromMcpOptions(options)
+
+    // A flag the caller passed is a workspace edit. Write it back before export
+    // so the generated files and the next editor, CLI, or MCP run see the same
+    // settings.
+    if (hasExportSettingsPatch(persistPatch)) {
+      await this.enqueue(state, async () => {
+        await this.reloadIfDiverged(targetId, state)
+        const next = workspaceReducer(state.workspace, {
+          type: "set_workspace_export_settings",
+          payload: { value: persistPatch },
+        })
+
+        await this.adopt(targetId, state, next)
+      })
+    }
+
     const monorepoRoot = findMonorepoRoot(this.exportRoot)
     const rootDirectory = monorepoRoot ?? this.exportRoot
     const assetReader = monorepoRoot
@@ -455,7 +503,8 @@ export class HeadlessHost implements McpHost {
     files: Array<{ path: string; content: string | ArrayBuffer }>,
     outputDir?: string,
   ): Promise<void> {
-    const baseDir = outputDir ? path.resolve(this.exportRoot, outputDir) : this.exportRoot
+    const nest = normalizeOutputFolder(outputDir)
+    const baseDir = nest ? path.resolve(this.exportRoot, nest) : this.exportRoot
 
     for (const file of files) {
       const targetPath = path.join(baseDir, file.path)

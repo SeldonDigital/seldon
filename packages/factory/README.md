@@ -115,7 +115,7 @@ type ExportOptions = {
 
 `exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set `exportAllIconSetIcons` or `exportAllThemes` to `false` to emit only what a component or theme references. Set `exportAllFontCollections` to `false` to emit only the font families a node renders through a direct `font.family` choice.
 
-`includeHiddenComponents`, `includeWorkspace`, and `includeScripts` are off by default.
+Scope flags on a new workspace match the editor dialog. `includeWorkspace` and `includeScripts` are on. `includeHiddenComponents`, `enableRemoteFonts`, `exportAllThemes`, and `exportAllFontCollections` are off. `exportAllIconSetIcons` is on. `exportWorkspace` reads those saved flags. A caller option still wins for that run. The CLI and MCP write a passed flag back to the workspace.
 
 ---
 

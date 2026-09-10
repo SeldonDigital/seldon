@@ -1,12 +1,14 @@
 import { invariant } from "@seldon/core"
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
+import { serializeRunsToJsx } from "../../../shared/content-runs"
 import { generateRootAttributePropsString, isAttributeKey } from "./attribute-props"
 import { getReactReturnTag } from "./custom-react"
 import { dataSeldonRefAttr } from "./data-ref-attr"
 
 import type { NodeIdToClass } from "../../../css/types"
-import type { ComponentToExport } from "../../../types"
+import type { ComponentToExport, DataBinding } from "../../../types"
+import type { ContentRun } from "@seldon/core/properties"
 
 /**
  * Generate the return statement for an iconMap component
@@ -60,8 +62,8 @@ export function generateHtmlElementReturn(
     throw new Error("defaultValue must be a string")
   }
 
-  // Check if children prop exists in rootProps
-  const hasChildrenProp = "children" in tree.dataBinding.props
+  const childrenExpr = childrenJsxExpr(tree.dataBinding.props)
+  const hasChildrenProp = childrenExpr !== null
 
   // Create switch statement
   let content = `switch(htmlElement) { \n`
@@ -83,7 +85,7 @@ export function generateHtmlElementReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props}>${childrenExpr}</${Component}> \n`
       } else {
         content += `case "${option}": 
   //
@@ -105,7 +107,7 @@ export function generateHtmlElementReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props}>${childrenExpr}</${Component}> \n`
   } else {
     content += `default: 
   //
@@ -203,8 +205,8 @@ export function generateSimpleReturn(
 ): string {
   const { tree } = component
   const refAttr = dataSeldonRefAttr(tree.ref)
-  // Check if children prop exists in rootProps
-  const hasChildrenProp = "children" in tree.dataBinding.props
+  const childrenExpr = childrenJsxExpr(tree.dataBinding.props)
+  const hasChildrenProp = childrenExpr !== null
 
   // Get root-level props that need to be explicitly passed
   // (excluding className and children which are handled separately)
@@ -214,7 +216,12 @@ export function generateSimpleReturn(
   for (const [propKey] of Object.entries(rootProps)) {
     // Attribute-style keys (role, aria-*) are emitted from `sdn` as literals,
     // not as destructured identifiers.
-    if (propKey !== "className" && propKey !== "children" && !isAttributeKey(propKey)) {
+    if (
+      propKey !== "className" &&
+      propKey !== "children" &&
+      propKey !== "runs" &&
+      !isAttributeKey(propKey)
+    ) {
       rootLevelProps.push(`${propKey}={${propKey}}`)
     }
   }
@@ -228,7 +235,7 @@ export function generateSimpleReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props}>{children}</${tag}>`
+  return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props}>${childrenExpr}</${tag}>`
   } else {
     return `
   //
@@ -236,4 +243,16 @@ export function generateSimpleReturn(
   //
   return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props} />`
   }
+}
+
+function childrenJsxExpr(props: DataBinding["props"]): string | null {
+  const runs = props.runs?.value
+
+  if (Array.isArray(runs) && runs.length > 0) {
+    return `{children ?? ${serializeRunsToJsx(runs as ContentRun[])}}`
+  }
+
+  if ("children" in props) return `{children}`
+
+  return null
 }

@@ -16,6 +16,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Blockquote",
     },
+    runs: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,

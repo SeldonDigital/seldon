@@ -20,6 +20,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Body",
     },
+    runs: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: {
       type: Sdn.ValueType.INHERIT,
       value: null,

@@ -32,14 +32,22 @@ export type InsertDefaultInstance = {
   index?: number
 }
 
-/** Common fields on every `add_theme_custom_*` payload. Targets one variant theme entry in `workspace.themes`. */
+/** Swaps one instance for a catalog tree at the same parent and index. */
+export type ReplaceInstance = {
+  instanceId: InstanceId
+  boardKey: BoardKey
+  variantFallbacks?: string[]
+  content?: string
+}
+
+/** Common fields on every `add_theme_custom_*` payload. Targets a writable theme entry in `workspace.themes`. */
 type AddThemeCustomBase = {
   themeId: string
   name: string
   intent?: string
 }
 
-/** Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry. */
+/** Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry. */
 type RemoveThemeCustomBase = {
   themeId: string
   key: ThemeCustomSwatchId
@@ -387,6 +395,10 @@ export type BoardStructureActions =
   | {
       type: "insert_default_instance"
       payload: InsertDefaultInstance
+    }
+  | {
+      type: "replace_instance"
+      payload: ReplaceInstance
     }
   | {
       type: "add_component_and_insert_default_instance"

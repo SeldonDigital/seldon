@@ -34,8 +34,15 @@ export type SelectionTarget = {
  * DOM logic shared by the React and Vue editors, so neither surface needs its
  * own selection resolution.
  */
-export function getSelectionTarget(element: Element | null): SelectionTarget | null {
-  const match = element?.closest<HTMLElement>(`[${SELECTION_ID_ATTR}]`)
+function asElement(target: EventTarget | Element | null): Element | null {
+  if (target instanceof Element) return target
+  if (target instanceof Node) return target.parentElement
+
+  return null
+}
+
+export function getSelectionTarget(target: EventTarget | Element | null): SelectionTarget | null {
+  const match = asElement(target)?.closest<HTMLElement>(`[${SELECTION_ID_ATTR}]`)
 
   if (!match) return null
   const id = match.getAttribute(SELECTION_ID_ATTR)

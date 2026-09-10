@@ -135,21 +135,34 @@ const comboboxFieldProps = computed(() =>
 // paints the glyph. Dynamic color chips resolve through the same slot.
 const valueIconSlot = computed(() => (view.listItemProps.value.icon2 ? undefined : null))
 
+const valueAnnotation = computed(() =>
+  props.property.annotation ? { children: props.property.annotation } : undefined,
+)
+
 // Drive each slot through its stable workspace ref. The row name and the row value
 // are separate input slots, so they bind through `propertyLabel` and
 // `propertyValueLabel`. The trailing actions icon keeps the generated `seldon-more`
-// default, hidden by the actions button placeholder.
-const seldonRefs = computed(() => ({
-  propertyDisclosure: view.listItemProps.value.buttonIconic,
-  propertyDisclosureIcon: view.listItemProps.value.icon,
-  propertyLabel: nameLabelSlot.value,
-  propertyValueField: comboboxFieldProps.value,
-  propertyValueIcon: valueIconProps.value ?? {},
-  propertyValueLabel: valueLabelProps.value,
-  propertyValueMenu: view.listItemProps.value.buttonIconic2,
-  propertyValueMenuIcon: view.listItemProps.value.icon3,
-  propertyActions: actionsMenu.buttonIconic.value,
-}))
+// default, hidden by the actions button placeholder. The annotation ref is
+// omitted when the row has none, so the optional slot stays off.
+const seldonRefs = computed(() => {
+  const refs: Record<string, Record<string, unknown>> = {
+    propertyDisclosure: view.listItemProps.value.buttonIconic,
+    propertyDisclosureIcon: view.listItemProps.value.icon,
+    propertyLabel: nameLabelSlot.value,
+    propertyValueField: comboboxFieldProps.value,
+    propertyValueIcon: valueIconProps.value ?? {},
+    propertyValueLabel: valueLabelProps.value,
+    propertyValueMenu: view.listItemProps.value.buttonIconic2,
+    propertyValueMenuIcon: view.listItemProps.value.icon3,
+    propertyActions: actionsMenu.buttonIconic.value,
+  }
+
+  if (valueAnnotation.value) {
+    refs.propertyValueAnnotation = valueAnnotation.value
+  }
+
+  return refs
+})
 
 // ---- ItemPropertyTextArea (multiline rows) ----
 // Mirrors the value-row slots but carries the value through a `Textarea`

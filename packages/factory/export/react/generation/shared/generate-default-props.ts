@@ -106,6 +106,8 @@ function flattenProps(
   const flattened: DefaultPropsValue = {}
 
   for (const [key, propValue] of Object.entries(props)) {
+    if (key === "runs") continue
+
     const value = propValue.value !== undefined ? propValue.value : propValue.defaultValue
 
     flattened[key] = value

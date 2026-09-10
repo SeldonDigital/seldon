@@ -579,6 +579,13 @@ const CASES: Array<[string, WorkspaceAction, Workspace?]> = [
     "insert_default_instance",
     act("insert_default_instance", { boardKey: BOARD, parentId: ids.uv1Id }),
   ],
+  [
+    "replace_instance",
+    act("replace_instance", {
+      instanceId: ids.uv1ChildId,
+      boardKey: ids.childBoardKey,
+    }),
+  ],
 
   // Theme resets.
   ["reset_theme_tokens", act("reset_theme_tokens", { themeId: THEME_VARIANT_ID })],

@@ -28,43 +28,42 @@ export type ExportOptions = {
    * source. Unset falls back to the built-in export config.
    */
   formatConfigRoot?: string
-  /** Opt-in to emitting remote font host links. Off by default to keep exports request-free. */
+  /**
+   * Emit remote font host links. Follows the workspace `fontLinks` setting when
+   * omitted. Set to override that setting for this run.
+   */
   enableRemoteFonts?: boolean
   /**
    * Export every icon enabled in the workspace's icon sets, even when no
-   * component references it, so the export ships complete icon sets. On by
-   * default. Set to `false` to tree-shake to only the icons components use.
+   * component references it. Follows the workspace `allIcons` setting when
+   * omitted. Set to `false` to tree-shake to only the icons components use.
    */
   exportAllIconSetIcons?: boolean
   /**
-   * Include components hidden with `Display.EXCLUDE` or `Display.MOCK` in the
-   * exported trees. Off by default, matching the editor where hidden components
-   * do not render.
+   * Include components hidden with `Display.EXCLUDE` or `Display.MOCK`. Follows
+   * the workspace `includeHidden` setting when omitted.
    */
   includeHiddenComponents?: boolean
   /**
-   * Export every workspace theme, even when no node references it. On by
-   * default. Set to `false` to emit only themes a node uses, always keeping the
-   * default `seldon` theme.
+   * Export every workspace theme, even when no node references it. Follows the
+   * workspace `allThemes` setting when omitted. Set to `false` to emit only
+   * themes a node uses, always keeping the default `seldon` theme.
    */
   exportAllThemes?: boolean
   /**
-   * Emit remote font links for every enabled font collection family, even when
-   * no node uses it. On by default. Set to `false` to emit only the families a
-   * node renders through a direct `font.family` choice. Only has an effect when
+   * Emit remote font links for every enabled font collection family. Follows
+   * the workspace `allFonts` setting when omitted. Only has an effect when
    * `enableRemoteFonts` is on.
    */
   exportAllFontCollections?: boolean
   /**
    * Emit a copy of the workspace at the root of the components folder, named
-   * from its label. Off by default. The copy holds the authoring workspace, not
-   * the export-rewritten one, so its image values are the originals.
+   * from its label. Follows the workspace `savedWorkspace` setting when omitted.
    */
   includeWorkspace?: boolean
   /**
-   * Emit the bindings scanner into `<components>/scripts/` as readable source,
-   * with an `INTEGRITY.json` of per-file hashes. Off by default. The user runs
-   * these scripts in their own project; the export never runs them.
+   * Emit the bindings scanner into `<components>/scripts/`. Follows the
+   * workspace `includeScripts` setting when omitted.
    */
   includeScripts?: boolean
 }

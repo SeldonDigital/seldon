@@ -5,6 +5,13 @@
  * `WORKSPACE.md` and `workspace/model/*`.
  */
 export type { WorkspaceStringMap } from "../model"
+export {
+  DEFAULT_WORKSPACE_EXPORT_SETTINGS,
+  completeExportSettings,
+  exportSettingsEqual,
+  hasCompleteExportSettings,
+  normalizeOutputFolder,
+} from "../model"
 export type { WorkspaceExportSettings } from "../model"
 export type { WorkspaceMetadata } from "../model"
 export type { ComponentTreeRef } from "../model"
@@ -88,6 +95,7 @@ export type { InstanceId, NodePath, VariantId } from "../helpers/rules/workspace
 export type {
   ExtractPayload,
   InsertDefaultInstance,
+  ReplaceInstance,
   ScaleTokenInput,
   ScaleTokenSection,
   ThemeCustomTokenSection,

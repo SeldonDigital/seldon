@@ -546,6 +546,10 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
     variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
+    family: "Major Mono Display",
+    variants: ["regular"],
+  },
+  {
     family: "Manrope",
     variants: ["200", "300", "regular", "500", "600", "700", "800"],
   },

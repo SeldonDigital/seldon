@@ -221,9 +221,10 @@ the design linter never drift. Three consumers read it:
   the model so it retargets.
 
 Intent verb tools carry the same rules as a closed choice. `set_text_role`,
-`set_emphasis`, and `set_direction` let the model pick a role, weight, or
-direction, and the tool writes the right facet and token, so it composes nothing
-by hand. `set_properties` stays as the low-level escape hatch.
+`set_text_runs`, `set_emphasis`, and `set_direction` let the model pick a role,
+inline marks, weight, or direction, and the tool writes the right facet and
+token, so it composes nothing by hand. `set_properties` stays as the low-level
+escape hatch.
 
 ## Finding A Target
 
@@ -262,7 +263,7 @@ Tools come in two groups, defined once in [tools/](./tools) and shared by Pi and
 | Tool | Proposes |
 | --- | --- |
 | `set_properties` | Property values on a node or its component source |
-| `set_text_role` / `set_emphasis` / `set_direction` | A typographic role, a weight, or the reading direction on a node |
+| `set_text_role` / `set_text_runs` / `set_emphasis` / `set_direction` | A typographic role, inline marks, a weight, or the reading direction on a node |
 | `add_component` | Add a catalog component to the workspace as its own board; reports the new board key and node id |
 | `insert_component` | Insert a catalog component under a parent, creating its board if needed; reports the new node id |
 | `insert_variant_instance` | Insert an instance of a specific existing variant; reports the new node id |

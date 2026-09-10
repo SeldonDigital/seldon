@@ -1,4 +1,5 @@
 import { CURRENT_WORKSPACE_VERSION } from "../middleware/migration/middleware"
+import { DEFAULT_WORKSPACE_EXPORT_SETTINGS } from "../model/export-settings"
 import { boardOrderService } from "../services/components/board-order.service"
 import { seedDefaultFontCollectionBoard } from "./seed/seed-default-font-collection-board"
 import { seedDefaultIconSetBoard } from "./seed/seed-default-icon-set-board"
@@ -15,6 +16,7 @@ export function createEmptyWorkspace(): Workspace {
       version: CURRENT_WORKSPACE_VERSION,
       id: crypto.randomUUID(),
       label: "",
+      exportSettings: { ...DEFAULT_WORKSPACE_EXPORT_SETTINGS },
     },
     boards: {},
     playgrounds: {},

@@ -51,6 +51,10 @@ import {
 import { exportConfig as itemExportConfig, schema as itemSchema } from "./elements/Item.schema"
 import { exportConfig as listExportConfig, schema as listSchema } from "./elements/List.schema"
 import {
+  exportConfig as listItemExportConfig,
+  schema as listItemSchema,
+} from "./elements/ListItem.schema"
+import {
   exportConfig as menuItemExportConfig,
   schema as menuItemSchema,
 } from "./elements/MenuItem.schema"
@@ -67,6 +71,10 @@ import {
   exportConfig as ordinalChipExportConfig,
   schema as ordinalChipSchema,
 } from "./elements/OrdinalChip.schema"
+import {
+  exportConfig as paragraphExportConfig,
+  schema as paragraphSchema,
+} from "./elements/Paragraph.schema"
 import {
   exportConfig as sectionExportConfig,
   schema as sectionSchema,
@@ -214,10 +222,6 @@ import { exportConfig as hrExportConfig, schema as hrSchema } from "./primitives
 import { exportConfig as iconExportConfig, schema as iconSchema } from "./primitives/Icon.schema"
 import { exportConfig as imageExportConfig, schema as imageSchema } from "./primitives/Image.schema"
 import {
-  exportConfig as listItemExportConfig,
-  schema as listItemSchema,
-} from "./primitives/ListItem.schema"
-import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
 } from "./primitives/controls/Input.schema"
@@ -283,6 +287,8 @@ const elements: ComponentSchema[] = [
   comboboxFieldSchema,
   navSchema,
   listSchema,
+  listItemSchema,
+  paragraphSchema,
   sectionSchema,
   selectSchema,
   tableGridSchema,
@@ -301,7 +307,6 @@ const primitives: ComponentSchema[] = [
   legendSchema,
   textareaSchema,
   toggleSwitchSchema,
-  listItemSchema,
   blockquoteSchema,
   citeSchema,
   linkSchema,
@@ -412,6 +417,8 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.COMBOBOX_FIELD]: comboboxFieldExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
+  [ComponentId.LIST_ITEM]: listItemExportConfig,
+  [ComponentId.PARAGRAPH]: paragraphExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_GRID]: tableGridExportConfig,
   [ComponentId.TABLE_HEAD]: tableHeadExportConfig,
@@ -467,7 +474,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.TEXTAREA]: textareaExportConfig,
   [ComponentId.TOGGLE_SWITCH]: toggleSwitchExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
-  [ComponentId.LIST_ITEM]: listItemExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
   [ComponentId.CITE]: citeExportConfig,
   [ComponentId.LINK]: linkExportConfig,

@@ -18,7 +18,7 @@ const TAG_TO_COMPONENT: Partial<Record<HtmlElement, ComponentId>> = {
   [HtmlElement.H4]: ComponentId.TEXT,
   [HtmlElement.H5]: ComponentId.TEXT,
   [HtmlElement.H6]: ComponentId.TEXT,
-  [HtmlElement.P]: ComponentId.TEXT,
+  [HtmlElement.P]: ComponentId.PARAGRAPH,
   [HtmlElement.PRE]: ComponentId.TEXT,
   [HtmlElement.CODE]: ComponentId.TEXT,
   [HtmlElement.SPAN]: ComponentId.TEXT,

@@ -33,6 +33,7 @@ import { getFontFamilyWebsiteUrl } from "@seldon/core/font-collections"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
+import { canMutateThemeTokens } from "@seldon/core/workspace/helpers/themes/can-mutate-theme-tokens"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -187,7 +188,7 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         intent: computedTheme.metadata.intent,
         author: board?.author,
       })
-      const canAddCustom = entry.type === "variant"
+      const canAddCustom = canMutateThemeTokens(ws, themeEntryId)
 
       themeEditingContext = {
         isThemeEditing: true,

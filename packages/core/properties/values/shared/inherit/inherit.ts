@@ -1,12 +1,11 @@
 import type { ValueType } from "../../../constants"
 
 /**
- * Right now InheritValue is using the CSS inherit keyword.
- * We should instead make values inherit other values programmatically.
- * This is a more robust solution that will allow us to inherit values from
- * other values in a more predictable way.
- *
- * https://github.com/SeldonDigital/seldon/issues/1058
+ * Explicit parent inheritance. `computeProperties` walks `parentContext` and
+ * replaces this cell with the first contributing ancestor value. A look
+ * `preset` set to inherit copies the parent compound, then overlays authored
+ * child facets. The copy is read-side only and is not written to the workspace.
+ * When no ancestor contributes a value, the cell stays inherit.
  */
 export type InheritValue = {
   type: ValueType.INHERIT

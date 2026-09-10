@@ -16,6 +16,7 @@ import {
   authoredExportNameFromName,
 } from "../../../helpers/components/authored-board-key"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
+import { getImmediateParentIdInWorkspace } from "../../../helpers/components/get-node-parent-id"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
@@ -111,6 +112,52 @@ export function validateInsertMutation(workspace: Workspace, action: Action): vo
       const parent = nodeRetrievalService.getNode(parentId, workspace)
 
       assertInsertTargetAllowed(parent, action)
+      break
+    }
+
+    case "replace_instance": {
+      const instanceId = action.payload.instanceId as InstanceId
+      const boardKey = action.payload.boardKey
+
+      nodeValidators.exists(workspace, instanceId)
+      const instance = nodeRetrievalService.getNode(instanceId, workspace)
+
+      if (!typeCheckingService.isInstance(instance)) {
+        throw new WorkspaceValidationError(ErrorMessages.nodeNotInstance(instanceId), action)
+      }
+
+      const parentId = getImmediateParentIdInWorkspace(workspace, instanceId)
+
+      check(parentId, "replace_instance requires a parent")
+      nodeValidators.exists(workspace, parentId as InstanceId | VariantId)
+      nodeValidators.canHaveChildren(workspace, parentId as InstanceId | VariantId)
+      const parent = nodeRetrievalService.getNode(parentId as InstanceId | VariantId, workspace)
+
+      assertInsertTargetAllowed(parent, action)
+      assertNodeNotInDefaultVariant(
+        workspace,
+        instance,
+        "Cannot replace instances in a default variant. Only property overrides allowed. To restructure components, make a custom variant and make changes on it.",
+      )
+
+      if (workspace.boards[boardKey]) {
+        const defaultVariant = nodeRetrievalService.getDefaultVariant(
+          boardKey as ComponentId,
+          workspace,
+        )
+
+        nodeValidators.isNotInstanceOfSelf(workspace, defaultVariant.id, parentId as InstanceId)
+        nodeValidators.canBeParentOf(workspace, parentId as InstanceId, defaultVariant.id)
+      } else {
+        check(isComponentId(boardKey), `replace_instance boardKey must be a catalog id`)
+        const parentComponentId = getNodeComponentId(parent, workspace)
+
+        check(
+          typeCheckingService.canComponentBeParentOf(parentComponentId, boardKey),
+          "Parent cannot contain the replacement component",
+        )
+      }
+
       break
     }
 

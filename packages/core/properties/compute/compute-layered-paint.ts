@@ -1,5 +1,7 @@
-import { ValueType } from "../constants"
+import { isComputedValue } from "../../helpers/type-guards/value/is-computed-value"
+import { isInheritValue } from "../../helpers/type-guards/value/is-inherit-value"
 import { applyMatchColorMirror } from "./compute-match-color-mirror"
+import { inheritPaintLayer, resolveInheritSource } from "./resolve-inherit"
 
 import type { LayeredPaintKey, PropertyKey, SubPropertyKey } from "../types/property-keys"
 import type { Value } from "../types/value"
@@ -15,8 +17,8 @@ export type DispatchComputedFn = (
 
 /**
  * Walks `background` / `shadow` stacks like `merge-properties`: one result slot per
- * layer, preserving array order and shape. Resolves `COMPUTED` facets on each layer object via
- * `dispatchComputed`; other facet values are copied through.
+ * layer, preserving array order and shape. An `INHERIT` layer preset copies the parent
+ * layer first. Resolves `COMPUTED` and `INHERIT` facets on each layer object.
  */
 export function computeLayeredPaintStack(
   propertyKey: LayeredPaintKey,
@@ -24,27 +26,37 @@ export function computeLayeredPaintStack(
   context: ComputeContext,
   dispatchComputed: DispatchComputedFn,
 ): unknown[] {
-  return layers.map((layer) => {
+  return layers.map((layer, index) => {
     if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
       return layer
     }
 
-    const layerRecord = layer as Record<string, unknown>
+    const authored = layer as Record<string, Value>
+    const layerRecord = isInheritValue(authored.preset)
+      ? inheritPaintLayer(propertyKey, index, authored, context)
+      : authored
     const out: Record<string, Value> = {}
 
     for (const [facetKey, facetValue] of Object.entries(layerRecord)) {
-      if (
-        facetValue &&
-        typeof facetValue === "object" &&
-        "type" in facetValue &&
-        (facetValue as { type: unknown }).type === ValueType.COMPUTED
-      ) {
-        out[facetKey] = dispatchComputed(facetValue as ComputedValue, context, {
-          propertyKey: propertyKey as PropertyKey,
-          subPropertyKey: facetKey as SubPropertyKey,
-        })
+      const keys: ComputeKeys = {
+        propertyKey: propertyKey as PropertyKey,
+        subPropertyKey: facetKey as SubPropertyKey,
+      }
+
+      if (isInheritValue(facetValue)) {
+        const inherited = resolveInheritSource(`${propertyKey}.${index}.${facetKey}`, context)
+
+        if (!inherited) {
+          out[facetKey] = facetValue
+        } else if (isComputedValue(inherited.value)) {
+          out[facetKey] = dispatchComputed(inherited.value, inherited.source, keys)
+        } else {
+          out[facetKey] = inherited.value
+        }
+      } else if (isComputedValue(facetValue)) {
+        out[facetKey] = dispatchComputed(facetValue, context, keys)
       } else {
-        out[facetKey] = facetValue as Value
+        out[facetKey] = facetValue
       }
     }
 

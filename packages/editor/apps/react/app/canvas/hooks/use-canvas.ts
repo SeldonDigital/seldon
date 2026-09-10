@@ -21,6 +21,7 @@ import {
 import { resolveCanvasPlacement } from "@seldon/editor/lib/canvas/drag/canvas-placement"
 import { getSlotIndex } from "@seldon/editor/lib/canvas/drag/drop-slot"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
+import { resolveTextEditStart } from "@seldon/editor/lib/canvas/text-edit"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
@@ -36,6 +37,7 @@ import { nodeRetrievalService, typeCheckingService } from "@seldon/core/workspac
 
 import { checkInsertionPoint } from "../../overlays/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
+import { useTextEditSession } from "./use-text-edit-session"
 
 import type { InstanceId, VariantId } from "@seldon/core"
 import type { CanvasDropSlot } from "@seldon/editor/lib/canvas/drag/drop-slot"
@@ -65,6 +67,7 @@ export function useCanvas() {
   const { hoverState, setHoverState } = useCanvasHoverState()
   const setHoveredId = useSetHoveredId()
   const addToast = useAddToast()
+  const { begin: beginTextEdit } = useTextEditSession()
 
   // Pending deferred single-click selection. A double click clears it so the
   // single click never fires, letting the two gestures drive different behavior.
@@ -366,15 +369,24 @@ export function useCanvas() {
         return
       }
 
+      clearPendingSelect()
+      const editStart = resolveTextEditStart(workspace, event.target, selectedNodeId)
+
+      if (editStart) {
+        event.preventDefault()
+        beginTextEdit(editStart)
+
+        return
+      }
+
       // Direct select mode selects the exact node on every click, so a double
       // click has nothing deeper to drill into.
       if (directSelect) return
 
-      const target = getSelectionTarget(event.target as Element)
+      const target = getSelectionTarget(event.target)
 
       if (!target || target.kind !== "node") return
 
-      clearPendingSelect()
       const clickedRootId = target.rootId ?? target.id
       const drilled = resolveCanvasNodeSelection(clickedRootId, selectedNodeRootId, "drill")
 
@@ -392,6 +404,8 @@ export function useCanvas() {
       selectNode,
       clearPendingSelect,
       setHoveredId,
+      workspace,
+      beginTextEdit,
     ],
   )
 

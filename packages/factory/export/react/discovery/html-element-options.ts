@@ -4,6 +4,9 @@ import { HtmlElement } from "@seldon/core/properties"
 const TEXT_ELEMENTS: readonly HtmlElement[] = [
   HtmlElement.P,
   HtmlElement.SPAN,
+  HtmlElement.B,
+  HtmlElement.STRONG,
+  HtmlElement.EM,
   HtmlElement.A,
   HtmlElement.LABEL,
   HtmlElement.H1,
@@ -17,6 +20,8 @@ const TEXT_ELEMENTS: readonly HtmlElement[] = [
   HtmlElement.OPTION,
 ]
 
+const PARAGRAPH_ELEMENTS: readonly HtmlElement[] = [HtmlElement.P]
+
 /**
  * HTML elements each `returns: "htmlElement"` component can render as.
  * Drives the generated switch statement, its native-react imports, and the
@@ -24,6 +29,7 @@ const TEXT_ELEMENTS: readonly HtmlElement[] = [
  */
 export const HTML_ELEMENT_OPTIONS: Partial<Record<ComponentId, readonly HtmlElement[]>> = {
   [ComponentId.TEXT]: TEXT_ELEMENTS,
+  [ComponentId.PARAGRAPH]: PARAGRAPH_ELEMENTS,
   [ComponentId.OPTION_GROUP]: [HtmlElement.OPTGROUP],
   [ComponentId.LIST]: [HtmlElement.UL, HtmlElement.OL],
   [ComponentId.LIST_ITEM]: [HtmlElement.LI, HtmlElement.DT, HtmlElement.DD],

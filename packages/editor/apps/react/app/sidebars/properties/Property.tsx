@@ -215,6 +215,10 @@ function PropertyInner({ presentation = "sidebar", ...props }: PropertyProps) {
     seldonRefs.propertyValueIcon = mergeStateProps(listItemProps.icon2, stateRef)
   }
 
+  if (props.property.annotation) {
+    seldonRefs.propertyValueAnnotation = { children: props.property.annotation }
+  }
+
   // Positional enabler: suppress `icon2` with `null` when the value icon is
   // hidden; otherwise leave it on its slot default so the bound `propertyValueIcon`
   // ref paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve

@@ -9,6 +9,7 @@ import {
   getNodeProperties,
 } from "@app/core"
 import Icon from "@seldon/components/primitives/Icon.vue"
+import { canvasContentRuns } from "@seldon/editor/lib/canvas/content-runs"
 import { buildChildRenders } from "@seldon/editor/lib/canvas/node-render/build-child-renders"
 import { resolveRenderAsDiv } from "@seldon/editor/lib/canvas/node-render/resolve-render-as-div"
 import { buildCanvasSelectionAttributes } from "@seldon/editor/lib/canvas/node-render/selection-attributes"
@@ -93,6 +94,10 @@ const content = computed(() => {
   return typeof raw === "string" ? raw.replace(/\r?\n/g, " ") : null
 })
 
+const contentRuns = computed(() =>
+  context.value ? canvasContentRuns(context.value.properties) : null,
+)
+
 const iconSymbol = computed(() => {
   if (repeatValue.value != null && isIcon.value) return repeatValue.value
   const raw = context.value?.properties.symbol?.value
@@ -155,7 +160,12 @@ const visible = computed(() => node.value && catalogComponentId.value && !exclud
     />
 
     <component v-else-if="tag" :is="tag.tag" :class="className" v-bind="htmlAttributes">
-      <template v-if="content">{{ content }}</template>
+      <template v-if="contentRuns">
+        <component v-for="run in contentRuns" :key="run.key" :is="run.tag" :style="run.style">{{
+          run.value
+        }}</component>
+      </template>
+      <template v-else-if="content">{{ content }}</template>
       <template v-else>
         <CanvasNode
           v-for="child in childRenders"

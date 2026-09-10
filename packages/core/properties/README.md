@@ -128,7 +128,7 @@ Properties use seven value types to handle different data sources and behaviors:
 | Value type | Meaning |
 | --- | --- |
 | `EMPTY` | Unset: resolved by the platform or defaults. Inheritance from parents or platform defaults can apply. |
-| `INHERIT` | Explicitly uses the parent component's value, forming a direct parent to child inheritance chain. |
+| `INHERIT` | Explicitly uses the parent component's value. `computeProperties` copies the first contributing ancestor value on the read side. A look preset set to inherit copies the parent compound. |
 | `EXACT` | A concrete value such as a color, size, or text with no reference to another property or theme. |
 | `OPTION` | One of a fixed set of allowed choices. |
 | `COMPUTED` | Derived from other properties through math or functions, such as width as 80% of the parent. |
@@ -237,9 +237,10 @@ Properties that are specific to the selected component type and define its core 
 | Property | Type | Values |
 | --- | --- | --- |
 | `display` | `atomic` | `empty` \| `inherit` \| `option: show, hide, stub, mock, exclude` |
-| `htmlElement` | `atomic` | `empty` \| `inherit` \| `option: a, h1, h2, h3, h4, h5, h6, p, span, label, div, section, article, header, footer, main, nav, aside, figure, figcaption, form, fieldset, menu, option, optgroup, li, ol, ul` \| `exact: string` |
+| `htmlElement` | `atomic` | `empty` \| `inherit` \| `option: a, h1, h2, h3, h4, h5, h6, p, span, b, strong, em, label, div, section, article, header, footer, main, nav, aside, figure, figcaption, form, fieldset, menu, option, optgroup, li, ol, ul` \| `exact: string` |
 | `wrapperElement` | `atomic` | `empty` \| `inherit` \| `option: div, section, article, aside, main, nav, header, footer, ul, ol, li, form, fieldset, figure, menu, blockquote, thead, tbody, tfoot, tr` \| `exact: string` (Frame catalog only) |
 | `content` | `atomic` | `empty` \| `inherit` \| `exact: string` |
+| `runs` | `atomic` | `empty` \| `exact: run list`. Each run has `value`, `htmlElement` of `span`, `b`, `em`, or `strong`, and optional `fontWeight` or `fontStyle`. Not shown in the properties panel. |
 | `symbol` | `atomic` | `empty` \| `inherit` \| `option: iconId` \| `exact: string` |
 | `source` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `imageFit` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` |

@@ -57,6 +57,7 @@ import type {
   RowCountValue,
   RowSpanValue,
   RowStartValue,
+  RunsPropertyValue,
   ScreenHeightValue,
   ScreenSizeValue,
   ScreenWidthValue,
@@ -86,6 +87,7 @@ export type Properties = Partial<{
   htmlElement: HtmlElementValue | EmptyValue
   wrapperElement: WrapperElementValue | EmptyValue
   content: ContentValue | EmptyValue
+  runs: RunsPropertyValue
   symbol: SymbolValue | EmptyValue
   source: ImageSourceValue | EmptyValue
   imageFit: ImageFitValue | EmptyValue

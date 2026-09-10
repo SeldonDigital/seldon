@@ -1,3 +1,4 @@
+import { useTextEditSession } from "@app/canvas/use-text-edit-session"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
@@ -5,12 +6,14 @@ import { useToastStore } from "@app/toaster/toast-store"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useObjectHoverStore } from "@app/workspace/object-hover-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import {
   getEditableControl,
   isEditableControlFocused,
   isEditableControlNodeSelected,
 } from "@seldon/editor/lib/canvas/dom/editable-control"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
+import { resolveTextEditStart } from "@seldon/editor/lib/canvas/text-edit"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { getSelectionTarget, selectFromTarget } from "@seldon/editor/lib/workspace/selection-dom"
@@ -39,6 +42,8 @@ export function useCanvasTracking() {
   const panel = usePanelStore()
   const toast = useToastStore()
   const config = useEditorConfigStore()
+  const { workspace } = useWorkspace()
+  const { begin: beginTextEdit } = useTextEditSession()
 
   // Pending deferred single-click selection. A double click clears it so the
   // single click never fires, letting the two gestures drive different behavior.
@@ -188,15 +193,24 @@ export function useCanvasTracking() {
       return
     }
 
+    clearPendingSelect()
+    const editStart = resolveTextEditStart(workspace.value, event.target, selection.selectedNodeId)
+
+    if (editStart) {
+      event.preventDefault()
+      beginTextEdit(editStart)
+
+      return
+    }
+
     // Direct select mode selects the exact node on every click, so a double
     // click has nothing deeper to drill into.
     if (config.directSelect) return
 
-    const target = getSelectionTarget(event.target as Element | null)
+    const target = getSelectionTarget(event.target)
 
     if (!target || target.kind !== "node") return
 
-    clearPendingSelect()
     const clickedRootId = target.rootId ?? target.id
     const drilled = resolveCanvasNodeSelection(clickedRootId, selection.selectedNodeRootId, "drill")
 

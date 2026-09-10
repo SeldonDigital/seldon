@@ -97,7 +97,7 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
   for (const [key, value] of Object.entries(component.tree.dataBinding.props)) {
     // Accessibility attributes are already declared by the element's
     // HTMLAttributes base, and hyphenated keys are not valid TS identifiers.
-    if (isAttributeKey(key)) {
+    if (isAttributeKey(key) || key === "runs") {
       continue
     }
 

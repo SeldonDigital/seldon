@@ -2,6 +2,8 @@ import fs from "node:fs"
 import path from "node:path"
 import readline from "node:readline"
 
+import { normalizeOutputFolder, workspaceReducer } from "@seldon/core"
+import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 
 import { exportWorkspace } from "../export-workspace"
@@ -27,7 +29,7 @@ import type { ExportManifest } from "../manifest"
 import type { ExportScopeFlags } from "../options"
 import type { FrameworkId } from "../presets"
 import type { FileToExport, PlatformId } from "../types"
-import type { Workspace } from "@seldon/core"
+import type { Workspace, WorkspaceExportSettings } from "@seldon/core"
 
 const PLATFORM_IDS = Object.keys(PLATFORMS) as PlatformId[]
 
@@ -55,7 +57,7 @@ const DEFAULT_CONFIG: CliConfig = {
   platform: "react",
   framework: "none",
   input: "",
-  out: process.cwd(),
+  out: "",
   overwrite: false,
 }
 
@@ -77,7 +79,9 @@ Targets:
                              Framework to generate (default: react).
   -f, --framework <${FRAMEWORK_IDS.join("|")}>
                              Project layout (default: none).
-  -o, --out <dir>            Output root directory (default: current directory).
+  -o, --out <dir>            Project-relative folder to nest generated files.
+                             Same as workspace outputFolder. Empty is the
+                             project root (default: workspace setting, or empty).
 
 Layout overrides (advanced, override the framework layout):
       --components-folder <path>
@@ -197,8 +201,9 @@ export function parseCliArgs(argv: string[]): CliConfig {
 
 /**
  * Maps a workspace's saved export settings to CLI config fields, so a workspace
- * carries its own target and scope defaults. Only valid target ids pass through.
- * The output root stays a CLI concern, so `outputFolder` is not applied here.
+ * carries its own target, nest folder, and scope defaults. Only valid target
+ * ids pass through. `outputFolder` is the project-relative nest, same as
+ * `--out` and the editor Export To field.
  */
 function workspaceConfigOverrides(workspace: Workspace): Partial<CliConfig> {
   const settings = workspace.metadata.exportSettings
@@ -215,7 +220,64 @@ function workspaceConfigOverrides(workspace: Workspace): Partial<CliConfig> {
     overrides.framework = settings.framework as FrameworkId
   }
 
+  if (typeof settings.outputFolder === "string") {
+    overrides.out = settings.outputFolder
+  }
+
   return overrides
+}
+
+/**
+ * Turns an `--out` value into a project-relative nest folder. An absolute path
+ * inside the current directory becomes a relative nest. A path that climbs out
+ * of the project becomes empty, matching the editor.
+ */
+function persistableOutputFolder(value: string, cwd: string): string {
+  const resolved = path.resolve(cwd, value)
+  const relative = path.relative(cwd, resolved)
+
+  return normalizeOutputFolder(relative.replaceAll("\\", "/"))
+}
+
+/**
+ * Collects the export settings a CLI run should write back. Only fields the
+ * caller passed are included, so a plain export does not rewrite the file.
+ */
+function exportSettingsFromCliOverrides(
+  overrides: Partial<CliConfig>,
+  cwd: string,
+): WorkspaceExportSettings {
+  const patch: WorkspaceExportSettings = {}
+
+  if (overrides.platform) patch.platform = overrides.platform
+  if (overrides.framework) patch.framework = overrides.framework
+
+  if (overrides.out !== undefined) {
+    patch.outputFolder = persistableOutputFolder(overrides.out, cwd)
+  }
+
+  for (const flag of EXPORT_FLAGS) {
+    const value = overrides[flag.storeKey]
+
+    if (typeof value === "boolean") patch[flag.storeKey] = value
+  }
+
+  return patch
+}
+
+/** True when a CLI run passed at least one setting that should be saved. */
+function hasExportSettingsPatch(patch: WorkspaceExportSettings): boolean {
+  return Object.keys(patch).length > 0
+}
+
+/**
+ * Writes the workspace back to the input file after a flag change, so the next
+ * editor, CLI, or MCP export reads the same settings.
+ */
+function persistWorkspaceFile(inputPath: string, workspace: Workspace): void {
+  const ordered = orderWorkspaceNodeKeys(workspace)
+
+  fs.writeFileSync(inputPath, `${JSON.stringify(ordered, null, 2)}\n`)
 }
 
 /**
@@ -232,7 +294,21 @@ export async function runExportCli(argv: string[]): Promise<void> {
     throw new Error("Missing required --input <workspace.json>. Run with --help for usage.")
   }
 
-  const workspace = loadWorkspace(fs.readFileSync(path.resolve(input), "utf8"))
+  const inputPath = path.resolve(input)
+  let workspace = loadWorkspace(fs.readFileSync(inputPath, "utf8"))
+  const cwd = process.cwd()
+  const persistPatch = exportSettingsFromCliOverrides(cliOverrides, cwd)
+
+  // A flag the user passed is a workspace edit. Write it back before export so
+  // the generated files and the next editor, CLI, or MCP run see the same
+  // settings.
+  if (hasExportSettingsPatch(persistPatch)) {
+    workspace = workspaceReducer(workspace, {
+      type: "set_workspace_export_settings",
+      payload: { value: persistPatch },
+    })
+    persistWorkspaceFile(inputPath, workspace)
+  }
 
   // Precedence: an explicit CLI flag wins over a workspace-saved setting, which
   // wins over the shared default. So a workspace carries its own target and
@@ -244,7 +320,8 @@ export async function runExportCli(argv: string[]): Promise<void> {
   }
 
   const layout = resolveOutputLayout(config.framework)
-  const outRoot = path.resolve(config.out)
+  const outputFolder = persistableOutputFolder(config.out, cwd)
+  const outRoot = outputFolder ? path.resolve(cwd, outputFolder) : cwd
 
   const files = await exportWorkspace(workspace, {
     rootDirectory: outRoot,

@@ -825,7 +825,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -851,7 +851,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -877,7 +877,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -903,7 +903,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -929,7 +929,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -955,7 +955,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -981,7 +981,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1007,7 +1007,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1033,7 +1033,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1059,7 +1059,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1085,7 +1085,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1111,7 +1111,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1137,7 +1137,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1163,7 +1163,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1189,7 +1189,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1215,7 +1215,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1241,7 +1241,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1267,7 +1267,7 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
+          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot on a writable theme entry.",
           "properties": {
             "key": {
               "pattern": "^custom[0-9]*$",
@@ -1484,7 +1484,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "reset_workspace_owner",
@@ -1498,7 +1498,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "reset_workspace_label",
@@ -1512,7 +1512,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "normalize_metadata_version",
@@ -1526,7 +1526,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "reset_workspace_last_update",
@@ -1540,7 +1540,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "reset_workspace_intent",
@@ -1554,7 +1554,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "reset_workspace_tags",
@@ -1568,7 +1568,7 @@
       "additionalProperties": false,
       "properties": {
         "payload": {
-          "$ref": "#/definitions/Record<string,never>"
+          "$ref": "#/definitions/Record%3Cstring%2Cnever%3E"
         },
         "type": {
           "const": "reset_workspace_license",
@@ -1877,7 +1877,7 @@
               "type": "boolean"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>",
+              "$ref": "#/definitions/Partial%3C%7Bdisplay%3ADisplayValue%3BhtmlElement%3AHtmlElementValue%3BwrapperElement%3AWrapperElementValue%3Bcontent%3AContentValue%3Bsymbol%3ASymbolValue%3Bsource%3AImageSourceValue%3BimageFit%3AImageFitValue%3BaltText%3AContentValue%3BinputType%3AInputTypeValue%3Bplaceholder%3AContentValue%3Bchecked%3ACheckedValue%3Bcontrols%3AControlsValue%3BautoPlay%3AAutoPlayValue%3Bloop%3ALoopValue%3Bmuted%3AMutedValue%3Bposter%3AImageSourceValue%3Bpreload%3APreloadValue%3BtrackKind%3ATrackKindValue%3BsrcLang%3AContentValue%3BtrackLabel%3AContentValue%3BtrackDefault%3ATrackDefaultValue%3BmediaType%3AContentValue%3BmediaQuery%3AContentValue%3Bsize%3ASizeValue%3BbuttonSize%3AButtonSizeValue%3Bboard%3ABoardCompound%3BscreenWidth%3AScreenWidthValue%3BscreenHeight%3AScreenHeightValue%3Bcursor%3ACursorValue%3Bdirection%3ADirectionValue%3Bplacement%3APlacementValue%3Bposition%3APositionValue%3Borientation%3AOrientationValue%3Balign%3AAlignValue%3Bwidth%3ADimensionValue%3Bheight%3ADimensionValue%3Bmargin%3AMarginValue%3Bpadding%3APaddingValue%3Bgap%3AGapValue%3Brotation%3ARotationValue%3BwrapChildren%3AEmptyValue%7CBooleanOptionValue%3Bclip%3AEmptyValue%7CBooleanOptionValue%3BlistStyleType%3AListStyleTypeValue%3BlistStylePosition%3AListStylePositionValue%3Bcolumns%3AColumnCountValue%3Brows%3ARowCountValue%3BcolumnStart%3AColumnStartValue%3BcolumnSpan%3AColumnSpanValue%3BrowStart%3ARowStartValue%3BrowSpan%3ARowSpanValue%3BcellAlign%3AInheritValue%7CAlignValue%3Bdimension%3ADimensionValue%3Bresize%3AResizeValue%3BscreenSize%3AScreenSizeValue%3Bcolor%3AColorValue%3BaccentColor%3AColorValue%3Bbrightness%3ABrightnessValue%3Bopacity%3AOpacityValue%3Bbackground%3ABackgroundLayer%5B%5D%3Bborder%3ABorderCompound%3BborderTop%3ABorderCompound%3BborderRight%3ABorderCompound%3BborderBottom%3ABorderCompound%3BborderLeft%3ABorderCompound%3Bcorners%3ACornersValue%3BborderCollapse%3ABorderCollapseValue%3Bfont%3AFontCompound%3BtextAlign%3ATextAlignValue%3BtextDecoration%3ATextDecorationValue%3BwrapText%3AEmptyValue%7CBooleanOptionValue%3Blines%3ALinesValue%3Bshadow%3AShadowCompound%5B%5D%3Bscroll%3AScrollValue%3BscrollbarStyle%3AScrollbarStyleValue%3Brole%3AAriaRoleValue%3BariaLabel%3AContentValue%3BariaHidden%3AEmptyValue%7CBooleanOptionValue%3BariaDisabled%3AAriaDisabledValue%3BariaExpanded%3AAriaExpandedValue%3BariaSelected%3AAriaSelectedValue%3BariaChecked%3AAriaTristateValue%3BariaPressed%3AAriaTristateValue%3BariaCurrent%3AAriaCurrentValue%3BariaHasPopup%3AAriaHasPopupValue%3BariaInvalid%3AAriaInvalidValue%3BariaRequired%3AAriaRequiredValue%3BariaReadonly%3AAriaReadonlyValue%3BariaLive%3AAriaLiveValue%3B%7D%3E",
               "description": "Every catalog property key and the stored value shape for that key on a node.\nKeys follow the same category sequence editors use when grouping fields.\nThe type is partial so each component only declares the keys it supports."
             }
           },
@@ -2046,6 +2046,41 @@
       "properties": {
         "payload": {
           "additionalProperties": false,
+          "description": "Swaps one instance for a catalog tree at the same parent and index.",
+          "properties": {
+            "boardKey": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            },
+            "instanceId": {
+              "description": "Node id for an instance row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            },
+            "variantFallbacks": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": ["boardKey", "instanceId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "replace_instance",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
           "properties": {
             "boardKey": {
               "type": "string"
@@ -2165,7 +2200,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial%3C%7Bdisplay%3ADisplayValue%3BhtmlElement%3AHtmlElementValue%3BwrapperElement%3AWrapperElementValue%3Bcontent%3AContentValue%3Bsymbol%3ASymbolValue%3Bsource%3AImageSourceValue%3BimageFit%3AImageFitValue%3BaltText%3AContentValue%3BinputType%3AInputTypeValue%3Bplaceholder%3AContentValue%3Bchecked%3ACheckedValue%3Bcontrols%3AControlsValue%3BautoPlay%3AAutoPlayValue%3Bloop%3ALoopValue%3Bmuted%3AMutedValue%3Bposter%3AImageSourceValue%3Bpreload%3APreloadValue%3BtrackKind%3ATrackKindValue%3BsrcLang%3AContentValue%3BtrackLabel%3AContentValue%3BtrackDefault%3ATrackDefaultValue%3BmediaType%3AContentValue%3BmediaQuery%3AContentValue%3Bsize%3ASizeValue%3BbuttonSize%3AButtonSizeValue%3Bboard%3ABoardCompound%3BscreenWidth%3AScreenWidthValue%3BscreenHeight%3AScreenHeightValue%3Bcursor%3ACursorValue%3Bdirection%3ADirectionValue%3Bplacement%3APlacementValue%3Bposition%3APositionValue%3Borientation%3AOrientationValue%3Balign%3AAlignValue%3Bwidth%3ADimensionValue%3Bheight%3ADimensionValue%3Bmargin%3AMarginValue%3Bpadding%3APaddingValue%3Bgap%3AGapValue%3Brotation%3ARotationValue%3BwrapChildren%3AEmptyValue%7CBooleanOptionValue%3Bclip%3AEmptyValue%7CBooleanOptionValue%3BlistStyleType%3AListStyleTypeValue%3BlistStylePosition%3AListStylePositionValue%3Bcolumns%3AColumnCountValue%3Brows%3ARowCountValue%3BcolumnStart%3AColumnStartValue%3BcolumnSpan%3AColumnSpanValue%3BrowStart%3ARowStartValue%3BrowSpan%3ARowSpanValue%3BcellAlign%3AInheritValue%7CAlignValue%3Bdimension%3ADimensionValue%3Bresize%3AResizeValue%3BscreenSize%3AScreenSizeValue%3Bcolor%3AColorValue%3BaccentColor%3AColorValue%3Bbrightness%3ABrightnessValue%3Bopacity%3AOpacityValue%3Bbackground%3ABackgroundLayer%5B%5D%3Bborder%3ABorderCompound%3BborderTop%3ABorderCompound%3BborderRight%3ABorderCompound%3BborderBottom%3ABorderCompound%3BborderLeft%3ABorderCompound%3Bcorners%3ACornersValue%3BborderCollapse%3ABorderCollapseValue%3Bfont%3AFontCompound%3BtextAlign%3ATextAlignValue%3BtextDecoration%3ATextDecorationValue%3BwrapText%3AEmptyValue%7CBooleanOptionValue%3Blines%3ALinesValue%3Bshadow%3AShadowCompound%5B%5D%3Bscroll%3AScrollValue%3BscrollbarStyle%3AScrollbarStyleValue%3Brole%3AAriaRoleValue%3BariaLabel%3AContentValue%3BariaHidden%3AEmptyValue%7CBooleanOptionValue%3BariaDisabled%3AAriaDisabledValue%3BariaExpanded%3AAriaExpandedValue%3BariaSelected%3AAriaSelectedValue%3BariaChecked%3AAriaTristateValue%3BariaPressed%3AAriaTristateValue%3BariaCurrent%3AAriaCurrentValue%3BariaHasPopup%3AAriaHasPopupValue%3BariaInvalid%3AAriaInvalidValue%3BariaRequired%3AAriaRequiredValue%3BariaReadonly%3AAriaReadonlyValue%3BariaLive%3AAriaLiveValue%3B%7D%3E"
             }
           },
           "required": ["nodeId", "properties"],
@@ -2189,7 +2224,7 @@
               "type": "string"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial%3C%7Bdisplay%3ADisplayValue%3BhtmlElement%3AHtmlElementValue%3BwrapperElement%3AWrapperElementValue%3Bcontent%3AContentValue%3Bsymbol%3ASymbolValue%3Bsource%3AImageSourceValue%3BimageFit%3AImageFitValue%3BaltText%3AContentValue%3BinputType%3AInputTypeValue%3Bplaceholder%3AContentValue%3Bchecked%3ACheckedValue%3Bcontrols%3AControlsValue%3BautoPlay%3AAutoPlayValue%3Bloop%3ALoopValue%3Bmuted%3AMutedValue%3Bposter%3AImageSourceValue%3Bpreload%3APreloadValue%3BtrackKind%3ATrackKindValue%3BsrcLang%3AContentValue%3BtrackLabel%3AContentValue%3BtrackDefault%3ATrackDefaultValue%3BmediaType%3AContentValue%3BmediaQuery%3AContentValue%3Bsize%3ASizeValue%3BbuttonSize%3AButtonSizeValue%3Bboard%3ABoardCompound%3BscreenWidth%3AScreenWidthValue%3BscreenHeight%3AScreenHeightValue%3Bcursor%3ACursorValue%3Bdirection%3ADirectionValue%3Bplacement%3APlacementValue%3Bposition%3APositionValue%3Borientation%3AOrientationValue%3Balign%3AAlignValue%3Bwidth%3ADimensionValue%3Bheight%3ADimensionValue%3Bmargin%3AMarginValue%3Bpadding%3APaddingValue%3Bgap%3AGapValue%3Brotation%3ARotationValue%3BwrapChildren%3AEmptyValue%7CBooleanOptionValue%3Bclip%3AEmptyValue%7CBooleanOptionValue%3BlistStyleType%3AListStyleTypeValue%3BlistStylePosition%3AListStylePositionValue%3Bcolumns%3AColumnCountValue%3Brows%3ARowCountValue%3BcolumnStart%3AColumnStartValue%3BcolumnSpan%3AColumnSpanValue%3BrowStart%3ARowStartValue%3BrowSpan%3ARowSpanValue%3BcellAlign%3AInheritValue%7CAlignValue%3Bdimension%3ADimensionValue%3Bresize%3AResizeValue%3BscreenSize%3AScreenSizeValue%3Bcolor%3AColorValue%3BaccentColor%3AColorValue%3Bbrightness%3ABrightnessValue%3Bopacity%3AOpacityValue%3Bbackground%3ABackgroundLayer%5B%5D%3Bborder%3ABorderCompound%3BborderTop%3ABorderCompound%3BborderRight%3ABorderCompound%3BborderBottom%3ABorderCompound%3BborderLeft%3ABorderCompound%3Bcorners%3ACornersValue%3BborderCollapse%3ABorderCollapseValue%3Bfont%3AFontCompound%3BtextAlign%3ATextAlignValue%3BtextDecoration%3ATextDecorationValue%3BwrapText%3AEmptyValue%7CBooleanOptionValue%3Blines%3ALinesValue%3Bshadow%3AShadowCompound%5B%5D%3Bscroll%3AScrollValue%3BscrollbarStyle%3AScrollbarStyleValue%3Brole%3AAriaRoleValue%3BariaLabel%3AContentValue%3BariaHidden%3AEmptyValue%7CBooleanOptionValue%3BariaDisabled%3AAriaDisabledValue%3BariaExpanded%3AAriaExpandedValue%3BariaSelected%3AAriaSelectedValue%3BariaChecked%3AAriaTristateValue%3BariaPressed%3AAriaTristateValue%3BariaCurrent%3AAriaCurrentValue%3BariaHasPopup%3AAriaHasPopupValue%3BariaInvalid%3AAriaInvalidValue%3BariaRequired%3AAriaRequiredValue%3BariaReadonly%3AAriaReadonlyValue%3BariaLive%3AAriaLiveValue%3B%7D%3E"
             }
           },
           "required": ["nodeId", "properties"],
@@ -2322,7 +2357,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial%3C%7Bdisplay%3ADisplayValue%3BhtmlElement%3AHtmlElementValue%3BwrapperElement%3AWrapperElementValue%3Bcontent%3AContentValue%3Bsymbol%3ASymbolValue%3Bsource%3AImageSourceValue%3BimageFit%3AImageFitValue%3BaltText%3AContentValue%3BinputType%3AInputTypeValue%3Bplaceholder%3AContentValue%3Bchecked%3ACheckedValue%3Bcontrols%3AControlsValue%3BautoPlay%3AAutoPlayValue%3Bloop%3ALoopValue%3Bmuted%3AMutedValue%3Bposter%3AImageSourceValue%3Bpreload%3APreloadValue%3BtrackKind%3ATrackKindValue%3BsrcLang%3AContentValue%3BtrackLabel%3AContentValue%3BtrackDefault%3ATrackDefaultValue%3BmediaType%3AContentValue%3BmediaQuery%3AContentValue%3Bsize%3ASizeValue%3BbuttonSize%3AButtonSizeValue%3Bboard%3ABoardCompound%3BscreenWidth%3AScreenWidthValue%3BscreenHeight%3AScreenHeightValue%3Bcursor%3ACursorValue%3Bdirection%3ADirectionValue%3Bplacement%3APlacementValue%3Bposition%3APositionValue%3Borientation%3AOrientationValue%3Balign%3AAlignValue%3Bwidth%3ADimensionValue%3Bheight%3ADimensionValue%3Bmargin%3AMarginValue%3Bpadding%3APaddingValue%3Bgap%3AGapValue%3Brotation%3ARotationValue%3BwrapChildren%3AEmptyValue%7CBooleanOptionValue%3Bclip%3AEmptyValue%7CBooleanOptionValue%3BlistStyleType%3AListStyleTypeValue%3BlistStylePosition%3AListStylePositionValue%3Bcolumns%3AColumnCountValue%3Brows%3ARowCountValue%3BcolumnStart%3AColumnStartValue%3BcolumnSpan%3AColumnSpanValue%3BrowStart%3ARowStartValue%3BrowSpan%3ARowSpanValue%3BcellAlign%3AInheritValue%7CAlignValue%3Bdimension%3ADimensionValue%3Bresize%3AResizeValue%3BscreenSize%3AScreenSizeValue%3Bcolor%3AColorValue%3BaccentColor%3AColorValue%3Bbrightness%3ABrightnessValue%3Bopacity%3AOpacityValue%3Bbackground%3ABackgroundLayer%5B%5D%3Bborder%3ABorderCompound%3BborderTop%3ABorderCompound%3BborderRight%3ABorderCompound%3BborderBottom%3ABorderCompound%3BborderLeft%3ABorderCompound%3Bcorners%3ACornersValue%3BborderCollapse%3ABorderCollapseValue%3Bfont%3AFontCompound%3BtextAlign%3ATextAlignValue%3BtextDecoration%3ATextDecorationValue%3BwrapText%3AEmptyValue%7CBooleanOptionValue%3Blines%3ALinesValue%3Bshadow%3AShadowCompound%5B%5D%3Bscroll%3AScrollValue%3BscrollbarStyle%3AScrollbarStyleValue%3Brole%3AAriaRoleValue%3BariaLabel%3AContentValue%3BariaHidden%3AEmptyValue%7CBooleanOptionValue%3BariaDisabled%3AAriaDisabledValue%3BariaExpanded%3AAriaExpandedValue%3BariaSelected%3AAriaSelectedValue%3BariaChecked%3AAriaTristateValue%3BariaPressed%3AAriaTristateValue%3BariaCurrent%3AAriaCurrentValue%3BariaHasPopup%3AAriaHasPopupValue%3BariaInvalid%3AAriaInvalidValue%3BariaRequired%3AAriaRequiredValue%3BariaReadonly%3AAriaReadonlyValue%3BariaLive%3AAriaLiveValue%3B%7D%3E"
             },
             "state": {
               "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
@@ -2533,7 +2568,7 @@
               "$ref": "#/definitions/LayeredPaintKey"
             },
             "seed": {
-              "$ref": "#/definitions/Record<string,unknown>"
+              "$ref": "#/definitions/Record%3Cstring%2Cunknown%3E"
             }
           },
           "required": ["nodeId", "property"],
@@ -2644,7 +2679,7 @@
               "type": "string"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial%3C%7Bdisplay%3ADisplayValue%3BhtmlElement%3AHtmlElementValue%3BwrapperElement%3AWrapperElementValue%3Bcontent%3AContentValue%3Bsymbol%3ASymbolValue%3Bsource%3AImageSourceValue%3BimageFit%3AImageFitValue%3BaltText%3AContentValue%3BinputType%3AInputTypeValue%3Bplaceholder%3AContentValue%3Bchecked%3ACheckedValue%3Bcontrols%3AControlsValue%3BautoPlay%3AAutoPlayValue%3Bloop%3ALoopValue%3Bmuted%3AMutedValue%3Bposter%3AImageSourceValue%3Bpreload%3APreloadValue%3BtrackKind%3ATrackKindValue%3BsrcLang%3AContentValue%3BtrackLabel%3AContentValue%3BtrackDefault%3ATrackDefaultValue%3BmediaType%3AContentValue%3BmediaQuery%3AContentValue%3Bsize%3ASizeValue%3BbuttonSize%3AButtonSizeValue%3Bboard%3ABoardCompound%3BscreenWidth%3AScreenWidthValue%3BscreenHeight%3AScreenHeightValue%3Bcursor%3ACursorValue%3Bdirection%3ADirectionValue%3Bplacement%3APlacementValue%3Bposition%3APositionValue%3Borientation%3AOrientationValue%3Balign%3AAlignValue%3Bwidth%3ADimensionValue%3Bheight%3ADimensionValue%3Bmargin%3AMarginValue%3Bpadding%3APaddingValue%3Bgap%3AGapValue%3Brotation%3ARotationValue%3BwrapChildren%3AEmptyValue%7CBooleanOptionValue%3Bclip%3AEmptyValue%7CBooleanOptionValue%3BlistStyleType%3AListStyleTypeValue%3BlistStylePosition%3AListStylePositionValue%3Bcolumns%3AColumnCountValue%3Brows%3ARowCountValue%3BcolumnStart%3AColumnStartValue%3BcolumnSpan%3AColumnSpanValue%3BrowStart%3ARowStartValue%3BrowSpan%3ARowSpanValue%3BcellAlign%3AInheritValue%7CAlignValue%3Bdimension%3ADimensionValue%3Bresize%3AResizeValue%3BscreenSize%3AScreenSizeValue%3Bcolor%3AColorValue%3BaccentColor%3AColorValue%3Bbrightness%3ABrightnessValue%3Bopacity%3AOpacityValue%3Bbackground%3ABackgroundLayer%5B%5D%3Bborder%3ABorderCompound%3BborderTop%3ABorderCompound%3BborderRight%3ABorderCompound%3BborderBottom%3ABorderCompound%3BborderLeft%3ABorderCompound%3Bcorners%3ACornersValue%3BborderCollapse%3ABorderCollapseValue%3Bfont%3AFontCompound%3BtextAlign%3ATextAlignValue%3BtextDecoration%3ATextDecorationValue%3BwrapText%3AEmptyValue%7CBooleanOptionValue%3Blines%3ALinesValue%3Bshadow%3AShadowCompound%5B%5D%3Bscroll%3AScrollValue%3BscrollbarStyle%3AScrollbarStyleValue%3Brole%3AAriaRoleValue%3BariaLabel%3AContentValue%3BariaHidden%3AEmptyValue%7CBooleanOptionValue%3BariaDisabled%3AAriaDisabledValue%3BariaExpanded%3AAriaExpandedValue%3BariaSelected%3AAriaSelectedValue%3BariaChecked%3AAriaTristateValue%3BariaPressed%3AAriaTristateValue%3BariaCurrent%3AAriaCurrentValue%3BariaHasPopup%3AAriaHasPopupValue%3BariaInvalid%3AAriaInvalidValue%3BariaRequired%3AAriaRequiredValue%3BariaReadonly%3AAriaReadonlyValue%3BariaLive%3AAriaLiveValue%3B%7D%3E"
             }
           },
           "required": ["boardKey", "properties"],
@@ -2984,7 +3019,7 @@
               "type": "string"
             },
             "editorData": {
-              "$ref": "#/definitions/Record<string,unknown>"
+              "$ref": "#/definitions/Record%3Cstring%2Cunknown%3E"
             }
           },
           "required": ["boardKey", "editorData"],
@@ -3264,7 +3299,7 @@
           "additionalProperties": false,
           "properties": {
             "editorData": {
-              "$ref": "#/definitions/Record<string,unknown>"
+              "$ref": "#/definitions/Record%3Cstring%2Cunknown%3E"
             },
             "nodeId": {
               "type": "string"
@@ -3488,7 +3523,7 @@
           "additionalProperties": false,
           "properties": {
             "editorData": {
-              "$ref": "#/definitions/Record<string,unknown>"
+              "$ref": "#/definitions/Record%3Cstring%2Cunknown%3E"
             },
             "themeId": {
               "type": "string"
@@ -3884,7 +3919,7 @@
           "additionalProperties": false,
           "properties": {
             "editorData": {
-              "$ref": "#/definitions/Record<string,unknown>"
+              "$ref": "#/definitions/Record%3Cstring%2Cunknown%3E"
             },
             "fontCollectionId": {
               "type": "string"
@@ -9414,6 +9449,8 @@
         "pre",
         "code",
         "span",
+        "b",
+        "em",
         "label",
         "div",
         "section",
@@ -12403,6 +12440,21 @@
                   "type": "object"
                 },
                 {
+                  "additionalProperties": false,
+                  "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
+                  "properties": {
+                    "type": {
+                      "const": "inherit",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "null"
+                    }
+                  },
+                  "required": ["type", "value"],
+                  "type": "object"
+                },
+                {
                   "$ref": "#/definitions/FontValue"
                 }
               ]
@@ -15052,7 +15104,7 @@
           "type": "number"
         },
         "data": {
-          "$ref": "#/definitions/Record<string,string[]>",
+          "$ref": "#/definitions/Record%3Cstring%2Cstring%5B%5D%3E",
           "description": "Optional prototyping strings for text/icon descendants. Keyed by a stable\ndescendant node id. Each array holds values for echoes 1..count-1; index 0\nalways renders the descendant's own value. An empty slot inherits."
         }
       },
@@ -16642,28 +16694,28 @@
       "additionalProperties": false,
       "properties": {
         "boards": {
-          "$ref": "#/definitions/Record<string,Board>"
+          "$ref": "#/definitions/Record%3Cstring%2CBoard%3E"
         },
         "font-collections": {
-          "$ref": "#/definitions/Record<string,EntryFontCollection>"
+          "$ref": "#/definitions/Record%3Cstring%2CEntryFontCollection%3E"
         },
         "icon-sets": {
-          "$ref": "#/definitions/Record<string,EntryIconSet>"
+          "$ref": "#/definitions/Record%3Cstring%2CEntryIconSet%3E"
         },
         "media": {
-          "$ref": "#/definitions/Record<string,EntryMedia>"
+          "$ref": "#/definitions/Record%3Cstring%2CEntryMedia%3E"
         },
         "metadata": {
           "$ref": "#/definitions/WorkspaceMetadata"
         },
         "nodes": {
-          "$ref": "#/definitions/Record<string,EntryNode>"
+          "$ref": "#/definitions/Record%3Cstring%2CEntryNode%3E"
         },
         "playgrounds": {
-          "$ref": "#/definitions/Record<string,PlaygroundBoard>"
+          "$ref": "#/definitions/Record%3Cstring%2CPlaygroundBoard%3E"
         },
         "themes": {
-          "$ref": "#/definitions/Record<string,EntryTheme>"
+          "$ref": "#/definitions/Record%3Cstring%2CEntryTheme%3E"
         }
       },
       "required": [
@@ -16680,7 +16732,7 @@
     },
     "WorkspaceExportSettings": {
       "additionalProperties": false,
-      "description": "Export target and scope choices saved with a workspace, so the editor, the\nCLI, and the MCP host export a workspace the same way without re-specifying\noptions each time. Every field is optional; an absent field falls back to the\nexport surface default.\n\n`platform`, `framework`, and `outputFolder` are opaque strings at the\nworkspace boundary, matching how the factory names its export target\nframework, output layout, and destination folder. The boolean keys mirror the\nfactory's export scope flags one to one, so a surface can feed them straight\ninto the shared flag mapping.",
+      "description": "Export target and scope choices saved with a workspace, so the editor, the\nCLI, and the MCP host export a workspace the same way. A new workspace gets\n{@link DEFAULT_WORKSPACE_EXPORT_SETTINGS}. Load fills any missing field from\nthose defaults. A flag change on the CLI or MCP writes back through\n`set_workspace_export_settings`.\n\n`platform`, `framework`, and `outputFolder` are opaque strings at the\nworkspace boundary, matching how the factory names its export target\nframework, output layout, and destination folder. The editor, the CLI, and\nthe MCP host nest generated files under `outputFolder` and keep `.seldon` at\nthe project root. Empty `outputFolder` means the project root. The boolean\nkeys mirror the factory's export scope flags one to one.",
       "properties": {
         "allFonts": {
           "type": "boolean"
@@ -16727,7 +16779,7 @@
         },
         "exportSettings": {
           "$ref": "#/definitions/WorkspaceExportSettings",
-          "description": "Export target and scope choices saved with the workspace, so the editor,\nthe CLI, and the MCP host export it the same way. Absent fields fall back to\neach surface's default."
+          "description": "Export target and scope choices saved with the workspace, so the editor,\nthe CLI, and the MCP host export it the same way. A new workspace seeds a\ncomplete block. Load fills any missing field from the shared defaults."
         },
         "id": {
           "description": "Stable workspace identity. Written into every persisted file so a live-store\nrecord and an exported workspace copy resolve to the same workspace. The\nmigration backfills it on load and the store stamps it on create, so a\npersisted workspace always carries one; it stays optional on the type only\nto spare in-memory and fixture literals that predate an id.",

@@ -60,6 +60,7 @@ const sdn: FormControlComboboxProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--9vqu",
+    "data-seldon-ref": "Default",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -82,7 +83,7 @@ const sdn: FormControlComboboxProps = {
  *   TextLabel       textLabel
  *   ComboboxField   comboboxField
  *     Icon          icon
- *     Input         input
+ *     Input         input          -> Default
  *     ButtonIconic  buttonIconic
  *       Icon        icon2
  *

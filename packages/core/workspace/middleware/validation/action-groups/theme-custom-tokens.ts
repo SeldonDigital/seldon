@@ -8,7 +8,7 @@ import type { Action, Workspace } from "../../../types"
 export function validateAddThemeCustomToken(workspace: Workspace, action: Action): void {
   const payload = action.payload as { themeId: string; name?: string }
 
-  themeEntryValidators.isVariant(workspace, payload.themeId)
+  themeEntryValidators.canMutateTokens(workspace, payload.themeId)
 
   if (!payload.name?.trim()) {
     throw new WorkspaceValidationError("Custom theme token name is required", action)
@@ -18,7 +18,7 @@ export function validateAddThemeCustomToken(workspace: Workspace, action: Action
 export function validateRemoveThemeCustomToken(workspace: Workspace, action: Action): void {
   const payload = action.payload as { themeId: string; key: string }
 
-  themeEntryValidators.isVariant(workspace, payload.themeId)
+  themeEntryValidators.canMutateTokens(workspace, payload.themeId)
   const section = action.type.slice("remove_theme_custom_".length)
 
   themeEntryValidators.customTokenExists(workspace, payload.themeId, section, payload.key)
@@ -32,7 +32,7 @@ export function validateSetThemeScaleSlot(workspace: Workspace, action: Action):
     value?: { kind?: string; parameters?: { unit?: unknown; value?: unknown } }
   }
 
-  themeEntryValidators.isVariant(workspace, payload.themeId)
+  themeEntryValidators.canMutateTokens(workspace, payload.themeId)
 
   if (!payload.key?.trim()) {
     throw new WorkspaceValidationError("Scale slot key is required", action)
@@ -66,7 +66,7 @@ export function validateSetThemeCustomTokenName(workspace: Workspace, action: Ac
     name: string
   }
 
-  themeEntryValidators.isVariant(workspace, payload.themeId)
+  themeEntryValidators.canMutateTokens(workspace, payload.themeId)
   themeEntryValidators.customTokenExists(workspace, payload.themeId, payload.section, payload.key)
 
   if (!payload.name?.trim()) {

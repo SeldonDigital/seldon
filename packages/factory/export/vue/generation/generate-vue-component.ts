@@ -5,12 +5,14 @@ import { generateJSDocComment } from "../../react/generation/shared/generate-jsd
 import { getConditionalPropPaths } from "../../react/generation/shared/get-conditional-prop-paths"
 import { getVariantClassNames } from "../../react/utils/class-name"
 import { pluralizeLevel } from "../../react/utils/pluralize-level"
+import { serializeRunsToHtml } from "../../shared/content-runs"
 import { getVueRootTag, resolveVueReturns } from "../shared/vue-native-tags"
 import { nodeToTemplate } from "./vue-template"
 
 import type { NodeIdToClass } from "../../css/types"
 import type { JSXNode } from "../../react/generation/preprocess/types"
 import type { ComponentToExport, JSONTreeNode } from "../../types"
+import type { ContentRun } from "@seldon/core/properties"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 type ChildImport = { name: string; path: string }
@@ -52,7 +54,7 @@ const VOID_HTML_TAGS = new Set([
  * Prop keys whose value is rendered as element text content, not as an
  * attribute. Excluded from native attribute bindings.
  */
-const CONTENT_KEYS = new Set(["content", "text", "children"])
+const CONTENT_KEYS = new Set(["content", "text", "children", "runs"])
 
 /**
  * Prop keys that select the root tag at runtime through `:is`. Excluded from
@@ -308,11 +310,14 @@ function buildTemplate(
   if (returns === "htmlElement" || returns === "wrapperElement") {
     const propKey = returns === "htmlElement" ? "htmlElement" : "wrapperElement"
     const contentExpr = componentContentExpr(component)
+    const runHtml = componentRunsHtml(component)
     const defaultSlot = hasChildren
       ? `${childMarkup}\n      `
-      : contentExpr
-        ? `{{ ${contentExpr} }}`
-        : ""
+      : runHtml
+        ? runHtml
+        : contentExpr
+          ? `{{ ${contentExpr} }}`
+          : ""
     const inner = `<slot>${defaultSlot}</slot>`
 
     return `    <component :is="(props.${propKey} as string) ?? sdn.${propKey} ?? 'div'" :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>${inner}</component>`
@@ -326,7 +331,12 @@ function buildTemplate(
     }
 
     const contentExpr = componentContentExpr(component)
-    const body = contentExpr ? `{{ ${contentExpr} }}` : `<slot />`
+    const runHtml = componentRunsHtml(component)
+    const body = runHtml
+      ? `<slot>${runHtml}</slot>`
+      : contentExpr
+        ? `{{ ${contentExpr} }}`
+        : `<slot />`
 
     return `    <${tag} :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>${body}</${tag}>`
   }
@@ -360,6 +370,14 @@ function buildNativeAttrBindings(
   )
 
   return keys.map((key) => ` :${key}="(props.${key} as string) ?? sdn.${key}"`).join("")
+}
+
+function componentRunsHtml(component: ComponentToExport): string | null {
+  const runs = component.tree.dataBinding.props.runs?.value
+
+  if (!Array.isArray(runs) || runs.length === 0) return null
+
+  return serializeRunsToHtml(runs as ContentRun[])
 }
 
 function componentContentExpr(component: ComponentToExport): string | null {

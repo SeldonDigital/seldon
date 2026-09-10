@@ -1,4 +1,4 @@
-import { Display, ValueType } from "@seldon/core"
+import { Display, ValueType, getContentRuns } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
@@ -296,8 +296,11 @@ function getChildNodeProps(properties: Properties) {
   const props: DataBinding["props"] = {}
   const { content, symbol, source, htmlElement, wrapperElement, inputType, placeholder } =
     properties
+  const runs = getContentRuns(properties)
 
-  if (content?.value) {
+  if (runs) {
+    props.runs = { defaultValue: "", value: runs, type: "object" }
+  } else if (content?.value) {
     props.children = { defaultValue: content.value }
   }
 

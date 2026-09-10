@@ -120,21 +120,36 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.LIST_ITEM,
-        overrides: {
-          content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
-        },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.LIST_ITEM,
-        overrides: {
-          content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
-        },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.LIST_ITEM,
-        overrides: {
-          content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
-        },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
+            },
+          },
+        ],
       },
     ],
   },
@@ -153,21 +168,36 @@ export const schema = {
       children: [
         {
           component: Seldon.ComponentId.LIST_ITEM,
-          overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
-          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
+              },
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.LIST_ITEM,
-          overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
-          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
+              },
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.LIST_ITEM,
-          overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
-          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
+              },
+            },
+          ],
         },
       ],
     },

@@ -4,6 +4,7 @@ export {
   EXPORT_FLAG_BY_CLI_NAME,
   EXPORT_FLAG_DEFAULTS,
   EXPORT_FLAGS,
+  applyWorkspaceExportScope,
   toExportScopeOptions,
   workspaceExportScopeFlags,
 } from "./export/options"

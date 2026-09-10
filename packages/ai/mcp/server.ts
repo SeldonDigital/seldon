@@ -26,7 +26,8 @@ export interface ExportedFile {
 /**
  * Options a caller may pass to an export. Framework and styles pick the target;
  * the {@link ExportScopeFlags} choose the scope, matching the editor dialog and
- * the CLI. An omitted flag falls back to the shared default.
+ * the CLI. An omitted flag uses the workspace setting. A passed flag is written
+ * back to the workspace so the next editor, CLI, or MCP export matches.
  */
 export interface McpExportOptions extends Partial<ExportScopeFlags> {
   framework?: string
@@ -341,7 +342,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
           outputDir: {
             type: "string",
             description:
-              "Subfolder of the project to write the export into. Defaults to the project root.",
+              "Project-relative folder to nest generated files. Same as workspace outputFolder. Empty is the project root. Saved on the workspace when passed.",
           },
           write: {
             type: "boolean",

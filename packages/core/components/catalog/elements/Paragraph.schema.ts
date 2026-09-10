@@ -4,26 +4,29 @@ import * as Seldon from "../../constants"
 import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "List Item",
-  id: Seldon.ComponentId.LIST_ITEM,
-  intent:
-    "Text item inside a list. Renders as li in ordered and unordered lists, or as dt and dd in description lists.",
-  tags: ["list text", "li", "dt", "dd", "list item", "description", "primitive", "text"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
+  name: "Paragraph",
+  id: Seldon.ComponentId.PARAGRAPH,
+  intent: "One paragraph block. Children are inline Text runs for plain, bold, and italic spans.",
+  tags: ["paragraph", "text", "inline", "element", "typography", "UI"],
+  level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.TEXT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     htmlElement: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.HtmlElement.LI,
-    },
-    content: {
-      type: Sdn.ValueType.EXACT,
-      value: "List item",
+      value: Sdn.HtmlElement.P,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
-    width: { type: Sdn.ValueType.EMPTY, value: null },
-    height: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.VERTICAL },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
+    width: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
+    },
+    height: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FIT,
+    },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -36,10 +39,9 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    color: {
-      type: Sdn.ValueType.COMPUTED,
-      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-    },
+    gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
+    wrapChildren: { type: Sdn.ValueType.OPTION, value: false },
+    color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
@@ -109,7 +111,7 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,
     },
-    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
+    textAlign: { type: Sdn.ValueType.OPTION, value: Sdn.TextAlign.LEFT },
     wrapText: {
       type: Sdn.ValueType.OPTION,
       value: true,
@@ -134,36 +136,35 @@ export const schema = {
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
-  variants: [
-    {
-      id: "term",
-      label: "Term",
-      intent: "Term or label in a description list.",
-      overrides: {
-        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.DT },
-        content: { type: Sdn.ValueType.EXACT, value: "Term" },
-        font: {
-          preset: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.label",
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.SPAN },
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value:
+              "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
+          },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          font: {
+            preset: { type: Sdn.ValueType.INHERIT, value: null },
           },
         },
       },
-    },
+    ],
+  },
+  variants: [
     {
-      id: "details",
-      label: "Details",
-      intent: "Definition or detail content in a description list.",
+      id: "tagline",
+      label: "Tagline",
+      intent: "Brief descriptive or marketing phrase used in branding or headers.",
       overrides: {
-        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.DD },
-        content: { type: Sdn.ValueType.EXACT, value: "Details" },
-        margin: {
-          bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
-        },
         font: {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.body",
+            value: "@font.tagline",
           },
         },
       },

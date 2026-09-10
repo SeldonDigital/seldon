@@ -23,7 +23,8 @@ export function useAddNodeFontFamily(nodeId: VariantId | InstanceId) {
   const theme = useNodeTheme(node)
   const nodeProperties = getNodeProperties(node, workspace)
   const preset = resolveValue(nodeProperties.font?.preset)
-  const themeFont = preset ? getThemeOption(preset.value, theme) : undefined
+  const themeFont =
+    preset && typeof preset.value === "string" ? getThemeOption(preset.value, theme) : undefined
 
   const family =
     resolveFontFamily({ fontFamily: nodeProperties.font?.family, theme }) ||
