@@ -56,7 +56,12 @@ export function CanvasWorkspace() {
   )
 }
 
-function renderBoard(board: Board) {
+/**
+ * Renders one board by its kind. `useOwnKey` makes a component board key off the
+ * board passed in rather than the current selection, which the capture surface
+ * needs because it renders a board the canvas is not showing.
+ */
+export function renderBoard(board: Board, { useOwnKey }: { useOwnKey?: boolean } = {}) {
   // Check if this is a resource board type.
   if (isResourceType(board)) {
     if (isIconSetBoard(board)) {
@@ -77,7 +82,7 @@ function renderBoard(board: Board) {
   }
 
   // Default to regular board rendering
-  return <ComponentBoard board={board} />
+  return <ComponentBoard board={board} useOwnKey={useOwnKey} />
 }
 
 function ActiveBoard() {

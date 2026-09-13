@@ -33,8 +33,10 @@ export type {
 } from "./tools"
 export { createSeldonMcpServer } from "./mcp/server"
 export type {
+  CapturedImage,
   CheckpointInfo,
   ExportedFile,
+  McpCaptureOptions,
   McpExportOptions,
   McpHost,
   WorkspaceTarget,

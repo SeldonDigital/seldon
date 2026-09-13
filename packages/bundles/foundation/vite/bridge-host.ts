@@ -1,14 +1,17 @@
 import { EditSession } from "@seldon/ai"
 
 import type {
+  BridgeCaptureRequest,
   BridgeCommandType,
   BridgeContext,
   BridgeResult,
 } from "../../../editor/shared/lib/mcp/bridge-protocol"
 import type {
+  CapturedImage,
   CheckpointInfo,
   ExportedFile,
   HeadlessHost,
+  McpCaptureOptions,
   McpExportOptions,
   McpHost,
   SelectionContext,
@@ -21,10 +24,20 @@ import type { ServerResponse } from "node:http"
 /** How long the server waits for a tab to answer one command. */
 const COMMAND_TIMEOUT_MS = 15_000
 
+/** How long the server waits for a tab to rasterize a canvas capture. */
+const CAPTURE_TIMEOUT_MS = 45_000
+
 interface PendingCommand {
   resolve: (result: BridgeResult) => void
   reject: (error: Error) => void
   timer: ReturnType<typeof setTimeout>
+}
+
+/** Optional payload fields a command may carry besides its type and id. */
+interface BridgeSendExtra {
+  actions?: WorkspaceAction[]
+  workspace?: unknown
+  capture?: BridgeCaptureRequest
 }
 
 /** Raised when a target has no connected editor tab, so the host falls back. */
@@ -78,7 +91,8 @@ export class BridgeHub {
   send(
     workspaceId: string,
     type: BridgeCommandType,
-    extra: { actions?: WorkspaceAction[]; workspace?: unknown } = {},
+    extra: BridgeSendExtra = {},
+    timeoutMs = COMMAND_TIMEOUT_MS,
   ): Promise<BridgeResult> {
     const client = this.clients.get(workspaceId)
 
@@ -88,8 +102,8 @@ export class BridgeHub {
     return new Promise<BridgeResult>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pending.delete(id)
-        reject(new Error(`Editor tab did not answer "${type}" within ${COMMAND_TIMEOUT_MS}ms.`))
-      }, COMMAND_TIMEOUT_MS)
+        reject(new Error(`Editor tab did not answer "${type}" within ${timeoutMs}ms.`))
+      }, timeoutMs)
 
       this.pending.set(id, { resolve, reject, timer })
       client.write(`data: ${JSON.stringify({ id, type, ...extra })}\n\n`)
@@ -205,6 +219,31 @@ export class BridgeHost implements McpHost {
     // content change, so a connected tab's autosave is picked up and the export
     // reflects the current workspace.
     return this.fallback.export(targetId, options)
+  }
+
+  async capture(
+    targetId: string,
+    options?: McpCaptureOptions,
+  ): Promise<CapturedImage | { message: string }> {
+    if (!this.hub.hasClient(targetId)) {
+      return {
+        message:
+          "No editor tab is connected. Open this workspace in the editor and call render_preview again. Headless capture is not available yet.",
+      }
+    }
+
+    const result = await this.hub.send(
+      targetId,
+      "capture",
+      { capture: options },
+      CAPTURE_TIMEOUT_MS,
+    )
+
+    if (!result.ok || !result.image) {
+      return { message: result.error ?? "The editor tab returned no image." }
+    }
+
+    return result.image
   }
 
   async undo(targetId: string): Promise<{ version: number } | { message: string }> {

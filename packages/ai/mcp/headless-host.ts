@@ -22,8 +22,10 @@ import { WorkspaceStore } from "./store"
 
 import type { RejectedActionResult } from "../types"
 import type {
+  CapturedImage,
   CheckpointInfo,
   ExportedFile,
+  McpCaptureOptions,
   McpExportOptions,
   McpHost,
   WorkspaceTarget,
@@ -312,6 +314,16 @@ export class HeadlessHost implements McpHost {
     }
 
     return files.map(toExportedFile)
+  }
+
+  async capture(
+    _targetId: string,
+    _options?: McpCaptureOptions,
+  ): Promise<CapturedImage | { message: string }> {
+    return {
+      message:
+        "render_preview needs a live editor tab. Open this workspace in the editor and call it again. Headless capture is not available yet.",
+    }
   }
 
   async undo(targetId: string): Promise<{ version: number } | { message: string }> {

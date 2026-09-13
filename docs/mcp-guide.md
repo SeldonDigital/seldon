@@ -25,6 +25,9 @@ model. The tools fall into groups:
 - Session: `workspace_list`, `workspace_select`, `workspace_create`,
   `get_target_status`, `workspace_export`, `undo`, `redo`,
   `create_checkpoint`, `restore_checkpoint`, and `list_checkpoints`.
+- Preview: `render_preview` returns a JPEG of a board or node. It needs an editor
+  tab with the workspace open. A headless host returns a message telling the
+  agent to open the editor.
 
 A write with no open transaction commits on its own as one revision. A write
 inside `begin_change` accumulates until `commit_change`.
@@ -51,6 +54,15 @@ There are two hosts:
 | Headless CLI | `HeadlessHost` | stdio | `seldon-mcp` bin | no |
 | Headless service | `HeadlessHost` | Streamable HTTP | `seldon-mcp --http` | no |
 | Editor bridge | `BridgeHost` | Streamable HTTP | editor dev server | yes |
+
+`render_preview` only works on the editor bridge when a tab has the workspace
+open. Headless CLI and HTTP return a directive instead of an image.
+
+A capture never moves the user. Pass a `nodeId` to rasterize one variant or part
+instead of a whole board, which keeps the image small. Pass a `boardKey` to
+rasterize a board the editor is not showing. The canvas shows one board at a
+time, so the tab renders any other board on a surface off the viewport and reads
+it there. The tab's selection, active board, pan, and zoom are left alone.
 
 ### Headless over stdio
 

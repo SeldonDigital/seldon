@@ -37,6 +37,27 @@ export interface McpExportOptions extends Partial<ExportScopeFlags> {
   write?: boolean
 }
 
+/**
+ * Options a caller may pass to a canvas capture. An omitted target captures the
+ * board the editor is currently showing. `maxSize` caps the longest JPEG side.
+ */
+export interface McpCaptureOptions {
+  nodeId?: string
+  boardKey?: string
+  rootPath?: string
+  maxSize?: number
+  quality?: number
+}
+
+/** One JPEG rasterized from a live editor tab. `data` is bare base64. */
+export interface CapturedImage {
+  data: string
+  mimeType: string
+  width: number
+  height: number
+  label?: string
+}
+
 /** One stored checkpoint an agent can restore. */
 export interface CheckpointInfo {
   id: string
@@ -68,6 +89,14 @@ export interface McpHost {
   /** Adopts a session's working copy as one revision and persists it. */
   commitSession(targetId: string, session: EditSession): Promise<{ version: number }>
   export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]>
+  /**
+   * Rasterizes a board or node from a live editor tab. Headless hosts return a
+   * message telling the agent to open the editor.
+   */
+  capture(
+    targetId: string,
+    options?: McpCaptureOptions,
+  ): Promise<CapturedImage | { message: string }>
   undo(targetId: string): Promise<{ version: number } | { message: string }>
   redo(targetId: string): Promise<{ version: number } | { message: string }>
   createCheckpoint(targetId: string, label?: string): Promise<CheckpointInfo>
@@ -122,9 +151,23 @@ function withHostParams(schema: TSchema): JsonObjectSchema {
   }
 }
 
-/** Wraps text in the MCP tool result shape, marking an error when needed. */
-function toolResult(text: string, isError = false) {
-  return { content: [{ type: "text" as const, text }], isError }
+/** Text plus an optional image a host tool may return. */
+interface HostToolResult {
+  text: string
+  image?: CapturedImage
+}
+
+/** Wraps text, and an optional JPEG, in the MCP tool result shape. */
+function toolResult(text: string, isError = false, image?: CapturedImage) {
+  const content: Array<
+    { type: "text"; text: string } | { type: "image"; data: string; mimeType: string }
+  > = [{ type: "text", text }]
+
+  if (image) {
+    content.push({ type: "image", data: image.data, mimeType: image.mimeType })
+  }
+
+  return { content, isError }
 }
 
 /** A host/session tool defined against the host and the connection state. */
@@ -132,7 +175,7 @@ interface HostTool {
   name: string
   description: string
   inputSchema: JsonObjectSchema
-  run(args: Record<string, unknown>): Promise<string>
+  run(args: Record<string, unknown>): Promise<string | HostToolResult>
 }
 
 const OBJECT_SCHEMA: JsonObjectSchema = { type: "object", properties: {}, required: [] }
@@ -148,6 +191,22 @@ const exportScopeFlagSchema: Record<string, { type: "boolean"; description: stri
       (flag) => [flag.storeKey, { type: "boolean", description: flag.description }] as const,
     ),
   )
+
+/** Reads a finite number greater than zero, or undefined when the value is not one. */
+function readPositiveNumber(value: unknown): number | undefined {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) return undefined
+
+  return value
+}
+
+/** Reads a finite number in (0, 1], or undefined when the value is not one. */
+function readUnitInterval(value: unknown): number | undefined {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0 || value > 1) {
+    return undefined
+  }
+
+  return value
+}
 
 /** Reads the boolean export scope flags a caller passed, ignoring the rest. */
 function readExportScopeFlags(args: Record<string, unknown>): Partial<ExportScopeFlags> {
@@ -379,6 +438,56 @@ export function createSeldonMcpServer(host: McpHost): Server {
       },
     },
     {
+      name: "render_preview",
+      description:
+        "Return a JPEG of a board or node so you can check the design visually before reporting done. Needs an editor tab with the workspace open. Pass a nodeId to check one variant or part instead of a whole board, which keeps the image small. Pass a boardKey to check a board the editor is not showing. Either way the editor tab keeps its own selection, board, pan, and zoom, so a capture never moves the user. Omit both ids to capture the board the editor is showing.",
+      inputSchema: withHostParams({
+        type: "object",
+        properties: {
+          nodeId: {
+            type: "string",
+            description:
+              "Node id to capture, from find_nodes or describe_node. Rasterizes that node alone, on whichever board holds it. Takes precedence over boardKey.",
+          },
+          boardKey: {
+            type: "string",
+            description: "Board key to capture, from list_boards. Used when nodeId is omitted.",
+          },
+          maxSize: {
+            type: "number",
+            description:
+              "Longest JPEG side in pixels. Defaults to 1200. Does not enlarge a smaller target.",
+          },
+          quality: {
+            type: "number",
+            description: "JPEG quality from 0 to 1. Defaults to 0.8.",
+          },
+        },
+        required: [],
+      } as unknown as TSchema),
+      run: async (args) => {
+        const resolved = await resolveTargetId(args)
+
+        if ("directive" in resolved) return resolved.directive
+        const result = await host.capture(resolved.id, {
+          nodeId: typeof args.nodeId === "string" ? args.nodeId : undefined,
+          boardKey: typeof args.boardKey === "string" ? args.boardKey : undefined,
+          maxSize: readPositiveNumber(args.maxSize),
+          quality: readUnitInterval(args.quality),
+        })
+
+        if ("message" in result) return result.message
+
+        const label = result.label ?? "the canvas"
+        const size = `${result.width}x${result.height}`
+
+        return {
+          text: `Captured ${label} as a ${size} JPEG.`,
+          image: result,
+        }
+      },
+    },
+    {
       name: "begin_change",
       description:
         "Open a transaction on the target workspace. Every write until commit_change accumulates in one edit session and adopts as a single revision (one undo step). Reads inside see the pending changes.",
@@ -557,9 +666,11 @@ export function createSeldonMcpServer(host: McpHost): Server {
 
     try {
       const hostTool = hostToolsByName.get(name)
-      const text = hostTool ? await hostTool.run(args) : await runRegistryTool(name, args)
+      const output = hostTool ? await hostTool.run(args) : await runRegistryTool(name, args)
 
-      return toolResult(text)
+      if (typeof output === "string") return toolResult(output)
+
+      return toolResult(output.text, false, output.image)
     } catch (caught) {
       const reason = caught instanceof Error ? caught.message : "Tool call failed."
 

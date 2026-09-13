@@ -1,5 +1,4 @@
-import type { ComponentId } from "@seldon/core/components/constants"
-import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
+import type { BoardKey, InstanceId, VariantId } from "@seldon/core/workspace/types"
 
 /** The canvas element that all node rects are measured relative to. */
 export function getCanvasElement(): HTMLElement | null {
@@ -34,7 +33,7 @@ export function getHtmlElementByNodeId(nodeId: string): HTMLElement | null {
   return document.querySelector(`[data-canvas-node-id="${nodeId}"]`)
 }
 
-export function getHtmlElementByBoardId(boardId: ComponentId): HTMLElement | null {
+export function getHtmlElementByBoardId(boardId: BoardKey): HTMLElement | null {
   return document.querySelector(`[data-board-id="${boardId}"]`)
 }
 
