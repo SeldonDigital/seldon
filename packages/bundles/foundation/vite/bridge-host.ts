@@ -14,6 +14,7 @@ import type {
   McpCaptureOptions,
   McpExportOptions,
   McpHost,
+  McpWriteImageOptions,
   SelectionContext,
   SelectionScope,
   WorkspaceTarget,
@@ -219,6 +220,13 @@ export class BridgeHost implements McpHost {
     // content change, so a connected tab's autosave is picked up and the export
     // reflects the current workspace.
     return this.fallback.export(targetId, options)
+  }
+
+  async writeImage(
+    targetId: string,
+    options: McpWriteImageOptions,
+  ): Promise<{ publicPath: string }> {
+    return this.fallback.writeImage(targetId, options)
   }
 
   async capture(

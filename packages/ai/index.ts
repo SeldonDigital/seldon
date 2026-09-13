@@ -39,6 +39,7 @@ export type {
   McpCaptureOptions,
   McpExportOptions,
   McpHost,
+  McpWriteImageOptions,
   WorkspaceTarget,
 } from "./mcp/server"
 export { HeadlessHost } from "./mcp/headless-host"

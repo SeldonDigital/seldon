@@ -134,6 +134,13 @@ Each workspace is one `<id>.json` file, and the directory listing is the index.
 Point the editor's workspace API and `seldon-mcp` at the same directory and both
 see the same records.
 
+Call `get_design_guide` for the one-shot build order and for property, theme,
+image, and export rules. Call `set_image` to place a local image. The tool
+copies the file into `public/sdn` and stores a `/sdn/<name>` path. New boards
+fit their content. A catalog `screen` still defaults to 600px by 600px. The
+default screen variant is locked. Call `add_variant` and build each page on
+that user variant.
+
 The editor serves this store only when it runs at the project root. Opening a
 file in the editor imports it into the current store. It does not switch which
 store the editor serves.

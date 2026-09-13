@@ -8,6 +8,7 @@ import { agentApiPlugin } from "../../../bundles/foundation/vite/agent-api-plugi
 import { mcpApiPlugin } from "../../../bundles/foundation/vite/mcp-api-plugin"
 import { exportApiPlugin } from "../../shared/vite/export-api-plugin"
 import { importWebApiPlugin } from "../../shared/vite/import-web-api-plugin"
+import { projectAssetsPlugin } from "../../shared/vite/project-assets-plugin"
 import { workspaceApiPlugin } from "../../shared/vite/workspace-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
@@ -26,6 +27,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     vue(),
     workspaceApiPlugin({ root: repoRoot }),
+    projectAssetsPlugin({ root: repoRoot }),
     exportApiPlugin({ root: repoRoot }),
     importWebApiPlugin(),
     agentApiPlugin(),

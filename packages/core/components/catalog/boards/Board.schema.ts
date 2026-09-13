@@ -12,15 +12,9 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     board: {
-      preset: { type: Sdn.ValueType.EMPTY, value: null },
-      width: {
-        type: Sdn.ValueType.EXACT,
-        value: { value: 800, unit: Sdn.Unit.PX },
-      },
-      height: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Resize.FIT,
-      },
+      preset: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+      height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {

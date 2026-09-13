@@ -23,11 +23,26 @@ model. The tools fall into groups:
 - Transactions: `begin_change`, `commit_change`, and `rollback_change` group a
   multi-step edit so it lands as one revision and one undo step.
 - Session: `workspace_list`, `workspace_select`, `workspace_create`,
-  `get_target_status`, `workspace_export`, `undo`, `redo`,
-  `create_checkpoint`, `restore_checkpoint`, and `list_checkpoints`.
+  `get_target_status`, `workspace_export`, `set_image`, `get_design_guide`,
+  `undo`, `redo`, `create_checkpoint`, `restore_checkpoint`, and
+  `list_checkpoints`.
 - Preview: `render_preview` returns a JPEG of a board or node. It needs an editor
   tab with the workspace open. A headless host returns a message telling the
   agent to open the editor.
+
+`get_design_guide` returns workflow, composition, property, theme, image, and
+export guidance so an agent can build without reading the source. Pass a
+`section` to pull one topic.
+
+`set_image` copies a local file or data URL into the project's `public/sdn`
+folder and stores a `/sdn/<name>` path. Pass `nodeId` to write that path onto
+`source` or `background`. The editor canvas serves `public/sdn` at `/sdn` so the
+image renders in the editor and in `render_preview`.
+
+New boards fit their content. A catalog `screen` still defaults to 600px by
+600px. Set `screenWidth` and `screenHeight` or a wider page clips. The default
+screen variant is locked. Call `add_variant` and insert page content into that
+user variant.
 
 A write with no open transaction commits on its own as one revision. A write
 inside `begin_change` accumulates until `commit_change`.
@@ -57,6 +72,11 @@ There are two hosts:
 
 `render_preview` only works on the editor bridge when a tab has the workspace
 open. Headless CLI and HTTP return a directive instead of an image.
+
+`set_image` writes files on disk through the host, so it works in headless and
+bridge mode. The `/sdn` canvas route is part of the editor dev server. A
+headless export still emits `/sdn/<name>` references. The destination app must
+serve `public/` at the site root.
 
 A capture never moves the user. Pass a `nodeId` to rasterize one variant or part
 instead of a whole board, which keeps the image small. Pass a `boardKey` to

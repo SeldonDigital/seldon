@@ -3,6 +3,7 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprot
 import { EXPORT_FLAGS } from "@seldon/factory"
 
 import { SELDON_TOOLS, SELDON_TOOLS_BY_NAME } from "../tools"
+import { getDesignGuide } from "./guide"
 
 import type { EditSession, SelectionContext, ToolContext } from "../tools"
 import type { Tool } from "@modelcontextprotocol/sdk/types.js"
@@ -35,6 +36,16 @@ export interface McpExportOptions extends Partial<ExportScopeFlags> {
   componentsFolder?: string
   outputDir?: string
   write?: boolean
+}
+
+/**
+ * Options a caller may pass to stage an image into the project's public folder.
+ * Pass `path` or `dataUrl`, not both. `name` overrides the destination filename.
+ */
+export interface McpWriteImageOptions {
+  path?: string
+  dataUrl?: string
+  name?: string
 }
 
 /**
@@ -89,6 +100,11 @@ export interface McpHost {
   /** Adopts a session's working copy as one revision and persists it. */
   commitSession(targetId: string, session: EditSession): Promise<{ version: number }>
   export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]>
+  /**
+   * Copies an image into the project's `public/sdn` folder and returns the
+   * `/sdn/<name>` path the workspace should store on `source` or `background`.
+   */
+  writeImage(targetId: string, options: McpWriteImageOptions): Promise<{ publicPath: string }>
   /**
    * Rasterizes a board or node from a live editor tab. Headless hosts return a
    * message telling the agent to open the editor.
@@ -235,8 +251,18 @@ export function createSeldonMcpServer(host: McpHost): Server {
     { name: "seldon", version: "0.0.0" },
     {
       capabilities: { tools: {} },
-      instructions:
-        "Drive Seldon designs safely. Discover with the read tools, set a target with select_node/select_board/set_scope, and edit only through the write tools; every write passes the same safe-apply pipeline the editor uses. Group multi-step edits in begin_change/commit_change so they land as one revision.",
+      instructions: `Seldon is a design engine. You compose components in a workspace, preview them, and export framework code into the project.
+
+One-shot build from an empty workspace:
+1. Call get_design_guide with section workflow before you start. Call it again for composition, properties, theme, images, or export when you need detail.
+2. Build small components first, then compose them upward. Prefer create_authored_component for new pieces. The catalog is thin. Use add_component only for a useful built-in such as screen, text, icon, image, or frame.
+3. Final pages are user variants of the catalog screen component. Add screen, then add_variant before you insert anything. The default screen is locked and rejects children. screenWidth and screenHeight default to 600px exact. Set them or the page clips.
+4. New boards fit their content. Do not pin a board width unless you need a device frame.
+5. Put images on a node with set_image. Never write a local filesystem path or a raw data URL into source or background.
+6. Call render_preview after each meaningful compose so you can see the design. It needs an editor tab with the workspace open.
+7. When the design is done, call workspace_export to write framework code into the project.
+
+Edit only through write tools. Group a multi-step edit in begin_change and commit_change so it lands as one revision. Prefer theme tokens such as @swatch.primary and @fontSize.medium over hardcoded literals.`,
     },
   )
 
@@ -388,7 +414,7 @@ export function createSeldonMcpServer(host: McpHost): Server {
     {
       name: "workspace_export",
       description:
-        "Export the target workspace to framework code, write the files into the project, and return the list of files produced. Pass framework and styles to pick the target. Set write to false to list the paths without writing.",
+        "Export the target workspace to framework code and write the files into the project. Files land under the project root, or under outputDir when passed. Pass framework and styles to pick the target. Set write to false to list the paths without writing.",
       inputSchema: withHostParams({
         type: "object",
         properties: {
@@ -435,6 +461,95 @@ export function createSeldonMcpServer(host: McpHost): Server {
           : `Exported ${files.length} file(s):`
 
         return `${header}\n${files.map((f) => `- ${f.path}`).join("\n")}`
+      },
+    },
+    {
+      name: "get_design_guide",
+      description:
+        "Return design guidance for building in Seldon without reading the source. Pass section workflow, composition, properties, theme, images, or export. Omit section for the index.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          section: {
+            type: "string",
+            description:
+              "Guide section: workflow, composition, properties, theme, images, or export.",
+          },
+        },
+        required: [],
+      },
+      run: async (args) => {
+        return getDesignGuide(typeof args.section === "string" ? args.section : undefined)
+      },
+    },
+    {
+      name: "set_image",
+      description:
+        "Copy a local image into the project's public/sdn folder and optionally write it onto a node as source or background. Pass a file path or a data URL. With nodeId, writes the property. Without nodeId, stages the file and returns the /sdn path. Never store a filesystem path or a raw data URL on the node yourself.",
+      inputSchema: withHostParams({
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            description: "Local file path to copy. Relative paths resolve from the project root.",
+          },
+          dataUrl: {
+            type: "string",
+            description: "Image data URL to decode and write. Use when the file is not on disk.",
+          },
+          name: {
+            type: "string",
+            description: "Optional filename under public/sdn. Defaults to the source file name.",
+          },
+          nodeId: {
+            type: "string",
+            description: "Node to write the image onto. Omit to stage the file only.",
+          },
+          slot: {
+            type: "string",
+            enum: ["source", "background"],
+            description:
+              "Where to write the image on the node. source is the Image source. background paints layer 0 as kind image. Defaults to source.",
+          },
+        },
+        required: [],
+      } as unknown as TSchema),
+      run: async (args) => {
+        const resolved = await resolveTargetId(args)
+
+        if ("directive" in resolved) return resolved.directive
+        const written = await host.writeImage(resolved.id, {
+          path: typeof args.path === "string" ? args.path : undefined,
+          dataUrl: typeof args.dataUrl === "string" ? args.dataUrl : undefined,
+          name: typeof args.name === "string" ? args.name : undefined,
+        })
+        const nodeId = typeof args.nodeId === "string" ? args.nodeId : undefined
+
+        if (!nodeId) {
+          return `Staged image at ${written.publicPath}. Pass nodeId to write it onto a node.`
+        }
+
+        const slot = args.slot === "background" ? "background" : "source"
+        const properties =
+          slot === "background"
+            ? {
+                background: [
+                  {
+                    kind: { type: "option", value: "image" },
+                    image: { type: "exact", value: written.publicPath },
+                  },
+                ],
+              }
+            : {
+                source: { type: "exact", value: written.publicPath },
+              }
+        const write = await runRegistryTool("set_properties", {
+          ...args,
+          target: { nodeId },
+          properties,
+        })
+
+        return `Wrote ${written.publicPath} onto ${nodeId} ${slot}.\n${write}`
       },
     },
     {

@@ -19,6 +19,7 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 
 import { EditSession, safeApply } from "../tools"
 import { WorkspaceStore } from "./store"
+import { writeImageToProject } from "./write-image"
 
 import type { RejectedActionResult } from "../types"
 import type {
@@ -28,6 +29,7 @@ import type {
   McpCaptureOptions,
   McpExportOptions,
   McpHost,
+  McpWriteImageOptions,
   WorkspaceTarget,
 } from "./server"
 import type { StatToken } from "./store"
@@ -117,9 +119,10 @@ export interface HeadlessHostOptions {
   /** Directory holding the `<id>.json` workspace files. */
   storeDir: string
   /**
-   * Root an export writes files into and the factory reads engine assets from.
-   * Defaults to the project root derived from the store directory, so an export
-   * lands in the project even when the process runs from another directory.
+   * Root an export and set_image write files into, and the factory reads engine
+   * assets from. Defaults to the project root derived from the store directory,
+   * so writes land in the project even when the process runs from another
+   * directory.
    */
   exportRoot?: string
 }
@@ -314,6 +317,15 @@ export class HeadlessHost implements McpHost {
     }
 
     return files.map(toExportedFile)
+  }
+
+  async writeImage(
+    targetId: string,
+    options: McpWriteImageOptions,
+  ): Promise<{ publicPath: string }> {
+    await this.getState(targetId)
+
+    return writeImageToProject(this.exportRoot, options)
   }
 
   async capture(
