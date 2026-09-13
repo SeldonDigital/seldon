@@ -139,7 +139,8 @@ image, and export rules. Call `set_image` to place a local image. The tool
 copies the file into `public/sdn` and stores a `/sdn/<name>` path. New boards
 fit their content. A catalog `screen` still defaults to 600px by 600px. The
 default screen variant is locked. Call `add_variant` and build each page on
-that user variant.
+that user variant. Call `commit_change` before `render_preview`. A preview
+shows the committed canvas, not an open transaction.
 
 The editor serves this store only when it runs at the project root. Opening a
 file in the editor imports it into the current store. It does not switch which

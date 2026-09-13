@@ -10,7 +10,7 @@ Call list_boards and get_design_guide as you go. Do not invent catalog ids. Call
 5. Final pages are user variants of the catalog screen component. Call add_component with catalog id screen. Then call add_variant before you insert anything. The default screen is locked and rejects children. Build each page on a user variant. Set screenWidth and screenHeight. They default to 600px exact and will clip a wider page.
 6. New boards fit their content. Do not pin a board width unless you need a device frame.
 7. Put images on a node with set_image. Never write a local filesystem path or a raw data URL into source or background.
-8. After each meaningful compose, call render_preview. Pass a nodeId to inspect one piece. It needs an editor tab with the workspace open.
+8. After each meaningful compose, call commit_change, then render_preview. A preview shows the committed canvas, not an open transaction. Pass a nodeId to inspect one piece. It needs an editor tab with the workspace open.
 9. Group a multi-step edit in begin_change and commit_change so it lands as one revision.
 10. When the design is done, call workspace_export to write framework code into the project.
 

@@ -35,6 +35,7 @@ export { createSeldonMcpServer } from "./mcp/server"
 export type {
   CapturedImage,
   CheckpointInfo,
+  CommitOutcome,
   ExportedFile,
   McpCaptureOptions,
   McpExportOptions,

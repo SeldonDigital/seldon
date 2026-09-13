@@ -1,4 +1,4 @@
-import { EditSession } from "@seldon/ai"
+import { EditSession, safeApply } from "@seldon/ai"
 
 import type {
   BridgeCaptureRequest,
@@ -9,6 +9,7 @@ import type {
 import type {
   CapturedImage,
   CheckpointInfo,
+  CommitOutcome,
   ExportedFile,
   HeadlessHost,
   McpCaptureOptions,
@@ -201,17 +202,52 @@ export class BridgeHost implements McpHost {
   async openSession(targetId: string): Promise<EditSession> {
     if (!this.hub.hasClient(targetId)) return this.fallback.openSession(targetId)
     const context = await this.context(targetId)
+    const session = new EditSession(context.workspace, selectionFromContext(context))
 
-    return new EditSession(context.workspace, selectionFromContext(context))
+    session.baseRevision = String(context.version)
+
+    return session
   }
 
-  async commitSession(targetId: string, session: EditSession): Promise<{ version: number }> {
+  async commitSession(targetId: string, session: EditSession): Promise<CommitOutcome> {
     if (!this.hub.hasClient(targetId)) return this.fallback.commitSession(targetId, session)
-    const result = await this.hub.send(targetId, "apply", { actions: session.actions })
+
+    if (!session.mintedNodes()) {
+      const result = await this.hub.send(targetId, "apply", { actions: session.actions })
+
+      if (!result.ok) throw new Error(result.error ?? "The editor tab rejected the change.")
+
+      return { version: result.version ?? 0 }
+    }
+
+    const context = await this.context(targetId)
+
+    if (String(context.version) === session.baseRevision) {
+      const result = await this.hub.send(targetId, "adopt", { workspace: session.workspace })
+
+      if (!result.ok) throw new Error(result.error ?? "The editor tab rejected the change.")
+
+      return { version: result.version ?? 0 }
+    }
+
+    const rebased = safeApply(context.workspace, session.actions)
+
+    if (rebased.applied.length === 0 && rebased.rejected.length > 0) {
+      const reasons = rebased.rejected.map((entry) => `${entry.type}: ${entry.reason}`).join(" ")
+
+      throw new Error(
+        `Commit conflict: the editor tab moved and none of this change's actions still apply. ${reasons} The transaction is still open. Re-read the current state and retry.`,
+      )
+    }
+
+    const result = await this.hub.send(targetId, "adopt", { workspace: rebased.workspace })
 
     if (!result.ok) throw new Error(result.error ?? "The editor tab rejected the change.")
 
-    return { version: result.version ?? 0 }
+    return {
+      version: result.version ?? 0,
+      rejected: rebased.rejected.length > 0 ? rebased.rejected : undefined,
+    }
   }
 
   async export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]> {

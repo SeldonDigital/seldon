@@ -26,9 +26,10 @@ model. The tools fall into groups:
   `get_target_status`, `workspace_export`, `set_image`, `get_design_guide`,
   `undo`, `redo`, `create_checkpoint`, `restore_checkpoint`, and
   `list_checkpoints`.
-- Preview: `render_preview` returns a JPEG of a board or node. It needs an editor
-  tab with the workspace open. A headless host returns a message telling the
-  agent to open the editor.
+- Preview: `render_preview` returns a JPEG of a board or node. It photographs
+  the committed canvas. Call `commit_change` first if a transaction is open. It
+  needs an editor tab with the workspace open. A headless host returns a message
+  telling the agent to open the editor.
 
 `get_design_guide` returns workflow, composition, property, theme, image, and
 export guidance so an agent can build without reading the source. Pass a
@@ -45,7 +46,9 @@ screen variant is locked. Call `add_variant` and insert page content into that
 user variant.
 
 A write with no open transaction commits on its own as one revision. A write
-inside `begin_change` accumulates until `commit_change`.
+inside `begin_change` accumulates until `commit_change`. Call `commit_change`
+before `render_preview`. A preview shows the committed canvas, not an open
+transaction.
 
 ## Two layers: host and transport
 
@@ -124,12 +127,12 @@ the MCP endpoint at `/api/mcp` backed by a `BridgeHost`, plus the bridge's SSE
 stream and result endpoints the tab uses. Both apps register it in their
 `vite.config.ts` next to the other API plugins.
 
-When a tab has the target workspace open, reads and writes route to it: the tab
-reports its current workspace and selection, folds a commit's actions through
-its own reducer as one undo step, and steps its own history. The agent edits
-exactly what the user sees, and every change lands in the tab's undo stack. With
-no tab connected, the same endpoint serves the headless host over the shared
-store, so one URL covers both.
+When a tab has the target workspace open, reads and writes route to it. The tab
+reports its current workspace and selection. A commit adopts the session
+workspace as one undo step when the session minted node ids, so those ids stay
+stable. The agent edits exactly what the user sees, and every change lands in
+the tab's undo stack. With no tab connected, the same endpoint serves the
+headless host over the shared store, so one URL covers both.
 
 Point an MCP client at the running editor:
 
@@ -159,9 +162,10 @@ In the headless host they run against a bounded in-memory history per workspace.
 
 Each workspace has its own write queue. A read-modify-write-persist step runs to
 completion before the next one starts, so concurrent commits on one workspace
-never lose an update. A commit re-applies its actions against the current
-workspace rather than the snapshot it opened on, so a change that landed first
-is preserved.
+never lose an update. A commit adopts the session workspace when nothing else
+wrote, so node ids the create tools reported stay valid. When the workspace
+moved under the session, the commit rebases the session actions onto the current
+state. A rebase that rejects every action leaves the transaction open.
 
 ## Setup recipes
 

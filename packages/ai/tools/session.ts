@@ -262,6 +262,7 @@ export class EditSession implements ToolContext {
   selection: SelectionContext
   allowedNodeIds: Set<string> | undefined = undefined
   allowedBoardKeys: Set<string> | undefined = undefined
+  baseRevision: string | undefined = undefined
 
   constructor(workspace: Workspace, selection: SelectionContext = {}) {
     this.workspace = workspace
@@ -302,6 +303,13 @@ export class EditSession implements ToolContext {
 
   commit(): CommitResult {
     return { workspace: this.workspace, actions: this.actions }
+  }
+
+  /** True when the session created nodes, whose ids a replay would mint differently. */
+  mintedNodes(): boolean {
+    const before = new Set(Object.keys(this.baseWorkspace.nodes ?? {}))
+
+    return Object.keys(this.workspace.nodes ?? {}).some((id) => !before.has(id))
   }
 
   rollback(): void {

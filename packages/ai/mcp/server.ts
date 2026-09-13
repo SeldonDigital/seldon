@@ -6,6 +6,7 @@ import { SELDON_TOOLS, SELDON_TOOLS_BY_NAME } from "../tools"
 import { getDesignGuide } from "./guide"
 
 import type { EditSession, SelectionContext, ToolContext } from "../tools"
+import type { RejectedActionResult } from "../types"
 import type { Tool } from "@modelcontextprotocol/sdk/types.js"
 import type { ExportScopeFlags } from "@seldon/factory"
 import type { TSchema } from "typebox"
@@ -76,6 +77,12 @@ export interface CheckpointInfo {
   label?: string
 }
 
+/** The result of adopting an edit session as one revision. */
+export interface CommitOutcome {
+  version: number
+  rejected?: RejectedActionResult[]
+}
+
 /**
  * The environment `createSeldonMcpServer` runs against. A host owns workspaces
  * and persistence; the tools do the design work. `HeadlessHost` implements this
@@ -98,7 +105,7 @@ export interface McpHost {
    */
   openSession(targetId: string, options?: { prefer?: "editor" | "headless" }): Promise<EditSession>
   /** Adopts a session's working copy as one revision and persists it. */
-  commitSession(targetId: string, session: EditSession): Promise<{ version: number }>
+  commitSession(targetId: string, session: EditSession): Promise<CommitOutcome>
   export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]>
   /**
    * Copies an image into the project's `public/sdn` folder and returns the
@@ -224,6 +231,15 @@ function readUnitInterval(value: unknown): number | undefined {
   return value
 }
 
+/** Appends rejected-action reasons to a commit message so the agent can retarget. */
+function formatCommitMessage(message: string, outcome: CommitOutcome): string {
+  if (!outcome.rejected || outcome.rejected.length === 0) return message
+
+  const reasons = outcome.rejected.map((entry) => `${entry.type}: ${entry.reason}`).join(" ")
+
+  return `${message} Some actions were rejected: ${reasons} Re-read the current state and retry those edits.`
+}
+
 /** Reads the boolean export scope flags a caller passed, ignoring the rest. */
 function readExportScopeFlags(args: Record<string, unknown>): Partial<ExportScopeFlags> {
   const flags: Partial<ExportScopeFlags> = {}
@@ -259,7 +275,7 @@ One-shot build from an empty workspace:
 3. Final pages are user variants of the catalog screen component. Add screen, then add_variant before you insert anything. The default screen is locked and rejects children. screenWidth and screenHeight default to 600px exact. Set them or the page clips.
 4. New boards fit their content. Do not pin a board width unless you need a device frame.
 5. Put images on a node with set_image. Never write a local filesystem path or a raw data URL into source or background.
-6. Call render_preview after each meaningful compose so you can see the design. It needs an editor tab with the workspace open.
+6. Call commit_change, then render_preview after each meaningful compose so you can see the design. A preview shows the committed canvas, not an open transaction. It needs an editor tab with the workspace open.
 7. When the design is done, call workspace_export to write framework code into the project.
 
 Edit only through write tools. Group a multi-step edit in begin_change and commit_change so it lands as one revision. Prefer theme tokens such as @swatch.primary and @fontSize.medium over hardcoded literals.`,
@@ -323,9 +339,9 @@ Edit only through write tools. Group a multi-step edit in begin_change and commi
       const edit = session as EditSession
 
       if (edit.actions.length > 0) {
-        const { version } = await host.commitSession(targetId, edit)
+        const outcome = await host.commitSession(targetId, edit)
 
-        return `${text}\nCommitted as revision ${version}.`
+        return formatCommitMessage(`${text}\nCommitted as revision ${outcome.version}.`, outcome)
       }
     }
 
@@ -595,9 +611,13 @@ Edit only through write tools. Group a multi-step edit in begin_change and commi
 
         const label = result.label ?? "the canvas"
         const size = `${result.width}x${result.height}`
+        const pending =
+          state.transaction?.targetId === resolved.id
+            ? " This capture shows the committed canvas. Call commit_change first to see pending edits."
+            : ""
 
         return {
-          text: `Captured ${label} as a ${size} JPEG.`,
+          text: `Captured ${label} as a ${size} JPEG.${pending}`,
           image: result,
         }
       },
@@ -641,12 +661,15 @@ Edit only through write tools. Group a multi-step edit in begin_change and commi
           return "Transaction closed with no changes."
         }
 
-        const { version } = await host.commitSession(txn.targetId, txn.session)
+        const outcome = await host.commitSession(txn.targetId, txn.session)
 
         state.selection = txn.session.selection
         state.transaction = undefined
 
-        return `Committed ${count} action(s) on ${txn.targetId} as revision ${version}.`
+        return formatCommitMessage(
+          `Committed ${count} action(s) on ${txn.targetId} as revision ${outcome.version}.`,
+          outcome,
+        )
       },
     },
     {
