@@ -165,7 +165,7 @@ The refs registry is shared with the Vue target and lives in [export/shared/gene
 
 ## Formatting
 
-`format.ts` runs Prettier on generated TypeScript. It runs twice so the import sort plugin puts each import on its own line. It honors a `skipFormat` option.
+`format.ts` runs Prettier on generated TypeScript. It honors a `skipFormat` option.
 
 Prettier options come from one file: `export/export-prettier-config.ts`. Both the React formatter and the CSS formatter read it, so all exported files format the same way. To change how exports are formatted, edit that file. Its defaults match the Seldon repository so generated files land already formatted and do not churn on the next format pass.
 

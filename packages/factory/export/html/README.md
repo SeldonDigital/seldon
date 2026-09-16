@@ -67,4 +67,4 @@ Images and CSS come from the shared pipelines used by React and Vue.
 
 ## Formatting
 
-`format-html.ts` runs Prettier's `html` parser. It honors `skipFormat` and `formatConfigRoot`.
+`format-html.ts` runs Prettier's `html` parser. It honors `skipFormat`.

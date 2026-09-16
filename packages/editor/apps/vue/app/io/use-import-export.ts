@@ -176,16 +176,12 @@ export function useImportExport() {
       const framework = options?.target?.framework ?? "vue"
 
       const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
-      const { readDestinationPrettierConfig } =
-        await import("@seldon/editor/lib/export/read-destination-prettier-config")
       const outputFolder =
         options?.outputFolder ?? workspace.value.metadata.exportSettings?.outputFolder
-      const formatConfig = await readDestinationPrettierConfig(directory)
       const files = prefixExportPaths(
         await runLocalExport(workspace.value, {
           ...options,
           includeWorkspace: false,
-          formatConfig,
         }),
         outputFolder,
       )

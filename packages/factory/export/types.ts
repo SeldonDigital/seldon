@@ -22,17 +22,13 @@ export type ExportOptions = {
   assetReader?: ExportAssetReader
   skipFormat?: boolean
   /**
-   * Absolute path of the repository the export lands in. When set, the export
-   * resolves that repository's Prettier config and layers it over the built-in
-   * defaults, so generated files match how the repository formats its own
-   * source. Unset falls back to the built-in export config. Never point this
-   * at the Seldon monorepo when the destination is a consumer project.
+   * Ignored. Every surface formats with the factory Prettier config so Editor,
+   * CLI, and MCP write the same files.
    */
   formatConfigRoot?: string
   /**
-   * Prettier options from the destination project. Wins over
-   * {@link formatConfigRoot} when both are set. The editor sends this when it
-   * can read the picked folder's config but has no Node path to resolve.
+   * Ignored. Every surface formats with the factory Prettier config so Editor,
+   * CLI, and MCP write the same files.
    */
   formatConfig?: Record<string, unknown>
   /**

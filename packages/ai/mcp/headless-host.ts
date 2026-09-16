@@ -283,10 +283,6 @@ export class HeadlessHost implements McpHost {
 
     const exportOptions: ExportOptions = {
       rootDirectory,
-      // Format generated files against the destination project's Prettier config,
-      // so an export lands the way that project formats its own source and a
-      // consumer's format check finds nothing to fix.
-      formatConfigRoot: this.exportRoot,
       target: {
         framework:
           (options?.framework as ExportOptions["target"]["framework"]) ??

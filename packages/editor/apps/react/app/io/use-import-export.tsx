@@ -182,16 +182,12 @@ export function useImportExport() {
         const framework = options?.target?.framework ?? "react"
 
         const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
-        const { readDestinationPrettierConfig } =
-          await import("@seldon/editor/lib/export/read-destination-prettier-config")
         const outputFolder =
           options?.outputFolder ?? workspace.metadata.exportSettings?.outputFolder
-        const formatConfig = await readDestinationPrettierConfig(directory)
         const files = prefixExportPaths(
           await runLocalExport(workspace, {
             ...options,
             includeWorkspace: false,
-            formatConfig,
           }),
           outputFolder,
         )

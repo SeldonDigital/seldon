@@ -120,14 +120,8 @@ export async function runExport(
   const root = path.resolve(serverConfig?.root ?? process.cwd())
   const { rootDirectory, assetReader } = resolveAssetReader(root)
 
-  const monorepoRoot = findMonorepoRoot(root)
   const options: ExportOptions = {
     rootDirectory,
-    // The editor server root is the Seldon monorepo when this plugin runs in
-    // repo. That repo's Prettier config must not format a consumer export.
-    // A mounted editor uses `root` as the destination. The browser can still
-    // send `formatConfig` or `formatConfigRoot` in the request body.
-    formatConfigRoot: monorepoRoot ? undefined : root,
     target: { framework: "react", styles: "css-properties" },
     output: {
       componentsFolder: DEFAULT_COMPONENTS_FOLDER,
