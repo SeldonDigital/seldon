@@ -208,12 +208,11 @@ export function useImportExport() {
 
         addToast(`Exported ${count} files`)
 
-        // Write the editable design source at the project root, so a later
-        // `seldon-export --input .seldon/<name>.<framework>.json` regenerates from
-        // the same design the editor just exported.
-        if (saveSource) {
-          await writeWorkspaceSource(directory, workspace, framework)
-        }
+        // Write the workspace source at the project root. MCP and the CLI read
+        // this same file. Autosave keeps it current after the bind.
+        const sourceFileName = saveSource
+          ? await writeWorkspaceSource(directory, workspace, framework)
+          : undefined
 
         // Remember where this workspace landed, so the editor can read back what
         // the project reports about its own use of the generated components, and
@@ -238,6 +237,7 @@ export function useImportExport() {
             label: workspace.metadata.label ?? "",
             updatedAt: boundAt,
             boundAt,
+            sourceFileName,
           })
           await activateBinding(workspaceId)
           await saveStoredWorkspace({ id: workspaceId, workspace, updatedAt: boundAt })

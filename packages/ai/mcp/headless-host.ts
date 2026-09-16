@@ -112,8 +112,13 @@ interface CheckpointRecord {
 
 /** Options to construct a {@link HeadlessHost}. */
 export interface HeadlessHostOptions {
-  /** Directory holding the `<id>.json` workspace files. */
+  /** Directory holding the hashed `<id>.json` workspace backup files. */
   storeDir: string
+  /**
+   * Raw workspace JSON the editor, MCP, and CLI share. When set, reads and
+   * writes go to this file first. The store directory still receives a backup.
+   */
+  liveFile?: string
   /**
    * Root an export writes files into and the factory reads engine assets from.
    * Defaults to the project root derived from the store directory, so an export
@@ -178,7 +183,7 @@ export class HeadlessHost implements McpHost {
   private readonly states = new Map<string, TargetState>()
 
   constructor(options: HeadlessHostOptions) {
-    this.store = new WorkspaceStore(options.storeDir)
+    this.store = new WorkspaceStore(options.storeDir, { liveFile: options.liveFile })
     this.exportRoot = path.resolve(options.exportRoot ?? deriveExportRoot(options.storeDir))
   }
 

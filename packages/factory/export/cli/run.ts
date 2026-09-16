@@ -69,10 +69,11 @@ const SCOPE_FLAG_HELP = EXPORT_FLAGS.map(
 const HELP = `seldon-export - export a Seldon workspace to framework components
 
 Usage:
-  seldon-export --input <workspace.json> [--platform <id>] [--framework <id>] [--out <dir>] [flags]
+  seldon-export [--input <workspace.json>] [--platform <id>] [--framework <id>] [--out <dir>] [flags]
 
-Required:
-  -i, --input <path>         Workspace JSON saved from the Seldon editor.
+Input:
+  -i, --input <path>         Workspace JSON. Defaults to the file named in
+                             .seldon/project.json.
 
 Targets:
   -p, --platform <${PLATFORM_IDS.join("|")}>
@@ -270,6 +271,23 @@ function hasExportSettingsPatch(patch: WorkspaceExportSettings): boolean {
   return Object.keys(patch).length > 0
 }
 
+/** Reads `.seldon/project.json` and returns the pointed workspace path. */
+function inputFromProjectPointer(cwd: string): string | undefined {
+  const pointerPath = path.join(cwd, ".seldon", "project.json")
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(pointerPath, "utf8")) as { workspace?: string }
+
+    if (typeof parsed.workspace === "string" && parsed.workspace.length > 0) {
+      return path.join(cwd, ".seldon", parsed.workspace)
+    }
+  } catch {
+    // No pointer, so the caller still needs --input.
+  }
+
+  return undefined
+}
+
 /**
  * Writes the workspace back to the input file after a flag change, so the next
  * editor, CLI, or MCP export reads the same settings.
@@ -288,15 +306,17 @@ function persistWorkspaceFile(inputPath: string, workspace: Workspace): void {
  */
 export async function runExportCli(argv: string[]): Promise<void> {
   const cliOverrides = parseCliOverrides(argv)
-  const input = cliOverrides.input ?? DEFAULT_CONFIG.input
+  const cwd = process.cwd()
+  const input = cliOverrides.input || inputFromProjectPointer(cwd)
 
   if (!input) {
-    throw new Error("Missing required --input <workspace.json>. Run with --help for usage.")
+    throw new Error(
+      "Missing --input <workspace.json> and no .seldon/project.json pointer. Run with --help for usage.",
+    )
   }
 
   const inputPath = path.resolve(input)
   let workspace = loadWorkspace(fs.readFileSync(inputPath, "utf8"))
-  const cwd = process.cwd()
   const persistPatch = exportSettingsFromCliOverrides(cliOverrides, cwd)
 
   // A flag the user passed is a workspace edit. Write it back before export so

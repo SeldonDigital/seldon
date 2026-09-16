@@ -65,14 +65,14 @@ export function generateHtmlElementReturn(
   const childrenExpr = childrenJsxExpr(tree.dataBinding.props)
   const hasChildrenProp = childrenExpr !== null
 
-  // Create switch statement
-  let content = `switch(htmlElement) { \n`
+  let content = `  //
+  // React JSX component with merged default and custom properties
+  //
+switch(htmlElement) { \n`
 
-  // Loop through options
   options
     .filter((option) => option !== defaultValue)
     .forEach((option) => {
-      // Find the component based on the htmlElement option
       const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
         ([_, value]) => value.htmlElementOption === option,
       )
@@ -82,15 +82,9 @@ export function generateHtmlElementReturn(
 
       if (hasChildrenProp) {
         content += `case "${option}": 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props}>${childrenExpr}</${Component}> \n`
       } else {
         content += `case "${option}": 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
       }
     })
@@ -104,15 +98,9 @@ export function generateHtmlElementReturn(
 
   if (hasChildrenProp) {
     content += `default: 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props}>${childrenExpr}</${Component}> \n`
   } else {
     content += `default: 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
   }
 
@@ -142,7 +130,10 @@ export function generateWrapperElementReturn(
 
   const hasChildrenProp = "children" in tree.dataBinding.props
 
-  let content = `switch(wrapperElement) { \n`
+  let content = `  //
+  // React JSX component with merged default and custom properties
+  //
+switch(wrapperElement) { \n`
 
   options
     .filter((option) => option !== defaultValue)
@@ -156,15 +147,9 @@ export function generateWrapperElementReturn(
 
       if (hasChildrenProp) {
         content += `case "${option}": 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
       } else {
         content += `case "${option}": 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
       }
     })
@@ -178,15 +163,9 @@ export function generateWrapperElementReturn(
 
   if (hasChildrenProp) {
     content += `default: 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
   } else {
     content += `default: 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
   }
 

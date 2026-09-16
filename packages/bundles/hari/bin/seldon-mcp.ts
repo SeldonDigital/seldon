@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto"
 import { createServer } from "node:http"
+import path from "node:path"
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 
-import { importSourceIntoStore, runInit } from "./init"
+import { runInit } from "./init"
 
 import type { McpHost } from "@seldon/ai"
 import type { IncomingMessage, ServerResponse } from "node:http"
@@ -20,7 +21,7 @@ interface CliOptions {
   exportRoot?: string
 }
 
-/** Reads the flags the bin accepts: --store, --workspace, --http, --port, --export-root. */
+/** Reads the flags the bin accepts. `--workspace` is the live source file. */
 function parseArgs(argv: string[]): CliOptions {
   const options: CliOptions = { storeDir: ".seldon/workspaces", http: false, port: 7355 }
 
@@ -116,12 +117,15 @@ async function main(): Promise<void> {
   }
 
   const options = parseArgs(argv)
-  const host = new HeadlessHost({ storeDir: options.storeDir, exportRoot: options.exportRoot })
+  const liveFile = options.workspace ? path.resolve(options.workspace) : undefined
+  const host = new HeadlessHost({
+    storeDir: options.storeDir,
+    liveFile,
+    exportRoot: options.exportRoot,
+  })
 
-  if (options.workspace) {
-    const id = await importSourceIntoStore(options.storeDir, options.workspace)
-
-    process.stderr.write(`seldon-mcp imported workspace ${id} from ${options.workspace}\n`)
+  if (liveFile) {
+    process.stderr.write(`seldon-mcp using workspace source ${liveFile}\n`)
   }
 
   if (options.http) {
