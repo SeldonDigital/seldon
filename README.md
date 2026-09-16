@@ -118,14 +118,14 @@ Guides for each bundle:
 
 ## Connect an AI agent
 
-`@seldon/hari` ships the `seldon-mcp` bin. It serves a project's workspace store to an MCP client such as Cursor, Codex CLI, or Claude Code, so an agent reads and edits the design through Core and Factory. From your project root:
+`@seldon/hari` ships the `seldon-mcp` bin. It serves a project's workspace source to an MCP client such as Cursor, Codex CLI, or Claude Code, so an agent reads and edits the design through Core and Factory. From your project root:
 
 ```bash
 npm install @seldon/hari
 npx seldon-mcp init
 ```
 
-`init` creates the `.seldon/workspaces` store, adds a `seldon` server to `.cursor/mcp.json`, and seeds a starter workspace. Set this up per project, not globally, so the server runs only where the store is.
+`init` writes `.seldon/project.json`, points MCP at that workspace source, keeps `.seldon/workspaces` as a backup, and seeds a starter workspace when none exists. Set this up per project, not globally, so the server runs only where the file is.
 
 - Per-client setup and troubleshooting: [packages/bundles/hari/README.md](packages/bundles/hari/README.md)
 - How the MCP server works and its deployment scenarios: [docs/mcp-guide.md](docs/mcp-guide.md)

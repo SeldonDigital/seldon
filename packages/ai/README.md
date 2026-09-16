@@ -45,7 +45,7 @@ The package groups a few parts that work together:
 | **Agent handler** | Run a chat turn and report models for a server route | [server/agent.ts](./server/agent.ts) |
 | **MCP server** | Build a transport-neutral MCP server over a host | [mcp/server.ts](./mcp/server.ts) |
 | **Headless host** | Run the engine in memory over a file-backed store | [mcp/headless-host.ts](./mcp/headless-host.ts) |
-| **Workspace store** | Read and write the shared `.seldon/workspaces` files | [mcp/store.ts](./mcp/store.ts) |
+| **Workspace store** | Read and write the workspace source and the `.seldon/workspaces` backup | [mcp/store.ts](./mcp/store.ts) |
 | **Context sections** | Build the reusable context blocks | [prompt/context-sections/](./prompt/context-sections) |
 | **Repair** | Fix common shape mistakes before validation | [repair/normalize-actions.ts](./repair/normalize-actions.ts) |
 | **Design semantics** | Map a design concept to a property, token, or verb | `@seldon/core` `rules/config/design-semantics.config.ts` |

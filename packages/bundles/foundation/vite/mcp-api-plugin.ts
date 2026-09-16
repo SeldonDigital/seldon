@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto"
+import fs from "node:fs"
 import path from "node:path"
 
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
@@ -16,14 +17,31 @@ import type { ServerResponse } from "node:http"
 import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
 
 /**
- * Options for {@link mcpApiPlugin}. `root` is the project the store lives under,
- * matching `workspaceApiPlugin`, so the MCP server and the editor share one
- * `.seldon/workspaces` folder. `exportRoot` is where the factory reads engine
- * assets during an export, defaulting to `root`.
+ * Options for {@link mcpApiPlugin}. `root` is the project the workspace source
+ * and backup store live under, matching `workspaceApiPlugin`. When
+ * `.seldon/project.json` is present, the host uses that source file. `exportRoot`
+ * is where the factory reads engine assets during an export, defaulting to `root`.
  */
 export interface McpApiPluginOptions {
   root?: string
   exportRoot?: string
+}
+
+/** Reads `.seldon/project.json` and returns the pointed workspace path. */
+function liveFileFromPointer(root: string): string | undefined {
+  const pointerPath = path.join(root, ".seldon", "project.json")
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(pointerPath, "utf8")) as { workspace?: string }
+
+    if (typeof parsed.workspace === "string" && parsed.workspace.length > 0) {
+      return path.join(root, ".seldon", parsed.workspace)
+    }
+  } catch {
+    // No pointer, so the host uses the backup store only.
+  }
+
+  return undefined
 }
 
 async function readBody(req: Connect.IncomingMessage): Promise<string> {
@@ -64,6 +82,7 @@ interface McpMount {
 function createMount(root: string, exportRoot: string): McpMount {
   const fallback = new HeadlessHost({
     storeDir: path.join(root, ".seldon", "workspaces"),
+    liveFile: liveFileFromPointer(root),
     exportRoot,
   })
   const bridge = new BridgeHub()

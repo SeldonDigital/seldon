@@ -98,7 +98,7 @@ export async function exportReact(
       nodeTreeDepths,
       stateClasses,
       descendantStateClasses,
-      options.formatConfigRoot,
+      options,
     ),
   })
 
@@ -106,7 +106,7 @@ export async function exportReact(
     workspace,
     options.output.componentsFolder,
     options.exportAllThemes !== false,
-    options.formatConfigRoot,
+    options,
   )
 
   filesToExport.push(

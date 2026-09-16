@@ -112,8 +112,13 @@ interface CheckpointRecord {
 
 /** Options to construct a {@link HeadlessHost}. */
 export interface HeadlessHostOptions {
-  /** Directory holding the `<id>.json` workspace files. */
+  /** Directory holding the hashed `<id>.json` workspace backup files. */
   storeDir: string
+  /**
+   * Raw workspace JSON the editor, MCP, and CLI share. When set, reads and
+   * writes go to this file first. The store directory still receives a backup.
+   */
+  liveFile?: string
   /**
    * Root an export writes files into and the factory reads engine assets from.
    * Defaults to the project root derived from the store directory, so an export
@@ -178,7 +183,7 @@ export class HeadlessHost implements McpHost {
   private readonly states = new Map<string, TargetState>()
 
   constructor(options: HeadlessHostOptions) {
-    this.store = new WorkspaceStore(options.storeDir)
+    this.store = new WorkspaceStore(options.storeDir, { liveFile: options.liveFile })
     this.exportRoot = path.resolve(options.exportRoot ?? deriveExportRoot(options.storeDir))
   }
 
@@ -278,10 +283,6 @@ export class HeadlessHost implements McpHost {
 
     const exportOptions: ExportOptions = {
       rootDirectory,
-      // Format generated files against the destination project's Prettier config,
-      // so an export lands the way that project formats its own source and a
-      // consumer's format check finds nothing to fix.
-      formatConfigRoot: this.exportRoot,
       target: {
         framework:
           (options?.framework as ExportOptions["target"]["framework"]) ??
@@ -291,10 +292,8 @@ export class HeadlessHost implements McpHost {
       },
       output: {
         componentsFolder,
-        // Images write to the project's `public/` and are referenced from the
-        // site root, the static-asset convention shared by Vite and Next.js.
-        assetsFolder: layout?.assetsFolder ?? "public",
-        assetPublicPath: layout?.assetPublicPath ?? "/",
+        assetsFolder: layout?.assetsFolder ?? `${componentsFolder}/assets`,
+        assetPublicPath: layout?.assetPublicPath ?? `/${componentsFolder}/assets`,
       },
       assetReader,
       // Scope flags layer call options over the workspace-saved flags, then the
@@ -303,6 +302,9 @@ export class HeadlessHost implements McpHost {
         ...workspaceExportScopeFlags(state.workspace),
         ...(options ?? {}),
       }),
+      // The editor writes the live source under `.seldon`. Do not also emit a
+      // factory workspace copy beside the components.
+      includeWorkspace: false,
     }
 
     const files = await exportWorkspace(state.workspace, exportOptions)

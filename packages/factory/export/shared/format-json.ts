@@ -1,5 +1,7 @@
 import { formatWithPrettier } from "../format-with-prettier"
 
+import type { ExportFormatContext } from "../format-with-prettier"
+
 /**
  * Formats an emitted JSON file, so a file that lands in a formatted repository does not
  * fail that repository's own format check on the next commit.
@@ -15,6 +17,9 @@ import { formatWithPrettier } from "../format-with-prettier"
  *
  * Prettier ends its output with a newline, so a caller adds none.
  */
-export async function formatJson(content: string, formatConfigRoot?: string): Promise<string> {
-  return formatWithPrettier(content, { parser: "json" }, formatConfigRoot)
+export async function formatJson(
+  content: string,
+  format?: string | ExportFormatContext,
+): Promise<string> {
+  return formatWithPrettier(content, { parser: "json" }, format)
 }

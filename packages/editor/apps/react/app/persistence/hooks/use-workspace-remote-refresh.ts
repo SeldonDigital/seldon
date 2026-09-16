@@ -9,7 +9,7 @@ import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store
 
 /**
  * Refreshes the open workspace when the shared store changes outside this tab,
- * such as an MCP commit against the same `.seldon/workspaces` file. On window
+ * such as an MCP commit against the same workspace source file. On window
  * focus it reads the stored record, and when the store is newer than the tab's
  * last write and the tab is clean, it adopts the stored workspace as one undo
  * step. A dirty tab is left untouched, so a local edit is never clobbered by a

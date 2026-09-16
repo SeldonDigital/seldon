@@ -2,15 +2,22 @@ import { createEmptyWorkspace } from "@seldon/core"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { restoreWorkspaceNodeIds } from "@seldon/core/workspace/helpers/nodes/restore-entry-node-ids"
 import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
+import { workspaceSourceFileName } from "../export/write-workspace-source"
 import {
   deleteProjectRecord,
+  findProjectSourceFileName,
   readProjectRecord,
+  readProjectSource,
+  writeProjectPointer,
   writeProjectRecord,
+  writeProjectSource,
 } from "./project-workspace-file"
 import {
   deleteBinding,
   getActiveHandle,
+  getBinding,
   listBindings,
+  saveBinding,
   touchBinding,
 } from "./workspace-binding-store"
 
@@ -36,6 +43,9 @@ import type { Workspace } from "@seldon/core/workspace/types"
  *
  * A record holds no name of its own. The workspace name is `metadata.label` on
  * the workspace it wraps, so renaming is an ordinary workspace edit.
+ *
+ * A bound project reads and writes the workspace source under `.seldon` first.
+ * The hashed `workspaces/<id>.json` record is still written as a backup.
  */
 
 export type EditorId = "react" | "vue"
@@ -126,6 +136,17 @@ export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | 
   const handle = getActiveHandle(id)
 
   if (handle) {
+    const source = await readBoundSource(handle, id)
+
+    if (source) {
+      return readRecord({
+        id,
+        workspace: source.workspace,
+        updatedAt: source.updatedAt,
+        lastEditor: currentEditor,
+      })
+    }
+
     const record = await readProjectRecord(handle, id)
 
     return record ? readRecord(record as unknown as StoredWorkspaceOnDisk) : undefined
@@ -156,6 +177,8 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
   const handle = getActiveHandle(id)
 
   if (handle) {
+    const sourceFileName = await writeBoundSource(handle, id, workspace)
+
     await writeProjectRecord(handle, {
       id,
       workspace,
@@ -163,6 +186,12 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
       lastEditor: currentEditor,
     })
     await touchBinding(id, workspace.metadata.label ?? "", stamped.updatedAt)
+
+    const binding = await getBinding(id)
+
+    if (binding && binding.sourceFileName !== sourceFileName) {
+      await saveBinding(id, { ...binding, sourceFileName })
+    }
 
     return
   }
@@ -272,4 +301,43 @@ export async function createStoredWorkspace(workspace: Workspace): Promise<Store
   await saveStoredWorkspace(record)
 
   return record
+}
+
+/** Reads the bound workspace source, or undefined when that file is not there. */
+async function readBoundSource(
+  root: FileSystemDirectoryHandle,
+  id: string,
+): Promise<{ workspace: Workspace; updatedAt: string } | undefined> {
+  const binding = await getBinding(id)
+  const fileName = await findProjectSourceFileName(root, binding?.sourceFileName)
+
+  if (!fileName) return undefined
+
+  const source = await readProjectSource(root, fileName)
+
+  if (!source) return undefined
+
+  return { workspace: source.workspace, updatedAt: source.updatedAt }
+}
+
+/**
+ * Writes the bound workspace source and the project pointer. Uses the existing
+ * source name when one is already bound or pointed, so a label change does not
+ * create a second file.
+ */
+async function writeBoundSource(
+  root: FileSystemDirectoryHandle,
+  id: string,
+  workspace: Workspace,
+): Promise<string> {
+  const binding = await getBinding(id)
+  const platform = workspace.metadata.exportSettings?.platform ?? "react"
+  const derived = workspaceSourceFileName(workspace, platform)
+  const fileName =
+    binding?.sourceFileName ?? (await findProjectSourceFileName(root, derived)) ?? derived
+
+  await writeProjectSource(root, fileName, workspace)
+  await writeProjectPointer(root, fileName)
+
+  return fileName
 }

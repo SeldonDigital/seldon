@@ -3,6 +3,7 @@ import { insertBaseStyles } from "./insert-base-styles"
 import { insertNodeStyles } from "./insert-node-styles"
 import { insertResetStyles } from "./insert-reset-styles"
 
+import type { ExportFormatContext } from "../../format-with-prettier"
 import type { Classes, DescendantStateClasses, StateClasses } from "../types"
 import type { Workspace } from "@seldon/core"
 
@@ -13,7 +14,7 @@ export async function generateComponentStylesheet(
   nodeTreeDepths?: Record<string, number>,
   stateClasses?: StateClasses,
   descendantStateClasses?: DescendantStateClasses,
-  formatConfigRoot?: string,
+  formatContext?: string | ExportFormatContext,
 ): Promise<string> {
   let stylesheet = ""
 
@@ -29,5 +30,5 @@ export async function generateComponentStylesheet(
     descendantStateClasses,
   )
 
-  return format(stylesheet, formatConfigRoot)
+  return format(stylesheet, formatContext)
 }
