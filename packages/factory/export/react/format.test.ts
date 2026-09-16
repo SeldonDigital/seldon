@@ -15,11 +15,10 @@ describe("format", () => {
     expect(result).toBe("const x = 1\n")
   })
 
-  it("sorts and separates imports", async () => {
+  it("formats imports without applying the editor repo's sort plugin", async () => {
     const result = await format(`import {b} from "./b";import {a} from "./a";const x=1`)
 
-    expect(result).toContain("import { a }")
     expect(result).toContain("import { b }")
-    expect(result.indexOf("./a")).toBeLessThan(result.indexOf("./b"))
+    expect(result).toContain("import { a }")
   })
 })

@@ -296,10 +296,8 @@ export class HeadlessHost implements McpHost {
       },
       output: {
         componentsFolder,
-        // Images write to the project's `public/` and are referenced from the
-        // site root, the static-asset convention shared by Vite and Next.js.
-        assetsFolder: layout?.assetsFolder ?? "public",
-        assetPublicPath: layout?.assetPublicPath ?? "/",
+        assetsFolder: layout?.assetsFolder ?? `${componentsFolder}/assets`,
+        assetPublicPath: layout?.assetPublicPath ?? `/${componentsFolder}/assets`,
       },
       assetReader,
       // Scope flags layer call options over the workspace-saved flags, then the
@@ -308,6 +306,9 @@ export class HeadlessHost implements McpHost {
         ...workspaceExportScopeFlags(state.workspace),
         ...(options ?? {}),
       }),
+      // The editor writes the live source under `.seldon`. Do not also emit a
+      // factory workspace copy beside the components.
+      includeWorkspace: false,
     }
 
     const files = await exportWorkspace(state.workspace, exportOptions)

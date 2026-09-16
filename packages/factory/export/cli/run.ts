@@ -345,6 +345,7 @@ export async function runExportCli(argv: string[]): Promise<void> {
 
   const files = await exportWorkspace(workspace, {
     rootDirectory: outRoot,
+    formatConfigRoot: cwd,
     assetReader: createResolvedExportAssetReader(),
     target: { framework: config.platform, styles: "css-properties" },
     output: {
@@ -353,6 +354,7 @@ export async function runExportCli(argv: string[]): Promise<void> {
       assetPublicPath: config.assetPublicPath ?? layout.assetPublicPath,
     },
     ...toExportScopeOptions(config),
+    includeWorkspace: false,
   })
 
   await guardExportCollisions(files, outRoot, config.overwrite)
