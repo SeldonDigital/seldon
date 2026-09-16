@@ -28,16 +28,10 @@ export function generateIconMapReturn(
       // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
       const RegisteredIcon = getRegisteredIcon(icon)
       if (RegisteredIcon) {
-  //
-  // React JSX component resolved from the runtime icon registry
-  //
         return <RegisteredIcon className={${classNameVarName}}${refAttr} {...props} />
       }
       Icon = iconMap["__default__"]
     }
-  //
-  // React JSX component with merged default and custom properties
-  //
     return <Icon className={${classNameVarName}}${refAttr} {...props} />
   `
 }
@@ -65,10 +59,7 @@ export function generateHtmlElementReturn(
   const childrenExpr = childrenJsxExpr(tree.dataBinding.props)
   const hasChildrenProp = childrenExpr !== null
 
-  let content = `  //
-  // React JSX component with merged default and custom properties
-  //
-switch(htmlElement) { \n`
+  let content = `switch(htmlElement) { \n`
 
   options
     .filter((option) => option !== defaultValue)
@@ -130,10 +121,7 @@ export function generateWrapperElementReturn(
 
   const hasChildrenProp = "children" in tree.dataBinding.props
 
-  let content = `  //
-  // React JSX component with merged default and custom properties
-  //
-switch(wrapperElement) { \n`
+  let content = `switch(wrapperElement) { \n`
 
   options
     .filter((option) => option !== defaultValue)
@@ -210,18 +198,10 @@ export function generateSimpleReturn(
   const tag = getReactReturnTag(component)
 
   if (hasChildrenProp) {
-    return `
-  //
-  // React JSX component with merged default and custom properties
-  //
-  return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props}>${childrenExpr}</${tag}>`
-  } else {
-    return `
-  //
-  // React JSX component with merged default and custom properties
-  //
-  return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props} />`
+    return `return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props}>${childrenExpr}</${tag}>`
   }
+
+  return `return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props} />`
 }
 
 function childrenJsxExpr(props: DataBinding["props"]): string | null {
