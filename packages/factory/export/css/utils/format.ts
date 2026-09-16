@@ -1,5 +1,7 @@
 import { formatWithPrettier } from "../../format-with-prettier"
 
-export async function format(content: string, formatConfigRoot?: string) {
-  return formatWithPrettier(content, { parser: "css" }, formatConfigRoot)
+import type { ExportFormatContext } from "../../format-with-prettier"
+
+export async function format(content: string, format?: string | ExportFormatContext) {
+  return formatWithPrettier(content, { parser: "css" }, format)
 }

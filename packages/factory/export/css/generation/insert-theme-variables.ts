@@ -15,6 +15,7 @@ import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
 
+import type { ExportFormatContext } from "../../format-with-prettier"
 import type { Theme } from "@seldon/core"
 import type { ThemeMode } from "@seldon/core/themes/constants"
 import type { ThemeScaleToken } from "@seldon/core/themes/values"
@@ -292,7 +293,7 @@ export async function generateThemeStylesheetFiles(
   workspace: Workspace,
   componentsFolder: string,
   exportAllThemes: boolean = true,
-  formatConfigRoot?: string,
+  formatContext?: string | ExportFormatContext,
 ): Promise<ThemeStylesheetFile[]> {
   let themeIds = Object.keys(workspace.themes ?? {})
 
@@ -318,7 +319,7 @@ export async function generateThemeStylesheetFiles(
     if (!theme) continue
 
     const slug = getThemeSlug(themeId, workspace)
-    const content = await format(generateThemeStylesheet(slug, theme), formatConfigRoot)
+    const content = await format(generateThemeStylesheet(slug, theme), formatContext)
 
     files.push({
       themeId,

@@ -201,7 +201,7 @@ Build the packages, then point the client at the bin:
 npm run build:packages
 ```
 
-Configure the client to run `seldon-mcp --store <project>/.seldon/workspaces`.
+Configure the client to run `seldon-mcp --store <project>/.seldon/workspaces --workspace <project>/.seldon/<name>.react.json`.
 
 ### A consumer project on `@seldon/hari`
 
@@ -212,7 +212,10 @@ To wire a custom transport, build the server yourself:
 ```typescript
 import { HeadlessHost, createSeldonMcpServer } from "@seldon/hari"
 
-const host = new HeadlessHost({ storeDir: "./.seldon/workspaces" })
+const host = new HeadlessHost({
+  storeDir: "./.seldon/workspaces",
+  liveFile: "./.seldon/your-app.react.json",
+})
 const server = createSeldonMcpServer(host)
 // Connect `server` to your transport.
 ```

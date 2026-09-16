@@ -21,12 +21,13 @@ import { chatToActions, loadWorkspace, workspaceReducer } from "@seldon/hari"
 
 ## Connect an AI client
 
-`hari` ships the `seldon-mcp` bin. It serves a project's workspace store to an MCP
-client such as Cursor, Codex CLI, or Claude Code, so an agent reads and edits the
-design through Seldon's core and factory.
+`hari` ships the `seldon-mcp` bin. It serves a project's workspace source to an
+MCP client such as Cursor, Codex CLI, or Claude Code, so an agent reads and
+edits the design through Seldon's core and factory.
 
-Set this up per project, not globally, so the server only runs where the store
-lives. Point every client at the same store directory, `.seldon/workspaces`.
+Set this up per project, not globally, so the server only runs where the file
+lives. Point every client at the same source file, and keep `.seldon/workspaces`
+as the backup folder.
 
 ### Cursor quickstart
 
@@ -37,11 +38,12 @@ npm install @seldon/hari
 npx seldon-mcp init
 ```
 
-`init` does three things:
+`init` does four things:
 
-- Creates the store directory `.seldon/workspaces`.
-- Adds a `seldon` server to `.cursor/mcp.json` and keeps any other servers.
-- Seeds one starter workspace named after your project when the store is empty.
+- Creates `.seldon` and the backup directory `.seldon/workspaces`.
+- Writes `.seldon/project.json` pointing at the workspace source.
+- Adds a `seldon` server to `.cursor/mcp.json` with `--workspace` and `--store`.
+- Seeds one starter workspace named after your project when no source is present.
 
 Reload Cursor. Open Settings, then MCP, switch the scope to this project, and
 enable the `seldon` server. Ask your agent to list workspaces and edit the seeded
@@ -49,9 +51,9 @@ one.
 
 Options:
 
-- `npx seldon-mcp init --store <dir>` picks a different store directory.
-- `npx seldon-mcp init --source <file>` seeds from an existing workspace file
-  instead of a blank one.
+- `npx seldon-mcp init --store <dir>` picks a different backup directory.
+- `npx seldon-mcp init --source <file>` uses that workspace file as the source
+  instead of creating a blank one.
 
 ### Cursor manual config
 
@@ -63,7 +65,13 @@ To write the config yourself, add a project-scoped `.cursor/mcp.json`:
     "seldon": {
       "type": "stdio",
       "command": "npx",
-      "args": ["seldon-mcp", "--store", "${workspaceFolder}/.seldon/workspaces"]
+      "args": [
+        "seldon-mcp",
+        "--store",
+        "${workspaceFolder}/.seldon/workspaces",
+        "--workspace",
+        "${workspaceFolder}/.seldon/your-app.react.json"
+      ]
     }
   }
 }
@@ -81,10 +89,10 @@ Codex reads TOML, not JSON. Add the server to the user config at
 ```toml
 [mcp_servers.seldon]
 command = "npx"
-args = ["seldon-mcp", "--store", ".seldon/workspaces"]
+args = ["seldon-mcp", "--store", ".seldon/workspaces", "--workspace", ".seldon/your-app.react.json"]
 ```
 
-Or run `codex mcp add seldon -- npx seldon-mcp --store .seldon/workspaces`. The
+Or run `codex mcp add seldon -- npx seldon-mcp --store .seldon/workspaces --workspace .seldon/your-app.react.json`. The
 table key is `mcp_servers` with an underscore. A relative `--store` resolves
 against the directory where `codex` runs.
 
@@ -97,14 +105,20 @@ Add a project-scoped `.mcp.json` at the project root:
   "mcpServers": {
     "seldon": {
       "command": "npx",
-      "args": ["seldon-mcp", "--store", ".seldon/workspaces"]
+      "args": [
+        "seldon-mcp",
+        "--store",
+        ".seldon/workspaces",
+        "--workspace",
+        ".seldon/your-app.react.json"
+      ]
     }
   }
 }
 ```
 
 Or run
-`claude mcp add --scope project --transport stdio seldon -- npx seldon-mcp --store .seldon/workspaces`.
+`claude mcp add --scope project --transport stdio seldon -- npx seldon-mcp --store .seldon/workspaces --workspace .seldon/your-app.react.json`.
 Claude Code asks to approve a project server on first use. Manage servers with
 `/mcp`. Reset approvals with `claude mcp reset-project-choices`.
 
@@ -120,19 +134,20 @@ merge.
 To run the server yourself instead of letting the client spawn it:
 
 ```bash
-seldon-mcp --store .seldon/workspaces            # stdio
-seldon-mcp --store .seldon/workspaces --http     # POST /mcp on port 7355
-seldon-mcp --store .seldon/workspaces --workspace .seldon/source.json
+seldon-mcp --store .seldon/workspaces --workspace .seldon/your-app.react.json
+seldon-mcp --store .seldon/workspaces --workspace .seldon/your-app.react.json --http
 ```
 
-`--workspace <file>` imports a raw workspace file into the store once on startup.
+`--workspace <file>` is the live workspace source. MCP reads and writes that
+raw JSON. `--store` is the backup folder. Each write also refreshes
+`.seldon/workspaces/<id>.json`.
 
-## The store and the editor
+## The source file and the editor
 
-The MCP server and the editor share one store, the `.seldon/workspaces` directory.
-Each workspace is one `<id>.json` file, and the directory listing is the index.
-Point the editor's workspace API and `seldon-mcp` at the same directory and both
-see the same records.
+The editor, MCP, and CLI share one workspace source under `.seldon`, named in
+`.seldon/project.json`. Export settings live on that file. A change in the
+editor dialog is what MCP exports next. A change MCP writes is what the editor
+dialog shows on the next open.
 
 Call `get_design_guide` for the one-shot build order and for property, theme,
 image, and export rules. Call `set_image` to place a local image. The tool
@@ -142,12 +157,8 @@ default screen variant is locked. Call `add_variant` and build each page on
 that user variant. Call `commit_change` before `render_preview`. A preview
 shows the committed canvas, not an open transaction.
 
-The editor serves this store only when it runs at the project root. Opening a
-file in the editor imports it into the current store. It does not switch which
-store the editor serves.
-
-A file such as `project.react.json` under `.seldon` is an export artifact, not a
-store record. Do not point `--store` at it.
+The hashed files under `.seldon/workspaces` are backups. Do not treat them as
+the file you export from.
 
 ## Troubleshooting
 

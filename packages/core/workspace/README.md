@@ -133,7 +133,7 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `license` | `object` | Optional workspace-level licensing metadata. |
 | `customStates` | `object[]` | Optional workspace-wide custom interaction states. Each entry is `{ key, label, description? }` with no render data. See **Interaction States** under **Nodes**. |
-| `exportSettings` | `object` | Export target and scope choices. A new workspace seeds a complete block. Load fills any missing field from the shared defaults. The editor, the CLI, and the MCP host read and write this block so every export matches. |
+| `exportSettings` | `object` | Export target and scope choices. A new workspace seeds a complete block. Load fills any missing field from the shared defaults. The editor, the CLI, and the MCP host read and write this block on the workspace source file so every export matches. |
 
 ```json
 {

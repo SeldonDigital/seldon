@@ -96,7 +96,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
       nodeTreeDepths,
       stateClasses,
       descendantStateClasses,
-      options.formatConfigRoot,
+      options,
     ),
   })
 
@@ -104,7 +104,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
     workspace,
     options.output.componentsFolder,
     options.exportAllThemes !== false,
-    options.formatConfigRoot,
+    options,
   )
 
   filesToExport.push(...themeStylesheets)

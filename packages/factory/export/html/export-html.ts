@@ -73,7 +73,7 @@ export async function exportHtml(
       nodeTreeDepths,
       stateClasses,
       descendantStateClasses,
-      options.formatConfigRoot,
+      options,
     ),
   })
 
@@ -81,7 +81,7 @@ export async function exportHtml(
     workspace,
     options.output.componentsFolder,
     options.exportAllThemes !== false,
-    options.formatConfigRoot,
+    options,
   )
 
   filesToExport.push(...themeStylesheets)

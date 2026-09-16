@@ -261,20 +261,21 @@ The \`seldon-export\` CLI ships with \`@seldon/factory\`, and \`@seldon/terminus
 npm i -D @seldon/factory
 \`\`\`
 
-Add a script so a re-export is one command. Add \`--framework vite\` or
-\`--framework next\` if your project uses that layout:
+Add a script so a re-export is one command. The CLI reads
+\`.seldon/project.json\` when \`--input\` is omitted, and uses the export
+settings saved on that workspace:
 
 \`\`\`json
 {
   "scripts": {
-    "seldon:export": "seldon-export --input path/to/workspace.json --platform ${framework}"
+    "seldon:export": "seldon-export"
   }
 }
 \`\`\`
 
-Commit the workspace JSON if you keep it in the repo. If you run the Seldon Editor
-locally, ignore its scratch store so backups and the live store stay out of the
-repo:
+Commit the workspace source under \`.seldon\`, such as
+\`dxf-website.react.json\`, and \`project.json\`. The hashed files under
+\`.seldon/workspaces/\` are backups. Ignore those backups and \`.bak\` copies:
 
 \`\`\`gitignore
 .seldon/workspaces/
