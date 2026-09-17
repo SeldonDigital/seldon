@@ -20,6 +20,14 @@ This app owns the React interface: components, hooks, and runtime state. It impo
 - `npm run build` builds the production bundle. `npm run build:release` generates third-party notices first. `npm start` serves the build with `vite preview`.
 - `npm run typecheck` type-checks with `tsc`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
 
+### Experimental Codex chat
+
+When the local `codex` CLI is installed and logged in, the Hari model menu also
+offers `codex`. Selecting it runs a short-lived local `codex exec` turn against
+the editor's `/api/mcp` bridge, so no OpenAI API key is added to the browser or
+the repository. The editor must be running and the workspace should be open for
+live bridge updates. Set `SELDON_CODEX_BIN` when the executable is not on PATH.
+
 ---
 
 ## Layout

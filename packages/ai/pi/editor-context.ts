@@ -268,9 +268,9 @@ function resourceScopeSpec(
     return {
       valueLines: [],
       boardDirective: (boardKey) =>
-        `Scope: theme board "${boardKey}". Edit token values on its default theme "${entryId}" with set_theme_override (path like swatch.primary or fontSize.medium), or target one of the entries above. Call list_theme_tokens or search_theme_tokens for token paths. Call widen_scope for the workspace. Do not edit component nodes.`,
+        `Scope: theme board "${boardKey}". Edit token values on its default theme "${entryId}" with set_theme_override (path like swatch.primary or fontSize.medium), or target one of the entries above. Call list_theme_tokens or search_theme_tokens for token paths. For a component, node, board, button, or page-content request, call widen_scope before deciding the target is absent; do not edit component nodes until the scope has been widened.`,
       variantDirective: () =>
-        `Scope: theme variant "${entryId}". Edit its token values with set_theme_override (themeId "${entryId}", path like swatch.primary or fontSize.medium). Call list_theme_tokens or search_theme_tokens for token paths. If this is the wrong theme, call widen_scope to see the board's other themes. Do not edit component nodes.`,
+        `Scope: theme variant "${entryId}". Edit its token values with set_theme_override (themeId "${entryId}", path like swatch.primary or fontSize.medium). Call list_theme_tokens or search_theme_tokens for token paths. If this is the wrong theme, call widen_scope to see the board's other themes. For a component, node, board, button, or page-content request, call widen_scope before deciding the target is absent; do not edit component nodes until the scope has been widened.`,
     }
   }
 
@@ -278,9 +278,9 @@ function resourceScopeSpec(
     return {
       valueLines: fontCollectionValuesSection(entryId, workspace),
       boardDirective: (boardKey) =>
-        `Scope: font collection board "${boardKey}". Toggle families and weights on its default collection "${entryId}" with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off), or target an entry above. Call widen_scope for the workspace. Do not edit component nodes.`,
+        `Scope: font collection board "${boardKey}". Toggle families and weights on its default collection "${entryId}" with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off), or target an entry above. For a component, node, board, button, or page-content request, call widen_scope before deciding the target is absent; do not edit component nodes until the scope has been widened.`,
       variantDirective: () =>
-        `Scope: font collection variant "${entryId}". Toggle families and weights with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off). If this is the wrong collection, call widen_scope to see the board's other collections. Do not edit component nodes.`,
+        `Scope: font collection variant "${entryId}". Toggle families and weights with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off). If this is the wrong collection, call widen_scope to see the board's other collections. For a component, node, board, button, or page-content request, call widen_scope before deciding the target is absent; do not edit component nodes until the scope has been widened.`,
     }
   }
 
@@ -288,9 +288,9 @@ function resourceScopeSpec(
     return {
       valueLines: iconSetValuesSection(entryId, workspace),
       boardDirective: (boardKey) =>
-        `Scope: icon set board "${boardKey}". Toggle a subcategory on its default set "${entryId}" with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>, or target an entry above. Call widen_scope for the workspace. Do not edit component nodes.`,
+        `Scope: icon set board "${boardKey}". Toggle a subcategory on its default set "${entryId}" with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>, or target an entry above. For a component, node, board, button, or page-content request, call widen_scope before deciding the target is absent; do not edit component nodes until the scope has been widened.`,
       variantDirective: () =>
-        `Scope: icon set variant "${entryId}". Toggle a subcategory with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>. If this is the wrong set, call widen_scope to see the board's other sets. Do not edit component nodes.`,
+        `Scope: icon set variant "${entryId}". Toggle a subcategory with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>. If this is the wrong set, call widen_scope to see the board's other sets. For a component, node, board, button, or page-content request, call widen_scope before deciding the target is absent; do not edit component nodes until the scope has been widened.`,
     }
   }
 
