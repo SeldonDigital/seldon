@@ -1,4 +1,7 @@
+import { spawn, spawnSync } from "node:child_process"
+import { randomUUID } from "node:crypto"
 import fs from "node:fs/promises"
+import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 
@@ -15,6 +18,7 @@ import type { IncomingMessage, ServerResponse } from "node:http"
 import type { Connect, Plugin } from "vite"
 
 const ROUTE = "/api/agent"
+const CODEX_MODEL = "codex"
 
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const coreRoot = path.join(pluginDir, "../../../core")
@@ -143,6 +147,168 @@ function writeFrame(res: ServerResponse, frame: unknown): void {
   res.write(`${JSON.stringify(frame)}\n`)
 }
 
+/** The local Codex executable can reuse the user's existing Codex login. */
+function codexCommand(): string {
+  return process.env.SELDON_CODEX_BIN ?? "codex"
+}
+
+/** True when the local Codex CLI is installed and can be launched. */
+function codexAvailable(): boolean {
+  if (process.env.SELDON_CODEX_ENABLED === "0") return false
+
+  try {
+    return spawnSync(codexCommand(), ["--version"], { stdio: "ignore" }).status === 0
+  } catch {
+    return false
+  }
+}
+
+/** Builds the MCP URL on the same local Vite server that received the chat. */
+function localMcpUrl(req: IncomingMessage): string {
+  const host = req.headers.host ?? "127.0.0.1:5173"
+  const forwarded = req.headers["x-forwarded-proto"]
+  const protocol = typeof forwarded === "string" ? forwarded.split(",")[0] : "http"
+
+  return `${protocol}://${host}/api/mcp`
+}
+
+/** Converts the current editor context into instructions for the Codex turn. */
+function codexPrompt(body: AgentRequestBody): string {
+  const history = (body.history ?? [])
+    .slice(-12)
+    .map((message) => `${message.role}: ${message.content}`)
+    .join("\n")
+
+  return [
+    "You are editing a Seldon design workspace.",
+    "Use the Seldon MCP server tools for every workspace read and edit.",
+    "Do not use shell, file, git, or browser tools to modify the design.",
+    "Complete the user's request, then briefly summarize what changed.",
+    `Target workspace id: ${body.workspace.metadata.id ?? "(use the sole workspace)"}`,
+    `Active board: ${body.activeBoardKey ?? "none"}`,
+    `Selected node: ${body.selectedNodeId ?? "none"}`,
+    `Selection scope: ${body.scope ?? "workspace"}`,
+    "If the request mentions components, nodes, boards, buttons, or page content while the selection scope is theme, fontCollection, or iconSet, call widen_scope first (and again if needed) until the relevant board/workspace is visible. Do not conclude that there are no component nodes from a resource-scoped view.",
+    "For requests that apply to all matching components, inspect the widened board/workspace and edit every matching node rather than only the currently selected resource.",
+    history ? `Recent conversation:\n${history}` : "",
+    `User request:\n${body.message}`,
+  ]
+    .filter(Boolean)
+    .join("\n\n")
+}
+
+/** Runs one local Codex turn against the editor's MCP bridge. */
+async function streamCodexTurn(
+  req: IncomingMessage,
+  res: ServerResponse,
+  body: AgentRequestBody,
+): Promise<void> {
+  res.statusCode = 200
+  res.setHeader("Content-Type", "application/x-ndjson")
+  res.setHeader("Cache-Control", "no-cache")
+  res.flushHeaders?.()
+
+  if (!codexAvailable()) {
+    writeFrame(res, {
+      type: "error",
+      error: `Codex CLI was not found. Install or authenticate Codex, or set SELDON_CODEX_BIN.`,
+    })
+    res.end()
+
+    return
+  }
+
+  const outputFile = path.join(os.tmpdir(), `seldon-codex-${randomUUID()}.txt`)
+  const args = [
+    "--approve-for-me",
+    "exec",
+    "--ephemeral",
+    "--skip-git-repo-check",
+    "--ignore-user-config",
+    "--sandbox",
+    "workspace-write",
+    "-C",
+    repoRoot,
+    "-c",
+    `mcp_servers.seldon.url=${JSON.stringify(localMcpUrl(req))}`,
+    "-o",
+    outputFile,
+    codexPrompt(body),
+  ]
+  const child = spawn(codexCommand(), args, {
+    cwd: repoRoot,
+    stdio: ["ignore", "pipe", "pipe"],
+  })
+  let stderr = ""
+  let finished = false
+
+  const stop = () => {
+    if (!finished) child.kill("SIGTERM")
+  }
+
+  req.on("aborted", stop)
+  res.on("close", stop)
+  writeFrame(res, {
+    type: "thinking",
+    delta: "Codex is working through the Seldon tools…",
+  })
+
+  child.stderr.on("data", (chunk: Buffer) => {
+    stderr += chunk.toString()
+  })
+
+  const exitCode = await new Promise<number | null>((resolve, reject) => {
+    child.once("error", reject)
+    child.once("exit", (code) => resolve(code))
+  }).catch((error: unknown) => {
+    throw error instanceof Error ? error : new Error(String(error))
+  })
+
+  finished = true
+
+  try {
+    const reply = (await fs.readFile(outputFile, "utf8")).trim()
+
+    if (exitCode !== 0) {
+      throw new Error(stderr.trim() || `Codex exited with code ${exitCode ?? "unknown"}.`)
+    }
+
+    writeFrame(res, { type: "thinkingDone", ms: 0 })
+    writeFrame(res, {
+      type: "done",
+      // The MCP bridge applies the live changes directly to the editor tab.
+      // The existing Hari reducer therefore must not adopt the stale request copy.
+      actions: [],
+      workspace: body.workspace,
+      reply: reply || "Codex completed the Seldon edit.",
+      ineffective: [],
+      rejected: [],
+      debug: {
+        context: "codex-mcp-bridge",
+        rawResponse: reply,
+        repairs: [],
+        toolCalls: [],
+        metrics: {
+          model: CODEX_MODEL,
+          calls: 1,
+          totalMs: 0,
+          loadMs: 0,
+          promptTokens: 0,
+          outputTokens: 0,
+        },
+      },
+    })
+  } catch (error) {
+    writeFrame(res, {
+      type: "error",
+      error: error instanceof Error ? error.message : "Codex request failed.",
+    })
+  } finally {
+    await fs.rm(outputFile, { force: true })
+    res.end()
+  }
+}
+
 /**
  * Runs a chat turn and streams its events as newline-delimited JSON: one frame
  * per {@link AgentStreamEvent} as it arrives, then a final `done` frame with the
@@ -199,8 +365,19 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
     void (async () => {
       try {
         const agent = await getAgent()
+        const config = await agent.agentConfig()
 
-        sendJson(res, 200, await agent.agentConfig())
+        if (codexAvailable()) {
+          config.models = [...new Set([...config.models, CODEX_MODEL])]
+          config.thinkingByModel[CODEX_MODEL] = {
+            mode: "none",
+            options: [],
+            default: "off",
+          }
+          config.clampedLevels[CODEX_MODEL] = "off"
+        }
+
+        sendJson(res, 200, config)
       } catch (error) {
         sendJson(res, 500, {
           error: error instanceof Error ? error.message : "Agent config failed.",
@@ -221,10 +398,26 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
 
   void (async () => {
     try {
-      const agent = await getAgent()
-
       if (isWarm) {
         const body = await readJsonBody<{ model?: string }>(req)
+
+        if (body.model === CODEX_MODEL) {
+          sendJson(res, 200, {
+            ok: true,
+            metrics: {
+              model: CODEX_MODEL,
+              calls: 0,
+              totalMs: 0,
+              loadMs: 0,
+              promptTokens: 0,
+              outputTokens: 0,
+            },
+          })
+
+          return
+        }
+
+        const agent = await getAgent()
 
         sendJson(res, 200, await agent.warmAgent(body))
 
@@ -232,6 +425,14 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
       }
 
       const body = await readJsonBody<AgentRequestBody>(req)
+
+      if (body.model === CODEX_MODEL) {
+        await streamCodexTurn(req, res, body)
+
+        return
+      }
+
+      const agent = await getAgent()
 
       await streamAgentTurn(res, agent, body)
     } catch (error) {
