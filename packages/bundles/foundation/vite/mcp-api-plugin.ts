@@ -6,6 +6,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
 
 import {
+  BRIDGE_ASSET_PATH,
   BRIDGE_EVENTS_PATH,
   BRIDGE_RESULT_PATH,
   MCP_PATH,
@@ -56,6 +57,77 @@ function sendJson(res: ServerResponse, status: number, body: unknown): void {
   res.statusCode = status
   res.setHeader("Content-Type", "application/json")
   res.end(JSON.stringify(body))
+}
+
+/** Largest remote image the capture proxy will fetch, in bytes. */
+const MAX_ASSET_BYTES = 8 * 1024 * 1024
+
+/**
+ * Fetches a remote image on the server so the tab can embed it in a capture.
+ * Catalog defaults live on static.seldon.app, which sends no CORS headers.
+ */
+async function handleAssetProxy(req: Connect.IncomingMessage, res: ServerResponse): Promise<void> {
+  if (req.method !== "GET") {
+    sendJson(res, 405, { error: "Method not allowed" })
+
+    return
+  }
+
+  const rawUrl = new URL(req.url ?? "", "http://localhost").searchParams.get("url")
+
+  if (!rawUrl) {
+    sendJson(res, 400, { error: "Missing url query parameter." })
+
+    return
+  }
+
+  let parsed: URL
+
+  try {
+    parsed = new URL(rawUrl)
+  } catch {
+    sendJson(res, 400, { error: "Invalid url." })
+
+    return
+  }
+
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    sendJson(res, 400, { error: "Only http and https urls are allowed." })
+
+    return
+  }
+
+  try {
+    const response = await fetch(parsed.href)
+
+    if (!response.ok) {
+      sendJson(res, 502, { error: "Upstream fetch failed." })
+
+      return
+    }
+
+    const mime = response.headers.get("content-type")?.split(";")[0]?.trim() ?? ""
+
+    if (!mime.startsWith("image/")) {
+      sendJson(res, 415, { error: "The url is not an image." })
+
+      return
+    }
+
+    const buffer = Buffer.from(await response.arrayBuffer())
+
+    if (buffer.length > MAX_ASSET_BYTES) {
+      sendJson(res, 413, { error: "Asset exceeds the size cap." })
+
+      return
+    }
+
+    res.statusCode = 200
+    res.setHeader("Content-Type", "text/plain")
+    res.end(`data:${mime};base64,${buffer.toString("base64")}`)
+  } catch {
+    sendJson(res, 502, { error: "Upstream fetch failed." })
+  }
 }
 
 /** Opens an SSE stream for a subscribing tab and keeps it alive with comments. */
@@ -132,6 +204,12 @@ async function handle(
   next: Connect.NextFunction,
 ): Promise<void> {
   const url = req.url ?? ""
+
+  if (url.startsWith(BRIDGE_ASSET_PATH)) {
+    await handleAssetProxy(req, res)
+
+    return
+  }
 
   if (url.startsWith(BRIDGE_EVENTS_PATH)) {
     const query = new URL(url, "http://localhost").searchParams

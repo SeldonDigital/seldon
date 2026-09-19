@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Canvas from "@app/canvas/Canvas.vue"
+import CaptureBoard from "@app/canvas/CaptureBoard.vue"
 import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
 import BoardsDialog from "@app/dialogs/BoardsDialog.vue"
 import ComponentsDialog from "@app/dialogs/ComponentsDialog.vue"
@@ -181,6 +182,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
     <HariController />
     <PanelPropertyController />
     <FocusRingOverlay />
+    <CaptureBoard v-if="status === 'ready'" :workspace="workspace" />
   </div>
 </template>
 

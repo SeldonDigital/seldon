@@ -13,9 +13,9 @@
 
 import { HTMLAttributes } from "react"
 
+import { ListItem, ListItemProps } from "../elements/ListItem"
 import { HTMLOl } from "../native-react/HTML.Ol"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { ListItem, ListItemProps } from "../primitives/ListItem"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
@@ -34,7 +34,6 @@ const sdn: ListProps = {
   htmlElement: "ul",
   "aria-hidden": "false",
   listItem: {
-    children: "List item",
     className: "sdn-list-item sdn-list-item--uvyv",
   },
 }
@@ -71,14 +70,8 @@ export function List({
 
   switch (htmlElement) {
     case "ol":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLOl className={listClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     default:
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLUl className={listClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
   }
 }

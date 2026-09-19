@@ -19,13 +19,18 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 
 import { EditSession, safeApply } from "../tools"
 import { WorkspaceStore } from "./store"
+import { writeImageToProject } from "./write-image"
 
 import type { RejectedActionResult } from "../types"
 import type {
+  CapturedImage,
   CheckpointInfo,
+  CommitOutcome,
   ExportedFile,
+  McpCaptureOptions,
   McpExportOptions,
   McpHost,
+  McpWriteImageOptions,
   WorkspaceTarget,
 } from "./server"
 import type { StatToken } from "./store"
@@ -100,7 +105,7 @@ function tokenChanged(a: StatToken | null, b: StatToken | null): boolean {
 function commitConflictMessage(rejected: RejectedActionResult[]): string {
   const reasons = rejected.map((entry) => `${entry.type}: ${entry.reason}`).join(" ")
 
-  return `Commit conflict: the workspace changed on disk and none of this change's actions still apply. ${reasons} Re-read the current state and retry.`
+  return `Commit conflict: the workspace changed on disk and none of this change's actions still apply. ${reasons} The transaction is still open. Re-read the current state and retry.`
 }
 
 interface CheckpointRecord {
@@ -120,9 +125,10 @@ export interface HeadlessHostOptions {
    */
   liveFile?: string
   /**
-   * Root an export writes files into and the factory reads engine assets from.
-   * Defaults to the project root derived from the store directory, so an export
-   * lands in the project even when the process runs from another directory.
+   * Root an export and set_image write files into, and the factory reads engine
+   * assets from. Defaults to the project root derived from the store directory,
+   * so writes land in the project even when the process runs from another
+   * directory.
    */
   exportRoot?: string
 }
@@ -222,20 +228,31 @@ export class HeadlessHost implements McpHost {
 
   async openSession(targetId: string): Promise<EditSession> {
     const state = await this.getState(targetId)
+    const session = new EditSession(state.workspace)
 
-    return new EditSession(state.workspace)
+    session.baseRevision = state.rev
+
+    return session
   }
 
-  async commitSession(targetId: string, session: EditSession): Promise<{ version: number }> {
+  async commitSession(targetId: string, session: EditSession): Promise<CommitOutcome> {
     const state = await this.getState(targetId)
 
     return this.enqueue(state, async () => {
+      const diverged = await this.reloadIfDiverged(targetId, state)
+
+      // Nothing else wrote, so the session copy is exactly what the agent saw.
+      // Adopting it keeps the node ids the create tools reported. A replay mints
+      // new ones and every follow-on action loses its target.
+      if (!diverged && state.rev === session.baseRevision) {
+        return { version: await this.adopt(targetId, state, session.workspace) }
+      }
+
       // Rebase onto disk under the lock, not the snapshot the session opened on,
       // so an editor autosave or a concurrent commit that landed first is
       // preserved. safeApply reruns each action through the linter and reducer,
       // so an action that no longer applies to the fresh base is rejected rather
       // than clobbering the newer state.
-      await this.reloadIfDiverged(targetId, state)
       const result = safeApply(state.workspace, session.actions)
 
       if (result.applied.length === 0 && result.rejected.length > 0) {
@@ -244,7 +261,10 @@ export class HeadlessHost implements McpHost {
 
       const version = await this.adopt(targetId, state, result.workspace)
 
-      return { version }
+      return {
+        version,
+        rejected: result.rejected.length > 0 ? result.rejected : undefined,
+      }
     })
   }
 
@@ -314,6 +334,25 @@ export class HeadlessHost implements McpHost {
     }
 
     return files.map(toExportedFile)
+  }
+
+  async writeImage(
+    targetId: string,
+    options: McpWriteImageOptions,
+  ): Promise<{ publicPath: string }> {
+    await this.getState(targetId)
+
+    return writeImageToProject(this.exportRoot, options)
+  }
+
+  async capture(
+    _targetId: string,
+    _options?: McpCaptureOptions,
+  ): Promise<CapturedImage | { message: string }> {
+    return {
+      message:
+        "render_preview needs a live editor tab. Open this workspace in the editor and call it again. Headless capture is not available yet.",
+    }
   }
 
   async undo(targetId: string): Promise<{ version: number } | { message: string }> {

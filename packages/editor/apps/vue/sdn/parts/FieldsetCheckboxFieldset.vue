@@ -91,7 +91,7 @@ const sdn: Record<string, any> = {
   },
   textLabel: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
   formControlCheckboxControl2: {
     "aria-hidden": "false",
@@ -103,7 +103,7 @@ const sdn: Record<string, any> = {
   },
   textLabel2: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
   formControlCheckboxControl3: {
     "aria-hidden": "false",
@@ -115,7 +115,7 @@ const sdn: Record<string, any> = {
   },
   textLabel3: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 }
 

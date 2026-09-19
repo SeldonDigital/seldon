@@ -20,11 +20,12 @@ import type { CSSProperties } from "vue"
 
 // `variantRootIds` overrides the rendered variants (isolation dependency
 // boards). Omit it for the anchored board, which shows its selected variant.
-// `boardLabel` is the caption from the shared isolation gallery groups.
+// `boardLabel` is the caption from the shared isolation gallery groups. Omit it
+// where the board carries no caption, as the capture surface does.
 const props = defineProps<{
   workspace: Workspace
   board: Board
-  boardLabel: string
+  boardLabel?: string
   variantRootIds?: string[]
 }>()
 
@@ -108,7 +109,7 @@ const boardActiveState = computed(() => boardState.getActiveState(boardKey.value
     <Teleport to="head">
       <component :is="'style'">{{ boardCss }}</component>
     </Teleport>
-    <div class="isolation-board-label" :style="labelStyle">
+    <div v-if="boardLabel" class="isolation-board-label" :style="labelStyle">
       {{ boardLabel }}
     </div>
     <div

@@ -60,7 +60,7 @@ const sdn: Record<string, any> = {
   },
   textLabel: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--o9nd",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }
 

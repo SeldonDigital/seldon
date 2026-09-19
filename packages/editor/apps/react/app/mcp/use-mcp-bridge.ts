@@ -8,6 +8,13 @@ import {
 } from "@app/workspace/hooks/use-selection"
 import { getResourceTargetId, getSelectionScope } from "@app/workspace/hooks/use-selection-scope"
 import { findActiveBoardKey } from "@seldon/editor/lib/ai/apply-report"
+import {
+  clearCaptureBoard,
+  getCaptureBoardElement,
+  startCaptureBoard,
+} from "@seldon/editor/lib/canvas/capture/capture-board"
+import { captureCanvasImage } from "@seldon/editor/lib/canvas/capture/capture-canvas-image"
+import { resolveCaptureBoardKey } from "@seldon/editor/lib/canvas/capture/resolve-capture-board"
 import { BRIDGE_EVENTS_PATH, BRIDGE_RESULT_PATH } from "@seldon/editor/lib/mcp/bridge-protocol"
 import { useEffect } from "react"
 
@@ -16,7 +23,7 @@ import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 
 import type { Action } from "@seldon/core/index"
-import type { Workspace } from "@seldon/core/workspace/types"
+import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 import type {
   BridgeCommand,
   BridgeContext,
@@ -30,15 +37,21 @@ function currentVersion(): number {
   return useHistoryStore.getState().currentIndex
 }
 
-/** Builds the context a `context` command returns: workspace plus live selection. */
-function readContext(): BridgeContext {
-  const workspace = getCurrentWorkspace()
+/** The board the canvas is showing, derived from the live selection. */
+function readActiveBoardKey(workspace: Workspace): BoardKey | undefined {
   const selection = getCurrentSelection()
   const activeBoard = selection
     ? isBoard(selection)
       ? selection
       : nodeRelationshipService.findBoardForNode(selection, workspace)
     : null
+
+  return findActiveBoardKey(workspace, activeBoard) ?? undefined
+}
+
+/** Builds the context a `context` command returns: workspace plus live selection. */
+function readContext(): BridgeContext {
+  const workspace = getCurrentWorkspace()
   const { selectedNodeId, selectedNodeRootId, selectedBoardId } = useSelectionStore.getState()
 
   return {
@@ -47,7 +60,7 @@ function readContext(): BridgeContext {
     selectedNodeId: selectedNodeId ?? undefined,
     selectedNodeRootId: selectedNodeRootId ?? undefined,
     selectedBoardId: selectedBoardId ?? undefined,
-    activeBoardKey: findActiveBoardKey(workspace, activeBoard) ?? undefined,
+    activeBoardKey: readActiveBoardKey(workspace),
     scope: getSelectionScope(workspace),
     resourceTargetId: getResourceTargetId(workspace),
   }
@@ -61,8 +74,44 @@ function applyActions(dispatch: Dispatch, actions: Action[]): void {
   dispatch({ type: "set_workspace", payload: { workspace } })
 }
 
+/**
+ * Rasterizes the requested board or node without changing what the user sees.
+ *
+ * A target on the board the canvas already shows is read straight off the canvas.
+ * Any other board is mounted on the capture surface and read there, because
+ * selecting it would move the user and reset the canvas pan and zoom, which
+ * nothing saves.
+ */
+async function runCapture(command: BridgeCommand): Promise<BridgeResult> {
+  const request = command.capture ?? {}
+  const workspace = getCurrentWorkspace()
+  const targetBoardKey = resolveCaptureBoardKey(workspace, request)
+
+  if (!targetBoardKey || targetBoardKey === readActiveBoardKey(workspace)) {
+    const image = await captureCanvasImage(request)
+
+    return { id: command.id, ok: true, image }
+  }
+
+  const surface = getCaptureBoardElement()
+
+  if (!surface) {
+    return { id: command.id, ok: false, error: "This tab has no capture surface mounted." }
+  }
+
+  startCaptureBoard(targetBoardKey)
+
+  try {
+    const image = await captureCanvasImage({ ...request, rootElement: surface })
+
+    return { id: command.id, ok: true, image }
+  } finally {
+    clearCaptureBoard()
+  }
+}
+
 /** Runs one command against the live editor stores and returns the wire result. */
-function runCommand(dispatch: Dispatch, command: BridgeCommand): BridgeResult {
+async function runCommand(dispatch: Dispatch, command: BridgeCommand): Promise<BridgeResult> {
   switch (command.type) {
     case "context":
       return { id: command.id, ok: true, context: readContext() }
@@ -84,6 +133,8 @@ function runCommand(dispatch: Dispatch, command: BridgeCommand): BridgeResult {
       useHistoryStore.getState().redo()
 
       return { id: command.id, ok: true, version: currentVersion() }
+    case "capture":
+      return runCapture(command)
   }
 }
 
@@ -113,21 +164,22 @@ export function useMcpBridge(workspaceId: string): void {
     )
 
     source.onmessage = (event: MessageEvent<string>) => {
-      let result: BridgeResult
-
-      try {
-        result = runCommand(dispatch, JSON.parse(event.data) as BridgeCommand)
-      } catch (error) {
+      void (async () => {
         const command = JSON.parse(event.data) as BridgeCommand
+        let result: BridgeResult
 
-        result = {
-          id: command.id,
-          ok: false,
-          error: error instanceof Error ? error.message : "Command failed.",
+        try {
+          result = await runCommand(dispatch, command)
+        } catch (error) {
+          result = {
+            id: command.id,
+            ok: false,
+            error: error instanceof Error ? error.message : "Command failed.",
+          }
         }
-      }
 
-      void postResult(result)
+        await postResult(result)
+      })()
     }
 
     return () => source.close()

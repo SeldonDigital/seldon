@@ -23,11 +23,32 @@ model. The tools fall into groups:
 - Transactions: `begin_change`, `commit_change`, and `rollback_change` group a
   multi-step edit so it lands as one revision and one undo step.
 - Session: `workspace_list`, `workspace_select`, `workspace_create`,
-  `get_target_status`, `workspace_export`, `undo`, `redo`,
-  `create_checkpoint`, `restore_checkpoint`, and `list_checkpoints`.
+  `get_target_status`, `workspace_export`, `set_image`, `get_design_guide`,
+  `undo`, `redo`, `create_checkpoint`, `restore_checkpoint`, and
+  `list_checkpoints`.
+- Preview: `render_preview` returns a JPEG of a board or node. It photographs
+  the committed canvas. Call `commit_change` first if a transaction is open. It
+  needs an editor tab with the workspace open. A headless host returns a message
+  telling the agent to open the editor.
+
+`get_design_guide` returns workflow, composition, property, theme, image, and
+export guidance so an agent can build without reading the source. Pass a
+`section` to pull one topic.
+
+`set_image` copies a local file or data URL into the project's `public/sdn`
+folder and stores a `/sdn/<name>` path. Pass `nodeId` to write that path onto
+`source` or `background`. The editor canvas serves `public/sdn` at `/sdn` so the
+image renders in the editor and in `render_preview`.
+
+New boards fit their content. A catalog `screen` still defaults to 600px by
+600px. Set `screenWidth` and `screenHeight` or a wider page clips. The default
+screen variant is locked. Call `add_variant` and insert page content into that
+user variant.
 
 A write with no open transaction commits on its own as one revision. A write
-inside `begin_change` accumulates until `commit_change`.
+inside `begin_change` accumulates until `commit_change`. Call `commit_change`
+before `render_preview`. A preview shows the committed canvas, not an open
+transaction.
 
 ## Two layers: host and transport
 
@@ -51,6 +72,20 @@ There are two hosts:
 | Headless CLI | `HeadlessHost` | stdio | `seldon-mcp` bin | no |
 | Headless service | `HeadlessHost` | Streamable HTTP | `seldon-mcp --http` | no |
 | Editor bridge | `BridgeHost` | Streamable HTTP | editor dev server | yes |
+
+`render_preview` only works on the editor bridge when a tab has the workspace
+open. Headless CLI and HTTP return a directive instead of an image.
+
+`set_image` writes files on disk through the host, so it works in headless and
+bridge mode. The `/sdn` canvas route is part of the editor dev server. A
+headless export still emits `/sdn/<name>` references. The destination app must
+serve `public/` at the site root.
+
+A capture never moves the user. Pass a `nodeId` to rasterize one variant or part
+instead of a whole board, which keeps the image small. Pass a `boardKey` to
+rasterize a board the editor is not showing. The canvas shows one board at a
+time, so the tab renders any other board on a surface off the viewport and reads
+it there. The tab's selection, active board, pan, and zoom are left alone.
 
 ### Headless over stdio
 
@@ -92,12 +127,12 @@ the MCP endpoint at `/api/mcp` backed by a `BridgeHost`, plus the bridge's SSE
 stream and result endpoints the tab uses. Both apps register it in their
 `vite.config.ts` next to the other API plugins.
 
-When a tab has the target workspace open, reads and writes route to it: the tab
-reports its current workspace and selection, folds a commit's actions through
-its own reducer as one undo step, and steps its own history. The agent edits
-exactly what the user sees, and every change lands in the tab's undo stack. With
-no tab connected, the same endpoint serves the headless host over the shared
-store, so one URL covers both.
+When a tab has the target workspace open, reads and writes route to it. The tab
+reports its current workspace and selection. A commit adopts the session
+workspace as one undo step when the session minted node ids, so those ids stay
+stable. The agent edits exactly what the user sees, and every change lands in
+the tab's undo stack. With no tab connected, the same endpoint serves the
+headless host over the shared store, so one URL covers both.
 
 Point an MCP client at the running editor:
 
@@ -127,9 +162,10 @@ In the headless host they run against a bounded in-memory history per workspace.
 
 Each workspace has its own write queue. A read-modify-write-persist step runs to
 completion before the next one starts, so concurrent commits on one workspace
-never lose an update. A commit re-applies its actions against the current
-workspace rather than the snapshot it opened on, so a change that landed first
-is preserved.
+never lose an update. A commit adopts the session workspace when nothing else
+wrote, so node ids the create tools reported stay valid. When the workspace
+moved under the session, the commit rebases the session actions onto the current
+state. A rebase that rejects every action leaves the transaction open.
 
 ## Setup recipes
 

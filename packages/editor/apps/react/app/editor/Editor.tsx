@@ -7,6 +7,7 @@ import { Allotment, LayoutPriority } from "allotment"
 import { useCallback } from "react"
 
 import { Canvas } from "../canvas/Canvas"
+import { CaptureBoard } from "../canvas/boards/CaptureBoard"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"
 import { ComponentsDialog } from "../dialogs/components/ComponentsDialog"
 import { CreateComponentController } from "../dialogs/create-component/CreateComponentController"
@@ -99,6 +100,7 @@ export default function Editor() {
       <HariController />
       <PanelPropertyController />
       <FocusRingOverlay />
+      <CaptureBoard />
       <EditorShortcuts />
     </Frame>
   )

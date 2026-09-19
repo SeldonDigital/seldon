@@ -19,7 +19,6 @@ import { FormControlCombobox, FormControlComboboxProps } from "../elements/FormC
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
 import { Input, InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
@@ -37,7 +36,6 @@ export interface ItemPropertyProps extends LiHTMLAttributes<HTMLLIElement> {
   input2?: InputProps | null
   buttonIconic2?: ButtonIconicProps | null
   icon3?: IconProps | null
-  textLabel?: TextLabelProps | null
 
   buttonIconic3?: ButtonIconicProps | null
   icon4?: IconProps | null
@@ -98,11 +96,6 @@ const sdn: ItemPropertyProps = {
     className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "propertyValueMenuIcon",
   },
-  textLabel: {
-    children: "Annotation",
-    className: "sdn-text-label sdn-text-label--twuv",
-    "data-seldon-ref": "propertyValueAnnotation",
-  },
 
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -132,7 +125,6 @@ const sdn: ItemPropertyProps = {
  *       Input            input2               -> propertyValueLabel
  *       ButtonIconic     buttonIconic2        -> propertyValueMenu
  *         Icon           icon3                -> propertyValueMenuIcon
- *     TextLabel          textLabel            -> propertyValueAnnotation
  *   ButtonIconic         buttonIconic3        -> propertyActions
  *     Icon               icon4
  *
@@ -145,7 +137,6 @@ const sdn: ItemPropertyProps = {
  *   formControlCombobox="{}"
  *   input="{}"
  *   comboboxField="{}"
- *   textLabel="{}"
  *   buttonIconic2={() => {}}
  * />
  * ```
@@ -162,7 +153,6 @@ export function ItemProperty({
   input2,
   buttonIconic2,
   icon3,
-  textLabel,
 
   buttonIconic3,
   icon4,
@@ -187,7 +177,6 @@ export function ItemProperty({
   const input2Props = mergeSlot(sdn.input2, input2, seldonRefs)
   const buttonIconic2Props = mergeSlot(sdn.buttonIconic2, buttonIconic2, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
-  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   const buttonIconic3Props = mergeSlot(sdn.buttonIconic3, buttonIconic3, seldonRefs)
   const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
@@ -211,7 +200,6 @@ export function ItemProperty({
                   icon2={icon3Props}
                 />
               )}
-              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </FormControlCombobox>
           )}
           {buttonIconic3Props !== null && (

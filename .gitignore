@@ -44,3 +44,8 @@ __exports__
 # source at `.seldon/<label>.<framework>.json` stays tracked; only the live
 # store under `workspaces/` is ignored.
 .seldon/workspaces/
+
+# Temporary esbuild bundle written by export-seldon.mjs next to the factory so
+# Prettier resolves from the repo. Deleted after the import, kept ignored if a
+# crash leaves it behind.
+packages/factory/.seldon-export-*.mjs

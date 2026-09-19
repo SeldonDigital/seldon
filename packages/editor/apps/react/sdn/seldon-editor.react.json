@@ -1,8 +1,20 @@
 {
   "metadata": {
-    "version": 20,
+    "version": 21,
     "label": "seldon-editor",
-    "id": "21977883-01e2-4235-a68b-0cd1d77b5514"
+    "id": "2347a3e9-93d1-41b5-b1d7-9cd7fe37c7d4",
+    "exportSettings": {
+      "platform": "react",
+      "framework": "none",
+      "outputFolder": "",
+      "fontLinks": false,
+      "allFonts": false,
+      "allIcons": true,
+      "allThemes": false,
+      "includeHidden": false,
+      "savedWorkspace": true,
+      "includeScripts": true
+    }
   },
   "boards": {
     "seldon": {
@@ -397,7 +409,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 20
       }
     },
     "button": {
@@ -574,7 +586,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 13
       }
     },
     "input": {
@@ -656,7 +668,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 22
       }
     },
     "comboboxField": {
@@ -857,7 +869,7 @@
         }
       ],
       "__editor": {
-        "order": 23
+        "order": 24
       }
     },
     "bar": {
@@ -1560,7 +1572,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 21
       }
     },
     "avatar": {
@@ -1800,7 +1812,7 @@
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 14
       }
     },
     "formControl": {
@@ -2644,7 +2656,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 19
       }
     },
     "menuItem": {
@@ -2752,7 +2764,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 16
       }
     },
     "menu": {
@@ -5877,7 +5889,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 12
       }
     },
     "blockquote": {
@@ -5894,7 +5906,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 18
       }
     },
     "listItem": {
@@ -5917,7 +5929,7 @@
         }
       ],
       "__editor": {
-        "order": 24
+        "order": 15
       }
     },
     "list": {
@@ -5969,7 +5981,7 @@
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 11
       }
     },
     "dialog": {
@@ -6660,7 +6672,7 @@
         }
       ],
       "__editor": {
-        "order": 22
+        "order": 23
       }
     },
     "select": {
@@ -6698,7 +6710,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 17
       }
     },
     "fieldset": {
@@ -8767,10 +8779,6 @@
           "border": {}
         },
         "focused": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.punch"
-          },
           "border": {
             "color": {
               "type": "theme.categorical",
@@ -23324,12 +23332,7 @@
             "value": "@swatch.primary"
           }
         },
-        "focused": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.punch"
-          }
-        },
+        "focused": {},
         "checked": {
           "color": {
             "type": "theme.categorical",
@@ -28421,7 +28424,7 @@
         },
         "content": {
           "type": "exact",
-          "value": "All Enabled Fonts"
+          "value": "All Fonts"
         },
         "width": {
           "type": "option",
@@ -48913,8 +48916,8 @@
           "arvo": {
             "700": true,
             "regular": true,
-            "italic": true,
-            "700italic": true
+            "700italic": true,
+            "italic": true
           },
           "abel": {
             "regular": true

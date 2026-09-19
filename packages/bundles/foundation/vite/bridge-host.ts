@@ -1,16 +1,21 @@
-import { EditSession } from "@seldon/ai"
+import { EditSession, safeApply } from "@seldon/ai"
 
 import type {
+  BridgeCaptureRequest,
   BridgeCommandType,
   BridgeContext,
   BridgeResult,
 } from "../../../editor/shared/lib/mcp/bridge-protocol"
 import type {
+  CapturedImage,
   CheckpointInfo,
+  CommitOutcome,
   ExportedFile,
   HeadlessHost,
+  McpCaptureOptions,
   McpExportOptions,
   McpHost,
+  McpWriteImageOptions,
   SelectionContext,
   SelectionScope,
   WorkspaceTarget,
@@ -21,10 +26,20 @@ import type { ServerResponse } from "node:http"
 /** How long the server waits for a tab to answer one command. */
 const COMMAND_TIMEOUT_MS = 15_000
 
+/** How long the server waits for a tab to rasterize a canvas capture. */
+const CAPTURE_TIMEOUT_MS = 45_000
+
 interface PendingCommand {
   resolve: (result: BridgeResult) => void
   reject: (error: Error) => void
   timer: ReturnType<typeof setTimeout>
+}
+
+/** Optional payload fields a command may carry besides its type and id. */
+interface BridgeSendExtra {
+  actions?: WorkspaceAction[]
+  workspace?: unknown
+  capture?: BridgeCaptureRequest
 }
 
 /** Raised when a target has no connected editor tab, so the host falls back. */
@@ -78,7 +93,8 @@ export class BridgeHub {
   send(
     workspaceId: string,
     type: BridgeCommandType,
-    extra: { actions?: WorkspaceAction[]; workspace?: unknown } = {},
+    extra: BridgeSendExtra = {},
+    timeoutMs = COMMAND_TIMEOUT_MS,
   ): Promise<BridgeResult> {
     const client = this.clients.get(workspaceId)
 
@@ -88,8 +104,8 @@ export class BridgeHub {
     return new Promise<BridgeResult>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pending.delete(id)
-        reject(new Error(`Editor tab did not answer "${type}" within ${COMMAND_TIMEOUT_MS}ms.`))
-      }, COMMAND_TIMEOUT_MS)
+        reject(new Error(`Editor tab did not answer "${type}" within ${timeoutMs}ms.`))
+      }, timeoutMs)
 
       this.pending.set(id, { resolve, reject, timer })
       client.write(`data: ${JSON.stringify({ id, type, ...extra })}\n\n`)
@@ -186,17 +202,52 @@ export class BridgeHost implements McpHost {
   async openSession(targetId: string): Promise<EditSession> {
     if (!this.hub.hasClient(targetId)) return this.fallback.openSession(targetId)
     const context = await this.context(targetId)
+    const session = new EditSession(context.workspace, selectionFromContext(context))
 
-    return new EditSession(context.workspace, selectionFromContext(context))
+    session.baseRevision = String(context.version)
+
+    return session
   }
 
-  async commitSession(targetId: string, session: EditSession): Promise<{ version: number }> {
+  async commitSession(targetId: string, session: EditSession): Promise<CommitOutcome> {
     if (!this.hub.hasClient(targetId)) return this.fallback.commitSession(targetId, session)
-    const result = await this.hub.send(targetId, "apply", { actions: session.actions })
+
+    if (!session.mintedNodes()) {
+      const result = await this.hub.send(targetId, "apply", { actions: session.actions })
+
+      if (!result.ok) throw new Error(result.error ?? "The editor tab rejected the change.")
+
+      return { version: result.version ?? 0 }
+    }
+
+    const context = await this.context(targetId)
+
+    if (String(context.version) === session.baseRevision) {
+      const result = await this.hub.send(targetId, "adopt", { workspace: session.workspace })
+
+      if (!result.ok) throw new Error(result.error ?? "The editor tab rejected the change.")
+
+      return { version: result.version ?? 0 }
+    }
+
+    const rebased = safeApply(context.workspace, session.actions)
+
+    if (rebased.applied.length === 0 && rebased.rejected.length > 0) {
+      const reasons = rebased.rejected.map((entry) => `${entry.type}: ${entry.reason}`).join(" ")
+
+      throw new Error(
+        `Commit conflict: the editor tab moved and none of this change's actions still apply. ${reasons} The transaction is still open. Re-read the current state and retry.`,
+      )
+    }
+
+    const result = await this.hub.send(targetId, "adopt", { workspace: rebased.workspace })
 
     if (!result.ok) throw new Error(result.error ?? "The editor tab rejected the change.")
 
-    return { version: result.version ?? 0 }
+    return {
+      version: result.version ?? 0,
+      rejected: rebased.rejected.length > 0 ? rebased.rejected : undefined,
+    }
   }
 
   async export(targetId: string, options?: McpExportOptions): Promise<ExportedFile[]> {
@@ -205,6 +256,38 @@ export class BridgeHost implements McpHost {
     // content change, so a connected tab's autosave is picked up and the export
     // reflects the current workspace.
     return this.fallback.export(targetId, options)
+  }
+
+  async writeImage(
+    targetId: string,
+    options: McpWriteImageOptions,
+  ): Promise<{ publicPath: string }> {
+    return this.fallback.writeImage(targetId, options)
+  }
+
+  async capture(
+    targetId: string,
+    options?: McpCaptureOptions,
+  ): Promise<CapturedImage | { message: string }> {
+    if (!this.hub.hasClient(targetId)) {
+      return {
+        message:
+          "No editor tab is connected. Open this workspace in the editor and call render_preview again. Headless capture is not available yet.",
+      }
+    }
+
+    const result = await this.hub.send(
+      targetId,
+      "capture",
+      { capture: options },
+      CAPTURE_TIMEOUT_MS,
+    )
+
+    if (!result.ok || !result.image) {
+      return { message: result.error ?? "The editor tab returned no image." }
+    }
+
+    return result.image
   }
 
   async undo(targetId: string): Promise<{ version: number } | { message: string }> {

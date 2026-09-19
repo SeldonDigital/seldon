@@ -58,7 +58,8 @@
   },
   "dependencies": {
     "@seldon/core": "0.0.0",
-    "@seldon/factory": "0.0.0"
+    "@seldon/factory": "0.0.0",
+    "modern-screenshot": "^4.6.6"
   },
   "volta": {
     "node": "22.23.1"

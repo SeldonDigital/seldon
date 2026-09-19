@@ -1,6 +1,6 @@
+import { spawnSync } from "node:child_process"
 import fs from "node:fs"
 import fsp from "node:fs/promises"
-import os from "node:os"
 import path from "node:path"
 import readline from "node:readline"
 import { fileURLToPath, pathToFileURL } from "node:url"
@@ -11,19 +11,21 @@ import { build } from "esbuild"
  * selected by `--platform`, since the React and Vue self-exports differ only by
  * target framework, app folder, and committed snapshot name.
  *
- * The input is the selected editor's workspace. It prefers the live copy in the
- * shared `.seldon` store, matched by the committed snapshot's `metadata.id`, so
- * edits made in the running editor export without a manual save step. When no
- * live copy exists, such as a fresh clone or CI, it falls back to the committed
- * snapshot at `<app>/sdn/seldon-editor.<platform>.json` after a confirm. Pass
- * `--use-committed` (or run non-interactively) to skip the prompt and always use
- * the committed snapshot.
+ * The input is the selected editor's workspace. It prefers the live source at
+ * `<app>/.seldon/seldon-editor.<platform>.json`. A hashed backup under
+ * `.seldon/workspaces` is used only when its label still matches `seldon-editor`.
+ * Matching by id alone is not enough. A store record can keep an old id after
+ * another project overwrites it. When no live source exists, such as a fresh
+ * clone or CI, it falls back to the committed snapshot at
+ * `<app>/sdn/seldon-editor.<platform>.json` after a confirm. Pass
+ * `--use-committed` to skip the live source and always use the committed
+ * snapshot.
  *
  * It runs the same factory export the editor's Export dialog runs and writes the
  * generated components into the app's `sdn/`. The export re-emits the snapshot
  * as `sdn/seldon-editor.<platform>.json`, so the committed fallback stays
- * current. The React and Vue snapshots share one `metadata.id`, so a single live
- * workspace drives both exports; export both after a change.
+ * current. After the write, this script formats `sdn/` with the monorepo
+ * Prettier config so `format:check` stays clean.
  *
  * Scope defaults are built in below and shared by both editors. Any single
  * setting can be changed for one run with a flag. Run with `--help` for every
@@ -51,6 +53,10 @@ const factoryRoot = path.join(sharedRoot, "../../factory")
 const repoRoot = path.join(sharedRoot, "../../..")
 const handlerEntry = path.join(sharedRoot, "vite/export-handler.ts")
 const liveWorkspacesDir = path.join(repoRoot, ".seldon", "workspaces")
+const prettierBin = path.join(repoRoot, "node_modules/prettier/bin/prettier.cjs")
+
+/** Label the editor self-export must keep. A store id can point at another file. */
+const EDITOR_WORKSPACE_LABEL = "seldon-editor"
 
 /** Output folder that keeps each editor's generated library self-contained. */
 const COMPONENTS_FOLDER = "sdn"
@@ -67,7 +73,7 @@ function printHelp(booleanFlags) {
     "",
     `  --platform <${PLATFORMS.join("|")}>   editor to export (required)`,
     ...Object.keys(booleanFlags).map((name) => `  --${name} / --no-${name}`),
-    "  --use-committed                    skip the live .seldon copy, use the committed snapshot",
+    "  --use-committed                    skip the live workspace source, use the committed snapshot",
     "  --help                             show this message",
   ]
   console.log(lines.join("\n"))
@@ -159,7 +165,9 @@ async function loadHandler() {
     ],
   })
 
-  const outputFile = path.join(os.tmpdir(), `seldon-export-${process.pid}.mjs`)
+  // Write next to the factory so `import("prettier")` in the bundle walks up
+  // to the repo `node_modules`. A file under os.tmpdir() cannot resolve it.
+  const outputFile = path.join(factoryRoot, `.seldon-export-${process.pid}.mjs`)
   await fsp.writeFile(outputFile, result.outputFiles[0].text)
   try {
     return await import(pathToFileURL(outputFile).href)
@@ -168,13 +176,23 @@ async function loadHandler() {
   }
 }
 
-/** Reads `metadata.id` from raw snapshot text without migrating it. */
-function readSnapshotId(text) {
+/** Reads `metadata.id` and `metadata.label` from raw workspace JSON. */
+function readSnapshotMeta(text) {
   try {
-    return JSON.parse(text)?.metadata?.id
+    const metadata = JSON.parse(text)?.metadata
+
+    return {
+      id: typeof metadata?.id === "string" ? metadata.id : undefined,
+      label: typeof metadata?.label === "string" ? metadata.label : undefined,
+    }
   } catch {
-    return undefined
+    return { id: undefined, label: undefined }
   }
+}
+
+/** True when a workspace or store record is still the editor library. */
+function isEditorWorkspace(label) {
+  return label === EDITOR_WORKSPACE_LABEL
 }
 
 /**
@@ -204,29 +222,113 @@ async function confirmUseCommitted(reason, useCommittedFlag, workspaceFile) {
 }
 
 /**
- * Resolves the serialized workspace to export. Prefers the live `.seldon` copy
- * matched by the snapshot's `metadata.id`, so a running editor's edits export
- * directly. Falls back to the committed snapshot after a confirm.
+ * Reads a hashed store record and returns the inner workspace JSON when the
+ * record is still the editor library. A matching id is not enough.
  */
-async function resolveInputWorkspaceText(workspaceFile, useCommittedFlag) {
+function readEditorStoreWorkspace(filePath) {
+  if (!fs.existsSync(filePath)) return undefined
+
+  try {
+    const record = JSON.parse(fs.readFileSync(filePath, "utf8"))
+    const live = record.workspace ?? record
+    const label = live?.metadata?.label
+
+    if (!isEditorWorkspace(label)) {
+      console.warn(
+        `Ignoring ${path.relative(repoRoot, filePath)}. Its label is "${label}", not ${EDITOR_WORKSPACE_LABEL}.`,
+      )
+
+      return undefined
+    }
+
+    return JSON.stringify(live)
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * Resolves the serialized workspace to export. Prefers the live source under
+ * the editor app. A hashed backup is used only when its label is still
+ * `seldon-editor`. Falls back to the committed snapshot after a confirm.
+ */
+async function resolveInputWorkspaceText(workspaceFile, editorRoot, platform, useCommittedFlag) {
   const committedText = fs.readFileSync(workspaceFile, "utf8")
-  const id = readSnapshotId(committedText)
+  const committed = readSnapshotMeta(committedText)
 
-  if (id) {
-    const liveFile = path.join(liveWorkspacesDir, `${id}.json`)
+  if (useCommittedFlag) {
+    console.log(`Using committed snapshot ${path.basename(workspaceFile)}.`)
 
-    if (fs.existsSync(liveFile)) {
-      const record = JSON.parse(fs.readFileSync(liveFile, "utf8"))
-      const live = record.workspace ?? record
+    return committedText
+  }
 
-      console.log(`Using live workspace ${id} from ${path.relative(repoRoot, liveWorkspacesDir)}.`)
+  const liveSource = path.join(editorRoot, ".seldon", `seldon-editor.${platform}.json`)
 
-      return JSON.stringify(live)
+  if (fs.existsSync(liveSource)) {
+    const text = fs.readFileSync(liveSource, "utf8")
+    const live = readSnapshotMeta(text)
+
+    if (isEditorWorkspace(live.label)) {
+      console.log(`Using live workspace source ${path.relative(repoRoot, liveSource)}.`)
+
+      return text
+    }
+
+    console.warn(
+      `Ignoring ${path.relative(repoRoot, liveSource)}. Its label is "${live.label}", not ${EDITOR_WORKSPACE_LABEL}.`,
+    )
+  }
+
+  const pointerFile = path.join(editorRoot, ".seldon", "project.json")
+
+  if (fs.existsSync(pointerFile)) {
+    try {
+      const pointer = JSON.parse(fs.readFileSync(pointerFile, "utf8"))
+      const fileName = pointer.workspace
+      const pointed = typeof fileName === "string" ? path.join(editorRoot, ".seldon", fileName) : ""
+
+      if (pointed && fs.existsSync(pointed)) {
+        const text = fs.readFileSync(pointed, "utf8")
+        const live = readSnapshotMeta(text)
+
+        if (isEditorWorkspace(live.label)) {
+          console.log(`Using live workspace source ${path.relative(repoRoot, pointed)}.`)
+
+          return text
+        }
+      }
+    } catch {
+      // A malformed pointer is not fatal. Try the hashed backup next.
     }
   }
 
-  const reason = id
-    ? `No live workspace ${id} found in ${path.relative(repoRoot, liveWorkspacesDir)}.`
+  const liveIds = [committed.id].filter(Boolean)
+
+  if (fs.existsSync(liveSource)) {
+    const liveId = readSnapshotMeta(fs.readFileSync(liveSource, "utf8")).id
+
+    if (liveId && !liveIds.includes(liveId)) liveIds.unshift(liveId)
+  }
+
+  for (const id of liveIds) {
+    const candidates = [
+      path.join(editorRoot, ".seldon", "workspaces", `${id}.json`),
+      path.join(liveWorkspacesDir, `${id}.json`),
+    ]
+
+    for (const liveFile of candidates) {
+      const workspace = readEditorStoreWorkspace(liveFile)
+
+      if (workspace) {
+        console.log(`Using live workspace backup ${path.relative(repoRoot, liveFile)}.`)
+
+        return workspace
+      }
+    }
+  }
+
+  const reason = committed.id
+    ? `No live ${EDITOR_WORKSPACE_LABEL} workspace found for ${committed.id}.`
     : "The committed snapshot has no live-store id yet."
 
   if (!(await confirmUseCommitted(reason, useCommittedFlag, workspaceFile))) {
@@ -235,6 +337,24 @@ async function resolveInputWorkspaceText(workspaceFile, useCommittedFlag) {
   }
 
   return committedText
+}
+
+/** Formats the exported folder with this repo's Prettier config. */
+function formatExportedFolder(folder) {
+  if (!fs.existsSync(prettierBin)) {
+    console.warn("Repo Prettier is not installed. Skipping the format pass.")
+
+    return
+  }
+
+  const result = spawnSync(process.execPath, [prettierBin, "--write", folder], {
+    cwd: repoRoot,
+    stdio: "inherit",
+  })
+
+  if (result.status !== 0) {
+    throw new Error("Prettier failed on the exported folder.")
+  }
 }
 
 async function main() {
@@ -255,7 +375,9 @@ async function main() {
   )
   const { editorRoot, workspaceFile } = editor
   // Read through Core so the file is migrated and verified before it is exported.
-  const workspace = loadWorkspace(await resolveInputWorkspaceText(workspaceFile, useCommitted))
+  const workspace = loadWorkspace(
+    await resolveInputWorkspaceText(workspaceFile, editorRoot, platform, useCommitted),
+  )
 
   const exportRequest = {
     workspace,
@@ -292,7 +414,11 @@ async function main() {
     )
   }
 
-  console.log(`Exported ${files.length} files into ${path.join(editorRoot, COMPONENTS_FOLDER)}`)
+  const exportedFolder = path.join(editorRoot, COMPONENTS_FOLDER)
+
+  formatExportedFolder(exportedFolder)
+
+  console.log(`Exported ${files.length} files into ${exportedFolder}`)
 }
 
 main().catch((error) => {

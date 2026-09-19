@@ -46,9 +46,6 @@ const sdn: LegendProps = {
 export function Legend({ className = "", children = sdn.children, ...props }: LegendProps) {
   const legendClassName = combineClassNames("sdn-legend", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLLegend className={legendClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}

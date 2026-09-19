@@ -149,6 +149,14 @@ The editor, MCP, and CLI share one workspace source under `.seldon`, named in
 editor dialog is what MCP exports next. A change MCP writes is what the editor
 dialog shows on the next open.
 
+Call `get_design_guide` for the one-shot build order and for property, theme,
+image, and export rules. Call `set_image` to place a local image. The tool
+copies the file into `public/sdn` and stores a `/sdn/<name>` path. New boards
+fit their content. A catalog `screen` still defaults to 600px by 600px. The
+default screen variant is locked. Call `add_variant` and build each page on
+that user variant. Call `commit_change` before `render_preview`. A preview
+shows the committed canvas, not an open transaction.
+
 The hashed files under `.seldon/workspaces` are backups. Do not treat them as
 the file you export from.
 

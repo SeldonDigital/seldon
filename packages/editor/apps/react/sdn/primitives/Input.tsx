@@ -54,8 +54,5 @@ export function Input({
 }: InputProps) {
   const inputClassName = combineClassNames("sdn-input", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <HTMLInput className={inputClassName} placeholder={placeholder} type={type} {...props} />
 }

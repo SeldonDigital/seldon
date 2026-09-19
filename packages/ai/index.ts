@@ -33,10 +33,14 @@ export type {
 } from "./tools"
 export { createSeldonMcpServer } from "./mcp/server"
 export type {
+  CapturedImage,
   CheckpointInfo,
+  CommitOutcome,
   ExportedFile,
+  McpCaptureOptions,
   McpExportOptions,
   McpHost,
+  McpWriteImageOptions,
   WorkspaceTarget,
 } from "./mcp/server"
 export { HeadlessHost } from "./mcp/headless-host"

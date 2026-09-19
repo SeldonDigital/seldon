@@ -31,7 +31,7 @@ The two apps share the same structure and behavior. When you change behavior in 
 | Area | Role | Path |
 | --- | --- | --- |
 | **AI** | Chat client that streams the local agent, turn integrity, change summaries | [lib/ai/](./lib/ai) |
-| **Canvas** | Tag resolution and property to HTML attribute mapping for node render | [lib/canvas/](./lib/canvas) |
+| **Canvas** | Tag resolution, property to HTML attribute mapping, and canvas JPEG capture | [lib/canvas/](./lib/canvas) |
 | **Chrome** | Editor chrome theme list | [lib/chrome/](./lib/chrome) |
 | **Commands** | Move decision helpers for drag and reorder | [lib/commands/](./lib/commands) |
 | **Devices** | Device preset constants and types | [lib/devices/](./lib/devices) |

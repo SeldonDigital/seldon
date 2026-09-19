@@ -40,7 +40,7 @@ const sdn: FormControlCheckboxControlProps = {
 
   textLabel: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--o9nd",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }
 

@@ -64,7 +64,7 @@ const sdn: FieldsetCheckboxFieldsetProps = {
   },
   textLabel: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 
   formControlCheckboxControl2: {
@@ -77,7 +77,7 @@ const sdn: FieldsetCheckboxFieldsetProps = {
   },
   textLabel2: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 
   formControlCheckboxControl3: {
@@ -90,7 +90,7 @@ const sdn: FieldsetCheckboxFieldsetProps = {
   },
   textLabel3: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 }
 

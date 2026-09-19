@@ -24,14 +24,20 @@ export function canvasSelectionId(...ids: Array<string | null | undefined>): str
  * sidebar rows), and uses the `~=` token match so an element listing several
  * ids resolves from any one of them. A single id (node, theme variant, font
  * family) yields one element; a variant id yields its whole group of specimens.
+ *
+ * Pass `root` to search another subtree instead, which a capture of a board the
+ * canvas is not showing uses to read the copy it rendered on its own.
  */
-export function getCanvasSelectionElements(selectionId: string): HTMLElement[] {
-  const canvasEl = document.getElementById("canvas")
+export function getCanvasSelectionElements(
+  selectionId: string,
+  root?: HTMLElement | null,
+): HTMLElement[] {
+  const scope = root ?? document.getElementById("canvas")
 
-  if (!canvasEl) return []
+  if (!scope) return []
 
   return Array.from(
-    canvasEl.querySelectorAll<HTMLElement>(`[${CANVAS_SELECTION_ID_ATTR}~="${selectionId}"]`),
+    scope.querySelectorAll<HTMLElement>(`[${CANVAS_SELECTION_ID_ATTR}~="${selectionId}"]`),
   )
 }
 
@@ -45,12 +51,16 @@ export function getCanvasSelectionElements(selectionId: string): HTMLElement[] {
  * `data-selection-root-id` is equal. Without a path, or when no copy matches,
  * the first element in document order is used, which is the default variant
  * column.
+ *
+ * `root` narrows the search the same way it does in
+ * {@link getCanvasSelectionElements}.
  */
 export function getScopedSelectionElement(
   selectionId: string,
   pathKey: string | null | undefined,
+  root?: HTMLElement | null,
 ): HTMLElement | null {
-  const elements = getCanvasSelectionElements(selectionId)
+  const elements = getCanvasSelectionElements(selectionId, root)
 
   if (elements.length === 0) return null
 

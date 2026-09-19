@@ -49,8 +49,5 @@ export function Textarea({
 }: TextareaProps) {
   const textareaClassName = combineClassNames("sdn-textarea", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <HTMLTextarea className={textareaClassName} placeholder={placeholder} {...props} />
 }

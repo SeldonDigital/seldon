@@ -91,6 +91,17 @@ first declaration, so two maps with the same name in one file collide. A bare
 In a `.map()` row, read a per-row map or call a helper that
 returns the row object. That keeps each row's values resolvable by the scanner.
 
+## Author the wrapper markup
+
+The code that drives a generated component must keep values out of the returned
+JSX. Returned JSX holds element tags and identifier references only.
+
+- Hoist each value into a named `const`, `useMemo`, or `useCallback` above the
+  return.
+- Do not write a ternary, `&&`, inline object, inline handler, or helper call
+  inside the returned markup.
+- A bare `null` or `undefined` that turns a slot on or off may stay inline.
+
 ## Record the bindings
 
 After you wire the views, regenerate the bindings manifest so the ref-to-code map

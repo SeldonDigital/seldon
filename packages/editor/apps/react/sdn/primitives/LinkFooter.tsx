@@ -46,9 +46,6 @@ const sdn: LinkFooterProps = {
 export function LinkFooter({ className = "", children = sdn.children, ...props }: LinkFooterProps) {
   const linkFooterClassName = combineClassNames("sdn-link-footer", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLAnchor className={linkFooterClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}

@@ -64,7 +64,7 @@ const sdn: FieldsetRadioButtonFieldsetProps = {
   },
   textLabel: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 
   formControlRadioButtonControl2: {
@@ -77,7 +77,7 @@ const sdn: FieldsetRadioButtonFieldsetProps = {
   },
   textLabel2: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 
   formControlRadioButtonControl3: {
@@ -90,7 +90,7 @@ const sdn: FieldsetRadioButtonFieldsetProps = {
   },
   textLabel3: {
     children: "Label",
-    className: "sdn-text-label sdn-text-label--a3jd",
+    className: "sdn-text-label sdn-text-label--y8ur",
   },
 }
 

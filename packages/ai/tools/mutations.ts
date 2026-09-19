@@ -363,7 +363,7 @@ const createAuthoredComponent = defineSeldonTool({
   name: "create_authored_component",
   label: "Create Authored Component",
   description:
-    "Create an authored component board (a user-defined component with no catalog schema). The board key derives from the name, so no parent is needed. Root it in a Frame or Container, then fill it with insert_component, reusing existing catalog or workspace components before creating new ones.",
+    "Create a new user-defined component board. This is the normal way to add a piece that is not in the catalog. The board key derives from the name, so no parent is needed. Root it in a Frame or Container, then fill it with insert_component.",
   kind: "write",
   parameters: Type.Object({
     name: Type.String({

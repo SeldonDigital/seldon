@@ -50,7 +50,7 @@ const sdn: MessageErrorProps = {
   },
   textDescription: {
     children: "Something went wrong",
-    className: "sdn-text-description sdn-text-label--xohb",
+    className: "sdn-text-description sdn-text-label--pif8",
     "data-seldon-ref": "hariErrorText",
   },
 

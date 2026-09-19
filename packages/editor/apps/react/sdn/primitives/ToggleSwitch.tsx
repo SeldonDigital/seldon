@@ -47,9 +47,6 @@ const sdn: ToggleSwitchProps = {
 export function ToggleSwitch({ className = "", ...props }: ToggleSwitchProps) {
   const toggleSwitchClassName = combineClassNames("sdn-toggle-switch", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <SeldonToggle
       className={toggleSwitchClassName}

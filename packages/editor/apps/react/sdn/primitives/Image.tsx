@@ -47,9 +47,6 @@ const sdn: ImageProps = {
 export function Image({ className = "", src = sdn.src, ...props }: ImageProps) {
   const imageClassName = combineClassNames("sdn-image", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLImg className={imageClassName} src={src} aria-hidden={sdn["aria-hidden"]} {...props} />
   )
