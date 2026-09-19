@@ -37,6 +37,18 @@ Seldon MCP server sends them. That is why a hand-patched JSON, or a hand-edited
 file here, drifts from the design. Do not reproduce a design change that way.
 Make the change in Seldon if you can, or ask whoever owns the source.
 
+## When you have MCP
+
+If the project only has generated files or `@seldon/terminus`, use these rules
+and re-export through `seldon-export`.
+
+If the project has `@seldon/hari` or a Seldon MCP server, call `get_design_guide`
+for workflow, composition, properties, theme, images, and export. Edit through
+write tools. Do not hand-edit workspace JSON.
+
+An editor is optional. These rules stay the same. Change the design in the
+editor or through MCP, then re-export.
+
 ## Re-export when you own the source
 
 If your project keeps the workspace JSON and has the Seldon CLI, regenerate the
@@ -53,20 +65,21 @@ The `seldon-export` CLI ships with `@seldon/factory`, and `@seldon/terminus` and
 npm i -D @seldon/factory
 ```
 
-Add a script so a re-export is one command. Add `--framework vite` or
-`--framework next` if your project uses that layout:
+Add a script so a re-export is one command. The CLI reads
+`.seldon/project.json` when `--input` is omitted, and uses the export
+settings saved on that workspace:
 
 ```json
 {
   "scripts": {
-    "seldon:export": "seldon-export --input path/to/workspace.json --platform vue"
+    "seldon:export": "seldon-export"
   }
 }
 ```
 
-Commit the workspace JSON if you keep it in the repo. If you run the Seldon Editor
-locally, ignore its scratch store so backups and the live store stay out of the
-repo:
+Commit the workspace source under `.seldon`, such as
+`dxf-website.react.json`, and `project.json`. The hashed files under
+`.seldon/workspaces/` are backups. Ignore those backups and `.bak` copies:
 
 ```gitignore
 .seldon/workspaces/

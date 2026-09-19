@@ -33,12 +33,27 @@ prefixed with `seldon-`, so it stays separate from your own rules once copied.
 - `seldon-using-components.md` how to render and customize the presentational
   components.
 - `seldon-editing-components.md` why `sdn` is generated output and
-  what to change instead.
+  what to change instead. Also when to call MCP `get_design_guide`.
 - `seldon-framework-target.md` the framework this export targets and when to warn
   about a mismatch.
 - `seldon-driving-components.md` where the code that drives the components lives in
-  your app, and how to wire nested nodes by ref name.
+  your app, how to wire nested nodes by ref name, and how to author the wrapper
+  markup.
 - `seldon-css-tokens.md` how to use the Seldon CSS variables and tokens.
+
+## Design changes
+
+These rules cover using the generated components.
+
+If the project only has generated files or `@seldon/terminus`, change the design
+in Seldon and re-export with `seldon-export`.
+
+If the project has `@seldon/hari` or a Seldon MCP server, call `get_design_guide`
+for workflow, composition, properties, theme, images, and export. Edit through
+write tools. Do not hand-edit workspace JSON.
+
+An editor is optional. These rules stay the same. Change the design in the
+editor or through MCP, then re-export.
 
 ## Refreshing
 

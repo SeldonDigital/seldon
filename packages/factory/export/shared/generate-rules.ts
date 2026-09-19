@@ -115,12 +115,27 @@ prefixed with \`seldon-\`, so it stays separate from your own rules once copied.
 - \`seldon-using-components.md\` how to render and customize the presentational
   components.
 - \`seldon-editing-components.md\` why \`${componentsFolder}\` is generated output and
-  what to change instead.
+  what to change instead. Also when to call MCP \`get_design_guide\`.
 - \`seldon-framework-target.md\` the framework this export targets and when to warn
   about a mismatch.
 - \`seldon-driving-components.md\` where the code that drives the components lives in
-  your app, and how to wire nested nodes by ref name.
+  your app, how to wire nested nodes by ref name, and how to author the wrapper
+  markup.
 - \`seldon-css-tokens.md\` how to use the Seldon CSS variables and tokens.
+
+## Design changes
+
+These rules cover using the generated components.
+
+If the project only has generated files or \`@seldon/terminus\`, change the design
+in Seldon and re-export with \`seldon-export\`.
+
+If the project has \`@seldon/hari\` or a Seldon MCP server, call \`get_design_guide\`
+for workflow, composition, properties, theme, images, and export. Edit through
+write tools. Do not hand-edit workspace JSON.
+
+An editor is optional. These rules stay the same. Change the design in the
+editor or through MCP, then re-export.
 
 ## Refreshing
 
@@ -245,6 +260,18 @@ Seldon MCP server sends them. That is why a hand-patched JSON, or a hand-edited
 file here, drifts from the design. Do not reproduce a design change that way.
 Make the change in Seldon if you can, or ask whoever owns the source.
 
+## When you have MCP
+
+If the project only has generated files or \`@seldon/terminus\`, use these rules
+and re-export through \`seldon-export\`.
+
+If the project has \`@seldon/hari\` or a Seldon MCP server, call \`get_design_guide\`
+for workflow, composition, properties, theme, images, and export. Edit through
+write tools. Do not hand-edit workspace JSON.
+
+An editor is optional. These rules stay the same. Change the design in the
+editor or through MCP, then re-export.
+
 ## Re-export when you own the source
 
 If your project keeps the workspace JSON and has the Seldon CLI, regenerate the
@@ -367,6 +394,31 @@ export function ExportContainer() {
 
   const readableExample = isVue ? `computed(() => ({ ... }))` : `useMemo(() => ({ ... }), deps)`
 
+  const wrapperMarkup = isVue
+    ? `## Author the wrapper markup
+
+The code that drives a generated component must keep values out of the template.
+A Vue template holds element tags and identifier references only.
+
+- Hoist each value into a named \`const\` or \`computed\` in \`<script setup>\`.
+- Do not write a ternary, \`&&\`, inline object, inline handler, or helper call
+  inside the template.
+- A bare \`null\` or \`undefined\` that turns a slot on or off may stay inline.
+- A \`v-for\` row is the exception. Call a named helper with the item, such as
+  \`:seldon-refs="rowRefs(item)"\`.
+`
+    : `## Author the wrapper markup
+
+The code that drives a generated component must keep values out of the returned
+JSX. Returned JSX holds element tags and identifier references only.
+
+- Hoist each value into a named \`const\`, \`useMemo\`, or \`useCallback\` above the
+  return.
+- Do not write a ternary, \`&&\`, inline object, inline handler, or helper call
+  inside the returned markup.
+- A bare \`null\` or \`undefined\` that turns a slot on or off may stay inline.
+`
+
   return `# Driving Seldon Components
 
 Seldon generates the view layer. The components in \`${componentsFolder}\` are
@@ -443,6 +495,7 @@ first declaration, so two maps with the same name in one file collide. A bare
 In a \`${isVue ? "v-for" : ".map()"}\` row, read a per-row map or call a helper that
 returns the row object. That keeps each row's values resolvable by the scanner.
 
+${wrapperMarkup}
 ## Record the bindings
 
 After you wire the views, regenerate the bindings manifest so the ref-to-code map
@@ -473,6 +526,19 @@ Do not write a literal color, spacing, radius, border width, font size, or line
 height. This holds in your own components too, not only in the generated tree.
 Use the matching \`--sdn-*\` variable, or a Seldon class that already reads it. Pick
 the nearest step on a scale rather than inventing a new value.
+
+Build a translucent color with \`color-mix\` and a \`--sdn-swatch-*\` variable. Do
+not write an \`rgb()\` or \`rgba()\` literal.
+
+\`\`\`css
+color-mix(in srgb, var(--sdn-swatch-black) 35%, transparent)
+\`\`\`
+
+Put SVG paint and width in a \`style\` object. A \`var()\` reference does not
+resolve in a presentation attribute.
+
+Some values have no token, such as \`z-index\` and \`opacity\`. Keep those numeric
+and give each one a named constant.
 
 ## Token families
 
