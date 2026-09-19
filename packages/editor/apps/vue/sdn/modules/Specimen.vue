@@ -255,7 +255,7 @@ const sdn: Record<string, any> = {
     children: "Design can be art. Design can be aesthetics.",
     htmlElement: "label",
     "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-description--welb",
+    className: "sdn-text-label sdn-text-label--aeb2",
     "data-seldon-ref": "typeSpecimenLabelPreview",
   },
   frame7: {
@@ -292,7 +292,7 @@ const sdn: Record<string, any> = {
     children: "Design is so simple, that's why it is so complicated.",
     htmlElement: "p",
     "aria-hidden": "false",
-    className: "sdn-text-tagline sdn-text-title--drqy",
+    className: "sdn-text-tagline sdn-text-subtitle--qgof",
     "data-seldon-ref": "typeSpecimenTaglinePreview",
   },
   frame10: {
@@ -330,7 +330,7 @@ const sdn: Record<string, any> = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h6",
     "aria-hidden": "false",
-    className: "sdn-text-callout sdn-text-title--drqy",
+    className: "sdn-text-callout sdn-text-subtitle--qgof",
     "data-seldon-ref": "typeSpecimenCalloutPreview",
   },
   frame13: {
@@ -368,7 +368,7 @@ const sdn: Record<string, any> = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h5",
     "aria-hidden": "false",
-    className: "sdn-text-subtitle sdn-text-title--drqy",
+    className: "sdn-text-subtitle sdn-text-subtitle--qgof",
     "data-seldon-ref": "typeSpecimenSubtitlePreview",
   },
   frame16: {
@@ -406,7 +406,7 @@ const sdn: Record<string, any> = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-title--drqy",
+    className: "sdn-text-title sdn-text-subtitle--qgof",
     "data-seldon-ref": "typeSpecimenTitlePreview",
   },
   frame19: {
@@ -444,7 +444,7 @@ const sdn: Record<string, any> = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h3",
     "aria-hidden": "false",
-    className: "sdn-text-subheading sdn-text-title--drqy",
+    className: "sdn-text-subheading sdn-text-subtitle--qgof",
     "data-seldon-ref": "typeSpecimenSubheadingPreview",
   },
   frame22: {

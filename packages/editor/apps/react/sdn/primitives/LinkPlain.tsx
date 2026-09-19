@@ -46,9 +46,6 @@ const sdn: LinkPlainProps = {
 export function LinkPlain({ className = "", children = sdn.children, ...props }: LinkPlainProps) {
   const linkPlainClassName = combineClassNames("sdn-link-plain", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLAnchor className={linkPlainClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}

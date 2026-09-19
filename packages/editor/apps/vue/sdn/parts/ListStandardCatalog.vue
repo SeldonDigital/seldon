@@ -107,7 +107,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   textSubtitle: {
     children: "Component Level",
-    className: "sdn-text-subtitle sdn-text-title--drqy",
+    className: "sdn-text-subtitle sdn-text-subtitle--qgof",
   },
   container: {
     wrapperElement: "div",

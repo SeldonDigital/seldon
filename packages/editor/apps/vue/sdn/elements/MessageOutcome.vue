@@ -74,7 +74,7 @@ const sdn: Record<string, any> = {
   },
   textLabel: {
     children: "Applied",
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--pif8",
     "data-seldon-ref": "hariOutcomeLabel",
   },
   textDescription: {

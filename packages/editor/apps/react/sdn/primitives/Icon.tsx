@@ -516,18 +516,12 @@ export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
     // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
     const RegisteredIcon = getRegisteredIcon(icon)
     if (RegisteredIcon) {
-      //
-      // React JSX component resolved from the runtime icon registry
-      //
       return (
         <RegisteredIcon className={iconClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     }
     Icon = iconMap["__default__"]
   }
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <Icon className={iconClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
 }
 const iconMap = {

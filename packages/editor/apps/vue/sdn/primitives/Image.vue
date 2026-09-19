@@ -22,7 +22,7 @@
  * @example
  * ```vue
  * <Image
- *   src="https://static.seldon.app/background-default-dark.jpg"
+ *   src="/sdn/assets/background-default-dark.jpg"
  *   aria-hidden="false"
  * />
  * ```
@@ -44,7 +44,7 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  src: "https://static.seldon.app/background-default-dark.jpg",
+  src: "/sdn/assets/background-default-dark.jpg",
   "aria-hidden": "false",
 }
 

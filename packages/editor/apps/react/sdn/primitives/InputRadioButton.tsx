@@ -54,9 +54,6 @@ export function InputRadioButton({
 }: InputRadioButtonProps) {
   const inputRadioButtonClassName = combineClassNames("sdn-input-checkbox", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLInput
       className={inputRadioButtonClassName}

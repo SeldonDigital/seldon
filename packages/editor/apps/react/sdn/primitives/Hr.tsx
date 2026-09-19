@@ -44,8 +44,5 @@ const sdn: HrProps = {
 export function Hr({ className = "", ...props }: HrProps) {
   const hrClassName = combineClassNames("sdn-hr", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return <HTMLHr className={hrClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
 }

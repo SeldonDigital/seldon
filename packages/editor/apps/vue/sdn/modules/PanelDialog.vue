@@ -172,11 +172,10 @@ const sdn: Record<string, any> = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button--ls8f",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon4: {
     icon: "seldon-component",
-    "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel2: {
@@ -184,11 +183,10 @@ const sdn: Record<string, any> = {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
-    className: "sdn-button sdn-button--ls8f",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon5: {
     icon: "seldon-component",
-    "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel3: {
@@ -254,12 +252,12 @@ const textLabelProps = computed(() =>
   mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
 )
 const button2Props = computed(() => mergeOptionalSlot(sdn.button2, props.button2, props.seldonRefs))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const icon4Props = computed(() => mergeOptionalSlot(sdn.icon4, props.icon4, props.seldonRefs))
 const textLabel2Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
 )
 const button3Props = computed(() => mergeOptionalSlot(sdn.button3, props.button3, props.seldonRefs))
-const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
+const icon5Props = computed(() => mergeOptionalSlot(sdn.icon5, props.icon5, props.seldonRefs))
 const textLabel3Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
 )

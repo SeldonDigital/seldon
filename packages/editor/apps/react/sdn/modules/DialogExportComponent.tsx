@@ -62,82 +62,79 @@ export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> 
   formControl4?: FormControlProps | null
   textLabel4?: TextLabelProps | null
   input4?: InputProps | null
-  formControl5?: FormControlProps | null
-  textLabel5?: TextLabelProps | null
-  input5?: InputProps | null
   formControlRadio?: FormControlRadioProps | null
-  textLabel6?: TextLabelProps | null
+  textLabel5?: TextLabelProps | null
   frame2?: FrameProps | null
   formControlRadioButtonControl?: FormControlRadioButtonControlProps | null
   inputRadioButton?: InputRadioButtonProps | null
-  textLabel7?: TextLabelProps | null
+  textLabel6?: TextLabelProps | null
   formControlRadioButtonControl2?: FormControlRadioButtonControlProps | null
   inputRadioButton2?: InputRadioButtonProps | null
-  textLabel8?: TextLabelProps | null
+  textLabel7?: TextLabelProps | null
   fieldset?: FieldsetProps | null
   legend?: LegendProps | null
   formControlRadio2?: FormControlRadioProps | null
-  textLabel9?: TextLabelProps | null
+  textLabel8?: TextLabelProps | null
   frame3?: FrameProps | null
   formControlRadioButtonControl3?: FormControlRadioButtonControlProps | null
   inputRadioButton3?: InputRadioButtonProps | null
-  textLabel10?: TextLabelProps | null
+  textLabel9?: TextLabelProps | null
   formControlRadioButtonControl4?: FormControlRadioButtonControlProps | null
   inputRadioButton4?: InputRadioButtonProps | null
-  textLabel11?: TextLabelProps | null
+  textLabel10?: TextLabelProps | null
   formControlRadio3?: FormControlRadioProps | null
-  textLabel12?: TextLabelProps | null
+  textLabel11?: TextLabelProps | null
   frame4?: FrameProps | null
   formControlRadioButtonControl5?: FormControlRadioButtonControlProps | null
   inputRadioButton5?: InputRadioButtonProps | null
-  textLabel13?: TextLabelProps | null
+  textLabel12?: TextLabelProps | null
   formControlRadioButtonControl6?: FormControlRadioButtonControlProps | null
   inputRadioButton6?: InputRadioButtonProps | null
-  textLabel14?: TextLabelProps | null
+  textLabel13?: TextLabelProps | null
   formControlRadio4?: FormControlRadioProps | null
-  textLabel15?: TextLabelProps | null
+  textLabel14?: TextLabelProps | null
   frame5?: FrameProps | null
   formControlRadioButtonControl7?: FormControlRadioButtonControlProps | null
   inputRadioButton7?: InputRadioButtonProps | null
-  textLabel16?: TextLabelProps | null
+  textLabel15?: TextLabelProps | null
   formControlRadioButtonControl8?: FormControlRadioButtonControlProps | null
   inputRadioButton8?: InputRadioButtonProps | null
-  textLabel17?: TextLabelProps | null
+  textLabel16?: TextLabelProps | null
   formControlRadio5?: FormControlRadioProps | null
-  textLabel18?: TextLabelProps | null
+  textLabel17?: TextLabelProps | null
   frame6?: FrameProps | null
   formControlRadioButtonControl9?: FormControlRadioButtonControlProps | null
   inputRadioButton9?: InputRadioButtonProps | null
-  textLabel19?: TextLabelProps | null
+  textLabel18?: TextLabelProps | null
   formControlRadioButtonControl10?: FormControlRadioButtonControlProps | null
   inputRadioButton10?: InputRadioButtonProps | null
-  textLabel20?: TextLabelProps | null
+  textLabel19?: TextLabelProps | null
   formControlRadio6?: FormControlRadioProps | null
-  textLabel21?: TextLabelProps | null
+  textLabel20?: TextLabelProps | null
   frame7?: FrameProps | null
   formControlRadioButtonControl11?: FormControlRadioButtonControlProps | null
   inputRadioButton11?: InputRadioButtonProps | null
-  textLabel22?: TextLabelProps | null
+  textLabel21?: TextLabelProps | null
   formControlRadioButtonControl12?: FormControlRadioButtonControlProps | null
   inputRadioButton12?: InputRadioButtonProps | null
-  textLabel23?: TextLabelProps | null
+  textLabel22?: TextLabelProps | null
   formControlRadio7?: FormControlRadioProps | null
-  textLabel24?: TextLabelProps | null
+  textLabel23?: TextLabelProps | null
   frame8?: FrameProps | null
   formControlRadioButtonControl13?: FormControlRadioButtonControlProps | null
   inputRadioButton13?: InputRadioButtonProps | null
-  textLabel25?: TextLabelProps | null
+  textLabel24?: TextLabelProps | null
   formControlRadioButtonControl14?: FormControlRadioButtonControlProps | null
   inputRadioButton14?: InputRadioButtonProps | null
-  textLabel26?: TextLabelProps | null
+  textLabel25?: TextLabelProps | null
 
   barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
   icon3?: IconProps | null
-  textLabel27?: TextLabelProps | null
+  textLabel26?: TextLabelProps | null
   button2?: ButtonProps | null
   icon4?: IconProps | null
-  textLabel28?: TextLabelProps | null
+  textLabel27?: TextLabelProps | null
 }
 
 //
@@ -187,7 +184,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportFramework",
   },
   textLabel2: {
-    children: "App Framework",
+    children: "Framework",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -220,7 +217,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportPlatform",
   },
   textLabel3: {
-    children: "Component Type",
+    children: "Platform",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -253,7 +250,7 @@ const sdn: DialogExportComponentProps = {
     "data-seldon-ref": "exportProjectFolder",
   },
   textLabel4: {
-    children: "Root Folder",
+    children: "Project Folder",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -265,30 +262,12 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input sdn-input--j1ro",
     "data-seldon-ref": "exportProjectFolderField",
   },
-  formControl5: {
-    "aria-hidden": "false",
-    className: "sdn-form-control sdn-form-control--vmxp",
-    "data-seldon-ref": "exportOutputFolder",
-  },
-  textLabel5: {
-    children: "Export To",
-    htmlElement: "label",
-    "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--l6fl",
-    "data-seldon-ref": "exportOutputFolderLabel",
-  },
-  input5: {
-    placeholder: "Placeholder text",
-    type: "text",
-    className: "sdn-input sdn-input--j1ro",
-    "data-seldon-ref": "exportOutputFolderField",
-  },
   formControlRadio: {
     "aria-hidden": "false",
     className: "sdn-form-control sdn-form-control-radio--4pts",
     "data-seldon-ref": "exportFontLinks",
   },
-  textLabel6: {
+  textLabel5: {
     children: "Generate Google Font API Links",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -312,7 +291,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportFontLinksYesInput",
   },
-  textLabel7: {
+  textLabel6: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -330,7 +309,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportFontLinksNoInput",
   },
-  textLabel8: {
+  textLabel7: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -353,7 +332,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-form-control sdn-form-control-radio--9dpd",
     "data-seldon-ref": "exportHidden",
   },
-  textLabel9: {
+  textLabel8: {
     children: "Hidden Components",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -377,7 +356,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportHiddenYesInput",
   },
-  textLabel10: {
+  textLabel9: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -395,7 +374,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportHiddenNoInput",
   },
-  textLabel11: {
+  textLabel10: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -407,7 +386,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-form-control sdn-form-control-radio--9dpd",
     "data-seldon-ref": "exportAllThemes",
   },
-  textLabel12: {
+  textLabel11: {
     children: "All Themes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -431,7 +410,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportAllThemesYesInput",
   },
-  textLabel13: {
+  textLabel12: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -449,7 +428,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportAllThemesNoInput",
   },
-  textLabel14: {
+  textLabel13: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -461,7 +440,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-form-control sdn-form-control-radio--9dpd",
     "data-seldon-ref": "exportAllFonts",
   },
-  textLabel15: {
+  textLabel14: {
     children: "All Fonts",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -485,7 +464,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportAllFontsYesInput",
   },
-  textLabel16: {
+  textLabel15: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -503,7 +482,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportAllFontsNoInput",
   },
-  textLabel17: {
+  textLabel16: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -515,7 +494,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-form-control sdn-form-control-radio--9dpd",
     "data-seldon-ref": "exportAllIcons",
   },
-  textLabel18: {
+  textLabel17: {
     children: "All Enabled Icons",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -539,7 +518,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportAllIconsYesInput",
   },
-  textLabel19: {
+  textLabel18: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -557,7 +536,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportAllIconsNoInput",
   },
-  textLabel20: {
+  textLabel19: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -569,7 +548,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-form-control sdn-form-control-radio--9dpd",
     "data-seldon-ref": "exportWorkspace",
   },
-  textLabel21: {
+  textLabel20: {
     children: "Workspace File",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -593,7 +572,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportWorkspaceYesInput",
   },
-  textLabel22: {
+  textLabel21: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -611,7 +590,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportWorkspaceNoInput",
   },
-  textLabel23: {
+  textLabel22: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -623,7 +602,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-form-control sdn-form-control-radio--9dpd",
     "data-seldon-ref": "exportScripts",
   },
-  textLabel24: {
+  textLabel23: {
     children: "CLI Utility Scripts",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -647,7 +626,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportScriptsYesInput",
   },
-  textLabel25: {
+  textLabel24: {
     children: "Yes",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -665,7 +644,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
     "data-seldon-ref": "exportScriptsNoInput",
   },
-  textLabel26: {
+  textLabel25: {
     children: "No",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -686,7 +665,7 @@ const sdn: DialogExportComponentProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
-  textLabel27: {
+  textLabel26: {
     children: "Cancel",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -702,7 +681,7 @@ const sdn: DialogExportComponentProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
-  textLabel28: {
+  textLabel27: {
     children: "Export",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -740,81 +719,78 @@ const sdn: DialogExportComponentProps = {
  *     FormControl                          formControl4                     -> exportProjectFolder
  *       TextLabel                          textLabel4                       -> exportProjectFolderLabel
  *       Input                              input4                           -> exportProjectFolderField
- *     FormControl                          formControl5                     -> exportOutputFolder
- *       TextLabel                          textLabel5                       -> exportOutputFolderLabel
- *       Input                              input5                           -> exportOutputFolderField
  *     FormControlRadio                     formControlRadio                 -> exportFontLinks
- *       TextLabel                          textLabel6                       -> exportFontLinksLabel
+ *       TextLabel                          textLabel5                       -> exportFontLinksLabel
  *       Frame                              frame2                           -> exportFontLinksRadios
  *         FormControlRadioButtonControl    formControlRadioButtonControl    -> exportFontLinksYes
  *           InputRadioButton               inputRadioButton                 -> exportFontLinksYesInput
- *           TextLabel                      textLabel7                       -> exportFontLinksYesText
+ *           TextLabel                      textLabel6                       -> exportFontLinksYesText
  *         FormControlRadioButtonControl    formControlRadioButtonControl2   -> exportFontLinksNo
  *           InputRadioButton               inputRadioButton2                -> exportFontLinksNoInput
- *           TextLabel                      textLabel8                       -> exportFontLinksNoText
+ *           TextLabel                      textLabel7                       -> exportFontLinksNoText
  *     Fieldset                             fieldset                         -> exportFieldset
  *       Legend                             legend                           -> exportFieldsetLabel
  *       FormControlRadio                   formControlRadio2                -> exportHidden
- *         TextLabel                        textLabel9                       -> exportHiddenLabel
+ *         TextLabel                        textLabel8                       -> exportHiddenLabel
  *         Frame                            frame3                           -> exportHiddenRadios
  *           FormControlRadioButtonControl  formControlRadioButtonControl3   -> exportHiddenYes
  *             InputRadioButton             inputRadioButton3                -> exportHiddenYesInput
- *             TextLabel                    textLabel10                      -> exportHiddenYesText
+ *             TextLabel                    textLabel9                       -> exportHiddenYesText
  *           FormControlRadioButtonControl  formControlRadioButtonControl4   -> exportHiddenNo
  *             InputRadioButton             inputRadioButton4                -> exportHiddenNoInput
- *             TextLabel                    textLabel11                      -> exportHiddenNoText
+ *             TextLabel                    textLabel10                      -> exportHiddenNoText
  *       FormControlRadio                   formControlRadio3                -> exportAllThemes
- *         TextLabel                        textLabel12                      -> exportAllThemesLabel
+ *         TextLabel                        textLabel11                      -> exportAllThemesLabel
  *         Frame                            frame4                           -> exportAllThemesRadios
  *           FormControlRadioButtonControl  formControlRadioButtonControl5   -> exportAllThemesYes
  *             InputRadioButton             inputRadioButton5                -> exportAllThemesYesInput
- *             TextLabel                    textLabel13                      -> exportAllThemesYesText
+ *             TextLabel                    textLabel12                      -> exportAllThemesYesText
  *           FormControlRadioButtonControl  formControlRadioButtonControl6   -> exportAllThemesNo
  *             InputRadioButton             inputRadioButton6                -> exportAllThemesNoInput
- *             TextLabel                    textLabel14                      -> exportAllThemesNoText
+ *             TextLabel                    textLabel13                      -> exportAllThemesNoText
  *       FormControlRadio                   formControlRadio4                -> exportAllFonts
- *         TextLabel                        textLabel15                      -> exportAllFontsLabel
+ *         TextLabel                        textLabel14                      -> exportAllFontsLabel
  *         Frame                            frame5                           -> exportAllFontsRadios
  *           FormControlRadioButtonControl  formControlRadioButtonControl7   -> exportAllFontsYes
  *             InputRadioButton             inputRadioButton7                -> exportAllFontsYesInput
- *             TextLabel                    textLabel16                      -> exportAllFontsYesText
+ *             TextLabel                    textLabel15                      -> exportAllFontsYesText
  *           FormControlRadioButtonControl  formControlRadioButtonControl8   -> exportAllFontsNo
  *             InputRadioButton             inputRadioButton8                -> exportAllFontsNoInput
- *             TextLabel                    textLabel17                      -> exportAllFontsNoText
+ *             TextLabel                    textLabel16                      -> exportAllFontsNoText
  *       FormControlRadio                   formControlRadio5                -> exportAllIcons
- *         TextLabel                        textLabel18                      -> exportAllIconsLabel
+ *         TextLabel                        textLabel17                      -> exportAllIconsLabel
  *         Frame                            frame6                           -> exportAllIconsRadios
  *           FormControlRadioButtonControl  formControlRadioButtonControl9   -> exportAllIconsYes
  *             InputRadioButton             inputRadioButton9                -> exportAllIconsYesInput
- *             TextLabel                    textLabel19                      -> exportAllIconsYesText
+ *             TextLabel                    textLabel18                      -> exportAllIconsYesText
  *           FormControlRadioButtonControl  formControlRadioButtonControl10  -> exportAllIconsNo
  *             InputRadioButton             inputRadioButton10               -> exportAllIconsNoInput
- *             TextLabel                    textLabel20                      -> exportAllIconsNoText
+ *             TextLabel                    textLabel19                      -> exportAllIconsNoText
  *       FormControlRadio                   formControlRadio6                -> exportWorkspace
- *         TextLabel                        textLabel21                      -> exportWorkspaceLabel
+ *         TextLabel                        textLabel20                      -> exportWorkspaceLabel
  *         Frame                            frame7                           -> exportWorkspaceRadios
  *           FormControlRadioButtonControl  formControlRadioButtonControl11  -> exportWorkspaceYes
  *             InputRadioButton             inputRadioButton11               -> exportWorkspaceYesInput
- *             TextLabel                    textLabel22                      -> exportWorkspaceYesText
+ *             TextLabel                    textLabel21                      -> exportWorkspaceYesText
  *           FormControlRadioButtonControl  formControlRadioButtonControl12  -> exportWorkspaceNo
  *             InputRadioButton             inputRadioButton12               -> exportWorkspaceNoInput
- *             TextLabel                    textLabel23                      -> exportWorkspaceNoText
+ *             TextLabel                    textLabel22                      -> exportWorkspaceNoText
  *       FormControlRadio                   formControlRadio7                -> exportScripts
- *         TextLabel                        textLabel24                      -> exportScriptsLabel
+ *         TextLabel                        textLabel23                      -> exportScriptsLabel
  *         Frame                            frame8                           -> exportScriptsRadios
  *           FormControlRadioButtonControl  formControlRadioButtonControl13  -> exportScriptsYes
  *             InputRadioButton             inputRadioButton13               -> exportScriptsYesInput
- *             TextLabel                    textLabel25                      -> exportScriptsYesText
+ *             TextLabel                    textLabel24                      -> exportScriptsYesText
  *           FormControlRadioButtonControl  formControlRadioButtonControl14  -> exportScriptsNo
  *             InputRadioButton             inputRadioButton14               -> exportScriptsNoInput
- *             TextLabel                    textLabel26                      -> exportScriptsNoText
+ *             TextLabel                    textLabel25                      -> exportScriptsNoText
  *   BarButtons                             barButtons
  *     Button                               button                           -> exportCancel
  *       Icon                               icon3
- *       TextLabel                          textLabel27                      -> exportCancelLabel
+ *       TextLabel                          textLabel26                      -> exportCancelLabel
  *     Button                               button2                          -> exportConfirm
  *       Icon                               icon4
- *       TextLabel                          textLabel28                      -> exportConfirmLabel
+ *       TextLabel                          textLabel27                      -> exportConfirmLabel
  *
  * @example
  * ```tsx
@@ -832,8 +808,7 @@ const sdn: DialogExportComponentProps = {
  *   icon="material-star"
  *   formControl3="{}"
  *   formControl4="{}"
- *   formControl5="{}"
- *   formControlRadio6="{}"
+ *   formControlRadio5="{}"
  *   formControlRadioButtonControl="{}"
  *   inputRadioButton="{}"
  *   formControlRadioButtonControl2="{}"
@@ -843,7 +818,7 @@ const sdn: DialogExportComponentProps = {
  *   formControlRadio2="{}"
  *   formControlRadio3="{}"
  *   formControlRadio4="{}"
- *   formControlRadio5="{}"
+ *   formControlRadio6="{}"
  *   barButtons2="{}"
  *   button={() => {}}
  *   button2={() => {}}
@@ -874,82 +849,79 @@ export function DialogExportComponent({
   formControl4,
   textLabel4,
   input4,
-  formControl5,
-  textLabel5,
-  input5,
   formControlRadio,
-  textLabel6,
+  textLabel5,
   frame2,
   formControlRadioButtonControl,
   inputRadioButton,
-  textLabel7,
+  textLabel6,
   formControlRadioButtonControl2,
   inputRadioButton2,
-  textLabel8,
+  textLabel7,
   fieldset,
   legend,
   formControlRadio2,
-  textLabel9,
+  textLabel8,
   frame3,
   formControlRadioButtonControl3,
   inputRadioButton3,
-  textLabel10,
+  textLabel9,
   formControlRadioButtonControl4,
   inputRadioButton4,
-  textLabel11,
+  textLabel10,
   formControlRadio3,
-  textLabel12,
+  textLabel11,
   frame4,
   formControlRadioButtonControl5,
   inputRadioButton5,
-  textLabel13,
+  textLabel12,
   formControlRadioButtonControl6,
   inputRadioButton6,
-  textLabel14,
+  textLabel13,
   formControlRadio4,
-  textLabel15,
+  textLabel14,
   frame5,
   formControlRadioButtonControl7,
   inputRadioButton7,
-  textLabel16,
+  textLabel15,
   formControlRadioButtonControl8,
   inputRadioButton8,
-  textLabel17,
+  textLabel16,
   formControlRadio5,
-  textLabel18,
+  textLabel17,
   frame6,
   formControlRadioButtonControl9,
   inputRadioButton9,
-  textLabel19,
+  textLabel18,
   formControlRadioButtonControl10,
   inputRadioButton10,
-  textLabel20,
+  textLabel19,
   formControlRadio6,
-  textLabel21,
+  textLabel20,
   frame7,
   formControlRadioButtonControl11,
   inputRadioButton11,
-  textLabel22,
+  textLabel21,
   formControlRadioButtonControl12,
   inputRadioButton12,
-  textLabel23,
+  textLabel22,
   formControlRadio7,
-  textLabel24,
+  textLabel23,
   frame8,
   formControlRadioButtonControl13,
   inputRadioButton13,
-  textLabel25,
+  textLabel24,
   formControlRadioButtonControl14,
   inputRadioButton14,
-  textLabel26,
+  textLabel25,
 
   barButtons,
   button,
   icon3,
-  textLabel27,
+  textLabel26,
   button2,
   icon4,
-  textLabel28,
+  textLabel27,
 
   children,
   seldonRefs,
@@ -979,15 +951,12 @@ export function DialogExportComponent({
   const formControl4Props = mergeOptionalSlot(sdn.formControl4, formControl4, seldonRefs)
   const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
   const input4Props = mergeSlot(sdn.input4, input4, seldonRefs)
-  const formControl5Props = mergeOptionalSlot(sdn.formControl5, formControl5, seldonRefs)
-  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
-  const input5Props = mergeSlot(sdn.input5, input5, seldonRefs)
   const formControlRadioProps = mergeOptionalSlot(
     sdn.formControlRadio,
     formControlRadio,
     seldonRefs,
   )
-  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
   const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
   const formControlRadioButtonControlProps = mergeOptionalSlot(
     sdn.formControlRadioButtonControl,
@@ -999,7 +968,7 @@ export function DialogExportComponent({
     inputRadioButton,
     seldonRefs,
   )
-  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
   const formControlRadioButtonControl2Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl2,
     formControlRadioButtonControl2,
@@ -1010,11 +979,11 @@ export function DialogExportComponent({
     inputRadioButton2,
     seldonRefs,
   )
-  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
+  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
   const fieldsetProps = mergeOptionalSlot(sdn.fieldset, fieldset, seldonRefs)
   const legendProps = mergeSlot(sdn.legend, legend, seldonRefs)
   const formControlRadio2Props = mergeSlot(sdn.formControlRadio2, formControlRadio2, seldonRefs)
-  const textLabel9Props = mergeOptionalSlot(sdn.textLabel9, textLabel9, seldonRefs)
+  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
   const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
   const formControlRadioButtonControl3Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl3,
@@ -1026,7 +995,7 @@ export function DialogExportComponent({
     inputRadioButton3,
     seldonRefs,
   )
-  const textLabel10Props = mergeOptionalSlot(sdn.textLabel10, textLabel10, seldonRefs)
+  const textLabel9Props = mergeOptionalSlot(sdn.textLabel9, textLabel9, seldonRefs)
   const formControlRadioButtonControl4Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl4,
     formControlRadioButtonControl4,
@@ -1037,9 +1006,9 @@ export function DialogExportComponent({
     inputRadioButton4,
     seldonRefs,
   )
-  const textLabel11Props = mergeOptionalSlot(sdn.textLabel11, textLabel11, seldonRefs)
+  const textLabel10Props = mergeOptionalSlot(sdn.textLabel10, textLabel10, seldonRefs)
   const formControlRadio3Props = mergeSlot(sdn.formControlRadio3, formControlRadio3, seldonRefs)
-  const textLabel12Props = mergeOptionalSlot(sdn.textLabel12, textLabel12, seldonRefs)
+  const textLabel11Props = mergeOptionalSlot(sdn.textLabel11, textLabel11, seldonRefs)
   const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
   const formControlRadioButtonControl5Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl5,
@@ -1051,7 +1020,7 @@ export function DialogExportComponent({
     inputRadioButton5,
     seldonRefs,
   )
-  const textLabel13Props = mergeOptionalSlot(sdn.textLabel13, textLabel13, seldonRefs)
+  const textLabel12Props = mergeOptionalSlot(sdn.textLabel12, textLabel12, seldonRefs)
   const formControlRadioButtonControl6Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl6,
     formControlRadioButtonControl6,
@@ -1062,13 +1031,13 @@ export function DialogExportComponent({
     inputRadioButton6,
     seldonRefs,
   )
-  const textLabel14Props = mergeOptionalSlot(sdn.textLabel14, textLabel14, seldonRefs)
+  const textLabel13Props = mergeOptionalSlot(sdn.textLabel13, textLabel13, seldonRefs)
   const formControlRadio4Props = mergeOptionalSlot(
     sdn.formControlRadio4,
     formControlRadio4,
     seldonRefs,
   )
-  const textLabel15Props = mergeOptionalSlot(sdn.textLabel15, textLabel15, seldonRefs)
+  const textLabel14Props = mergeOptionalSlot(sdn.textLabel14, textLabel14, seldonRefs)
   const frame5Props = mergeSlot(sdn.frame5, frame5, seldonRefs)
   const formControlRadioButtonControl7Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl7,
@@ -1080,7 +1049,7 @@ export function DialogExportComponent({
     inputRadioButton7,
     seldonRefs,
   )
-  const textLabel16Props = mergeOptionalSlot(sdn.textLabel16, textLabel16, seldonRefs)
+  const textLabel15Props = mergeOptionalSlot(sdn.textLabel15, textLabel15, seldonRefs)
   const formControlRadioButtonControl8Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl8,
     formControlRadioButtonControl8,
@@ -1091,13 +1060,13 @@ export function DialogExportComponent({
     inputRadioButton8,
     seldonRefs,
   )
-  const textLabel17Props = mergeOptionalSlot(sdn.textLabel17, textLabel17, seldonRefs)
+  const textLabel16Props = mergeOptionalSlot(sdn.textLabel16, textLabel16, seldonRefs)
   const formControlRadio5Props = mergeOptionalSlot(
     sdn.formControlRadio5,
     formControlRadio5,
     seldonRefs,
   )
-  const textLabel18Props = mergeOptionalSlot(sdn.textLabel18, textLabel18, seldonRefs)
+  const textLabel17Props = mergeOptionalSlot(sdn.textLabel17, textLabel17, seldonRefs)
   const frame6Props = mergeSlot(sdn.frame6, frame6, seldonRefs)
   const formControlRadioButtonControl9Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl9,
@@ -1109,7 +1078,7 @@ export function DialogExportComponent({
     inputRadioButton9,
     seldonRefs,
   )
-  const textLabel19Props = mergeOptionalSlot(sdn.textLabel19, textLabel19, seldonRefs)
+  const textLabel18Props = mergeOptionalSlot(sdn.textLabel18, textLabel18, seldonRefs)
   const formControlRadioButtonControl10Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl10,
     formControlRadioButtonControl10,
@@ -1120,13 +1089,13 @@ export function DialogExportComponent({
     inputRadioButton10,
     seldonRefs,
   )
-  const textLabel20Props = mergeOptionalSlot(sdn.textLabel20, textLabel20, seldonRefs)
+  const textLabel19Props = mergeOptionalSlot(sdn.textLabel19, textLabel19, seldonRefs)
   const formControlRadio6Props = mergeOptionalSlot(
     sdn.formControlRadio6,
     formControlRadio6,
     seldonRefs,
   )
-  const textLabel21Props = mergeOptionalSlot(sdn.textLabel21, textLabel21, seldonRefs)
+  const textLabel20Props = mergeOptionalSlot(sdn.textLabel20, textLabel20, seldonRefs)
   const frame7Props = mergeSlot(sdn.frame7, frame7, seldonRefs)
   const formControlRadioButtonControl11Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl11,
@@ -1138,7 +1107,7 @@ export function DialogExportComponent({
     inputRadioButton11,
     seldonRefs,
   )
-  const textLabel22Props = mergeOptionalSlot(sdn.textLabel22, textLabel22, seldonRefs)
+  const textLabel21Props = mergeOptionalSlot(sdn.textLabel21, textLabel21, seldonRefs)
   const formControlRadioButtonControl12Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl12,
     formControlRadioButtonControl12,
@@ -1149,13 +1118,13 @@ export function DialogExportComponent({
     inputRadioButton12,
     seldonRefs,
   )
-  const textLabel23Props = mergeOptionalSlot(sdn.textLabel23, textLabel23, seldonRefs)
+  const textLabel22Props = mergeOptionalSlot(sdn.textLabel22, textLabel22, seldonRefs)
   const formControlRadio7Props = mergeOptionalSlot(
     sdn.formControlRadio7,
     formControlRadio7,
     seldonRefs,
   )
-  const textLabel24Props = mergeOptionalSlot(sdn.textLabel24, textLabel24, seldonRefs)
+  const textLabel23Props = mergeOptionalSlot(sdn.textLabel23, textLabel23, seldonRefs)
   const frame8Props = mergeSlot(sdn.frame8, frame8, seldonRefs)
   const formControlRadioButtonControl13Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl13,
@@ -1167,7 +1136,7 @@ export function DialogExportComponent({
     inputRadioButton13,
     seldonRefs,
   )
-  const textLabel25Props = mergeOptionalSlot(sdn.textLabel25, textLabel25, seldonRefs)
+  const textLabel24Props = mergeOptionalSlot(sdn.textLabel24, textLabel24, seldonRefs)
   const formControlRadioButtonControl14Props = mergeOptionalSlot(
     sdn.formControlRadioButtonControl14,
     formControlRadioButtonControl14,
@@ -1178,15 +1147,15 @@ export function DialogExportComponent({
     inputRadioButton14,
     seldonRefs,
   )
-  const textLabel26Props = mergeOptionalSlot(sdn.textLabel26, textLabel26, seldonRefs)
+  const textLabel25Props = mergeOptionalSlot(sdn.textLabel25, textLabel25, seldonRefs)
 
   const barButtonsProps = mergeSlot(sdn.barButtons, barButtons, seldonRefs)
   const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
-  const textLabel27Props = mergeOptionalSlot(sdn.textLabel27, textLabel27, seldonRefs)
+  const textLabel26Props = mergeOptionalSlot(sdn.textLabel26, textLabel26, seldonRefs)
   const button2Props = mergeSlot(sdn.button2, button2, seldonRefs)
   const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
-  const textLabel28Props = mergeOptionalSlot(sdn.textLabel28, textLabel28, seldonRefs)
+  const textLabel27Props = mergeOptionalSlot(sdn.textLabel27, textLabel27, seldonRefs)
 
   return (
     <HTMLDiv className={dialogExportComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -1238,22 +1207,16 @@ export function DialogExportComponent({
                 {input4Props !== null && <Input {...input4Props} />}
               </FormControl>
             )}
-            {formControl5Props !== null && (
-              <FormControl {...formControl5Props}>
-                {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
-                {input5Props !== null && <Input {...input5Props} />}
-              </FormControl>
-            )}
             {formControlRadioProps !== null && (
               <FormControlRadio {...formControlRadioProps}>
-                {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+                {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
                 <Frame {...frame2Props}>
                   {formControlRadioButtonControlProps !== null && (
                     <FormControlRadioButtonControl {...formControlRadioButtonControlProps}>
                       {inputRadioButtonProps !== null && (
                         <InputRadioButton {...inputRadioButtonProps} />
                       )}
-                      {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                      {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
                     </FormControlRadioButtonControl>
                   )}
                   {formControlRadioButtonControl2Props !== null && (
@@ -1261,7 +1224,7 @@ export function DialogExportComponent({
                       {inputRadioButton2Props !== null && (
                         <InputRadioButton {...inputRadioButton2Props} />
                       )}
-                      {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
+                      {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
                     </FormControlRadioButtonControl>
                   )}
                 </Frame>
@@ -1272,14 +1235,14 @@ export function DialogExportComponent({
                 {legendProps !== null && <Legend {...legendProps} />}
                 {formControlRadio2Props !== null && (
                   <FormControlRadio {...formControlRadio2Props}>
-                    {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
+                    {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
                     <Frame {...frame3Props}>
                       {formControlRadioButtonControl3Props !== null && (
                         <FormControlRadioButtonControl {...formControlRadioButtonControl3Props}>
                           {inputRadioButton3Props !== null && (
                             <InputRadioButton {...inputRadioButton3Props} />
                           )}
-                          {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
+                          {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
                         </FormControlRadioButtonControl>
                       )}
                       {formControlRadioButtonControl4Props !== null && (
@@ -1287,7 +1250,7 @@ export function DialogExportComponent({
                           {inputRadioButton4Props !== null && (
                             <InputRadioButton {...inputRadioButton4Props} />
                           )}
-                          {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
+                          {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
                         </FormControlRadioButtonControl>
                       )}
                     </Frame>
@@ -1295,14 +1258,14 @@ export function DialogExportComponent({
                 )}
                 {formControlRadio3Props !== null && (
                   <FormControlRadio {...formControlRadio3Props}>
-                    {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
+                    {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
                     <Frame {...frame4Props}>
                       {formControlRadioButtonControl5Props !== null && (
                         <FormControlRadioButtonControl {...formControlRadioButtonControl5Props}>
                           {inputRadioButton5Props !== null && (
                             <InputRadioButton {...inputRadioButton5Props} />
                           )}
-                          {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
+                          {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
                         </FormControlRadioButtonControl>
                       )}
                       {formControlRadioButtonControl6Props !== null && (
@@ -1310,7 +1273,7 @@ export function DialogExportComponent({
                           {inputRadioButton6Props !== null && (
                             <InputRadioButton {...inputRadioButton6Props} />
                           )}
-                          {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
+                          {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
                         </FormControlRadioButtonControl>
                       )}
                     </Frame>
@@ -1318,14 +1281,14 @@ export function DialogExportComponent({
                 )}
                 {formControlRadio4Props !== null && (
                   <FormControlRadio {...formControlRadio4Props}>
-                    {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
+                    {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
                     <Frame {...frame5Props}>
                       {formControlRadioButtonControl7Props !== null && (
                         <FormControlRadioButtonControl {...formControlRadioButtonControl7Props}>
                           {inputRadioButton7Props !== null && (
                             <InputRadioButton {...inputRadioButton7Props} />
                           )}
-                          {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
+                          {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
                         </FormControlRadioButtonControl>
                       )}
                       {formControlRadioButtonControl8Props !== null && (
@@ -1333,7 +1296,7 @@ export function DialogExportComponent({
                           {inputRadioButton8Props !== null && (
                             <InputRadioButton {...inputRadioButton8Props} />
                           )}
-                          {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
+                          {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
                         </FormControlRadioButtonControl>
                       )}
                     </Frame>
@@ -1341,14 +1304,14 @@ export function DialogExportComponent({
                 )}
                 {formControlRadio5Props !== null && (
                   <FormControlRadio {...formControlRadio5Props}>
-                    {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
+                    {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
                     <Frame {...frame6Props}>
                       {formControlRadioButtonControl9Props !== null && (
                         <FormControlRadioButtonControl {...formControlRadioButtonControl9Props}>
                           {inputRadioButton9Props !== null && (
                             <InputRadioButton {...inputRadioButton9Props} />
                           )}
-                          {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
+                          {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
                         </FormControlRadioButtonControl>
                       )}
                       {formControlRadioButtonControl10Props !== null && (
@@ -1356,7 +1319,7 @@ export function DialogExportComponent({
                           {inputRadioButton10Props !== null && (
                             <InputRadioButton {...inputRadioButton10Props} />
                           )}
-                          {textLabel20Props !== null && <TextLabel {...textLabel20Props} />}
+                          {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
                         </FormControlRadioButtonControl>
                       )}
                     </Frame>
@@ -1364,14 +1327,14 @@ export function DialogExportComponent({
                 )}
                 {formControlRadio6Props !== null && (
                   <FormControlRadio {...formControlRadio6Props}>
-                    {textLabel21Props !== null && <TextLabel {...textLabel21Props} />}
+                    {textLabel20Props !== null && <TextLabel {...textLabel20Props} />}
                     <Frame {...frame7Props}>
                       {formControlRadioButtonControl11Props !== null && (
                         <FormControlRadioButtonControl {...formControlRadioButtonControl11Props}>
                           {inputRadioButton11Props !== null && (
                             <InputRadioButton {...inputRadioButton11Props} />
                           )}
-                          {textLabel22Props !== null && <TextLabel {...textLabel22Props} />}
+                          {textLabel21Props !== null && <TextLabel {...textLabel21Props} />}
                         </FormControlRadioButtonControl>
                       )}
                       {formControlRadioButtonControl12Props !== null && (
@@ -1379,7 +1342,7 @@ export function DialogExportComponent({
                           {inputRadioButton12Props !== null && (
                             <InputRadioButton {...inputRadioButton12Props} />
                           )}
-                          {textLabel23Props !== null && <TextLabel {...textLabel23Props} />}
+                          {textLabel22Props !== null && <TextLabel {...textLabel22Props} />}
                         </FormControlRadioButtonControl>
                       )}
                     </Frame>
@@ -1387,14 +1350,14 @@ export function DialogExportComponent({
                 )}
                 {formControlRadio7Props !== null && (
                   <FormControlRadio {...formControlRadio7Props}>
-                    {textLabel24Props !== null && <TextLabel {...textLabel24Props} />}
+                    {textLabel23Props !== null && <TextLabel {...textLabel23Props} />}
                     <Frame {...frame8Props}>
                       {formControlRadioButtonControl13Props !== null && (
                         <FormControlRadioButtonControl {...formControlRadioButtonControl13Props}>
                           {inputRadioButton13Props !== null && (
                             <InputRadioButton {...inputRadioButton13Props} />
                           )}
-                          {textLabel25Props !== null && <TextLabel {...textLabel25Props} />}
+                          {textLabel24Props !== null && <TextLabel {...textLabel24Props} />}
                         </FormControlRadioButtonControl>
                       )}
                       {formControlRadioButtonControl14Props !== null && (
@@ -1402,7 +1365,7 @@ export function DialogExportComponent({
                           {inputRadioButton14Props !== null && (
                             <InputRadioButton {...inputRadioButton14Props} />
                           )}
-                          {textLabel26Props !== null && <TextLabel {...textLabel26Props} />}
+                          {textLabel25Props !== null && <TextLabel {...textLabel25Props} />}
                         </FormControlRadioButtonControl>
                       )}
                     </Frame>
@@ -1416,10 +1379,10 @@ export function DialogExportComponent({
               {...barButtonsProps}
               button4={buttonProps}
               icon4={icon3Props}
-              textLabel4={textLabel27Props}
+              textLabel4={textLabel26Props}
               button5={button2Props}
               icon5={icon4Props}
-              textLabel5={textLabel28Props}
+              textLabel5={textLabel27Props}
             />
           )}
         </>

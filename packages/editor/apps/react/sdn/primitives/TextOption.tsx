@@ -14,7 +14,9 @@
 import { HTMLAttributes } from "react"
 
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
+import { HTMLBold } from "../native-react/HTML.Bold"
 import { HTMLCode } from "../native-react/HTML.Code"
+import { HTMLEmphasis } from "../native-react/HTML.Emphasis"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
 import { HTMLHeading2 } from "../native-react/HTML.Heading2"
 import { HTMLHeading3 } from "../native-react/HTML.Heading3"
@@ -26,10 +28,13 @@ import { HTMLOption } from "../native-react/HTML.Option"
 import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
+import { HTMLStrong } from "../native-react/HTML.Strong"
 import { combineClassNames } from "../utils/class-name"
 
 export interface TextOptionProps extends HTMLAttributes<
   | HTMLAnchorElement
+  | HTMLElement
+  | HTMLElement
   | HTMLElement
   | HTMLHeadingElement
   | HTMLHeadingElement
@@ -42,11 +47,15 @@ export interface TextOptionProps extends HTMLAttributes<
   | HTMLParagraphElement
   | HTMLPreElement
   | HTMLElement
+  | HTMLElement
 > {
   "data-seldon-ref"?: string
   htmlElement?:
     | "p"
     | "span"
+    | "b"
+    | "strong"
+    | "em"
     | "a"
     | "label"
     | "h1"
@@ -95,117 +104,96 @@ export function TextOption({
 
   switch (htmlElement) {
     case "p":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLParagraph className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLParagraph>
       )
     case "span":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLSpan className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
+    case "b":
+      return (
+        <HTMLBold className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+          {children}
+        </HTMLBold>
+      )
+    case "strong":
+      return (
+        <HTMLStrong className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+          {children}
+        </HTMLStrong>
+      )
+    case "em":
+      return (
+        <HTMLEmphasis className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+          {children}
+        </HTMLEmphasis>
+      )
     case "a":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLAnchor className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLAnchor>
       )
     case "label":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLLabel className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
     case "h1":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeading1 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading1>
       )
     case "h2":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeading2 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading2>
       )
     case "h3":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeading3 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading3>
       )
     case "h4":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeading4 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading4>
       )
     case "h5":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeading5 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading5>
       )
     case "h6":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeading6 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading6>
       )
     case "pre":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLPre className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )
     case "code":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLCode className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )
     default:
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLOption className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}

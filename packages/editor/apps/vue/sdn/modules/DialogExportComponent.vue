@@ -26,9 +26,6 @@
  *     FormControl                          formControl                      -> exportWorkspaceName
  *       TextLabel                          textLabel                        -> exportWorkspaceNameLabel
  *       Input                              input                            -> exportWorkspaceNameField
- *     FormControl                          formControl4                     -> exportProjectFolder
- *       TextLabel                          textLabel4                       -> exportProjectFolderLabel
- *       Input                              input4                           -> exportProjectFolderField
  *     FormControl                          formControl2                     -> exportFramework
  *       TextLabel                          textLabel2                       -> exportFrameworkLabel
  *       ComboboxField                      comboboxField                    -> exportFrameworkCombobox
@@ -41,9 +38,9 @@
  *         Input                            input3                           -> exportPlatformField
  *         ButtonIconic                     buttonIconic2
  *           Icon                           icon2
- *     FormControl                          formControl5                     -> exportOutputFolder
- *       TextLabel                          textLabel28                      -> exportOutputFolderLabel
- *       Input                              input5                           -> exportOutputFolderField
+ *     FormControl                          formControl4                     -> exportProjectFolder
+ *       TextLabel                          textLabel4                       -> exportProjectFolderLabel
+ *       Input                              input4                           -> exportProjectFolderField
  *     FormControlRadio                     formControlRadio                 -> exportFontLinks
  *       TextLabel                          textLabel5                       -> exportFontLinksLabel
  *       Frame                              frame2                           -> exportFontLinksRadios
@@ -194,9 +191,6 @@ const props = defineProps<{
   formControl4?: Record<string, unknown> | null
   textLabel4?: Record<string, unknown> | null
   input4?: Record<string, unknown> | null
-  formControl5?: Record<string, unknown> | null
-  textLabel28?: Record<string, unknown> | null
-  input5?: Record<string, unknown> | null
   formControlRadio?: Record<string, unknown> | null
   textLabel5?: Record<string, unknown> | null
   frame2?: Record<string, unknown> | null
@@ -318,7 +312,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "exportFramework",
   },
   textLabel2: {
-    children: "App Framework",
+    children: "Framework",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -351,7 +345,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "exportPlatform",
   },
   textLabel3: {
-    children: "Component Type",
+    children: "Platform",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -384,7 +378,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "exportProjectFolder",
   },
   textLabel4: {
-    children: "Root Folder",
+    children: "Project Folder",
     htmlElement: "label",
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--l6fl",
@@ -395,24 +389,6 @@ const sdn: Record<string, any> = {
     type: "text",
     className: "sdn-input sdn-input--j1ro",
     "data-seldon-ref": "exportProjectFolderField",
-  },
-  formControl5: {
-    "aria-hidden": "false",
-    className: "sdn-form-control sdn-form-control--vmxp",
-    "data-seldon-ref": "exportOutputFolder",
-  },
-  textLabel28: {
-    children: "Export To",
-    htmlElement: "label",
-    "aria-hidden": "false",
-    className: "sdn-text-label sdn-text-label--l6fl",
-    "data-seldon-ref": "exportOutputFolderLabel",
-  },
-  input5: {
-    placeholder: "Project root",
-    type: "text",
-    className: "sdn-input sdn-input--j1ro",
-    "data-seldon-ref": "exportOutputFolderField",
   },
   formControlRadio: {
     "aria-hidden": "false",
@@ -892,13 +868,6 @@ const textLabel4Props = computed(() =>
   mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs),
 )
 const input4Props = computed(() => mergeSlot(sdn.input4, props.input4, props.seldonRefs))
-const formControl5Props = computed(() =>
-  mergeOptionalSlot(sdn.formControl5, props.formControl5, props.seldonRefs),
-)
-const textLabel28Props = computed(() =>
-  mergeOptionalSlot(sdn.textLabel28, props.textLabel28, props.seldonRefs),
-)
-const input5Props = computed(() => mergeSlot(sdn.input5, props.input5, props.seldonRefs))
 const formControlRadioProps = computed(() =>
   mergeOptionalSlot(sdn.formControlRadio, props.formControlRadio, props.seldonRefs),
 )
@@ -1160,10 +1129,6 @@ const textLabel27Props = computed(() =>
           <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
           <Input v-if="inputProps !== null" v-bind="inputProps" />
         </FormControl>
-        <FormControl v-if="formControl4Props !== null" v-bind="formControl4Props">
-          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
-          <Input v-if="input4Props !== null" v-bind="input4Props" />
-        </FormControl>
         <FormControl v-if="formControl2Props !== null" v-bind="formControl2Props">
           <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
           <ComboboxField
@@ -1186,9 +1151,9 @@ const textLabel27Props = computed(() =>
             :icon="null"
           />
         </FormControl>
-        <FormControl v-if="formControl5Props !== null" v-bind="formControl5Props">
-          <TextLabel v-if="textLabel28Props !== null" v-bind="textLabel28Props" />
-          <Input v-if="input5Props !== null" v-bind="input5Props" />
+        <FormControl v-if="formControl4Props !== null" v-bind="formControl4Props">
+          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+          <Input v-if="input4Props !== null" v-bind="input4Props" />
         </FormControl>
         <FormControlRadio v-if="formControlRadioProps !== null" v-bind="formControlRadioProps">
           <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />

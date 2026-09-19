@@ -54,9 +54,6 @@ export function InputCheckbox({
 }: InputCheckboxProps) {
   const inputCheckboxClassName = combineClassNames("sdn-input-checkbox", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLInput
       className={inputCheckboxClassName}

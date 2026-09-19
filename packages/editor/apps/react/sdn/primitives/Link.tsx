@@ -46,9 +46,6 @@ const sdn: LinkProps = {
 export function Link({ className = "", children = sdn.children, ...props }: LinkProps) {
   const linkClassName = combineClassNames("sdn-link", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLAnchor className={linkClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}

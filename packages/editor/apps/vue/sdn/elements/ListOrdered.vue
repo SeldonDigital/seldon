@@ -36,7 +36,7 @@ export default {}
 <script setup lang="ts">
 import { computed } from "vue"
 
-import ListItem from "../primitives/ListItem.vue"
+import ListItem from "../elements/ListItem.vue"
 import { combineClassNames, mergeOptionalSlot } from "../utils/class-names"
 
 const props = defineProps<{
@@ -53,7 +53,6 @@ const sdn: Record<string, any> = {
   htmlElement: "ol",
   "aria-hidden": "false",
   listItem: {
-    children: "List item",
     className: "sdn-list-item sdn-list-item--uvyv",
   },
 }

@@ -1,0 +1,62 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/**
+ * List Item: Item
+ * Level: Element
+ * Intent: One list item block. Children are inline Text runs for plain, bold, and italic spans.
+ * Tags: list text, li, dt, dd, list item, description, element, text
+ * Type: Default
+ *
+ * @example
+ * ```vue
+ * <ListItem
+ *   htmlElement="li"
+ *   aria-hidden="false"
+ * />
+ * ```
+ */
+export default {}
+</script>
+
+<script setup lang="ts">
+import { computed } from "vue"
+
+import { combineClassNames } from "../utils/class-names"
+
+const props = defineProps<{
+  className?: string
+  htmlElement?: unknown
+}>()
+
+//
+// Default property values
+//
+const sdn: Record<string, any> = {
+  htmlElement: "li",
+  "aria-hidden": "false",
+}
+
+const rootClassName = computed(() => combineClassNames("sdn-list-item", props.className))
+const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
+</script>
+
+<template>
+  <component
+    :is="(props.htmlElement as string) ?? sdn.htmlElement ?? 'div'"
+    :class="rootClassName"
+    v-bind="rootAttrs"
+    ><slot></slot
+  ></component>
+</template>

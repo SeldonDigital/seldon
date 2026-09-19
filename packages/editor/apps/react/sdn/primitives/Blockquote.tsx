@@ -46,9 +46,6 @@ const sdn: BlockquoteProps = {
 export function Blockquote({ className = "", children = sdn.children, ...props }: BlockquoteProps) {
   const blockquoteClassName = combineClassNames("sdn-blockquote", className)
 
-  //
-  // React JSX component with merged default and custom properties
-  //
   return (
     <HTMLBlockquote className={blockquoteClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}

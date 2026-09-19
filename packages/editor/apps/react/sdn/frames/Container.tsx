@@ -116,93 +116,48 @@ export function Container({
 
   switch (wrapperElement) {
     case "section":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLSection className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "article":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLArticle className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "aside":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLAside className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "main":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLMain className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "nav":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLNav className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "header":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLHeader className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "footer":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLFooter className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "ul":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLUl className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "ol":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLOl className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "li":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLLi className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "form":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLForm className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "fieldset":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLFieldset className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "figure":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLFigure className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "menu":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLMenu className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     case "blockquote":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLBlockquote
           className={containerClassName}
@@ -211,42 +166,24 @@ export function Container({
         />
       )
     case "table":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLTable className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "thead":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLThead className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "tbody":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLTbody className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "tfoot":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return (
         <HTMLTfoot className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     case "tr":
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLTr className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     default:
-      //
-      // React JSX component with merged default and custom properties
-      //
       return <HTMLDiv className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
   }
 }
