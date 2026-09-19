@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 302,
+  "scannedFiles": 303,
   "refs": {
     "boardState": [
       {
@@ -12922,7 +12922,7 @@
         {
           "file": "app/editor/Editor.tsx",
           "component": "Editor",
-          "line": 60,
+          "line": 61,
           "expression": "\"main\"",
           "inputs": [],
           "spread": false
