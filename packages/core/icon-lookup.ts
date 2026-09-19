@@ -14,6 +14,7 @@
  */
 import { getComponentSchema } from "./components/catalog"
 import { ComponentId } from "./components/types"
+import { Orientation } from "./properties"
 import {
   GLOBAL_OPTION_ICONS,
   PROPERTY_ICONS,
@@ -22,7 +23,10 @@ import {
 import { getCatalogKeyForPropertyPath } from "./properties/schemas/helpers/property-path"
 import { parseThemeLookRef } from "./themes/looks"
 import { getThemeTokenSchema } from "./themes/schemas/helpers/get-theme-token-schema"
+import { getBoardByNodeId } from "./workspace/helpers/components/get-board-by-node-id"
+import { getChildrenIds } from "./workspace/helpers/components/get-children-ids"
 import { getNodeCatalogId } from "./workspace/helpers/nodes/get-node-catalog-id"
+import { getNodeProperties } from "./workspace/helpers/nodes/get-node-properties"
 import { isSandboxNode } from "./workspace/helpers/nodes/sandbox"
 import { isAuthoredBoard, isPlaygroundBoard } from "./workspace/model/components"
 import { typeCheckingService } from "./workspace/services"
@@ -85,9 +89,9 @@ export function getThemeTokenIcon(key: string): string | undefined {
 
 /**
  * Semantic icon for a node whose resolved catalog component is a known
- * primitive or frame type. Keyed by catalog {@link ComponentId}. These win over
- * the generic node-type icons so a Text always reads as text and a Container as
- * stacked rows, at every node level.
+ * primitive or container type. Keyed by catalog {@link ComponentId}. These win
+ * over the generic node-type icons so a Text always reads as text and a
+ * Container as stacked rows, at every node level.
  */
 const COMPONENT_TYPE_ICONS: Partial<Record<ComponentId, IconId>> = {
   [ComponentId.TEXT]: "seldon-text",
@@ -101,8 +105,22 @@ const COMPONENT_TYPE_ICONS: Partial<Record<ComponentId, IconId>> = {
   [ComponentId.TEXTAREA]: "seldon-input",
   [ComponentId.SELECT]: "seldon-input",
   [ComponentId.TOGGLE_SWITCH]: "seldon-input",
-  [ComponentId.FRAME]: "seldon-frame",
   [ComponentId.CONTAINER]: "seldon-frameRows",
+}
+
+/**
+ * Frame row icon. An empty or single-child frame keeps the box glyph. Two or
+ * more children switch to stacked rows or columns from the frame's orientation.
+ */
+function getFrameRowIcon(node: EntryNode, workspace: Workspace): IconId {
+  const board = getBoardByNodeId(workspace, node.id)
+  const childCount = board ? getChildrenIds(board, node.id).length : 0
+
+  if (childCount <= 1) return "seldon-frame"
+
+  const orientation = getNodeProperties(node, workspace).orientation?.value
+
+  return orientation === Orientation.HORIZONTAL ? "seldon-frameColumns" : "seldon-frameRows"
 }
 
 /** Resource entry kinds the objects sidebar lists under a resource board. */
@@ -121,13 +139,19 @@ export function getBoardRowIcon(board: Board): IconId {
 
 /**
  * Icon for a variant or instance row. A sandbox root reads as custom work. A
- * recognized component type wins next, then the node type: default variant,
- * custom variant, or instance.
+ * Frame with two or more children uses stacked rows or columns. A recognized
+ * component type wins next, then the node type: default variant, custom
+ * variant, or instance.
  */
 export function getNodeRowIcon(node: EntryNode, workspace: Workspace): IconId {
   if (isSandboxNode(node)) return "seldon-stub"
 
   const catalogId = getNodeCatalogId(node, workspace)
+
+  if (catalogId === ComponentId.FRAME) {
+    return getFrameRowIcon(node, workspace)
+  }
+
   const typeIcon = catalogId ? COMPONENT_TYPE_ICONS[catalogId as ComponentId] : undefined
 
   if (typeIcon) return typeIcon
