@@ -2,11 +2,11 @@ import { randomUUID } from "node:crypto"
 import fs from "node:fs/promises"
 import path from "node:path"
 
-import { WorkspaceStore } from "@seldon/ai"
-
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
+
+import { WorkspaceStore } from "../mcp/store"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 

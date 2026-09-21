@@ -37,7 +37,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node ../../../scripts/bundle-package-entry.mjs --external @seldon/ai --external @seldon/factory --external @modelcontextprotocol/sdk index.ts dist/index.js && node ../../../scripts/bundle-package-entry.mjs --external @seldon/ai --external @seldon/factory --external @modelcontextprotocol/sdk bin/seldon-mcp.ts dist/bin/seldon-mcp.js",
+    "build": "tsc -p tsconfig.json && node ../../../scripts/bundle-package-entry.mjs --external @seldon/ai --external @seldon/factory --external @modelcontextprotocol/sdk index.ts dist/index.js && chmod +x dist/bin/seldon-mcp.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

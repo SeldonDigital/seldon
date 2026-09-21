@@ -21,9 +21,9 @@ import { chatToActions, loadWorkspace, workspaceReducer } from "@seldon/hari"
 
 ## Connect an AI client
 
-`hari` ships the `seldon-mcp` bin. It serves a project's workspace source to an
-MCP client such as Cursor, Codex CLI, or Claude Code, so an agent reads and
-edits the design through Seldon's core and factory.
+`hari` re-exports the `seldon-mcp` bin from `@seldon/ai`. It serves a project's
+workspace source to an MCP client such as Cursor, Codex CLI, or Claude Code, so
+an agent reads and edits the design through Seldon's core and factory.
 
 Set this up per project, not globally, so the server only runs where the file
 lives. Point every client at the same source file, and keep `.seldon/workspaces`
@@ -172,9 +172,9 @@ the file you export from.
 - Use a local Agent chat, not the cloud Agents window. A cloud agent cannot spawn
   a local stdio server.
 - To see errors in Cursor, open the Output panel and pick the MCP Logs channel.
-- `npx seldon-mcp` must resolve. Install `@seldon/hari` in the project. Otherwise
-  point `command` at `node` and `args` at
-  `./node_modules/@seldon/hari/dist/bin/seldon-mcp.js`.
+- `npx seldon-mcp` must resolve. Install `@seldon/hari` or `@seldon/foundation`
+  in the project. Otherwise point `command` at `node` and `args` at
+  `./node_modules/@seldon/ai/dist/bin/seldon-mcp.js`.
 - Codex config is TOML. Pasting Cursor or Claude JSON will not work.
 - The agent reports no workspaces. Run `npx seldon-mcp init`, or ask it to call
   `workspace_create`.

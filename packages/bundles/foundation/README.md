@@ -16,6 +16,8 @@ npm install @seldon/foundation
 import { loadWorkspace, chatToActions } from "@seldon/foundation"
 ```
 
+`npx seldon-mcp` works after this install. The bin comes from `@seldon/ai`.
+
 For the headless engine without the editor UI, use `@seldon/terminus` or
 `@seldon/hari` instead. They run under plain Node.
 

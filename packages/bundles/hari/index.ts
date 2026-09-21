@@ -7,8 +7,8 @@
  * workspace and export it. A local model host is required; see the package
  * README.
  *
- * Also ships the `seldon-mcp` bin, which wires the headless MCP host from
- * `@seldon/ai` (`HeadlessHost`, re-exported below) to a stdio or HTTP transport.
+ * Re-exports the `seldon-mcp` bin from `@seldon/ai`, which wires the headless
+ * MCP host (`HeadlessHost`, re-exported below) to a stdio or HTTP transport.
  */
 export * from "@seldon/core"
 export * from "@seldon/factory"

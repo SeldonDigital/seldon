@@ -16,6 +16,9 @@
     "node": ">=22"
   },
   "sideEffects": false,
+  "bin": {
+    "seldon-mcp": "./bin/seldon-mcp.js"
+  },
   "exports": {
     ".": {
       "types": "./index.ts",
@@ -26,6 +29,7 @@
   },
   "files": [
     "index.ts",
+    "bin",
     "vite",
     "README.md",
     "!**/*.test.ts",

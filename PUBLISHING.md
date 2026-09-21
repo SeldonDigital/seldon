@@ -10,11 +10,11 @@ Publishable packages version in lockstep. They always share one version.
 | --- | --- | --- |
 | `@seldon/core` | Workspace engine, components, properties, themes | `dist` (bundled entry + `.d.ts`), the raw asset source the factory reads (`components/native-react`, `components/catalog/custom`, `icon-sets`), README |
 | `@seldon/factory` | Export to framework components, `seldon-export` CLI | `dist` (bundled entry + CLI + `.d.ts`), `bindings` source, README |
-| `@seldon/ai` | Local AI orchestration, MCP server, headless host | `dist` (bundled entry + `.d.ts`), `mcp`, `server`, `scripts`, README |
+| `@seldon/ai` | Local AI orchestration, MCP server, headless host, `seldon-mcp` bin | `dist` (bundled entry + CLI + `.d.ts`), `mcp`, `server`, `scripts`, `bin`, README |
 | `@seldon/editor` | Embeddable editor library (framework-neutral helpers, AI-free Vite plugins) | source (`index.ts`, `lib`, `vite`), README |
 | `@seldon/terminus` | Bundle: core + factory | `dist`, `index.ts`, README |
-| `@seldon/hari` | Bundle: core + factory + ai, plus the `seldon-mcp` bin | `dist`, `index.ts`, `bin`, README |
-| `@seldon/foundation` | Bundle: core + factory + ai + editor, plus the AI editor-server Vite plugins | source (`index.ts`, `vite`), README |
+| `@seldon/hari` | Bundle: core + factory + ai, re-exports the `seldon-mcp` bin | `dist`, `index.ts`, `bin`, README |
+| `@seldon/foundation` | Bundle: core + factory + ai + editor, plus the AI editor-server Vite plugins and the `seldon-mcp` bin | source (`index.ts`, `bin`, `vite`), README |
 
 Never published: `@seldon/editor-react`, `@seldon/editor-vue`, `@seldon/desktop`. These are apps. They stay `private` permanently and are ignored by Changesets.
 
