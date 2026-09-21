@@ -44,6 +44,7 @@ The package groups a few parts that work together:
 | **Pi adapter** | Map the shared tools onto one Pi turn | [pi/adapter.ts](./pi/adapter.ts) |
 | **Agent handler** | Run a chat turn and report models for a server route | [server/agent.ts](./server/agent.ts) |
 | **MCP server** | Build a transport-neutral MCP server over a host | [mcp/server.ts](./mcp/server.ts) |
+| **MCP CLI** | `seldon-mcp` stdio and HTTP bin, plus `init` | [bin/seldon-mcp.ts](./bin/seldon-mcp.ts) |
 | **Headless host** | Run the engine in memory over a file-backed store | [mcp/headless-host.ts](./mcp/headless-host.ts) |
 | **Workspace store** | Read and write the workspace source and the `.seldon/workspaces` backup | [mcp/store.ts](./mcp/store.ts) |
 | **Context sections** | Build the reusable context blocks | [prompt/context-sections/](./prompt/context-sections) |
@@ -53,7 +54,7 @@ The package groups a few parts that work together:
 | **Action schema** | List the allowed actions and their payload specs | [schema/action-schema.ts](./schema/action-schema.ts) |
 | **Model** | Resolve the local Ollama model for Pi | [pi/model.ts](./pi/model.ts) |
 
-The package imports workspace types, catalogs, and compute from `@seldon/core`, and the export from `@seldon/factory` for the headless host. It does not fork property or theme rules. The agent handler and MCP server are framework-neutral, so a Node server of any kind can mount them; `@seldon/hari` wires them to stdio and HTTP, and `@seldon/foundation` wires them to the editor dev server.
+The package imports workspace types, catalogs, and compute from `@seldon/core`, and the export from `@seldon/factory` for the headless host. It does not fork property or theme rules. The agent handler and MCP server are framework-neutral, so a Node server of any kind can mount them. This package ships the `seldon-mcp` bin. `@seldon/hari` and `@seldon/foundation` both expose that bin. `@seldon/foundation` also wires the editor MCP bridge.
 
 ---
 

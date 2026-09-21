@@ -22,6 +22,7 @@
     "index.ts",
     "orchestrate.ts",
     "types.ts",
+    "bin/**/*.ts",
     "mcp/**/*.ts",
     "pi/**/*.ts",
     "prompt/**/*.ts",

@@ -89,8 +89,9 @@ it there. The tab's selection, active board, pan, and zoom are left alone.
 
 ### Headless over stdio
 
-The `seldon-mcp` bin on `@seldon/hari` wires a `HeadlessHost` to stdio. A client
-that spawns MCP servers as subprocesses launches it directly.
+The `seldon-mcp` bin on `@seldon/ai` wires a `HeadlessHost` to stdio. `@seldon/hari`
+and `@seldon/foundation` both expose that bin. A client that spawns MCP servers
+as subprocesses launches it directly.
 
 ```bash
 seldon-mcp --store ./.seldon/workspaces
@@ -203,11 +204,12 @@ npm run build:packages
 
 Configure the client to run `seldon-mcp --store <project>/.seldon/workspaces --workspace <project>/.seldon/<name>.react.json`.
 
-### A consumer project on `@seldon/hari`
+### A consumer project on `@seldon/hari` or `@seldon/foundation`
 
-Install `@seldon/hari`. It ships the `seldon-mcp` bin and re-exports the
-`HeadlessHost`, `WorkspaceStore`, and `createSeldonMcpServer` from `@seldon/ai`.
-To wire a custom transport, build the server yourself:
+Install `@seldon/hari` or `@seldon/foundation`. Both expose the `seldon-mcp` bin
+from `@seldon/ai`. `@seldon/hari` also re-exports `HeadlessHost`,
+`WorkspaceStore`, and `createSeldonMcpServer`. To wire a custom transport, build
+the server yourself:
 
 ```typescript
 import { HeadlessHost, createSeldonMcpServer } from "@seldon/hari"
@@ -235,5 +237,5 @@ The host and server are framework-neutral. `createSeldonMcpServer`,
 mount them. In Next.js, Express, or a plain `http` server, create the host once,
 call `createSeldonMcpServer(host)` per session, and hand the request and
 response to the MCP SDK's `StreamableHTTPServerTransport`. The `seldon-mcp` bin
-in `@seldon/hari` is the reference for the stdio and HTTP wiring. The Vite
+in `@seldon/ai` is the reference for the stdio and HTTP wiring. The Vite
 plugins in `@seldon/foundation` are the reference for the editor bridge routes.
