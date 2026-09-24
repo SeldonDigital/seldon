@@ -210,6 +210,7 @@
   ],
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@types/node": "^20.19.9",
     "@testing-library/react": "^16.3.0",
     "eslint": "^9.39.4",
     "typescript-eslint": "^8.61.0",
@@ -218,7 +219,7 @@
   "peerDependencies": {
     "@types/react": "^19.0.0",
     "react": "^19.0.0",
-    "typescript": "^5.0.0"
+    "typescript": ">=5.0.0 <7"
   },
   "dependencies": {
     "@types/chroma-js": "^2.4.5",
