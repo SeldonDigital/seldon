@@ -10,6 +10,7 @@ export const HOME_CONTENT = {
   subtitle: (otherEditor: OtherEditor) =>
     `Workspaces are stored on your machine and shared with the ${otherEditor} editor. Open a workspace.json file or create a new workspace.`,
   newWorkspaceButton: "New workspace",
+  openProjectButton: "Open project",
   openWorkspaceButton: "Open workspace.json",
   recentWorkspacesHeading: "Recent workspaces",
   loading: "Loading…",

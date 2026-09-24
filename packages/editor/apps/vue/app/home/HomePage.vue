@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useToastStore } from "@app/toaster/toast-store"
+import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { stripPlatformSuffix } from "@seldon/editor/lib/helpers/strip-platform-suffix"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
-import { activateBinding } from "@seldon/editor/lib/storage/workspace-binding-store"
+import { listProjectSources } from "@seldon/editor/lib/storage/project-workspace-file"
+import { activateBinding, saveBinding } from "@seldon/editor/lib/storage/workspace-binding-store"
 import {
   createStoredWorkspace,
   deleteStoredWorkspace,
-  findImportMatch,
   listStoredWorkspaces,
   withFreshWorkspaceId,
 } from "@seldon/editor/lib/storage/workspace-store"
@@ -55,7 +56,12 @@ function storeLabel(record: StoredWorkspace): string {
 // and a browser only grants during a gesture, so this runs in the click and
 // navigates once the handle is live for the session.
 async function open(record: StoredWorkspace): Promise<void> {
-  if (record.boundProject) await activateBinding(record.id)
+  if (record.boundProject && !(await activateBinding(record.id))) {
+    toast.addToast("Reconnect this project's folder before opening its workspace")
+
+    return
+  }
+
   router.push(`/${record.id}`)
 }
 
@@ -79,6 +85,32 @@ function triggerImport(): void {
   fileInput.value?.click()
 }
 
+async function openProject(): Promise<void> {
+  const directory = await pickExportDirectory()
+
+  if (!directory) return
+
+  const sources = await listProjectSources(directory)
+
+  for (const source of sources) {
+    const id = source.workspace.metadata.id
+
+    if (!id) continue
+
+    await saveBinding(id, {
+      boundAt: source.updatedAt,
+      directory,
+      label: source.workspace.metadata.label ?? "",
+      projectId: source.projectId,
+      projectName: directory.name,
+      sourceFileName: source.fileName,
+      updatedAt: source.updatedAt,
+    })
+  }
+
+  await refresh()
+}
+
 async function onImportFile(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
@@ -99,51 +131,8 @@ async function onImportFile(event: Event): Promise<void> {
       ? workspace
       : setWorkspaceLabel({ value: name }, workspace)
 
-    // When this id is already bound to a project store, route the import there
-    // rather than copying into the live store. A no-op when nothing is bound.
-    if (named.metadata.id) await activateBinding(named.metadata.id)
-
-    // A file exported from the editor keeps its `metadata.id`, so it resolves
-    // back to the record it came from instead of duplicating. A rename is
-    // confirmed, an import older than the stored copy is confirmed again, and
-    // declining a rename keeps the import as its own workspace under a fresh id.
-    const match = await findImportMatch(named)
-
-    if (!match) {
-      const record = await createStoredWorkspace(named)
-
-      router.push(`/${record.id}`)
-
-      return
-    }
-
-    const existingLabel =
-      match.existing.workspace.metadata.label || HOME_CONTENT.defaultWorkspaceName
-    const importedLabel = named.metadata.label || HOME_CONTENT.defaultWorkspaceName
-
-    if (match.labelChanged) {
-      const overwrite = confirm(
-        `"${existingLabel}" is already stored as this workspace. Overwrite it with the imported "${importedLabel}"? Cancel keeps the import as a separate workspace.`,
-      )
-
-      if (!overwrite) {
-        const record = await createStoredWorkspace(withFreshWorkspaceId(named))
-
-        router.push(`/${record.id}`)
-
-        return
-      }
-    }
-
-    if (match.importIsOlder) {
-      const proceed = confirm(
-        `The imported copy of "${importedLabel}" is older than the stored workspace. Overwrite the newer version anyway?`,
-      )
-
-      if (!proceed) return
-    }
-
-    const record = await createStoredWorkspace(named)
+    const isolated = withFreshWorkspaceId(named)
+    const record = await createStoredWorkspace(isolated)
 
     router.push(`/${record.id}`)
   } catch {
@@ -162,6 +151,9 @@ onMounted(refresh)
     <div class="home-actions">
       <button class="home-create" @click="create">
         {{ HOME_CONTENT.newWorkspaceButton }}
+      </button>
+      <button class="home-import" @click="openProject">
+        {{ HOME_CONTENT.openProjectButton }}
       </button>
       <button class="home-import" @click="triggerImport">
         {{ HOME_CONTENT.openWorkspaceButton }}

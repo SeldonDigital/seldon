@@ -4,16 +4,18 @@ import path from "node:path"
 
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 import { HeadlessHost, createSeldonMcpServer } from "@seldon/ai"
-
 import {
   BRIDGE_ASSET_PATH,
   BRIDGE_EVENTS_PATH,
   BRIDGE_RESULT_PATH,
   MCP_PATH,
-} from "../../../editor/shared/lib/mcp/bridge-protocol"
+} from "@seldon/editor/lib/mcp/bridge-protocol"
+
+import { readLegacyProjectPointer, readProjectManifest } from "@seldon/core"
+
 import { BridgeHost, BridgeHub } from "./bridge-host"
 
-import type { BridgeResult } from "../../../editor/shared/lib/mcp/bridge-protocol"
+import type { BridgeResult } from "@seldon/editor/lib/mcp/bridge-protocol"
 import type { ServerResponse } from "node:http"
 import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
 
@@ -26,18 +28,30 @@ import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
 export interface McpApiPluginOptions {
   root?: string
   exportRoot?: string
+  workspaceId?: string
 }
 
-/** Reads `.seldon/project.json` and returns the pointed workspace path. */
-function liveFileFromPointer(root: string): string | undefined {
+/** Resolves a workspace source from the repository manifest. */
+function liveFileFromPointer(root: string, workspaceId?: string): string | undefined {
   const pointerPath = path.join(root, ".seldon", "project.json")
 
   try {
-    const parsed = JSON.parse(fs.readFileSync(pointerPath, "utf8")) as { workspace?: string }
+    const parsed = JSON.parse(fs.readFileSync(pointerPath, "utf8")) as unknown
+    const manifest = readProjectManifest(parsed)
 
-    if (typeof parsed.workspace === "string" && parsed.workspace.length > 0) {
-      return path.join(root, ".seldon", parsed.workspace)
+    if (manifest) {
+      const source = workspaceId
+        ? manifest.workspaces[workspaceId]?.sourceFileName
+        : Object.values(manifest.workspaces).length === 1
+          ? Object.values(manifest.workspaces)[0]?.sourceFileName
+          : undefined
+
+      if (source) return path.join(root, ".seldon", source)
     }
+
+    const legacy = readLegacyProjectPointer(parsed)
+
+    if (legacy) return path.join(root, ".seldon", legacy.workspace)
   } catch {
     // No pointer, so the host uses the backup store only.
   }
@@ -151,10 +165,10 @@ interface McpMount {
   transports: Map<string, StreamableHTTPServerTransport>
 }
 
-function createMount(root: string, exportRoot: string): McpMount {
+function createMount(root: string, exportRoot: string, workspaceId?: string): McpMount {
   const fallback = new HeadlessHost({
     storeDir: path.join(root, ".seldon", "workspaces"),
-    liveFile: liveFileFromPointer(root),
+    liveFile: liveFileFromPointer(root, workspaceId),
     exportRoot,
   })
   const bridge = new BridgeHub()
@@ -268,7 +282,7 @@ async function handle(
 export function mcpApiPlugin(options: McpApiPluginOptions = {}): Plugin {
   const root = options.root ?? process.cwd()
   const exportRoot = options.exportRoot ?? root
-  const mount = createMount(root, exportRoot)
+  const mount = createMount(root, exportRoot, options.workspaceId)
 
   return {
     name: "seldon-mcp-api",

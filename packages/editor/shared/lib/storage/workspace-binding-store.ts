@@ -38,6 +38,8 @@ export interface WorkspaceBinding {
   /** Last save time, mirrored for the home list. */
   updatedAt: string
   boundAt: string
+  /** Stable id from the project's manifest. */
+  projectId?: string
   /** Live workspace source under `.seldon`, such as `dxf-website.react.json`. */
   sourceFileName?: string
 }

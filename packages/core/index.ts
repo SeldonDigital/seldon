@@ -39,6 +39,7 @@ export type { EmptyCustomTokenPayload } from "./themes/helpers/build-empty-custo
 export { getReservedTokenKeys, isReservedTokenName } from "./themes/helpers/reserved-token-names"
 export * from "./workspace/compute"
 export * from "./workspace/types"
+export * from "./workspace/project-manifest"
 export * from "./workspace/services/index"
 export {
   WORKSPACE_EDITABLE_THEME_ENTRY_ID,

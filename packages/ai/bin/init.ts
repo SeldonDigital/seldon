@@ -2,6 +2,12 @@ import { randomUUID } from "node:crypto"
 import fs from "node:fs/promises"
 import path from "node:path"
 
+import {
+  createProjectManifest,
+  readLegacyProjectPointer,
+  readProjectManifest,
+  setProjectWorkspace,
+} from "@seldon/core"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
@@ -45,8 +51,6 @@ export async function runInit(cwd: string, argv: string[]): Promise<void> {
   const liveArg = toPosix(path.relative(cwd, liveFile))
   const config = await writeCursorConfig(cwd, storeArg, liveArg)
 
-  await writeProjectPointer(seldonDir, path.basename(liveFile))
-
   const store = new WorkspaceStore(storeDir, { liveFile })
   const existing = await store.listIds()
 
@@ -62,6 +66,13 @@ export async function runInit(cwd: string, argv: string[]): Promise<void> {
     await store.write(id, stamped)
     seeded = { id, label: stamped.metadata.label || id }
   }
+
+  const source = await readOrCreateLive(liveFile, await projectName(cwd))
+  const id = source.metadata.id ?? randomUUID()
+
+  if (!source.metadata.id) await store.write(id, stampId(source, id))
+
+  await writeProjectManifest(seldonDir, id, path.basename(liveFile))
 
   printSummary({
     storeDir,
@@ -124,31 +135,55 @@ function livePathFromSource(cwd: string, seldonDir: string, sourceFile: string):
   return path.join(seldonDir, path.basename(resolved))
 }
 
-/** Reads `.seldon/project.json`, or undefined when it is absent or malformed. */
+/** Reads a workspace source from the project manifest or a legacy pointer. */
 async function readProjectPointer(seldonDir: string): Promise<string | undefined> {
-  try {
-    const raw = await fs.readFile(path.join(seldonDir, PROJECT_POINTER_FILE), "utf8")
-    const parsed = JSON.parse(raw) as { workspace?: string }
+  let raw: string
 
-    if (typeof parsed.workspace === "string" && parsed.workspace.length > 0) {
-      return parsed.workspace
-    }
+  try {
+    raw = await fs.readFile(path.join(seldonDir, PROJECT_POINTER_FILE), "utf8")
   } catch {
     // No pointer yet.
+    return undefined
   }
 
-  return undefined
+  const parsed = JSON.parse(raw) as unknown
+  const manifest = readProjectManifest(parsed)
+
+  if (manifest) {
+    const sources = Object.values(manifest.workspaces)
+
+    if (sources.length === 1) return sources[0]?.sourceFileName
+
+    if (sources.length > 1) {
+      throw new Error("This project has multiple workspaces. Pass --workspace to select one.")
+    }
+  }
+
+  return readLegacyProjectPointer(parsed)?.workspace
 }
 
-/** Writes `.seldon/project.json` so the editor and CLI open the same source. */
-async function writeProjectPointer(seldonDir: string, fileName: string): Promise<void> {
-  const pointer = { workspace: fileName }
+/** Registers the selected workspace source in `.seldon/project.json`. */
+async function writeProjectManifest(
+  seldonDir: string,
+  workspaceId: string,
+  fileName: string,
+): Promise<void> {
+  const manifestPath = path.join(seldonDir, PROJECT_POINTER_FILE)
+  let existing: unknown
 
-  await fs.writeFile(
-    path.join(seldonDir, PROJECT_POINTER_FILE),
-    `${JSON.stringify(pointer, null, 2)}\n`,
-    "utf8",
-  )
+  try {
+    existing = JSON.parse(await fs.readFile(manifestPath, "utf8")) as unknown
+  } catch {
+    existing = undefined
+  }
+
+  const manifest = readProjectManifest(existing) ?? createProjectManifest(randomUUID())
+  const next = setProjectWorkspace(manifest, workspaceId, {
+    sourceFileName: fileName,
+    updatedAt: new Date().toISOString(),
+  })
+
+  await fs.writeFile(manifestPath, `${JSON.stringify(next, null, 2)}\n`, "utf8")
 }
 
 /** Returns the only raw workspace file under `.seldon`, or undefined. */

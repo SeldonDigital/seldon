@@ -152,6 +152,10 @@ export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | 
     return record ? readRecord(record as unknown as StoredWorkspaceOnDisk) : undefined
   }
 
+  if (await getBinding(id)) {
+    throw new Error("Reconnect this project's folder before opening its workspace.")
+  }
+
   const response = await fetch(`${BASE}/${encodeURIComponent(id)}`)
 
   if (!response.ok) return undefined
@@ -177,7 +181,7 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
   const handle = getActiveHandle(id)
 
   if (handle) {
-    const sourceFileName = await writeBoundSource(handle, id, workspace)
+    const source = await writeBoundSource(handle, id, workspace, stamped.updatedAt)
 
     await writeProjectRecord(handle, {
       id,
@@ -189,11 +193,22 @@ export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void
 
     const binding = await getBinding(id)
 
-    if (binding && binding.sourceFileName !== sourceFileName) {
-      await saveBinding(id, { ...binding, sourceFileName })
+    if (
+      binding &&
+      (binding.projectId !== source.projectId || binding.sourceFileName !== source.sourceFileName)
+    ) {
+      await saveBinding(id, {
+        ...binding,
+        projectId: source.projectId,
+        sourceFileName: source.sourceFileName,
+      })
     }
 
     return
+  }
+
+  if (await getBinding(id)) {
+    throw new Error("Reconnect this project's folder before saving its workspace.")
   }
 
   await fetch(`${BASE}/${encodeURIComponent(id)}`, {
@@ -309,7 +324,7 @@ async function readBoundSource(
   id: string,
 ): Promise<{ workspace: Workspace; updatedAt: string } | undefined> {
   const binding = await getBinding(id)
-  const fileName = await findProjectSourceFileName(root, binding?.sourceFileName)
+  const fileName = await findProjectSourceFileName(root, id, binding?.sourceFileName)
 
   if (!fileName) return undefined
 
@@ -329,15 +344,19 @@ async function writeBoundSource(
   root: FileSystemDirectoryHandle,
   id: string,
   workspace: Workspace,
-): Promise<string> {
+  updatedAt: string,
+): Promise<{ projectId: string; sourceFileName: string }> {
   const binding = await getBinding(id)
   const platform = workspace.metadata.exportSettings?.platform ?? "react"
   const derived = workspaceSourceFileName(workspace, platform)
   const fileName =
-    binding?.sourceFileName ?? (await findProjectSourceFileName(root, derived)) ?? derived
+    binding?.sourceFileName ?? (await findProjectSourceFileName(root, id, derived)) ?? derived
 
   await writeProjectSource(root, fileName, workspace)
-  await writeProjectPointer(root, fileName)
+  const manifest = await writeProjectPointer(root, id, fileName, updatedAt)
 
-  return fileName
+  return {
+    projectId: manifest.projectId,
+    sourceFileName: fileName,
+  }
 }

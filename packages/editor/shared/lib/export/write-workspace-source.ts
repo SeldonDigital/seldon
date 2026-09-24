@@ -8,7 +8,8 @@ import {
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
- * The source file name for a workspace and target, such as `my-app.react.json`.
+ * The source file name for a workspace and target, such as
+ * `my-app-<workspace-id>.react.json`.
  *
  * The workspace label is kebab-cased, and the platform is appended so a React
  * and a Vue export of the same workspace sit side by side without overwriting
@@ -17,13 +18,14 @@ import type { Workspace } from "@seldon/core/workspace/types"
  */
 export function workspaceSourceFileName(workspace: Workspace, platform: string): string {
   const base = kebabCase(workspace.metadata.label ?? "") || "workspace"
+  const id = workspace.metadata.id?.replace(/[^a-zA-Z0-9_-]/g, "") ?? "unbound"
 
-  return `${base}.${platform}.json`
+  return `${base}-${id}.${platform}.json`
 }
 
 /**
- * Writes the workspace source to `.seldon/<name>.<platform>.json` and points
- * `.seldon/project.json` at it.
+ * Writes the workspace source to `.seldon/<name>-<id>.<platform>.json` and
+ * registers it in `.seldon/project.json`.
  *
  * A bound project keeps this file name once it exists. Later saves write the
  * same path so MCP and the CLI keep reading the file the editor just wrote.
@@ -35,10 +37,14 @@ export async function writeWorkspaceSource(
   platform: string,
 ): Promise<string> {
   const derived = workspaceSourceFileName(workspace, platform)
-  const fileName = (await findProjectSourceFileName(root, derived)) ?? derived
+  const workspaceId = workspace.metadata.id
+
+  if (!workspaceId) throw new Error("A workspace needs an id before it can bind to a project.")
+
+  const fileName = (await findProjectSourceFileName(root, workspaceId, derived)) ?? derived
 
   await writeProjectSource(root, fileName, workspace)
-  await writeProjectPointer(root, fileName)
+  await writeProjectPointer(root, workspaceId, fileName, new Date().toISOString())
 
   return fileName
 }

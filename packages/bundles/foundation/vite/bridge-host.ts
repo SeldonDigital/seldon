@@ -1,12 +1,6 @@
 import { EditSession, safeApply } from "@seldon/ai"
 
 import type {
-  BridgeCaptureRequest,
-  BridgeCommandType,
-  BridgeContext,
-  BridgeResult,
-} from "../../../editor/shared/lib/mcp/bridge-protocol"
-import type {
   CapturedImage,
   CheckpointInfo,
   CommitOutcome,
@@ -21,6 +15,12 @@ import type {
   WorkspaceTarget,
 } from "@seldon/ai"
 import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
+import type {
+  BridgeCaptureRequest,
+  BridgeCommandType,
+  BridgeContext,
+  BridgeResult,
+} from "@seldon/editor/lib/mcp/bridge-protocol"
 import type { ServerResponse } from "node:http"
 
 /** How long the server waits for a tab to answer one command. */

@@ -8,6 +8,7 @@ interface HomeViewProps {
   workspaces: StoredWorkspace[]
   loading: boolean
   onNew: () => void
+  onOpenProject: () => void
   onImport: () => void
   onOpen: (workspace: StoredWorkspace) => void
   onDelete: (id: string) => void
@@ -28,6 +29,7 @@ export function HomeView({
   workspaces,
   loading,
   onNew,
+  onOpenProject,
   onImport,
   onOpen,
   onDelete,
@@ -42,6 +44,9 @@ export function HomeView({
       <div className="home-actions">
         <button type="button" className="home-button home-button-primary" onClick={onNew}>
           {HOME_CONTENT.newWorkspaceButton}
+        </button>
+        <button type="button" className="home-button home-button-secondary" onClick={onOpenProject}>
+          {HOME_CONTENT.openProjectButton}
         </button>
         <button type="button" className="home-button home-button-secondary" onClick={onImport}>
           {HOME_CONTENT.openWorkspaceButton}

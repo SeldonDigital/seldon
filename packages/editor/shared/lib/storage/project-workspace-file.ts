@@ -1,23 +1,28 @@
 /**
  * File System Access reader and writer for a project's workspace files.
  *
- * A bound project has two files under `.seldon`:
- * - The workspace source, a raw workspace JSON such as `dxf-website.react.json`.
+ * A bound project has three persisted forms under `.seldon`:
+ * - Workspace sources, raw JSON files such as `dxf-website-<id>.react.json`.
  *   The editor, MCP, and CLI read and write this file.
  * - The workspace backup at `workspaces/<id>.json`, the wrapped store record.
  *   The editor writes it on every save so a copy remains if the source is lost.
- *
- * `.seldon/project.json` points at the source file name so every surface opens
- * the same file after a bind.
+ * - `project.json`, a manifest that maps each workspace id to its source.
  *
  * The DOM lib types the handle lookups but not `createWritable` on older targets
  * or async iteration, so those are widened at the call sites the way the folder
  * picker is elsewhere.
  */
 
-import { loadWorkspace } from "@seldon/core"
+import {
+  createProjectManifest,
+  loadWorkspace,
+  readProjectManifest as parseProjectManifest,
+  readLegacyProjectPointer,
+  setProjectWorkspace,
+} from "@seldon/core"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 
+import type { ProjectManifest } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /** The on-disk record shape, matching the dev-server plugin and the MCP store. */
@@ -44,11 +49,6 @@ const SELDON_DIR = ".seldon"
 
 /** Pointer file that names the live workspace source under `.seldon`. */
 export const PROJECT_POINTER_FILE = "project.json"
-
-/** JSON shape of {@link PROJECT_POINTER_FILE}. */
-export interface ProjectPointer {
-  workspace: string
-}
 
 type WritableFileHandle = FileSystemFileHandle & {
   createWritable: () => Promise<{
@@ -196,21 +196,42 @@ function isWorkspaceJson(value: unknown): value is Record<string, unknown> {
   )
 }
 
-/** Reads `.seldon/project.json`, or undefined when it is absent or malformed. */
-export async function readProjectPointer(
+/** Reads or migrates `.seldon/project.json` into the current manifest shape. */
+export async function readProjectManifest(
   root: FileSystemDirectoryHandle,
-): Promise<string | undefined> {
+): Promise<ProjectManifest | undefined> {
   const directory = await seldonDirectory(root, false)
 
   if (!directory) return undefined
 
   try {
     const handle = await directory.getFileHandle(PROJECT_POINTER_FILE)
-    const parsed = JSON.parse(await (await handle.getFile()).text()) as ProjectPointer
+    const text = await (await handle.getFile()).text()
+    const parsed = JSON.parse(text) as unknown
+    const manifest = parseProjectManifest(parsed)
 
-    if (typeof parsed.workspace === "string" && parsed.workspace.length > 0) {
-      return parsed.workspace
-    }
+    if (manifest) return manifest
+
+    const legacy = readLegacyProjectPointer(parsed)
+
+    if (!legacy) return undefined
+
+    const source = await readProjectSource(root, legacy.workspace)
+
+    if (!source?.workspace.metadata.id) return undefined
+
+    const migrated = setProjectWorkspace(
+      createProjectManifest(crypto.randomUUID()),
+      source.workspace.metadata.id,
+      {
+        sourceFileName: legacy.workspace,
+        updatedAt: source.updatedAt,
+      },
+    )
+
+    await writePointerFile(directory, migrated, text)
+
+    return migrated
   } catch {
     // No pointer yet, or the file is not a pointer.
   }
@@ -218,38 +239,43 @@ export async function readProjectPointer(
   return undefined
 }
 
-/** Writes `.seldon/project.json` so MCP and the CLI open the same source file. */
+/** Registers a workspace source in `.seldon/project.json`. */
 export async function writeProjectPointer(
   root: FileSystemDirectoryHandle,
+  workspaceId: string,
   fileName: string,
-): Promise<void> {
+  updatedAt: string,
+): Promise<ProjectManifest> {
   const directory = await seldonDirectory(root, true)
 
   if (!directory) {
     throw new Error("Could not open the project's .seldon folder to write.")
   }
 
-  const handle = (await directory.getFileHandle(PROJECT_POINTER_FILE, {
-    create: true,
-  })) as WritableFileHandle
-  const writable = await handle.createWritable()
-  const pointer: ProjectPointer = { workspace: fileName }
+  const manifest = (await readProjectManifest(root)) ?? createProjectManifest(crypto.randomUUID())
+  const next = setProjectWorkspace(manifest, workspaceId, {
+    sourceFileName: fileName,
+    updatedAt,
+  })
 
-  await writable.write(`${JSON.stringify(pointer, null, 2)}\n`)
-  await writable.close()
+  await writePointerFile(directory, next)
+
+  return next
 }
 
 /**
- * Finds a workspace source under `.seldon`. Prefers the project pointer, then a
- * known file name, then the only raw workspace file in that folder.
+ * Finds a workspace source under `.seldon`. A manifest entry always wins. A
+ * preferred name is only used for a workspace that is not registered yet.
  */
 export async function findProjectSourceFileName(
   root: FileSystemDirectoryHandle,
+  workspaceId: string,
   preferred?: string,
 ): Promise<string | undefined> {
-  const pointer = await readProjectPointer(root)
+  const manifest = await readProjectManifest(root)
+  const pointer = manifest?.workspaces[workspaceId]
 
-  if (pointer) return pointer
+  if (pointer) return pointer.sourceFileName
 
   const directory = await seldonDirectory(root, false)
 
@@ -291,6 +317,40 @@ export async function findProjectSourceFileName(
   return undefined
 }
 
+async function writePointerFile(
+  directory: FileSystemDirectoryHandle,
+  manifest: ProjectManifest,
+  previous?: string,
+): Promise<void> {
+  const handle = (await directory.getFileHandle(PROJECT_POINTER_FILE, {
+    create: true,
+  })) as WritableFileHandle
+  const current = previous ?? (await readFileText(handle))
+
+  if (current) {
+    const backup = (await directory.getFileHandle(`${PROJECT_POINTER_FILE}.bak`, {
+      create: true,
+    })) as WritableFileHandle
+    const writableBackup = await backup.createWritable()
+
+    await writableBackup.write(current)
+    await writableBackup.close()
+  }
+
+  const writable = await handle.createWritable()
+
+  await writable.write(`${JSON.stringify(manifest, null, 2)}\n`)
+  await writable.close()
+}
+
+async function readFileText(handle: FileSystemFileHandle): Promise<string | undefined> {
+  try {
+    return await (await handle.getFile()).text()
+  } catch {
+    return undefined
+  }
+}
+
 /** Reads one workspace source, or undefined when it is absent or unreadable. */
 export async function readProjectSource(
   root: FileSystemDirectoryHandle,
@@ -313,6 +373,25 @@ export async function readProjectSource(
   } catch {
     return undefined
   }
+}
+
+/** Lists workspace sources registered in a project's manifest. */
+export async function listProjectSources(
+  root: FileSystemDirectoryHandle,
+): Promise<Array<ProjectSourceRead & { projectId: string }>> {
+  const manifest = await readProjectManifest(root)
+
+  if (!manifest) return []
+
+  const sources = await Promise.all(
+    Object.values(manifest.workspaces).map(async (entry) =>
+      readProjectSource(root, entry.sourceFileName),
+    ),
+  )
+
+  return sources
+    .filter((source): source is ProjectSourceRead => source !== undefined)
+    .map((source) => ({ ...source, projectId: manifest.projectId }))
 }
 
 /**

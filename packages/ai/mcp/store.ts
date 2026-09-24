@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto"
+import { createHash, randomUUID } from "node:crypto"
 import fs from "node:fs/promises"
 import path from "node:path"
 
@@ -147,9 +147,15 @@ export class WorkspaceStore {
 
     try {
       const workspace = loadWorkspace(await fs.readFile(this.liveFile, "utf8"))
-      const id = workspace.metadata.id
+      const id = workspace.metadata.id ?? randomUUID()
 
-      if (!id) return null
+      if (!workspace.metadata.id) {
+        const stamped = { ...workspace, metadata: { ...workspace.metadata, id } }
+
+        await this.writeLive(stamped)
+
+        return { id, workspace: stamped, label: stamped.metadata.label ?? "" }
+      }
 
       return { id, workspace, label: workspace.metadata.label ?? "" }
     } catch {
