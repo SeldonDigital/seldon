@@ -56,6 +56,13 @@ describe("generated Button component", () => {
     expect(source).toContain(`"data-seldon-ref"?: string`)
   })
 
+  it("uses type-only imports for props", () => {
+    const source = content((f) => /\/Button\.tsx$/.test(f.path))
+
+    expect(source).toContain('import type {ButtonHTMLAttributes} from "react"')
+    expect(source).toContain('import {Icon,type IconProps} from "../primitives/Icon"')
+  })
+
   it("declares the component function", () => {
     const source = content((f) => /\/Button\.tsx$/.test(f.path))
 

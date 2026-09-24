@@ -18,10 +18,10 @@ describe("insertImports", () => {
     expect(out.endsWith("const body = 1")).toBe(true)
   })
 
-  it("imports HTMLAttributes from react for a Frame component", () => {
+  it("imports HTMLAttributes as a type for a Frame component", () => {
     const out = insertImports("body", frameComponent())
 
-    expect(out).toContain('import {HTMLAttributes} from "react"')
+    expect(out).toContain('import type {HTMLAttributes} from "react"')
   })
 
   it("imports the Frame component from the frames folder", () => {

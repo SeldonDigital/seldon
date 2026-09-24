@@ -17,7 +17,7 @@ import type { IconId } from "@seldon/core/icon-sets"
  * It first creates a map to prevent duplicates
  *
  * After that it converts to a string that looks like this:
- * import { CSSProperties, HTMLAttributes } from "react"
+ * import type { CSSProperties, HTMLAttributes } from "react"
  * import { Frame } from "../frames/Frame"
  *
  * This is then appended to the source file
@@ -37,6 +37,7 @@ export function insertImports(
   const { config, tree } = component
 
   const imports = getReactImports(component)
+  const typeImports: Record<string, string[]> = { react: [...imports.react] }
 
   if (config.react.returns === "Frame") {
     imports["../frames/Frame"] = ["Frame"]
@@ -123,6 +124,12 @@ export function insertImports(
       }
     } else {
       imports[key] = [node.dataBinding.interfaceName]
+    }
+
+    typeImports[key] ??= []
+
+    if (!typeImports[key].includes(node.dataBinding.interfaceName)) {
+      typeImports[key].push(node.dataBinding.interfaceName)
     }
 
     if (Array.isArray(node.children)) {
@@ -323,6 +330,7 @@ export function insertImports(
     component.tree.children.forEach(collectMergeHelpers)
 
     imports["../utils/merge-slot"] = [...Array.from(mergeHelpers), "SeldonRefs"]
+    typeImports["../utils/merge-slot"] = ["SeldonRefs"]
   }
 
   let importString = ""
@@ -332,7 +340,13 @@ export function insertImports(
     if (modules.length === 1 && modules[0].startsWith("*")) {
       importString += `import ${modules[0]} from "${location}"\n`
     } else {
-      importString += `import {${modules.join(",")}} from "${location}"\n`
+      const typeModules = new Set(typeImports[location] ?? [])
+      const importType = modules.every((module) => typeModules.has(module))
+      const specifiers = modules.map((module) =>
+        typeModules.has(module) ? `type ${module}` : module,
+      )
+
+      importString += `import${importType ? " type" : ""} {${importType ? modules.join(",") : specifiers.join(",")}} from "${location}"\n`
     }
   }
 
