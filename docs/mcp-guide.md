@@ -28,8 +28,8 @@ model. The tools fall into groups:
   `list_checkpoints`.
 - Preview: `render_preview` returns a JPEG of a board or node. It photographs
   the committed canvas. Call `commit_change` first if a transaction is open. It
-  needs an editor tab with the workspace open. A headless host returns a message
-  telling the agent to open the editor.
+  uses the editor canvas when a tab is open. A headless host renders an HTML+CSS
+  preview in Chromium. Pass `nodeId` or `boardKey` in headless mode.
 
 `get_design_guide` returns workflow, composition, property, theme, image, and
 export guidance so an agent can build without reading the source. Pass a
@@ -73,8 +73,9 @@ There are two hosts:
 | Headless service | `HeadlessHost` | Streamable HTTP | `seldon-mcp --http` | no |
 | Editor bridge | `BridgeHost` | Streamable HTTP | editor dev server | yes |
 
-`render_preview` only works on the editor bridge when a tab has the workspace
-open. Headless CLI and HTTP return a directive instead of an image.
+`render_preview` uses the editor bridge when a tab has the workspace open.
+Headless CLI and HTTP render a temporary HTML+CSS page in Chromium. Pass a
+`nodeId` or `boardKey` to select the headless capture target.
 
 `set_image` writes files on disk through the host, so it works in headless and
 bridge mode. The `/sdn` canvas route is part of the editor dev server. A

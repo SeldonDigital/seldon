@@ -48,7 +48,7 @@
     "!**/*.test.tsx"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core --external @seldon/factory --external @earendil-works/pi-ai --external @earendil-works/pi-coding-agent index.ts dist/index.js && node ../../scripts/bundle-package-entry.mjs --inline-core --external @seldon/factory --external @earendil-works/pi-ai --external @earendil-works/pi-coding-agent --external @modelcontextprotocol/sdk bin/seldon-mcp.ts dist/bin/seldon-mcp.js && chmod +x dist/bin/seldon-mcp.js",
+    "build": "tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs --inline-core --external @seldon/factory --external @earendil-works/pi-ai --external @earendil-works/pi-coding-agent --external puppeteer index.ts dist/index.js && node ../../scripts/bundle-package-entry.mjs --inline-core --external @seldon/factory --external @earendil-works/pi-ai --external @earendil-works/pi-coding-agent --external @modelcontextprotocol/sdk --external puppeteer bin/seldon-mcp.ts dist/bin/seldon-mcp.js && chmod +x dist/bin/seldon-mcp.js",
     "ollama:ensure": "node scripts/ensure-ollama.mjs",
     "ollama:kill": "pkill -f 'ollama serve' || true",
     "lint": "eslint .",
@@ -60,6 +60,7 @@
     "@modelcontextprotocol/sdk": "^1.30.0",
     "@seldon/core": "0.0.0",
     "@seldon/factory": "0.0.0",
+    "puppeteer": "^25.12.0",
     "typebox": "^1.3.6"
   },
   "devDependencies": {

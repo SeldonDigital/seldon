@@ -22,7 +22,7 @@ export function generateComponentFiles(
   componentsToExport: ComponentToExport[],
   workspace: Workspace,
   nodeIdToClass: NodeIdToClass,
-  _options: ExportOptions,
+  options: ExportOptions,
 ): GeneratedComponentFiles {
   const files: FileToExport[] = []
   const refSources: RefViewSource[] = []
@@ -35,7 +35,7 @@ export function generateComponentFiles(
 
       files.push({
         path: component.output.path,
-        content: generateHtmlFragment(component, nodeIdToClass),
+        content: generateHtmlFragment(component, nodeIdToClass, options.captureNodeIds === true),
       })
 
       refSources.push({

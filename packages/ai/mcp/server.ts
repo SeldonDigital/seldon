@@ -61,7 +61,7 @@ export interface McpCaptureOptions {
   quality?: number
 }
 
-/** One JPEG rasterized from a live editor tab. `data` is bare base64. */
+/** One JPEG rasterized from a Seldon capture surface. `data` is bare base64. */
 export interface CapturedImage {
   data: string
   mimeType: string
@@ -112,10 +112,7 @@ export interface McpHost {
    * `/sdn/<name>` path the workspace should store on `source` or `background`.
    */
   writeImage(targetId: string, options: McpWriteImageOptions): Promise<{ publicPath: string }>
-  /**
-   * Rasterizes a board or node from a live editor tab. Headless hosts return a
-   * message telling the agent to open the editor.
-   */
+  /** Rasterizes a board or node from an editor or headless capture surface. */
   capture(
     targetId: string,
     options?: McpCaptureOptions,
@@ -275,7 +272,7 @@ One-shot build from an empty workspace:
 3. Final pages are user variants of the catalog screen component. Add screen, then add_variant before you insert anything. The default screen is locked and rejects children. screenWidth and screenHeight default to 600px exact. Set them or the page clips.
 4. New boards fit their content. Do not pin a board width unless you need a device frame.
 5. Put images on a node with set_image. Never write a local filesystem path or a raw data URL into source or background.
-6. Call commit_change, then render_preview after each meaningful compose so you can see the design. A preview shows the committed canvas, not an open transaction. It needs an editor tab with the workspace open.
+6. Call commit_change, then render_preview after each meaningful compose so you can see the design. A preview shows the committed canvas, not an open transaction. In headless mode, pass nodeId or boardKey.
 7. When the design is done, call workspace_export to write framework code into the project.
 
 Edit only through write tools. Group a multi-step edit in begin_change and commit_change so it lands as one revision. Prefer theme tokens such as @swatch.primary and @fontSize.medium over hardcoded literals.`,
@@ -571,7 +568,7 @@ Edit only through write tools. Group a multi-step edit in begin_change and commi
     {
       name: "render_preview",
       description:
-        "Return a JPEG of a board or node so you can check the design visually before reporting done. Needs an editor tab with the workspace open. Pass a nodeId to check one variant or part instead of a whole board, which keeps the image small. Pass a boardKey to check a board the editor is not showing. Either way the editor tab keeps its own selection, board, pan, and zoom, so a capture never moves the user. Omit both ids to capture the board the editor is showing.",
+        "Return a JPEG of a board or node so you can check the design visually before reporting done. Pass a nodeId to check one variant or part instead of a whole board, which keeps the image small. Pass a boardKey to check a board. Headless hosts require nodeId or boardKey. An editor capture keeps the user's selection, board, pan, and zoom unchanged. Omit both ids only when an editor tab has the workspace open.",
       inputSchema: withHostParams({
         type: "object",
         properties: {

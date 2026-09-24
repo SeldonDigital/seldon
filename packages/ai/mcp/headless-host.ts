@@ -18,6 +18,7 @@ import { normalizeOutputFolder, workspaceReducer } from "@seldon/core"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 
 import { EditSession, safeApply } from "../tools"
+import { captureHeadlessWorkspace } from "./capture-headless"
 import { WorkspaceStore } from "./store"
 import { writeImageToProject } from "./write-image"
 
@@ -346,13 +347,34 @@ export class HeadlessHost implements McpHost {
   }
 
   async capture(
-    _targetId: string,
-    _options?: McpCaptureOptions,
+    targetId: string,
+    options?: McpCaptureOptions,
   ): Promise<CapturedImage | { message: string }> {
-    return {
-      message:
-        "render_preview needs a live editor tab. Open this workspace in the editor and call it again. Headless capture is not available yet.",
-    }
+    const state = await this.getState(targetId)
+    const monorepoRoot = findMonorepoRoot(this.exportRoot)
+    const rootDirectory = monorepoRoot ?? this.exportRoot
+    const assetReader = monorepoRoot
+      ? createNodeExportAssetReader(monorepoRoot)
+      : createResolvedExportAssetReader(pathToFileURL(path.join(this.exportRoot, "index.js")).href)
+
+    return captureHeadlessWorkspace({
+      capture: options,
+      exportOptions: {
+        assetReader,
+        ...toExportScopeOptions(workspaceExportScopeFlags(state.workspace)),
+        output: {
+          assetPublicPath: "/capture/assets",
+          assetsFolder: "capture/assets",
+          componentsFolder: "capture",
+        },
+        rootDirectory,
+        target: {
+          framework: "html",
+          styles: "css-properties",
+        },
+      },
+      workspace: state.workspace,
+    })
   }
 
   async undo(targetId: string): Promise<{ version: number } | { message: string }> {

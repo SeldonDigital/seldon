@@ -34,6 +34,7 @@ const VOID_HTML_TAGS = new Set([
 const NATIVE_ATTR_KEYS = ["src", "href", "placeholder", "type", "role"] as const
 
 interface WalkContext {
+  includeNodeIds: boolean
   nodeIdToClass: NodeIdToClass
   rootConfig: ComponentExport
 }
@@ -45,8 +46,10 @@ interface WalkContext {
 export function generateHtmlFragment(
   component: ComponentToExport,
   nodeIdToClass: NodeIdToClass,
+  includeNodeIds = false,
 ): string {
   const markup = nodeToHtml(component.tree, 0, {
+    includeNodeIds,
     nodeIdToClass,
     rootConfig: component.config,
   })
@@ -140,6 +143,7 @@ function buildAttributes(node: JSONTreeNode, context: WalkContext): string {
   const className = classNames(node, context.nodeIdToClass)
 
   if (className) attrs.push(`class="${escapeAttr(className)}"`)
+  if (context.includeNodeIds) attrs.push(`data-seldon-node-id="${escapeAttr(node.nodeId)}"`)
   if (node.ref) attrs.push(`data-seldon-ref="${escapeAttr(node.ref)}"`)
 
   for (const key of NATIVE_ATTR_KEYS) {
@@ -177,9 +181,12 @@ function iconSvg(node: JSONTreeNode, context: WalkContext): string {
   const body = data?.body ?? ""
   const className = classNames(node, context.nodeIdToClass)
   const classAttr = className ? ` class="${escapeAttr(className)}"` : ""
+  const nodeIdAttr = context.includeNodeIds
+    ? ` data-seldon-node-id="${escapeAttr(node.nodeId)}"`
+    : ""
   const refAttr = node.ref ? ` data-seldon-ref="${escapeAttr(node.ref)}"` : ""
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${escapeAttr(viewBox)}" fill="currentColor" height="1em" width="1em"${classAttr}${refAttr} aria-hidden="true">${body}</svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${escapeAttr(viewBox)}" fill="currentColor" height="1em" width="1em"${classAttr}${nodeIdAttr}${refAttr} aria-hidden="true">${body}</svg>`
 }
 
 function readRunsHtml(props: DataBinding["props"]): string | undefined {

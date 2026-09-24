@@ -16,6 +16,8 @@ export type ExportOptions = {
     componentsFolder: string
     assetPublicPath: string
   }
+  /** Emit node ids for a renderer that needs to locate a capture target. */
+  captureNodeIds?: boolean
   token?: string
   publishAll?: boolean
   debugMode?: boolean
