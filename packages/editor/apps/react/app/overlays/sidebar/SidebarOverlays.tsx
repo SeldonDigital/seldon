@@ -2,11 +2,8 @@ import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays/primitives"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import { useCallback } from "react"
-
-import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { useDropzone } from "../../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
@@ -65,8 +62,7 @@ export function SidebarOverlays({
   onCanvasTrackingEnter,
   onCanvasTrackingLeave,
 }: SidebarOverlaysProps) {
-  const { workspace } = useWorkspace({ usePreview: false })
-  const { openPanel } = usePanel()
+  const { openComponentPalette } = usePanel()
   const { activeTool } = useTool()
   const isDragging = useDragStateStore((state) => state.isDragging)
   const { isPlacementAllowed, parentNode, canHaveChildren } = useSidebarPlacementTracking(node)
@@ -75,42 +71,9 @@ export function SidebarOverlays({
     (placement: Placement) => {
       if (!isPlacementAllowed(placement)) return
 
-      const dialog = "component" as const
-
-      if (placement === "inside") {
-        openPanel(dialog, {
-          nodeId: node.id,
-          index: 0,
-        })
-
-        return
-      }
-
-      if (!parentNode) return
-
-      // Check if node exists in workspace (additional safety check)
-      const nodeExistsInWorkspace = workspace.nodes[node.id] !== undefined
-
-      if (!nodeExistsInWorkspace) {
-        // Node doesn't exist in workspace, skip insertion
-        return
-      }
-
-      try {
-        const currentIndex = typeCheckingService.isInstance(node)
-          ? nodeRelationshipService.getInstanceIndex(node, workspace)
-          : nodeRelationshipService.getVariantIndex(node, workspace)
-
-        openPanel(dialog, {
-          nodeId: parentNode.id,
-          index: placement === "before" ? currentIndex : currentIndex + 1,
-        })
-      } catch {
-        // Node doesn't exist in workspace, skip insertion
-        return
-      }
+      openComponentPalette()
     },
-    [isPlacementAllowed, activeTool, node, parentNode, workspace, openPanel],
+    [isPlacementAllowed, openComponentPalette],
   )
 
   const handleRowClickWrapper = useCallback(
@@ -130,14 +93,12 @@ export function SidebarOverlays({
   )
 
   const renderSelectDropzones = () => {
-    if (activeTool !== "select") return null
-
     return (
       <>
         <DragDropZone
           target={node}
           placement="before"
-          bandStyle={getZoneBandStyle("before", canHaveChildren, isDragging)}
+          bandStyle={getZoneBandStyle("before", canHaveChildren, isDragging, activeTool)}
           onClick={handleRowClickWrapper}
           onDoubleClick={handleRowDoubleClickWrapper}
           onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -147,7 +108,7 @@ export function SidebarOverlays({
           <DragDropZone
             target={node}
             placement="inside"
-            bandStyle={getZoneBandStyle("inside", canHaveChildren, isDragging)}
+            bandStyle={getZoneBandStyle("inside", canHaveChildren, isDragging, activeTool)}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -205,12 +166,13 @@ function getZoneBandStyle(
   placement: Placement,
   canHaveChildren: boolean,
   isDragging: boolean,
+  activeTool: "component" | "select",
 ): CSSProperties {
   const base: CSSProperties = {
     position: "absolute",
     left: 0,
     right: 0,
-    pointerEvents: isDragging ? "auto" : "none",
+    pointerEvents: isDragging || activeTool === "component" ? "auto" : "none",
   }
 
   if (!canHaveChildren) {

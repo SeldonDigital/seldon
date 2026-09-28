@@ -1,0 +1,10 @@
+{
+  "projectId": "8f4eb524-5829-425c-b509-99665500ad3c",
+  "version": 1,
+  "workspaces": {
+    "2347a3e9-93d1-41b5-b1d7-9cd7fe37c7d4": {
+      "sourceFileName": "seldon-editor.react.json",
+      "updatedAt": "2026-09-28T14:27:10.011Z"
+    }
+  }
+}

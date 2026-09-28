@@ -3,7 +3,6 @@ import Canvas from "@app/canvas/Canvas.vue"
 import CaptureBoard from "@app/canvas/CaptureBoard.vue"
 import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
 import BoardsDialog from "@app/dialogs/BoardsDialog.vue"
-import ComponentsDialog from "@app/dialogs/ComponentsDialog.vue"
 import CreateComponentDialog from "@app/dialogs/CreateComponentDialog.vue"
 import ExportDialog from "@app/dialogs/ExportDialog.vue"
 import FontCollectionsDialog from "@app/dialogs/FontCollectionsDialog.vue"
@@ -15,6 +14,7 @@ import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 import { useMcpBridge } from "@app/mcp/use-mcp-bridge"
 import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
+import ComponentPaletteController from "@app/palettes/components/ComponentPaletteController.vue"
 import HariController from "@app/palettes/hari/HariController.vue"
 import { useDirtyStore } from "@app/persistence/dirty-store"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
@@ -172,7 +172,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
       </template>
     </div>
     <BoardsDialog />
-    <ComponentsDialog />
+    <ComponentPaletteController />
     <CreateComponentDialog />
     <ThemesDialog />
     <FontCollectionsDialog />

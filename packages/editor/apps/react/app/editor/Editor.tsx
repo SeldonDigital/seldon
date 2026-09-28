@@ -9,7 +9,6 @@ import { useCallback } from "react"
 import { Canvas } from "../canvas/Canvas"
 import { CaptureBoard } from "../canvas/boards/CaptureBoard"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"
-import { ComponentsDialog } from "../dialogs/components/ComponentsDialog"
 import { CreateComponentController } from "../dialogs/create-component/CreateComponentController"
 import { ExportComponentsController } from "../dialogs/export-components/ExportComponentsController"
 import { FontCollectionsDialog } from "../dialogs/font-collections/FontCollectionsDialog"
@@ -17,6 +16,7 @@ import { IconSetsDialog } from "../dialogs/icon-sets/IconSetsDialog"
 import { ImageUploadController } from "../dialogs/image-upload/ImageUploadController"
 import { ThemesDialog } from "../dialogs/themes/ThemesDialog"
 import { FocusRingOverlay } from "../overlays/FocusRingOverlay"
+import { ComponentPaletteController } from "../palettes/components/ComponentPaletteController"
 import { HariController } from "../palettes/hari/HariController"
 import { ObjectsSidebar } from "../sidebars/objects/ObjectsSidebar"
 import { PanelPropertyController } from "../sidebars/properties/PanelPropertyController"
@@ -90,7 +90,7 @@ export default function Editor() {
       </EditorCrossfade>
 
       <ImageUploadController />
-      <ComponentsDialog />
+      <ComponentPaletteController />
       <BoardsDialog />
       <CreateComponentController />
       <ExportComponentsController />

@@ -1,8 +1,20 @@
 {
   "metadata": {
-    "version": 20,
+    "version": 21,
     "label": "seldon-editor",
-    "id": "2347a3e9-93d1-41b5-b1d7-9cd7fe37c7d4"
+    "id": "2347a3e9-93d1-41b5-b1d7-9cd7fe37c7d4",
+    "exportSettings": {
+      "platform": "react",
+      "framework": "none",
+      "outputFolder": "",
+      "fontLinks": false,
+      "allFonts": false,
+      "allIcons": true,
+      "allThemes": false,
+      "includeHidden": false,
+      "savedWorkspace": true,
+      "includeScripts": true
+    }
   },
   "boards": {
     "seldon": {
@@ -397,7 +409,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 20
       }
     },
     "button": {
@@ -574,7 +586,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 13
       }
     },
     "input": {
@@ -656,7 +668,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 22
       }
     },
     "comboboxField": {
@@ -857,7 +869,7 @@
         }
       ],
       "__editor": {
-        "order": 23
+        "order": 24
       }
     },
     "bar": {
@@ -1560,7 +1572,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 21
       }
     },
     "avatar": {
@@ -1800,7 +1812,7 @@
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 14
       }
     },
     "formControl": {
@@ -2644,7 +2656,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 19
       }
     },
     "menuItem": {
@@ -2752,7 +2764,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 16
       }
     },
     "menu": {
@@ -5010,6 +5022,295 @@
           ]
         },
         {
+          "id": "component-panel-NdVBXFwt",
+          "children": [
+            {
+              "id": "component-panel-l6pV5uUu",
+              "children": [
+                {
+                  "id": "component-panel-vahkvmWO",
+                  "children": [
+                    {
+                      "id": "component-panel-RfyNwcfW",
+                      "children": [
+                        {
+                          "id": "component-panel-5aisTnYa"
+                        },
+                        {
+                          "id": "component-panel-Ov5FokZi"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "component-panel-jcDmjkZt",
+                  "children": [
+                    {
+                      "id": "component-panel-A71ScKVi"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-panel-VuCwvJK0",
+                  "children": [
+                    {
+                      "id": "component-panel-4blI4OIE"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-panel-kPNmlLz7",
+              "children": [
+                {
+                  "id": "component-panel-plhDSE0g",
+                  "children": [
+                    {
+                      "id": "component-panel-wm28BJPJ",
+                      "children": [
+                        {
+                          "id": "component-panel-ba0G7QBw",
+                          "children": [
+                            {
+                              "id": "component-panel-0Y2PRXlV"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-75hCFppt",
+                          "children": [
+                            {
+                              "id": "component-panel-pUAu7ltY"
+                            },
+                            {
+                              "id": "component-panel-hWBdhJu8",
+                              "children": [
+                                {
+                                  "id": "component-panel-TSQMlQTC"
+                                },
+                                {
+                                  "id": "component-panel-PQpOeLwZ"
+                                },
+                                {
+                                  "id": "component-panel-w51vtgLO",
+                                  "children": [
+                                    {
+                                      "id": "component-panel-qfplofGl"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-Ze9H0J1e",
+                          "children": [
+                            {
+                              "id": "component-panel-XLiXA0qD"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-S8kZVK51",
+                          "children": [
+                            {
+                              "id": "component-panel-vDaXGYdJ"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-panel-DbEjIqtJ",
+                      "children": [
+                        {
+                          "id": "component-panel-Mb5Hf4HG",
+                          "children": [
+                            {
+                              "id": "component-panel-YZC1TZq9"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-BAVhCihq",
+                          "children": [
+                            {
+                              "id": "component-panel-dbAvU0ur"
+                            },
+                            {
+                              "id": "component-panel-Q8BM5eq7",
+                              "children": [
+                                {
+                                  "id": "component-panel-FjAvhcEQ"
+                                },
+                                {
+                                  "id": "component-panel-NkSGHS34"
+                                },
+                                {
+                                  "id": "component-panel-h6pJ4vBE",
+                                  "children": [
+                                    {
+                                      "id": "component-panel-LQwpGIuc"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-77KP7N2Q",
+                          "children": [
+                            {
+                              "id": "component-panel-qag5clmr"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-panel-vDQxaR40",
+                      "children": [
+                        {
+                          "id": "component-panel-uKfuoP78",
+                          "children": [
+                            {
+                              "id": "component-panel-zOWflq66"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-Fh4cNhKC",
+                          "children": [
+                            {
+                              "id": "component-panel-lSUAWWxO"
+                            },
+                            {
+                              "id": "component-panel-CDaCnzJZ",
+                              "children": [
+                                {
+                                  "id": "component-panel-z4l8Y32y"
+                                },
+                                {
+                                  "id": "component-panel-RLXHET7k"
+                                },
+                                {
+                                  "id": "component-panel-YNxVHb0y",
+                                  "children": [
+                                    {
+                                      "id": "component-panel-gT8dMeao"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-cKrpOSr8",
+                          "children": [
+                            {
+                              "id": "component-panel-3pz0JQkF"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-Zz6OsyOd",
+                          "children": [
+                            {
+                              "id": "component-panel-VWS5xlP5"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-panel-xfbxCMPn",
+                      "children": [
+                        {
+                          "id": "component-panel-QytPBvvg",
+                          "children": [
+                            {
+                              "id": "component-panel-twwX98ok"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-riPyEhfP",
+                          "children": [
+                            {
+                              "id": "component-panel-5PcxhOmT"
+                            },
+                            {
+                              "id": "component-panel-CrxGirVT",
+                              "children": [
+                                {
+                                  "id": "component-panel-ywOKxXix"
+                                },
+                                {
+                                  "id": "component-panel-VMATcTyR"
+                                },
+                                {
+                                  "id": "component-panel-LXBWPora",
+                                  "children": [
+                                    {
+                                      "id": "component-panel-ZjDaQPAu"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-3NtsMntZ",
+                          "children": [
+                            {
+                              "id": "component-panel-pWfcDXLS"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-panel-LEOEEp33",
+              "children": [
+                {
+                  "id": "component-panel-NnvtKzK8",
+                  "children": [
+                    {
+                      "id": "component-panel-FMBAU8fz",
+                      "children": [
+                        {
+                          "id": "component-panel-sIQfDXXW"
+                        },
+                        {
+                          "id": "component-panel-SrzP6NW6"
+                        },
+                        {
+                          "id": "component-panel-H5DmFajg",
+                          "children": [
+                            {
+                              "id": "component-panel-7If0rqvt"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "component-panel-BU9jVkqn",
           "children": [
             {
@@ -5877,7 +6178,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 12
       }
     },
     "blockquote": {
@@ -5894,7 +6195,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 18
       }
     },
     "listItem": {
@@ -5917,7 +6218,7 @@
         }
       ],
       "__editor": {
-        "order": 24
+        "order": 15
       }
     },
     "list": {
@@ -5969,7 +6270,7 @@
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 11
       }
     },
     "dialog": {
@@ -6660,7 +6961,7 @@
         }
       ],
       "__editor": {
-        "order": 22
+        "order": 23
       }
     },
     "select": {
@@ -6698,7 +6999,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 17
       }
     },
     "fieldset": {
@@ -48285,6 +48586,1099 @@
           "value": "material-keyboardArrowDown"
         }
       },
+      "origin": "user"
+    },
+    "component-panel-NdVBXFwt": {
+      "type": "variant",
+      "level": "module",
+      "label": "Components",
+      "theme": null,
+      "template": "node:component-panel-default",
+      "overrides": {
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offWhite"
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.offBlack"
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 30
+            }
+          }
+        },
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        },
+        "gap": {
+          "type": "option",
+          "value": "none"
+        }
+      }
+    },
+    "component-panel-l6pV5uUu": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderTop": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderRight": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderBottom": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderLeft": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "align": {
+          "type": "option",
+          "value": "center"
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.primary"
+            },
+            "brightness": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": -30
+              }
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ],
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            },
+            "color": {
+              "type": "empty",
+              "value": null
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            },
+            "offsetX": {
+              "type": "empty",
+              "value": null
+            },
+            "offsetY": {
+              "type": "empty",
+              "value": null
+            },
+            "blur": {
+              "type": "empty",
+              "value": null
+            },
+            "spread": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ]
+      },
+      "origin": "user"
+    },
+    "component-panel-vahkvmWO": {
+      "type": "instance",
+      "level": "part",
+      "label": "State",
+      "theme": null,
+      "template": "node:component-bar-tS9aE4Vx",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "right": {
+            "type": "option",
+            "value": "none"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          },
+          "left": {
+            "type": "option",
+            "value": "none"
+          }
+        },
+        "display": {
+          "type": "option",
+          "value": "mock"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-RfyNwcfW": {
+      "type": "instance",
+      "level": "element",
+      "label": "Menu",
+      "theme": null,
+      "template": "node:component-button-QBOeoZHq",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-5aisTnYa": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-button-Gx8YiKPP",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Ov5FokZi": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-button-ORIZZDfE",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-jcDmjkZt": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-iconic",
+      "overrides": {
+        "buttonSize": {
+          "type": "theme.ordinal",
+          "value": "@fontSize.small"
+        },
+        "display": {
+          "type": "option",
+          "value": "hide"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-A71ScKVi": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-VSAubWrH",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "seldon-more"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-VuCwvJK0": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-iconic",
+      "overrides": {
+        "buttonSize": {
+          "type": "theme.ordinal",
+          "value": "@fontSize.small"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-4blI4OIE": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-VSAubWrH",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-close"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-kPNmlLz7": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "scroll": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "display": {
+          "type": "option",
+          "value": "mock"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-plhDSE0g": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-sidebar-evMwxVOP",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-wm28BJPJ": {
+      "type": "instance",
+      "level": "element",
+      "label": "Section",
+      "theme": null,
+      "template": "node:component-item-B8RBVyHZ",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-ba0G7QBw": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-GkdUG8cw",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-0Y2PRXlV": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-ojaLxpy0",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-75hCFppt": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox",
+      "theme": null,
+      "template": "node:component-item-ZtCPosBL",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-pUAu7ltY": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-item-uwO2ynhb",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-hWBdhJu8": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-item-oJ1gKB5O",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-TSQMlQTC": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-Y7FZOEsQ",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-PQpOeLwZ": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-item-taLEeaSp",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-w51vtgLO": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-5ZBBKqDF",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-qfplofGl": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-LiVDdAqG",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Ze9H0J1e": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-naUTauiU",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-XLiXA0qD": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-s1trJIPc",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-S8kZVK51": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-ifOuS9Th",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-vDaXGYdJ": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-ocBfbzeB",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-DbEjIqtJ": {
+      "type": "instance",
+      "level": "element",
+      "label": "Property",
+      "theme": null,
+      "template": "node:component-item-PGzJkIXO",
+      "overrides": {},
+      "origin": "user",
+      "__editor": {
+        "repeat": {
+          "count": 3
+        }
+      }
+    },
+    "component-panel-Mb5Hf4HG": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-AbSWrsa8",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-YZC1TZq9": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-7hFHrht0",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-BAVhCihq": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox",
+      "theme": null,
+      "template": "node:component-item-e2HcTzxH",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-dbAvU0ur": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-item-THaHL5Id",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Q8BM5eq7": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-item-5GirziHO",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-FjAvhcEQ": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-1fM48fmG",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-NkSGHS34": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-item-GuDIdTRK",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-h6pJ4vBE": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-bpFUUbw3",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-LQwpGIuc": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-5LMtRNu4",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-77KP7N2Q": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-item-p9tghfdO",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-qag5clmr": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-item-X7KjW3gx",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-vDQxaR40": {
+      "type": "instance",
+      "level": "element",
+      "label": "Section",
+      "theme": null,
+      "template": "node:component-sidebar-Ej1nB3nm",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-uKfuoP78": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-w3EAGGeW",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-zOWflq66": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-IsXAJFdJ",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Fh4cNhKC": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox",
+      "theme": null,
+      "template": "node:component-sidebar-tcOK33bA",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-lSUAWWxO": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-sidebar-FMmaFaBm",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-CDaCnzJZ": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-sidebar-I74OjlO5",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-z4l8Y32y": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-SS58OWpc",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-RLXHET7k": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-sidebar-uOs5RF1O",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-YNxVHb0y": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-1IoVBMtD",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-gT8dMeao": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-bH9rtwWa",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-cKrpOSr8": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-zYmKyfaj",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-3pz0JQkF": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-qPXJqbrj",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Zz6OsyOd": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-0W83UcNy",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-VWS5xlP5": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-XLIbzniE",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-xfbxCMPn": {
+      "type": "instance",
+      "level": "element",
+      "label": "Property",
+      "theme": null,
+      "template": "node:component-sidebar-fP36DXiy",
+      "overrides": {},
+      "origin": "user",
+      "__editor": {
+        "repeat": {
+          "count": 5
+        }
+      }
+    },
+    "component-panel-QytPBvvg": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-8ASr8hZB",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-twwX98ok": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-6OwIYgWt",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-riPyEhfP": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox",
+      "theme": null,
+      "template": "node:component-sidebar-q2ZtEoiP",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-5PcxhOmT": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-sidebar-jnn1KpAH",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-CrxGirVT": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-sidebar-DIrG823L",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-ywOKxXix": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-7PcFsirP",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-VMATcTyR": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-sidebar-7ACASv5Y",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-LXBWPora": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-Vly9bSsT",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-ZjDaQPAu": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-a94ywyeX",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-3NtsMntZ": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-sidebar-9aqniZBt",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-pWfcDXLS": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-sidebar-pjLC9d7r",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-LEOEEp33": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "border": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderTop": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderRight": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderBottom": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "borderLeft": {
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "align": {
+          "type": "option",
+          "value": "center"
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 8
+              }
+            }
+          }
+        ],
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            },
+            "color": {
+              "type": "empty",
+              "value": null
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            },
+            "offsetX": {
+              "type": "empty",
+              "value": null
+            },
+            "offsetY": {
+              "type": "empty",
+              "value": null
+            },
+            "blur": {
+              "type": "empty",
+              "value": null
+            },
+            "spread": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ]
+      },
+      "origin": "user"
+    },
+    "component-panel-NnvtKzK8": {
+      "type": "instance",
+      "level": "part",
+      "label": "Filter",
+      "theme": null,
+      "template": "node:component-bar-4dMS6Z59",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "right": {
+            "type": "option",
+            "value": "none"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          },
+          "left": {
+            "type": "option",
+            "value": "none"
+          }
+        },
+        "display": {
+          "type": "option",
+          "value": "mock"
+        }
+      },
+      "origin": "user"
+    },
+    "component-panel-FMBAU8fz": {
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-comboboxField-F36VR1Yq",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-sIQfDXXW": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-comboboxField-tOCQ20h1",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-SrzP6NW6": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-comboboxField-KrBy2K1F",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-H5DmFajg": {
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-comboboxField-CSuBbc4O",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-7If0rqvt": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-comboboxField-rfTnLAMD",
+      "overrides": {},
       "origin": "user"
     }
   },

@@ -147,7 +147,7 @@ export function useEditorShortcuts(): void {
           panel.openPanel("create-component")
           tool.setActiveTool("select")
         } else {
-          tool.setActiveTool("component")
+          panel.openComponentPalette()
         }
 
         return

@@ -172,7 +172,7 @@ export function useMenuConfig(): MenuConfig {
   const addToast = useAddToast()
   const workspaceId = useWorkspaceId()
   const { setActiveTool } = useTool()
-  const { openPanel, aiChatOpen, openAiChat, closeAiChat } = usePanel()
+  const { openPanel, aiChatOpen, openAiChat, closeAiChat, openComponentPalette } = usePanel()
 
   const canDeleteSelection = useMemo(() => {
     if (selectedNode) return true
@@ -533,7 +533,9 @@ export function useMenuConfig(): MenuConfig {
       {
         id: "insert-component",
         label: "Insert Component",
-        action: () => setActiveTool("component"),
+        action: () => {
+          openComponentPalette()
+        },
         shortcut: "C",
       },
       "separator",
@@ -640,6 +642,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     setActiveTool,
+    openComponentPalette,
     openPanel,
     addVariant,
     selectedBoard,

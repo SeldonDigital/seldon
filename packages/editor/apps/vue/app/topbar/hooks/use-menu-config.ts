@@ -279,7 +279,9 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     {
       id: "insert-component",
       label: "Insert Component",
-      action: () => tool.setActiveTool("component"),
+      action: () => {
+        panel.openComponentPalette()
+      },
       shortcut: "C",
     },
     "separator",

@@ -62,6 +62,7 @@ type PersistedConfig = {
   propertiesDockedOpen: boolean
   propertiesPanelRect: PanelRect | null
   hariPanelRect: PanelRect | null
+  componentPaletteRect: PanelRect | null
 }
 
 function loadPersisted(): Partial<PersistedConfig> {
@@ -134,6 +135,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   // the user last left it. Null until the user moves or resizes the palette.
   const propertiesPanelRect = ref<PanelRect | null>(persisted.propertiesPanelRect ?? null)
   const hariPanelRect = ref<PanelRect | null>(persisted.hariPanelRect ?? null)
+  const componentPaletteRect = ref<PanelRect | null>(persisted.componentPaletteRect ?? null)
 
   function toggleWireframeMode(mode?: "on" | "off"): void {
     wireframeMode.value =
@@ -287,6 +289,10 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     hariPanelRect.value = rect
   }
 
+  function setComponentPaletteRect(rect: PanelRect): void {
+    componentPaletteRect.value = rect
+  }
+
   watch(
     [
       showSelection,
@@ -322,6 +328,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       propertiesDockedOpen,
       propertiesPanelRect,
       hariPanelRect,
+      componentPaletteRect,
     ],
     () => {
       if (typeof localStorage === "undefined") return
@@ -359,6 +366,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         propertiesDockedOpen: propertiesDockedOpen.value,
         propertiesPanelRect: propertiesPanelRect.value,
         hariPanelRect: hariPanelRect.value,
+        componentPaletteRect: componentPaletteRect.value,
       }
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
@@ -401,6 +409,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     propertiesDockedOpen,
     propertiesPanelRect,
     hariPanelRect,
+    componentPaletteRect,
     toggleLayoutBadges,
     toggleSpaceBadges,
     toggleDimensionBadges,
@@ -414,6 +423,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     showProperties,
     setPropertiesPanelRect,
     setHariPanelRect,
+    setComponentPaletteRect,
     toggleWireframeMode,
     togglePanels,
     toggleShowSelection,

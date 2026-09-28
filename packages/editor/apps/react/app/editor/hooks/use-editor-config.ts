@@ -87,6 +87,8 @@ interface EditorConfigState {
   setPropertiesPanelRect: (rect: Rect) => void
   hariPanelRect: Rect | null
   setHariPanelRect: (rect: Rect) => void
+  componentPaletteRect: Rect | null
+  setComponentPaletteRect: (rect: Rect) => void
 
   // Auto-scroll settings
   autoScrollToSelection: boolean
@@ -227,6 +229,8 @@ const useStore = create<EditorConfigState>()(
       setPropertiesPanelRect: (rect) => set((state) => ({ ...state, propertiesPanelRect: rect })),
       hariPanelRect: null,
       setHariPanelRect: (rect) => set((state) => ({ ...state, hariPanelRect: rect })),
+      componentPaletteRect: null,
+      setComponentPaletteRect: (rect) => set((state) => ({ ...state, componentPaletteRect: rect })),
 
       // Auto-scroll settings
       autoScrollToSelection: true,
@@ -315,6 +319,7 @@ const useStore = create<EditorConfigState>()(
         propertiesDockedOpen: state.propertiesDockedOpen,
         propertiesPanelRect: state.propertiesPanelRect,
         hariPanelRect: state.hariPanelRect,
+        componentPaletteRect: state.componentPaletteRect,
         autoScrollToSelection: state.autoScrollToSelection,
         autoExpandOnSelection: state.autoExpandOnSelection,
         showLayoutBadges: state.showLayoutBadges,
@@ -409,6 +414,8 @@ export function useEditorConfig() {
     setPropertiesPanelRect,
     hariPanelRect,
     setHariPanelRect,
+    componentPaletteRect,
+    setComponentPaletteRect,
     autoScrollToSelection,
     setAutoScrollToSelection,
     autoExpandOnSelection,
@@ -478,6 +485,8 @@ export function useEditorConfig() {
       setPropertiesPanelRect: state.setPropertiesPanelRect,
       hariPanelRect: state.hariPanelRect,
       setHariPanelRect: state.setHariPanelRect,
+      componentPaletteRect: state.componentPaletteRect,
+      setComponentPaletteRect: state.setComponentPaletteRect,
       autoScrollToSelection: state.autoScrollToSelection,
       setAutoScrollToSelection: state.setAutoScrollToSelection,
       autoExpandOnSelection: state.autoExpandOnSelection,
@@ -677,6 +686,8 @@ export function useEditorConfig() {
     setPropertiesPanelRect,
     hariPanelRect,
     setHariPanelRect,
+    componentPaletteRect,
+    setComponentPaletteRect,
     floatProperties,
     showProperties,
 

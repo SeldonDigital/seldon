@@ -19,7 +19,6 @@ import {
   isEditableControlNodeSelected,
 } from "@seldon/editor/lib/canvas/dom/editable-control"
 import { resolveCanvasPlacement } from "@seldon/editor/lib/canvas/drag/canvas-placement"
-import { getSlotIndex } from "@seldon/editor/lib/canvas/drag/drop-slot"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { resolveTextEditStart } from "@seldon/editor/lib/canvas/text-edit"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
@@ -63,7 +62,7 @@ export function useCanvas() {
   const { activeBoard } = useActiveBoard()
   const { directSelect } = useEditorConfig()
   const { activeTool, setActiveTool } = useTool()
-  const { openPanel } = usePanel()
+  const { openComponentPalette } = usePanel()
   const { hoverState, setHoverState } = useCanvasHoverState()
   const setHoveredId = useSetHoveredId()
   const addToast = useAddToast()
@@ -191,13 +190,8 @@ export function useCanvas() {
    */
   const insertAtSlot = useCallback(
     (slot: CanvasDropSlot) => {
-      const index = getSlotIndex(slot, workspace)
-
       if (slot.containerType === "board") {
-        openPanel("component", {
-          nodeId: slot.containerId,
-          index,
-        })
+        openComponentPalette()
 
         return
       }
@@ -223,12 +217,9 @@ export function useCanvas() {
         return
       }
 
-      openPanel("component", {
-        nodeId: container.id,
-        index,
-      })
+      openComponentPalette()
     },
-    [workspace, openPanel, addToast],
+    [workspace, openComponentPalette, addToast],
   )
 
   const executeToolAction = useCallback(() => {

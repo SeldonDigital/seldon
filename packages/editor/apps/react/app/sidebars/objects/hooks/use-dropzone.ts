@@ -1,13 +1,24 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
+import { resolveComponentDrop } from "@seldon/editor/lib/workspace/component-drag"
 import { isNoOpDrop, isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { useEffect, useRef, useState } from "react"
 
-import { invariant } from "@seldon/core"
+import {
+  invariant,
+  nodeRelationshipService,
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core"
 
 import type { Instance, Variant, Workspace } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import type { Placement } from "@seldon/editor/lib/types"
+import type {
+  ComponentDragPayload,
+  ComponentDropTarget,
+} from "@seldon/editor/lib/workspace/component-drag"
 
 type DropzoneParams = {
   target: Variant | Instance | EntryNode
@@ -35,19 +46,25 @@ export function useDropzone({ target, placement, onDragEnter, onDragLeave }: Dro
         targetNode: target,
         placement,
         duplicate: input.altKey,
+        componentTarget: getComponentTarget(target, placement, workspace),
       }),
       getDropEffect: ({ input }) => (input.altKey ? "copy" : "move"),
       onDragEnter: ({ source, location }) => {
         onDragEnter?.()
 
-        const subjectNode = source.data.subjectNode as Variant | Instance | EntryNode
-        const isValid = isDroppable({
-          target,
-          subject: subjectNode,
-          placement,
-          duplicate: location.current.input.altKey,
-          workspace,
-        })
+        const isValid = isComponentPaletteDrag(source.data.action)
+          ? canDropComponent(
+              source.data.payload as ComponentDragPayload,
+              getComponentTarget(target, placement, workspace),
+              workspace,
+            )
+          : isDroppable({
+              target,
+              subject: source.data.subjectNode as Variant | Instance | EntryNode,
+              placement,
+              duplicate: location.current.input.altKey,
+              workspace,
+            })
 
         setValidTarget(isValid)
       },
@@ -56,11 +73,19 @@ export function useDropzone({ target, placement, onDragEnter, onDragLeave }: Dro
         setValidTarget(false)
       },
       canDrop: ({ source, input }) => {
-        const subjectNode = source.data.subjectNode as Variant | Instance | EntryNode
+        if (isComponentPaletteDrag(source.data.action)) {
+          const componentTarget = getComponentTarget(target, placement, workspace)
+          const isValid = canDropComponent(
+            source.data.payload as ComponentDragPayload,
+            componentTarget,
+            workspace,
+          )
+          return isValid
+        }
 
         return isDroppable({
           target,
-          subject: subjectNode,
+          subject: source.data.subjectNode as Variant | Instance | EntryNode,
           placement,
           duplicate: input.altKey,
           workspace,
@@ -75,6 +100,48 @@ export function useDropzone({ target, placement, onDragEnter, onDragLeave }: Dro
   return {
     ref,
     isValidDropTarget: isValidTarget,
+  }
+}
+
+function isComponentPaletteDrag(action: unknown): boolean {
+  return action === "component-palette-insert"
+}
+
+function canDropComponent(
+  payload: ComponentDragPayload,
+  target: ComponentDropTarget | null,
+  workspace: Workspace,
+): boolean {
+  return target !== null && resolveComponentDrop(payload, target, workspace).isValid
+}
+
+function getComponentTarget(
+  target: Variant | Instance | EntryNode,
+  placement: Placement,
+  workspace: Workspace,
+): ComponentDropTarget | null {
+  if (!typeCheckingService.isInstance(target) && !typeCheckingService.isVariant(target)) {
+    return null
+  }
+
+  if (placement === "inside") {
+    return {
+      nodeId: target.id,
+      index: getNodeChildIds(target, workspace).length,
+    }
+  }
+
+  const parent = nodeTraversalService.findParentNode(target.id, workspace)
+
+  if (!parent) return null
+
+  const index = typeCheckingService.isInstance(target)
+    ? nodeRelationshipService.getInstanceIndex(target, workspace)
+    : nodeRelationshipService.getVariantIndex(target, workspace)
+
+  return {
+    nodeId: parent.id,
+    index: placement === "before" ? index : index + 1,
   }
 }
 

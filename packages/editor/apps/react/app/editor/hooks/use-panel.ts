@@ -4,7 +4,6 @@ import { persist } from "zustand/middleware"
 import { useTool } from "./use-tool"
 
 import type { ComponentLevel } from "@seldon/core/components/constants"
-import type { Target } from "@seldon/editor/lib/workspace/target"
 
 export type PanelType =
   | "add-board"
@@ -13,7 +12,6 @@ export type PanelType =
   | "add-theme"
   | "add-font-collection"
   | "add-icon-set"
-  | "component"
   | "image-upload"
   | null
 
@@ -24,7 +22,6 @@ type OpenPanelArgs =
   | [activePanel: "add-theme", options?: undefined]
   | [activePanel: "add-font-collection", options?: undefined]
   | [activePanel: "add-icon-set", options?: undefined]
-  | [activePanel: "component", options?: Target]
   | [activePanel: "image-upload", options?: undefined]
   | [activePanel: null, options?: undefined]
 
@@ -41,10 +38,12 @@ type PanelState = {
   aiChatOpen: boolean
   openAiChat: () => void
   closeAiChat: () => void
+  componentPaletteOpen: boolean
+  openComponentPalette: () => void
+  closeComponentPalette: () => void
 
-  // The active dialog's target node and level, optional so a dialog without either
+  // The active dialog's level is optional so a dialog without it
   // omits them. Optional members come last to keep required members first.
-  target?: Target
   dialogLevel?: ComponentLevel
 }
 
@@ -52,17 +51,12 @@ const useStore = create<PanelState>()(
   persist(
     (set) => ({
       activePanel: null,
-      target: undefined,
       dialogLevel: undefined,
       openPanel: (...args: OpenPanelArgs) => {
         switch (args[0]) {
-          case "component":
-            set({ activePanel: args[0], target: args[1], dialogLevel: undefined })
-            break
           case "add-board":
             set({
               activePanel: args[0],
-              target: undefined,
               dialogLevel: args[1]?.level,
             })
             break
@@ -74,26 +68,31 @@ const useStore = create<PanelState>()(
           case "image-upload":
             set({
               activePanel: args[0],
-              target: undefined,
               dialogLevel: undefined,
             })
             break
 
           default:
-            set({ activePanel: null, target: undefined, dialogLevel: undefined })
+            set({ activePanel: null, dialogLevel: undefined })
         }
       },
-      closePanel: () => set({ activePanel: null, target: undefined, dialogLevel: undefined }),
+      closePanel: () => set({ activePanel: null, dialogLevel: undefined }),
 
       aiChatOpen: false,
       openAiChat: () => set({ aiChatOpen: true }),
       closeAiChat: () => set({ aiChatOpen: false }),
+      componentPaletteOpen: false,
+      openComponentPalette: () => set({ componentPaletteOpen: true }),
+      closeComponentPalette: () => set({ componentPaletteOpen: false }),
     }),
     {
       name: "editor-panel",
       // Only the palette-visibility flag persists; the exclusive dialog slot must
       // start closed each session, so it stays out of storage.
-      partialize: (state) => ({ aiChatOpen: state.aiChatOpen }),
+      partialize: (state) => ({
+        aiChatOpen: state.aiChatOpen,
+        componentPaletteOpen: state.componentPaletteOpen,
+      }),
     },
   ),
 )
@@ -112,11 +111,13 @@ export function usePanel() {
 
       store.closePanel()
     },
-    target: store.activePanel === "component" ? store.target : undefined,
     dialogLevel: store.activePanel === "add-board" ? store.dialogLevel : undefined,
 
     aiChatOpen: store.aiChatOpen,
     openAiChat: store.openAiChat,
     closeAiChat: store.closeAiChat,
+    componentPaletteOpen: store.componentPaletteOpen,
+    openComponentPalette: store.openComponentPalette,
+    closeComponentPalette: store.closeComponentPalette,
   }
 }

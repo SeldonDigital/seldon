@@ -22,6 +22,7 @@ import { IsolationBoards } from "./boards/IsolationBoards"
 import { SandboxCanvas } from "./boards/SandboxCanvas"
 import { ThemeBoard } from "./boards/ThemeBoard"
 import { useCanvas } from "./hooks/use-canvas"
+import { useComponentCanvasDrop } from "./hooks/use-component-canvas-drop"
 
 import type { Board } from "@seldon/core"
 
@@ -33,6 +34,7 @@ export function CanvasWorkspace() {
     onCanvasClick,
     onCanvasDoubleClick,
   } = useCanvas()
+  const componentDropRef = useComponentCanvasDrop()
   const { isolatedView, isolatedBoardKey } = useEditorConfig()
   const { workspace } = useWorkspace()
 
@@ -45,6 +47,7 @@ export function CanvasWorkspace() {
   return (
     <Frame
       id="root-tree"
+      ref={componentDropRef}
       onClick={onCanvasClick}
       onDoubleClick={onCanvasDoubleClick}
       onMouseDown={onCanvasMouseDown}

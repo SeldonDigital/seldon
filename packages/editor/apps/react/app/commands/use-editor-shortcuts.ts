@@ -64,7 +64,16 @@ export function useEditorShortcuts() {
   } = useEditorConfig()
   const { toggleRefBadges } = useRefBadges()
   const { toggleIsolation } = useToggleIsolation()
-  const { activePanel, openPanel, aiChatOpen, openAiChat, closeAiChat } = usePanel()
+  const {
+    activePanel,
+    openPanel,
+    aiChatOpen,
+    openAiChat,
+    closeAiChat,
+    componentPaletteOpen,
+    openComponentPalette,
+    closeComponentPalette,
+  } = usePanel()
   const navigate = useNavigate()
 
   const { workspace } = useWorkspace()
@@ -108,8 +117,8 @@ export function useEditorShortcuts() {
   )
   useHotkeys("shift+alt+c", addVariant, { preventDefault: true })
 
-  // Insert component (arms the component placement tool)
-  useHotkeys("c", () => setActiveTool("component"), {
+  // Component palette
+  useHotkeys("c", openComponentPalette, {
     preventDefault: true,
   }) // prevent the character from being typed after the trigger
 
@@ -173,9 +182,8 @@ export function useEditorShortcuts() {
   useHotkeys("alt+9", () => selectBoardState(8), { preventDefault: true })
   useHotkeys("alt+0", () => selectBoardState(9), { preventDefault: true })
 
-  // Exit the insert component tool
-  useHotkeys("esc", () => setActiveTool("select"), {
-    enabled: activeTool === "component",
+  useHotkeys("esc", closeComponentPalette, {
+    enabled: componentPaletteOpen,
   })
 
   // Create authored component (opens the create-component dialog)

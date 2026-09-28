@@ -15,7 +15,6 @@ import {
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { resolveTextEditStart } from "@seldon/editor/lib/canvas/text-edit"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
-import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { getSelectionTarget, selectFromTarget } from "@seldon/editor/lib/workspace/selection-dom"
 
 import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
@@ -73,12 +72,7 @@ export function useCanvasTracking() {
       return
     }
 
-    const index = getNodeChildIds(node, workspace).length
-
-    panel.openPanel("component", {
-      nodeId: node.id as VariantId | InstanceId,
-      index,
-    })
+    panel.openComponentPalette()
   }
 
   function onCanvasClick(event: MouseEvent): void {

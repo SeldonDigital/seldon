@@ -6,6 +6,7 @@ import { Frame } from "@seldon/components/frames/Frame"
 
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
+import { useDropzone } from "../../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
 import { SidebarIndicator } from "./insert/SidebarIndicator"
 
@@ -57,6 +58,7 @@ export function SidebarPlacementZones({
         <>
           <PlacementZone
             placement="before"
+            target={node}
             onClick={() => onPlacementClick("before")}
             onMouseEnter={() => handlePlacementMouseEnter("before")}
             onMouseLeave={handlePlacementMouseLeave}
@@ -67,6 +69,7 @@ export function SidebarPlacementZones({
           {canHaveChildren && (
             <PlacementZone
               placement="inside"
+              target={node}
               onClick={() => onPlacementClick("inside")}
               onMouseEnter={() => handlePlacementMouseEnter("inside")}
               onMouseLeave={handlePlacementMouseLeave}
@@ -78,6 +81,7 @@ export function SidebarPlacementZones({
           {!isExpanded && (
             <PlacementZone
               placement="after"
+              target={node}
               onClick={() => onPlacementClick("after")}
               onMouseEnter={() => handlePlacementMouseEnter("after")}
               onMouseLeave={handlePlacementMouseLeave}
@@ -93,6 +97,7 @@ export function SidebarPlacementZones({
     return canHaveChildren ? (
       <PlacementZone
         placement="inside"
+        target={node}
         onClick={() => onPlacementClick("inside")}
         onMouseEnter={() => handlePlacementMouseEnter("inside")}
         onMouseLeave={handlePlacementMouseLeave}
@@ -125,6 +130,7 @@ const relativeFillStyle: CSSProperties = {
 
 interface PlacementZoneProps {
   placement: Placement
+  target: Variant | Instance
   onMouseEnter: () => void
   onMouseLeave: () => void
   isHovered: boolean
@@ -136,6 +142,7 @@ interface PlacementZoneProps {
 
 function PlacementZone({
   placement,
+  target,
   onClick,
   onDoubleClick,
   onMouseEnter,
@@ -145,6 +152,8 @@ function PlacementZone({
   tool,
 }: PlacementZoneProps) {
   const Indicator = tool === "component" ? SidebarIndicator : null
+  const { isValidDropTarget, ref } = useDropzone({ target, placement })
+  const showIndicator = isHovered || isValidDropTarget
 
   const zoneStyle: CSSProperties = {
     position: "absolute",
@@ -167,13 +176,14 @@ function PlacementZone({
 
   return (
     <PlacementZoneSurface
+      ref={ref}
       style={zoneStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >
-      {isHovered && isAllowed && Indicator && <Indicator placement={placement} />}
+      {showIndicator && isValidDropTarget && Indicator && <Indicator placement={placement} />}
     </PlacementZoneSurface>
   )
 }

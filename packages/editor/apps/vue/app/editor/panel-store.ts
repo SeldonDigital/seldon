@@ -4,7 +4,6 @@ import { computed, ref, watch } from "vue"
 import { useToolStore } from "./tool-store"
 
 import type { ComponentLevel } from "@seldon/core/components/constants"
-import type { Target } from "@seldon/editor/lib/workspace/target"
 
 export type PanelType =
   | "add-board"
@@ -13,7 +12,6 @@ export type PanelType =
   | "add-theme"
   | "add-font-collection"
   | "add-icon-set"
-  | "component"
   | "image-upload"
   | null
 
@@ -26,6 +24,20 @@ function loadAiChatOpen(): boolean {
     const raw = localStorage.getItem(STORAGE_KEY)
 
     return raw ? Boolean((JSON.parse(raw) as { aiChatOpen?: boolean }).aiChatOpen) : false
+  } catch {
+    return false
+  }
+}
+
+function loadComponentPaletteOpen(): boolean {
+  if (typeof localStorage === "undefined") return false
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+
+    return raw
+      ? Boolean((JSON.parse(raw) as { componentPaletteOpen?: boolean }).componentPaletteOpen)
+      : false
   } catch {
     return false
   }
@@ -48,23 +60,14 @@ export const usePanelStore = defineStore("panel", () => {
   const tool = useToolStore()
 
   const activePanel = ref<PanelType>(null)
-  const targetRef = ref<Target | undefined>(undefined)
   const dialogLevelRef = ref<ComponentLevel | undefined>(undefined)
 
   const aiChatOpen = ref(loadAiChatOpen())
+  const componentPaletteOpen = ref(loadComponentPaletteOpen())
 
-  function openPanel(panel: PanelType, options?: { level?: ComponentLevel } | Target): void {
-    if (panel === "component") {
-      activePanel.value = panel
-      targetRef.value = options as Target | undefined
-      dialogLevelRef.value = undefined
-
-      return
-    }
-
+  function openPanel(panel: PanelType, options?: { level?: ComponentLevel }): void {
     if (panel === "add-board") {
       activePanel.value = panel
-      targetRef.value = undefined
       dialogLevelRef.value = (options as { level?: ComponentLevel } | undefined)?.level
 
       return
@@ -72,14 +75,12 @@ export const usePanelStore = defineStore("panel", () => {
 
     if (panel === null) {
       activePanel.value = null
-      targetRef.value = undefined
       dialogLevelRef.value = undefined
 
       return
     }
 
     activePanel.value = panel
-    targetRef.value = undefined
     dialogLevelRef.value = undefined
   }
 
@@ -89,7 +90,6 @@ export const usePanelStore = defineStore("panel", () => {
     }
 
     activePanel.value = null
-    targetRef.value = undefined
     dialogLevelRef.value = undefined
   }
 
@@ -101,7 +101,7 @@ export const usePanelStore = defineStore("panel", () => {
     aiChatOpen.value = false
   }
 
-  const target = computed(() => (activePanel.value === "component" ? targetRef.value : undefined))
+  const target = computed(() => undefined)
   const dialogLevel = computed(() =>
     activePanel.value === "add-board" ? dialogLevelRef.value : undefined,
   )
@@ -109,6 +109,21 @@ export const usePanelStore = defineStore("panel", () => {
   watch(aiChatOpen, (open) => {
     if (typeof localStorage === "undefined") return
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ aiChatOpen: open }))
+  })
+
+  function openComponentPalette(): void {
+    componentPaletteOpen.value = true
+  }
+
+  function closeComponentPalette(): void {
+    componentPaletteOpen.value = false
+  }
+
+  watch(componentPaletteOpen, (open) => {
+    if (typeof localStorage === "undefined") return
+    const existing = localStorage.getItem(STORAGE_KEY)
+    const value = existing ? (JSON.parse(existing) as Record<string, unknown>) : {}
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...value, componentPaletteOpen: open }))
   })
 
   return {
@@ -120,5 +135,8 @@ export const usePanelStore = defineStore("panel", () => {
     aiChatOpen,
     openAiChat,
     closeAiChat,
+    componentPaletteOpen,
+    openComponentPalette,
+    closeComponentPalette,
   }
 })
