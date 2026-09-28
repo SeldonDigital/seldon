@@ -546,6 +546,23 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "toast",
+      label: "Toast",
+      intent: "Brief polite status notification with a dismiss action.",
+      overrides: {
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.STATUS },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        background: [
+          {
+            kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+            color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.background" },
+          },
+        ],
+        border: { preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" } },
+        shadow: [{ preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@shadow.none" } }],
+      },
+    },
   ],
 } as const satisfies ComponentSchema
 

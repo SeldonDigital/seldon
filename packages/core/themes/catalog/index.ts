@@ -8,6 +8,7 @@ import { theme as industrialStock } from "./industrial"
 import { theme as popPunkStock } from "./pop-punk"
 import { theme as defaultStock } from "./seldon"
 import { theme as sunsetBlueStock } from "./sunset-blue"
+import { theme as vlakStock } from "./vlak"
 import { theme as wildberryStock } from "./wildberry"
 
 import type { ComputedTheme, StockTheme } from "../types/theme"
@@ -25,6 +26,7 @@ export const STOCK_THEMES: StockTheme[] = [
   adobeSpectrumStock,
   sunsetBlueStock,
   wildberryStock,
+  vlakStock,
 ]
 
 export const STOCK_THEMES_BY_ID = Object.fromEntries(

@@ -23,5 +23,6 @@ export type ThemeTemplateId =
   | "adobeSpectrum"
   | "sunsetBlue"
   | "wildberry"
+  | "vlak"
 
 export type ThemeInstanceId = ThemeTemplateId

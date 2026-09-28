@@ -753,6 +753,24 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "ghost",
+      label: "Ghost",
+      intent: "Secondary action with a paper fill and a hairline boundary.",
+      overrides: {
+        background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+        border: {
+          preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" },
+        },
+        corners: {
+          topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.comfortable" },
+          topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.comfortable" },
+          bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.comfortable" },
+          bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.comfortable" },
+        },
+        shadow: [{ preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@shadow.none" } }],
+      },
+    },
   ],
 } as const satisfies ComponentSchema
 

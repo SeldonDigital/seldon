@@ -19,6 +19,7 @@ import {
   exportConfig as avatarExportConfig,
   schema as avatarSchema,
 } from "./elements/Avatar.schema"
+import { exportConfig as badgeExportConfig, schema as badgeSchema } from "./elements/Badge.schema"
 import {
   exportConfig as buttonExportConfig,
   schema as buttonSchema,
@@ -49,6 +50,7 @@ import {
   schema as headerSchema,
 } from "./elements/Header.schema"
 import { exportConfig as itemExportConfig, schema as itemSchema } from "./elements/Item.schema"
+import { exportConfig as kbdExportConfig, schema as kbdSchema } from "./elements/Kbd.schema"
 import { exportConfig as listExportConfig, schema as listSchema } from "./elements/List.schema"
 import {
   exportConfig as listItemExportConfig,
@@ -62,6 +64,10 @@ import {
   exportConfig as messageExportConfig,
   schema as messageSchema,
 } from "./elements/Message.schema"
+import {
+  exportConfig as metricExportConfig,
+  schema as metricSchema,
+} from "./elements/Metric.schema"
 import { exportConfig as navExportConfig, schema as navSchema } from "./elements/Nav.schema"
 import {
   exportConfig as optionGroupExportConfig,
@@ -83,6 +89,10 @@ import {
   exportConfig as selectExportConfig,
   schema as selectSchema,
 } from "./elements/Select.schema"
+import {
+  exportConfig as tooltipExportConfig,
+  schema as tooltipSchema,
+} from "./elements/Tooltip.schema"
 import {
   exportConfig as tableBodyExportConfig,
   schema as tableBodySchema,
@@ -114,6 +124,10 @@ import {
 } from "./frames/Container.schema"
 import { exportConfig as frameExportConfig, schema as frameSchema } from "./frames/Frame.schema"
 import {
+  exportConfig as resizableExportConfig,
+  schema as resizableSchema,
+} from "./frames/Resizable.schema"
+import {
   exportConfig as sandboxExportConfig,
   schema as sandboxSchema,
 } from "./frames/Sandbox.schema"
@@ -121,6 +135,10 @@ import {
   exportConfig as calendarExportConfig,
   schema as calendarSchema,
 } from "./modules/Calendar.schema"
+import {
+  exportConfig as masterDetailExportConfig,
+  schema as masterDetailSchema,
+} from "./modules/MasterDetail.schema"
 import { exportConfig as panelsExportConfig, schema as panelsSchema } from "./modules/Panels.schema"
 import {
   exportConfig as sidebarExportConfig,
@@ -132,6 +150,14 @@ import {
   schema as widgetTodoSchema,
 } from "./modules/WidgetTodo.schema"
 import {
+  exportConfig as chartExportConfig,
+  schema as chartSchema,
+} from "./modules/charts/Chart.schema"
+import {
+  exportConfig as smallMultiplesExportConfig,
+  schema as smallMultiplesSchema,
+} from "./modules/charts/SmallMultiples.schema"
+import {
   exportConfig as footerExportConfig,
   schema as footerSchema,
 } from "./modules/footers/Footer.schema"
@@ -140,21 +166,55 @@ import {
   exportConfig as linksFooterExportConfig,
   schema as linksFooterSchema,
 } from "./modules/footers/LinksFooter.schema"
+import {
+  exportConfig as accordionExportConfig,
+  schema as accordionSchema,
+} from "./parts/Accordion.schema"
+import {
+  exportConfig as activityTimelineExportConfig,
+  schema as activityTimelineSchema,
+} from "./parts/ActivityTimeline.schema"
 // Parts
 import { exportConfig as barExportConfig, schema as barSchema } from "./parts/Bar.schema"
+import {
+  exportConfig as carouselExportConfig,
+  schema as carouselSchema,
+} from "./parts/Carousel.schema"
 import {
   exportConfig as comboboxExportConfig,
   schema as comboboxSchema,
 } from "./parts/Combobox.schema"
+import { exportConfig as emptyExportConfig, schema as emptySchema } from "./parts/Empty.schema"
 import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
 import {
+  exportConfig as filterBarExportConfig,
+  schema as filterBarSchema,
+} from "./parts/FilterBar.schema"
+import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
 import { exportConfig as menuExportConfig, schema as menuSchema } from "./parts/Menu.schema"
+import {
+  exportConfig as paginationExportConfig,
+  schema as paginationSchema,
+} from "./parts/Pagination.schema"
+import {
+  exportConfig as progressExportConfig,
+  schema as progressSchema,
+} from "./parts/Progress.schema"
+import {
+  exportConfig as propertyGridExportConfig,
+  schema as propertyGridSchema,
+} from "./parts/PropertyGrid.schema"
+import { exportConfig as sliderExportConfig, schema as sliderSchema } from "./parts/Slider.schema"
+import {
+  exportConfig as stepperExportConfig,
+  schema as stepperSchema,
+} from "./parts/Stepper.schema"
 import { exportConfig as topbarExportConfig, schema as topbarSchema } from "./parts/Topbar.schema"
 import {
   exportConfig as articleCardExportConfig,
@@ -222,6 +282,10 @@ import { exportConfig as hrExportConfig, schema as hrSchema } from "./primitives
 import { exportConfig as iconExportConfig, schema as iconSchema } from "./primitives/Icon.schema"
 import { exportConfig as imageExportConfig, schema as imageSchema } from "./primitives/Image.schema"
 import {
+  exportConfig as skeletonExportConfig,
+  schema as skeletonSchema,
+} from "./primitives/Skeleton.schema"
+import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
 } from "./primitives/controls/Input.schema"
@@ -272,6 +336,7 @@ import type { ComponentExport, ComponentSchema } from "../types"
 
 const elements: ComponentSchema[] = [
   avatarSchema,
+  badgeSchema,
   buttonSchema,
   calendarDaySchema,
   chipSchema,
@@ -284,6 +349,9 @@ const elements: ComponentSchema[] = [
   itemSchema,
   menuItemSchema,
   messageSchema,
+  kbdSchema,
+  metricSchema,
+  tooltipSchema,
   comboboxFieldSchema,
   navSchema,
   listSchema,
@@ -303,6 +371,7 @@ const primitives: ComponentSchema[] = [
   hrSchema,
   iconSchema,
   imageSchema,
+  skeletonSchema,
   inputSchema,
   legendSchema,
   textareaSchema,
@@ -317,12 +386,22 @@ const primitives: ComponentSchema[] = [
 ]
 
 const parts: ComponentSchema[] = [
+  accordionSchema,
+  activityTimelineSchema,
   barSchema,
+  carouselSchema,
   topbarSchema,
   cardStackedSchema,
   fieldsetSchema,
+  filterBarSchema,
   listStandardSchema,
   menuSchema,
+  propertyGridSchema,
+  emptySchema,
+  paginationSchema,
+  progressSchema,
+  sliderSchema,
+  stepperSchema,
   comboboxSchema,
   articleCardSchema,
   mediaCardSchema,
@@ -344,6 +423,9 @@ const parts: ComponentSchema[] = [
 const modules: ComponentSchema[] = [
   linksFooterSchema,
   calendarSchema,
+  chartSchema,
+  smallMultiplesSchema,
+  masterDetailSchema,
   panelsSchema,
   footerSchema,
   sidebarSchema,
@@ -355,7 +437,7 @@ const boards: ComponentSchema[] = [boardSchema]
 
 const screens: ComponentSchema[] = [screenSchema, themeSpecSchema]
 
-const frames: ComponentSchema[] = [containerSchema, frameSchema, sandboxSchema]
+const frames: ComponentSchema[] = [containerSchema, frameSchema, resizableSchema, sandboxSchema]
 
 export type Catalog = {
   frames: ComponentSchema[]
@@ -402,6 +484,7 @@ export function findComponentSchema(id: string): ComponentSchema | undefined {
 const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   // Elements
   [ComponentId.AVATAR]: avatarExportConfig,
+  [ComponentId.BADGE]: badgeExportConfig,
   [ComponentId.BUTTON]: buttonExportConfig,
   [ComponentId.CALENDAR_DAY]: calendarDayExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
@@ -414,6 +497,9 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.MENU_ITEM]: menuItemExportConfig,
   [ComponentId.MESSAGE]: messageExportConfig,
+  [ComponentId.KBD]: kbdExportConfig,
+  [ComponentId.METRIC]: metricExportConfig,
+  [ComponentId.TOOLTIP]: tooltipExportConfig,
   [ComponentId.COMBOBOX_FIELD]: comboboxFieldExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
@@ -430,11 +516,15 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   // Frames
   [ComponentId.CONTAINER]: containerExportConfig,
   [ComponentId.FRAME]: frameExportConfig,
+  [ComponentId.RESIZABLE]: resizableExportConfig,
   [ComponentId.SANDBOX]: sandboxExportConfig,
 
   // Modules
   [ComponentId.LINKS_FOOTER]: linksFooterExportConfig,
   [ComponentId.CALENDAR]: calendarExportConfig,
+  [ComponentId.CHART]: chartExportConfig,
+  [ComponentId.SMALL_MULTIPLES]: smallMultiplesExportConfig,
+  [ComponentId.MASTER_DETAIL]: masterDetailExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
   [ComponentId.PANEL]: panelsExportConfig,
   [ComponentId.SIDEBAR]: sidebarExportConfig,
@@ -442,12 +532,22 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,
 
   // Parts
+  [ComponentId.ACCORDION]: accordionExportConfig,
+  [ComponentId.ACTIVITY_TIMELINE]: activityTimelineExportConfig,
   [ComponentId.BAR]: barExportConfig,
+  [ComponentId.CAROUSEL]: carouselExportConfig,
   [ComponentId.TOPBAR]: topbarExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
+  [ComponentId.FILTER_BAR]: filterBarExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
   [ComponentId.MENU]: menuExportConfig,
+  [ComponentId.PROPERTY_GRID]: propertyGridExportConfig,
+  [ComponentId.EMPTY]: emptyExportConfig,
+  [ComponentId.PAGINATION]: paginationExportConfig,
+  [ComponentId.PROGRESS]: progressExportConfig,
+  [ComponentId.SLIDER]: sliderExportConfig,
+  [ComponentId.STEPPER]: stepperExportConfig,
   [ComponentId.COMBOBOX]: comboboxExportConfig,
   [ComponentId.ARTICLE_CARD]: articleCardExportConfig,
   [ComponentId.MEDIA_CARD]: mediaCardExportConfig,
@@ -469,6 +569,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.HR]: hrExportConfig,
   [ComponentId.ICON]: iconExportConfig,
   [ComponentId.IMAGE]: imageExportConfig,
+  [ComponentId.SKELETON]: skeletonExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.TEXTAREA]: textareaExportConfig,

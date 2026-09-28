@@ -842,6 +842,31 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "alert",
+      label: "Alert",
+      intent: "Contextual information with a hairline frame and an alert role.",
+      overrides: {
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.ALERT },
+        background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+        border: { preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" } },
+      },
+    },
+    {
+      id: "callout",
+      label: "Callout",
+      intent: "A square, hairline-framed note that accompanies running copy.",
+      overrides: {
+        background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+        border: { preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" } },
+        corners: {
+          topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+        },
+      },
+    },
   ],
 } as const satisfies ComponentSchema
 

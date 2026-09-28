@@ -743,6 +743,56 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "alert",
+      label: "Alert dialog",
+      intent: "A modal decision surface that requires an explicit response.",
+      overrides: {
+        width: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 450 } },
+        background: [
+          {
+            kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+            color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.background" },
+          },
+        ],
+        border: { preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" } },
+      },
+    },
+    {
+      id: "sheet",
+      label: "Sheet",
+      intent: "Focused non-modal task surface opened from a screen edge.",
+      overrides: {
+        width: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 450 } },
+        height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+      },
+    },
+    {
+      id: "drawer",
+      label: "Drawer",
+      intent: "Focused task surface opened from the bottom edge.",
+      overrides: {
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+        height: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 350 } },
+      },
+    },
+    {
+      id: "popover",
+      label: "Popover",
+      intent: "Small non-modal surface for temporary contextual content.",
+      overrides: {
+        width: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 320 } },
+        height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        background: [
+          {
+            kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+            color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.background" },
+          },
+        ],
+        border: { preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" } },
+        shadow: [{ preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@shadow.none" } }],
+      },
+    },
   ],
 } as const satisfies ComponentSchema
 

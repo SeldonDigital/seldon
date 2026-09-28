@@ -26,6 +26,7 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 | `adobeSpectrum` | Adobe Spectrum-inspired theme with neutral grays, Spectrum blue, Source type, and rounded corners. |
 | `sunsetBlue` | Warm-cool split-complementary theme with relaxed typography. |
 | `wildberry` | Rich square-harmony theme with saturated berry colors and bold styling. |
+| `vlak` | Monochrome product theme with paper, ink, Inter type, hairline rules, and restrained corners. |
 
 `metadata.id` and catalog template ids use the same string as **Stock Theme ID**. For example: `catalog:earth`, `catalog:ibmCarbon`.
 

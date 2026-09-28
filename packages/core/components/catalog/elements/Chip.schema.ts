@@ -468,6 +468,31 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "mono",
+      label: "Mono",
+      intent: "Short technical identifier rendered with monospace text and a hairline boundary.",
+      overrides: {
+        cursor: { type: Sdn.ValueType.OPTION, value: Sdn.Cursor.DEFAULT },
+        background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+        border: {
+          preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" },
+        },
+        corners: {
+          topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "code",
+          overrides: { content: { type: Sdn.ValueType.EXACT, value: "/vlak" } },
+        },
+      ],
+    },
   ],
 } as const satisfies ComponentSchema
 

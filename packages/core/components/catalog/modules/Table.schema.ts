@@ -3187,6 +3187,14 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "data",
+      label: "Data",
+      intent: "Dense operational table with sortable headers, selection, and a filter bar.",
+      overrides: {
+        gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
+      },
+    },
   ],
 } as const satisfies ComponentSchema
 

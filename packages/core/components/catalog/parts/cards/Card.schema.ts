@@ -577,6 +577,22 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "flush",
+      label: "Flush",
+      intent: "Typography-led card without a frame, outline, or shadow.",
+      overrides: {
+        background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+        border: { preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.none" } },
+        corners: {
+          topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+        },
+        shadow: [{ preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@shadow.none" } }],
+      },
+    },
   ],
 } as const satisfies ComponentSchema
 
