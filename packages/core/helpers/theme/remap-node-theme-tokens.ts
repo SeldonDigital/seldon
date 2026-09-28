@@ -1,4 +1,4 @@
-import { isEqual } from "lodash"
+import lodash from "lodash"
 
 import { isComponentId } from "../../components/constants"
 import { ValueType } from "../../properties"
@@ -24,6 +24,8 @@ import type { ThemeFontFamilyToken } from "../../themes/values"
 import type { EntryNode } from "../../workspace/model/entry-node"
 import type { InstanceId, VariantId } from "../../workspace/types"
 import type { WritableDraft } from "immer"
+
+const { isEqual } = lodash
 
 /**
  * Swatch slots that carry across a theme switch by keeping the same slot id.

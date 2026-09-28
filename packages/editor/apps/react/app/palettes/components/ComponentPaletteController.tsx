@@ -6,13 +6,14 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { FloatingPanel } from "@app/windows/FloatingPanel"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
+import { ComboboxFieldFilter } from "@seldon/components/elements/ComboboxFieldFilter"
 import { Frame } from "@seldon/components/frames/Frame"
 import { PanelComponents } from "@seldon/components/modules/PanelComponents"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 
 import { useDialog } from "../../dialogs/hooks/use-dialog"
-import { ComponentCatalogPreview } from "./ComponentCatalogPreview"
+import { ComponentCatalogPreview } from "./ComponentCatalogPreview.bespoke"
 
 import type { CatalogComponentItem } from "../../dialogs/hooks/use-dialog"
 import type { FloatingPanelApi } from "@app/windows/FloatingPanel"
@@ -48,31 +49,33 @@ function ComponentPalette({ close }: { close: () => void }) {
     [setQuery],
   )
   const onClearQuery = useCallback(() => setQuery(""), [setQuery])
+  const filterInput = { onChange: onQueryChange, value: query }
+  const componentFilter = (
+    <ComboboxFieldFilter buttonIconic={{ onClick: onClearQuery }} input={filterInput} />
+  )
   const renderPalette = useCallback(
     (api: FloatingPanelApi) => {
       const content = visibleCategories.map((category) => (
         <ListStandardCatalog
           container={{
             children: category.items.map((item) => (
-              <ComponentDragSource category={category.category} key={item.id} item={item} />
+              <ComponentDragSource key={item.id} item={item} />
             )),
           }}
           itemCatalog={null}
           key={category.category}
-          textSubtitle={EMPTY_SLOT}
+          textSubtitle={{ children: category.category }}
         />
       ))
       const seldonRefs = {
         componentsPaletteTopBar: { onPointerDown: api.startDrag },
         componentsPaletteClose: { onClick: close, "data-testid": "component-palette-close" },
         componentsPaletteContents: { children: content, style: contentStyle },
-        componentsPaletteFilterClear: { onClick: onClearQuery },
-        componentsPaletteFilterInput: filterInput,
       }
       const palette = (
         <PanelComponents
           barState={EMPTY_SLOT}
-          barFilter={EMPTY_SLOT}
+          barFilter={{ children: componentFilter }}
           buttonIconic={null}
           buttonIconic2={EMPTY_SLOT}
           comboboxField={EMPTY_SLOT}
@@ -85,9 +88,8 @@ function ComponentPalette({ close }: { close: () => void }) {
 
       return palette
     },
-    [close, onClearQuery, onQueryChange, query, visibleCategories],
+    [close, componentFilter, visibleCategories],
   )
-  const filterInput = { onChange: onQueryChange, value: query }
   const floatingPanel = (
     <FloatingPanel
       initialHeight={INITIAL_HEIGHT}
@@ -106,11 +108,10 @@ function ComponentPalette({ close }: { close: () => void }) {
 }
 
 interface ComponentDragSourceProps {
-  category: string
   item: CatalogComponentItem
 }
 
-function ComponentDragSource({ category, item }: ComponentDragSourceProps) {
+function ComponentDragSource({ item }: ComponentDragSourceProps) {
   const ref = useRef<HTMLDivElement | null>(null)
   const { setActiveTool } = useTool()
   const { begin, clear } = useComponentDragSession()
@@ -141,16 +142,14 @@ function ComponentDragSource({ category, item }: ComponentDragSourceProps) {
     })
   }, [begin, clear, payload, setActiveTool])
   const testId = `component-palette-item-${item.id}`
-  const preview = (
-    <ComponentCatalogPreview componentId={item.componentId} variantId={item.variantId} />
-  )
+  const preview = <ComponentCatalogPreview componentId={item.componentId} />
   const itemContent = (
     <ListStandardCatalog
       frame={{ children: preview, style: previewFrameStyle }}
       itemCatalog={EMPTY_SLOT}
       textSubtitle={null}
-      textSubtitle2={{ children: category }}
-      textSubtitle3={{ children: item.description }}
+      textSubtitle2={{ children: item.description }}
+      textSubtitle3={item.details ? { children: item.details } : null}
       textTitle={{ children: item.name }}
       data-testid={testId}
     />
@@ -174,5 +173,6 @@ const contentStyle: CSSProperties = {
 }
 
 const previewFrameStyle: CSSProperties = {
+  overflow: "hidden",
   position: "relative",
 }

@@ -1,4 +1,4 @@
-import { plural } from "pluralize"
+import plural from "pluralize"
 
 import { findComponentSchema } from "../../../components/catalog"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"

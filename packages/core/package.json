@@ -17,7 +17,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && node ../../scripts/bundle-package-entry.mjs index.ts dist/index.js",
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && node ../../scripts/create-directory-entrypoints.mjs dist && node ../../scripts/bundle-package-entry.mjs index.ts dist/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
@@ -34,6 +34,62 @@
         "default": "./dist/index.js"
       },
       "default": "./index.ts"
+    },
+    "./components/catalog": {
+      "node": {
+        "types": "./dist/components/catalog/index.d.ts",
+        "development": "./components/catalog/index.ts",
+        "default": "./dist/components/catalog/index.js"
+      },
+      "default": "./components/catalog/index.ts"
+    },
+    "./components/constants": {
+      "node": {
+        "types": "./dist/components/constants/index.d.ts",
+        "development": "./components/constants/index.ts",
+        "default": "./dist/components/constants/index.js"
+      },
+      "default": "./components/constants/index.ts"
+    },
+    "./components/types": {
+      "node": {
+        "types": "./dist/components/types/index.d.ts",
+        "development": "./components/types/index.ts",
+        "default": "./dist/components/types/index.js"
+      },
+      "default": "./components/types/index.ts"
+    },
+    "./icon-sets/helpers": {
+      "node": {
+        "types": "./dist/icon-sets/helpers/index.d.ts",
+        "development": "./icon-sets/helpers/index.ts",
+        "default": "./icon-sets/helpers/index.js"
+      },
+      "default": "./icon-sets/helpers/index.ts"
+    },
+    "./workspace/types": {
+      "node": {
+        "types": "./dist/workspace/types/index.d.ts",
+        "development": "./workspace/types/index.ts",
+        "default": "./dist/workspace/types/index.js"
+      },
+      "default": "./workspace/types/index.ts"
+    },
+    "./workspace/services": {
+      "node": {
+        "types": "./dist/workspace/services/index.d.ts",
+        "development": "./workspace/services/index.ts",
+        "default": "./dist/workspace/services/index.js"
+      },
+      "default": "./workspace/services/index.ts"
+    },
+    "./themes/looks": {
+      "node": {
+        "types": "./dist/themes/looks/index.d.ts",
+        "development": "./themes/looks/index.ts",
+        "default": "./dist/themes/looks/index.js"
+      },
+      "default": "./themes/looks/index.ts"
     },
     "./icon-sets": {
       "node": {

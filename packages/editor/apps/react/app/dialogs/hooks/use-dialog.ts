@@ -18,6 +18,7 @@ import type { Board, EntryNodeLevel } from "@seldon/core/workspace/types"
 
 export type CatalogComponentItem = CatalogDialogItem & {
   componentId: ComponentId
+  details: string
   variantId?: VariantId
 }
 
@@ -100,6 +101,7 @@ export function useDialog({
               return {
                 id: variantId,
                 componentId: schema.id,
+                details: getCatalogItemDetails(schema),
                 variantId,
                 name: schema.name,
                 icon: getComponentIcon(schema.id),
@@ -113,6 +115,7 @@ export function useDialog({
             {
               id: schema.id,
               componentId: schema.id,
+              details: getCatalogItemDetails(schema),
               name: schema.name,
               icon: getComponentIcon(schema.id),
               description: "Default",
@@ -138,6 +141,7 @@ export function useDialog({
             return {
               id: variantId,
               componentId: getComponentKey(board) as ComponentId,
+              details: "",
               variantId,
               name: componentName,
               icon: getBoardRowIcon(board),
@@ -164,4 +168,10 @@ export function useDialog({
   }, [shouldShowComponent, shouldShowAuthored, authoredBoardsByCategory, query, workspace])
 
   return { categories, query, setQuery }
+}
+
+function getCatalogItemDetails(schema: ComponentSchema): string {
+  const tags = schema.tags.join(" · ")
+
+  return schema.intent ? `${schema.intent} · ${tags}` : tags
 }

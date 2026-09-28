@@ -11,3 +11,4 @@ export {
 } from "./helpers/themes/workspace-editable-theme"
 export { canMutateThemeTokens } from "./helpers/themes/can-mutate-theme-tokens"
 export { createEmptyWorkspace } from "./helpers/create-empty-workspace"
+export { addComponent } from "./reducers/handlers/add/add-component"

@@ -1,4 +1,4 @@
-import { isEqual } from "lodash"
+import lodash from "lodash"
 
 import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
@@ -30,6 +30,8 @@ import type { Classes, DescendantStateClasses, NodeIdToClass, StateClasses } fro
 import type { Workspace } from "@seldon/core"
 import type { NodeParentIndex } from "@seldon/core/workspace/compute"
 import type { EntryNode } from "@seldon/core/workspace/types"
+
+const { isEqual } = lodash
 
 /** Collects every interaction-state key authored anywhere in the workspace. */
 function collectUsedStates(workspace: Workspace): string[] {
