@@ -10,16 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { LiHTMLAttributes } from "react"
-
-import { Frame, FrameProps } from "../frames/Frame"
+import { Frame } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemCatalogProps extends LiHTMLAttributes<HTMLLIElement> {
   "data-seldon-ref"?: string

@@ -10,19 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { FieldsetHTMLAttributes } from "react"
-
-import {
-  FormControlRadioButtonControl,
-  FormControlRadioButtonControlProps,
-} from "../elements/FormControlRadioButtonControl"
+import { FormControlRadioButtonControl } from "../elements/FormControlRadioButtonControl"
 import { HTMLFieldset } from "../native-react/HTML.Fieldset"
-import { InputRadioButton, InputRadioButtonProps } from "../primitives/InputRadioButton"
-import { Legend, LegendProps } from "../primitives/Legend"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { InputRadioButton } from "../primitives/InputRadioButton"
+import { Legend } from "../primitives/Legend"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FormControlRadioButtonControlProps } from "../elements/FormControlRadioButtonControl"
+import type { InputRadioButtonProps } from "../primitives/InputRadioButton"
+import type { LegendProps } from "../primitives/Legend"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { FieldsetHTMLAttributes } from "react"
 
 export interface FieldsetRadioButtonFieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
   "data-seldon-ref"?: string

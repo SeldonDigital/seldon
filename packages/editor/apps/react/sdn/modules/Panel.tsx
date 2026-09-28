@@ -10,20 +10,28 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { Frame, FrameProps } from "../frames/Frame"
+import { Button } from "../elements/Button"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Bar } from "../parts/Bar"
+import { BarButtons } from "../parts/BarButtons"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { BarButtonsProps } from "../parts/BarButtons"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface PanelProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

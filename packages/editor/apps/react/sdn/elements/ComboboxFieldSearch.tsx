@@ -10,15 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { ButtonIconic } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
+import { mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface ComboboxFieldSearchProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

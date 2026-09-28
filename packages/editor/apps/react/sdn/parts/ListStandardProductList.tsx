@@ -10,17 +10,22 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ItemCatalog, ItemCatalogProps } from "../elements/ItemCatalog"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ItemCatalog } from "../elements/ItemCatalog"
+import { Frame } from "../frames/Frame"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ItemCatalogProps } from "../elements/ItemCatalog"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface ListStandardProductListProps extends HTMLAttributes<HTMLUListElement> {
   "data-seldon-ref"?: string

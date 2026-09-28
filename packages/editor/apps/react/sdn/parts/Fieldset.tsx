@@ -10,22 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { FieldsetHTMLAttributes } from "react"
-
-import { FormControl, FormControlProps } from "../elements/FormControl"
-import {
-  FormControlDropdownControl,
-  FormControlDropdownControlProps,
-} from "../elements/FormControlDropdownControl"
-import { Select, SelectProps } from "../elements/Select"
+import { FormControl } from "../elements/FormControl"
+import { FormControlDropdownControl } from "../elements/FormControlDropdownControl"
+import { Select } from "../elements/Select"
 import { HTMLFieldset } from "../native-react/HTML.Fieldset"
-import { Input, InputProps } from "../primitives/Input"
-import { Legend, LegendProps } from "../primitives/Legend"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextOption, TextOptionProps } from "../primitives/TextOption"
+import { Input } from "../primitives/Input"
+import { Legend } from "../primitives/Legend"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextOption } from "../primitives/TextOption"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FormControlProps } from "../elements/FormControl"
+import type { FormControlDropdownControlProps } from "../elements/FormControlDropdownControl"
+import type { SelectProps } from "../elements/Select"
+import type { InputProps } from "../primitives/Input"
+import type { LegendProps } from "../primitives/Legend"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextOptionProps } from "../primitives/TextOption"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { FieldsetHTMLAttributes } from "react"
 
 export interface FieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
   "data-seldon-ref"?: string

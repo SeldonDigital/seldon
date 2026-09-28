@@ -6,7 +6,7 @@
     "exportSettings": {
       "platform": "react",
       "framework": "none",
-      "outputFolder": "",
+      "outputFolder": ".cursor/cli-export-react",
       "fontLinks": false,
       "allFonts": false,
       "allIcons": true,

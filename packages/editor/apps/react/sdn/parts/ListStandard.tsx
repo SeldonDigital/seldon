@@ -10,20 +10,28 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Item, ItemProps } from "../elements/Item"
-import { Frame, FrameProps } from "../frames/Frame"
+import { Button } from "../elements/Button"
+import { Item } from "../elements/Item"
+import { Frame } from "../frames/Frame"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { InputCheckbox } from "../primitives/InputCheckbox"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ItemProps } from "../elements/Item"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputCheckboxProps } from "../primitives/InputCheckbox"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface ListStandardProps extends HTMLAttributes<HTMLUListElement> {
   "data-seldon-ref"?: string

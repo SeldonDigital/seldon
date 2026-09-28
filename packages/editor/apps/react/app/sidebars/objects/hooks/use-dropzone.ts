@@ -80,6 +80,7 @@ export function useDropzone({ target, placement, onDragEnter, onDragLeave }: Dro
             componentTarget,
             workspace,
           )
+
           return isValid
         }
 

@@ -11,10 +11,10 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { HTMLLegend } from "../native-react/HTML.Legend"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface LegendProps extends HTMLAttributes<HTMLLegendElement> {
   "data-seldon-ref"?: string

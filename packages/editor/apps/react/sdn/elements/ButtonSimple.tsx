@@ -11,12 +11,14 @@
  *
  *****/
 
-import { ButtonHTMLAttributes } from "react"
-
 import { HTMLButton } from "../native-react/HTML.Button"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { ButtonHTMLAttributes } from "react"
 
 export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   "data-seldon-ref"?: string

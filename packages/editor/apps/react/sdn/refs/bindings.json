@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 303,
+  "scannedFiles": 305,
   "refs": {
     "boardState": [
       {
@@ -241,6 +241,37 @@
             ]
           }
         ]
+      },
+      {
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentDragSource",
+        "line": 131,
+        "conditional": false,
+        "expression": "{ icon: item.icon }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "item.icon",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "catalogLabel": [
@@ -274,6 +305,37 @@
             ]
           }
         ]
+      },
+      {
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentDragSource",
+        "line": 132,
+        "conditional": false,
+        "expression": "{ children: item.name }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.name",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "catalogVariant": [
@@ -301,6 +363,37 @@
                 "name": "item",
                 "declaredAt": {
                   "line": 35,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentDragSource",
+        "line": 133,
+        "conditional": false,
+        "expression": "{ children: item.description }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.description",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 59,
                   "kind": "parameter"
                 }
               }
@@ -3648,22 +3741,35 @@
     ],
     "filterField": [
       {
-        "file": "app/sidebars/properties/PanelPropertyController.tsx",
-        "component": "renderPalette",
-        "line": 80,
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentPalette",
+        "line": 70,
         "conditional": false,
-        "expression": "{ ...panel.filter.comboboxField }",
+        "expression": "{ onPointerDown: api.startDrag }",
         "inputs": [
           {
-            "name": "panel",
+            "name": "api",
             "declaredAt": {
-              "line": 44,
-              "kind": "const",
-              "via": "usePropertiesPanel"
+              "line": 55,
+              "kind": "parameter"
             }
           }
         ],
-        "props": []
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 55,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "file": "app/sidebars/properties/PanelPropertyController.tsx",
@@ -3700,6 +3806,59 @@
           }
         ],
         "props": []
+      },
+      {
+        "file": "app/sidebars/properties/PanelPropertyController.tsx",
+        "component": "renderPalette",
+        "line": 80,
+        "conditional": false,
+        "expression": "{ ...panel.filter.comboboxField }",
+        "inputs": [
+          {
+            "name": "panel",
+            "declaredAt": {
+              "line": 44,
+              "kind": "const",
+              "via": "usePropertiesPanel"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "filterFieldClear": [
+      {
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentPalette",
+        "line": 71,
+        "conditional": false,
+        "expression": "{ onClick: onClearQuery }",
+        "inputs": [
+          {
+            "name": "onClearQuery",
+            "declaredAt": {
+              "line": 53,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "onClearQuery",
+            "inputs": [
+              {
+                "name": "onClearQuery",
+                "declaredAt": {
+                  "line": 53,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "hariErrorRetry": [
@@ -7573,6 +7732,42 @@
     ],
     "paletteClose": [
       {
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentPalette",
+        "line": 81,
+        "conditional": false,
+        "expression": "{ onClick: close, \"data-testid\": \"component-palette-close\" }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 37,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 37,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"component-palette-close\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
         "file": "app/palettes/hari/HariController.tsx",
         "component": "renderPalette",
         "line": 308,
@@ -8217,6 +8412,37 @@
       }
     ],
     "paletteTopBar": [
+      {
+        "file": "app/palettes/components/ComponentPaletteController.tsx",
+        "component": "ComponentPalette",
+        "line": 80,
+        "conditional": false,
+        "expression": "{ onPointerDown: api.startDrag }",
+        "inputs": [
+          {
+            "name": "api",
+            "declaredAt": {
+              "line": 55,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "api.startDrag",
+            "inputs": [
+              {
+                "name": "api",
+                "declaredAt": {
+                  "line": 55,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
       {
         "file": "app/palettes/hari/HariController.tsx",
         "component": "renderPalette",
@@ -11254,6 +11480,22 @@
     "BarFilter": {
       "buttonIconic": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 68,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 25,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
           "file": "app/sidebars/properties/PanelPropertyController.tsx",
           "component": "renderPalette",
           "line": 90,
@@ -11273,6 +11515,22 @@
       ],
       "comboboxField": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 66,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 25,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
           "file": "app/sidebars/properties/PanelPropertyController.tsx",
           "component": "renderPalette",
           "line": 88,
@@ -11290,6 +11548,22 @@
         }
       ],
       "input": [
+        {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 67,
+          "expression": "filterInput",
+          "inputs": [
+            {
+              "name": "filterInput",
+              "declaredAt": {
+                "line": 100,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
         {
           "file": "app/sidebars/properties/PanelPropertyController.tsx",
           "component": "renderPalette",
@@ -12385,7 +12659,7 @@
         {
           "file": "app/canvas/Workspace.tsx",
           "component": "CanvasWorkspace",
-          "line": 47,
+          "line": 49,
           "expression": "\"root-tree\"",
           "inputs": [],
           "spread": false
@@ -12428,13 +12702,13 @@
         {
           "file": "app/canvas/Workspace.tsx",
           "component": "CanvasWorkspace",
-          "line": 48,
+          "line": 51,
           "expression": "onCanvasClick",
           "inputs": [
             {
               "name": "onCanvasClick",
               "declaredAt": {
-                "line": 29,
+                "line": 30,
                 "kind": "const",
                 "via": "useCanvas"
               }
@@ -12562,13 +12836,13 @@
         {
           "file": "app/canvas/Workspace.tsx",
           "component": "CanvasWorkspace",
-          "line": 49,
+          "line": 52,
           "expression": "onCanvasDoubleClick",
           "inputs": [
             {
               "name": "onCanvasDoubleClick",
               "declaredAt": {
-                "line": 29,
+                "line": 30,
                 "kind": "const",
                 "via": "useCanvas"
               }
@@ -12669,13 +12943,13 @@
         {
           "file": "app/canvas/Workspace.tsx",
           "component": "CanvasWorkspace",
-          "line": 50,
+          "line": 53,
           "expression": "onCanvasMouseDown",
           "inputs": [
             {
               "name": "onCanvasMouseDown",
               "declaredAt": {
-                "line": 29,
+                "line": 30,
                 "kind": "const",
                 "via": "useCanvas"
               }
@@ -12706,13 +12980,13 @@
         {
           "file": "app/canvas/Workspace.tsx",
           "component": "CanvasWorkspace",
-          "line": 51,
+          "line": 54,
           "expression": "onCanvasMouseLeave",
           "inputs": [
             {
               "name": "onCanvasMouseLeave",
               "declaredAt": {
-                "line": 29,
+                "line": 30,
                 "kind": "const",
                 "via": "useCanvas"
               }
@@ -12757,13 +13031,13 @@
         {
           "file": "app/canvas/Workspace.tsx",
           "component": "CanvasWorkspace",
-          "line": 52,
+          "line": 55,
           "expression": "onCanvasMouseMove",
           "inputs": [
             {
               "name": "onCanvasMouseMove",
               "declaredAt": {
-                "line": 29,
+                "line": 30,
                 "kind": "const",
                 "via": "useCanvas"
               }
@@ -13524,6 +13798,22 @@
           "expression": "{}",
           "inputs": [],
           "spread": false
+        },
+        {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentDragSource",
+          "line": 156,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 25,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
         }
       ],
       "onClick": [
@@ -13572,6 +13862,22 @@
           "expression": "{}",
           "inputs": [],
           "spread": false
+        },
+        {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentDragSource",
+          "line": 158,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 25,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
         }
       ],
       "textTitle": [
@@ -13581,6 +13887,22 @@
           "line": 244,
           "expression": "{}",
           "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentDragSource",
+          "line": 159,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 25,
+                "kind": "const"
+              }
+            }
+          ],
           "spread": false
         }
       ]
@@ -15599,6 +15921,14 @@
     "PanelPalette": {
       "buttonIconic": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 85,
+          "expression": "null",
+          "inputs": [],
+          "spread": false
+        },
+        {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "renderPalette",
           "line": 395,
@@ -15632,6 +15962,22 @@
         }
       ],
       "buttonIconic2": [
+        {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 86,
+          "expression": "EMPTY_SLOT",
+          "inputs": [
+            {
+              "name": "EMPTY_SLOT",
+              "declaredAt": {
+                "line": 25,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "renderPalette",
@@ -15667,6 +16013,22 @@
       ],
       "frame2": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 87,
+          "expression": "topBarSlot",
+          "inputs": [
+            {
+              "name": "topBarSlot",
+              "declaredAt": {
+                "line": 76,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "renderPalette",
           "line": 397,
@@ -15701,6 +16063,22 @@
       ],
       "frame3": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 88,
+          "expression": "contentSlot",
+          "inputs": [
+            {
+              "name": "contentSlot",
+              "declaredAt": {
+                "line": 77,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "renderPalette",
           "line": 398,
@@ -15734,6 +16112,22 @@
         }
       ],
       "frame5": [
+        {
+          "file": "app/palettes/components/ComponentPaletteController.tsx",
+          "component": "ComponentPalette",
+          "line": 89,
+          "expression": "bottomBarSlot",
+          "inputs": [
+            {
+              "name": "bottomBarSlot",
+              "declaredAt": {
+                "line": 78,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "renderPalette",

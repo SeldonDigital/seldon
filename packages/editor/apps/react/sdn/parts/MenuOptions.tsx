@@ -10,15 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { MenuItemOption, MenuItemOptionProps } from "../elements/MenuItemOption"
+import { MenuItemOption } from "../elements/MenuItemOption"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { MenuItemOptionProps } from "../elements/MenuItemOption"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface MenuOptionsProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

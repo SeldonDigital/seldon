@@ -10,18 +10,24 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { FormControlCombobox, FormControlComboboxProps } from "../elements/FormControlCombobox"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
+import { Frame } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import { ToggleSwitch, ToggleSwitchProps } from "../primitives/ToggleSwitch"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
+import { ToggleSwitch } from "../primitives/ToggleSwitch"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { ToggleSwitchProps } from "../primitives/ToggleSwitch"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemPropertyToggleProps extends LiHTMLAttributes<HTMLLIElement> {
   "data-seldon-ref"?: string

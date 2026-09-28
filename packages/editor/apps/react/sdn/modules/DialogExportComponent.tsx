@@ -10,31 +10,41 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonProps } from "../elements/Button"
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { FormControl, FormControlProps } from "../elements/FormControl"
-import { FormControlRadio, FormControlRadioProps } from "../elements/FormControlRadio"
-import {
-  FormControlRadioButtonControl,
-  FormControlRadioButtonControlProps,
-} from "../elements/FormControlRadioButtonControl"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ComboboxField } from "../elements/ComboboxField"
+import { FormControl } from "../elements/FormControl"
+import { FormControlRadio } from "../elements/FormControlRadio"
+import { FormControlRadioButtonControl } from "../elements/FormControlRadioButtonControl"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { Fieldset, FieldsetProps } from "../parts/Fieldset"
-import { IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import { InputRadioButton, InputRadioButtonProps } from "../primitives/InputRadioButton"
-import { Legend, LegendProps } from "../primitives/Legend"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Bar } from "../parts/Bar"
+import { BarButtons } from "../parts/BarButtons"
+import { Fieldset } from "../parts/Fieldset"
+import { Input } from "../primitives/Input"
+import { InputRadioButton } from "../primitives/InputRadioButton"
+import { Legend } from "../primitives/Legend"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { FormControlProps } from "../elements/FormControl"
+import type { FormControlRadioProps } from "../elements/FormControlRadio"
+import type { FormControlRadioButtonControlProps } from "../elements/FormControlRadioButtonControl"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { BarButtonsProps } from "../parts/BarButtons"
+import type { FieldsetProps } from "../parts/Fieldset"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { InputRadioButtonProps } from "../primitives/InputRadioButton"
+import type { LegendProps } from "../primitives/Legend"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

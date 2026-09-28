@@ -10,15 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { Chip, ChipProps } from "../elements/Chip"
+import { Chip } from "../elements/Chip"
 import { Frame } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import { Text, TextProps } from "../primitives/Text"
+import { Image } from "../primitives/Image"
+import { Text } from "../primitives/Text"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ChipProps } from "../elements/Chip"
+import type { ImageProps } from "../primitives/Image"
+import type { TextProps } from "../primitives/Text"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface AvatarBadgedProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

@@ -10,20 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
-import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
-import { ComboboxFieldFilter, ComboboxFieldFilterProps } from "../elements/ComboboxFieldFilter"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonMenu } from "../elements/ButtonMenu"
+import { ButtonToggle } from "../elements/ButtonToggle"
+import { ComboboxFieldFilter } from "../elements/ComboboxFieldFilter"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ButtonMenuProps } from "../elements/ButtonMenu"
+import type { ButtonToggleProps } from "../elements/ButtonToggle"
+import type { ComboboxFieldFilterProps } from "../elements/ComboboxFieldFilter"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

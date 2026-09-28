@@ -11,8 +11,6 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLBold } from "../native-react/HTML.Bold"
 import { HTMLCode } from "../native-react/HTML.Code"
@@ -30,6 +28,8 @@ import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { HTMLStrong } from "../native-react/HTML.Strong"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextDisplayProps extends HTMLAttributes<
   | HTMLAnchorElement

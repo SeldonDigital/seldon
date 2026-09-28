@@ -10,18 +10,24 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { FormControlCombobox, FormControlComboboxProps } from "../elements/FormControlCombobox"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { ComboboxField } from "../elements/ComboboxField"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import { Textarea, TextareaProps } from "../primitives/Textarea"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
+import { Textarea } from "../primitives/Textarea"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextareaProps } from "../primitives/Textarea"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemPropertyTextAreaProps extends LiHTMLAttributes<HTMLLIElement> {
   "data-seldon-ref"?: string

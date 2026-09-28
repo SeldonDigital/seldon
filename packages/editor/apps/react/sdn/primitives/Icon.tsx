@@ -11,11 +11,11 @@
  *
  *****/
 
-import { SVGAttributes } from "react"
-
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
 import { getRegisteredIcon } from "../utils/icon-registry"
+
+import type { SVGAttributes } from "react"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   "data-seldon-ref"?: string

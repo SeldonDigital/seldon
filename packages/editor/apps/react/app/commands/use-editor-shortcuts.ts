@@ -42,7 +42,7 @@ export function useEditorShortcuts() {
   } = useSelectCommands()
 
   const { undo, redo } = useHistory()
-  const { activeTool, setActiveTool } = useTool()
+  const { setActiveTool } = useTool()
   const { copyNode, pasteNode, cutNode } = useNodeClipboardActions()
   const {
     togglePanels,

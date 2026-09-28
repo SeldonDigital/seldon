@@ -10,14 +10,16 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
+import { ButtonSimple } from "../elements/ButtonSimple"
 import { Frame } from "../frames/Frame"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface BarTabsBarProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

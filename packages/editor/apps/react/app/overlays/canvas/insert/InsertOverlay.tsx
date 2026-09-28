@@ -40,8 +40,9 @@ export function InsertOverlay() {
 
     if (!container || !canNodeAcceptChildren(container, workspace)) return false
 
-    if (!checkInsertionPoint(slot.containerId, "node", "inside", workspace, "component"))
+    if (!checkInsertionPoint(slot.containerId, "node", "inside", workspace, "component")) {
       return false
+    }
 
     return resolveComponentDrop(
       payload,

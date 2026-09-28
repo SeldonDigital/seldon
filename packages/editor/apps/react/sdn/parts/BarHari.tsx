@@ -10,15 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
-import { Frame, FrameProps } from "../frames/Frame"
-import { IconProps } from "../primitives/Icon"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { ButtonToggle } from "../elements/ButtonToggle"
+import { Frame } from "../frames/Frame"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonToggleProps } from "../elements/ButtonToggle"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface BarHariProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

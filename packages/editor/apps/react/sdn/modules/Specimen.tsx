@@ -10,22 +10,32 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { Frame, FrameProps } from "../frames/Frame"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { TextCallout, TextCalloutProps } from "../primitives/TextCallout"
-import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
-import { TextDisplay, TextDisplayProps } from "../primitives/TextDisplay"
-import { TextHeading, TextHeadingProps } from "../primitives/TextHeading"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextSubheading, TextSubheadingProps } from "../primitives/TextSubheading"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTagline, TextTaglineProps } from "../primitives/TextTagline"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { TextCallout } from "../primitives/TextCallout"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextDisplay } from "../primitives/TextDisplay"
+import { TextHeading } from "../primitives/TextHeading"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextSubheading } from "../primitives/TextSubheading"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTagline } from "../primitives/TextTagline"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FrameProps } from "../frames/Frame"
+import type { TextCalloutProps } from "../primitives/TextCallout"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextDisplayProps } from "../primitives/TextDisplay"
+import type { TextHeadingProps } from "../primitives/TextHeading"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextSubheadingProps } from "../primitives/TextSubheading"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTaglineProps } from "../primitives/TextTagline"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface SpecimenProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
@@ -211,7 +221,7 @@ const sdn: SpecimenProps = {
     children: "Design is so simple, that's why it is so complicated.",
     htmlElement: "p",
     "aria-hidden": "false",
-    className: "sdn-text-tagline sdn-text-subtitle--qgof",
+    className: "sdn-text-tagline sdn-text-subheading--bxdp",
     "data-seldon-ref": "typeSpecimenTaglinePreview",
   },
 
@@ -250,7 +260,7 @@ const sdn: SpecimenProps = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h6",
     "aria-hidden": "false",
-    className: "sdn-text-callout sdn-text-subtitle--qgof",
+    className: "sdn-text-callout sdn-text-subheading--bxdp",
     "data-seldon-ref": "typeSpecimenCalloutPreview",
   },
 
@@ -289,7 +299,7 @@ const sdn: SpecimenProps = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h5",
     "aria-hidden": "false",
-    className: "sdn-text-subtitle sdn-text-subtitle--qgof",
+    className: "sdn-text-subtitle sdn-text-subheading--bxdp",
     "data-seldon-ref": "typeSpecimenSubtitlePreview",
   },
 
@@ -328,7 +338,7 @@ const sdn: SpecimenProps = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h4",
     "aria-hidden": "false",
-    className: "sdn-text-title sdn-text-subtitle--qgof",
+    className: "sdn-text-title sdn-text-subheading--bxdp",
     "data-seldon-ref": "typeSpecimenTitlePreview",
   },
 
@@ -367,7 +377,7 @@ const sdn: SpecimenProps = {
       "Design can be art. Design can be aesthetics. Design is so simple, that's why it is so complicated.",
     htmlElement: "h3",
     "aria-hidden": "false",
-    className: "sdn-text-subheading sdn-text-subtitle--qgof",
+    className: "sdn-text-subheading sdn-text-subheading--bxdp",
     "data-seldon-ref": "typeSpecimenSubheadingPreview",
   },
 

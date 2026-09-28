@@ -11,13 +11,16 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Hr, HrProps } from "../primitives/Hr"
-import { Text, TextProps } from "../primitives/Text"
+import { Hr } from "../primitives/Hr"
+import { Text } from "../primitives/Text"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { HrProps } from "../primitives/Hr"
+import type { TextProps } from "../primitives/Text"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface MessageRefControllerProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

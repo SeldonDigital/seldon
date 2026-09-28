@@ -11,13 +11,16 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface MenuItemProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

@@ -11,10 +11,10 @@
  *
  *****/
 
-import { InputHTMLAttributes, Ref } from "react"
-
 import { SeldonToggle } from "../custom/SeldonToggle"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputHTMLAttributes, Ref } from "react"
 
 export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement> {
   "data-seldon-ref"?: string

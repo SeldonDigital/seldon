@@ -11,12 +11,14 @@
  *
  *****/
 
-import { ButtonHTMLAttributes } from "react"
-
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon, IconProps } from "../primitives/Icon"
+import { Icon } from "../primitives/Icon"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
+import { mergeSlot } from "../utils/merge-slot"
+
+import type { IconProps } from "../primitives/Icon"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { ButtonHTMLAttributes } from "react"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   "data-seldon-ref"?: string

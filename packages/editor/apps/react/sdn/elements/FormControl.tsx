@@ -11,13 +11,16 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Input, InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Input } from "../primitives/Input"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

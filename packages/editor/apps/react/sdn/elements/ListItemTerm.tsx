@@ -11,12 +11,12 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { HTMLDd } from "../native-react/HTML.Dd"
 import { HTMLDt } from "../native-react/HTML.Dt"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface ListItemTermProps extends HTMLAttributes<
   HTMLElement | HTMLElement | HTMLLIElement

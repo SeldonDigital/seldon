@@ -11,12 +11,14 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { HTMLSpan } from "../native-react/HTML.Span"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface ChipProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

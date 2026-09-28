@@ -11,12 +11,14 @@
  *
  *****/
 
-import { SelectHTMLAttributes } from "react"
-
 import { HTMLSelect } from "../native-react/HTML.Select"
-import { TextOption, TextOptionProps } from "../primitives/TextOption"
+import { TextOption } from "../primitives/TextOption"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { TextOptionProps } from "../primitives/TextOption"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { SelectHTMLAttributes } from "react"
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   "data-seldon-ref"?: string

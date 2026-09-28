@@ -10,14 +10,16 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { Frame, FrameProps } from "../frames/Frame"
+import { Frame } from "../frames/Frame"
 import { HTMLSpan } from "../native-react/HTML.Span"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FrameProps } from "../frames/Frame"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface ChipTokenProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

@@ -123,6 +123,7 @@ export const usePanelStore = defineStore("panel", () => {
     if (typeof localStorage === "undefined") return
     const existing = localStorage.getItem(STORAGE_KEY)
     const value = existing ? (JSON.parse(existing) as Record<string, unknown>) : {}
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...value, componentPaletteOpen: open }))
   })
 

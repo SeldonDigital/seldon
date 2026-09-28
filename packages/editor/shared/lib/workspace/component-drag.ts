@@ -27,8 +27,8 @@ export type ComponentDropReason = "defaultVariant" | "hierarchy" | "mutation" | 
 
 export interface ComponentDropResolution {
   isValid: boolean
-  reason?: ComponentDropReason
   target: ComponentDropTarget
+  reason?: ComponentDropReason
 }
 
 export function resolveComponentDrop(
@@ -56,6 +56,7 @@ export function resolveComponentDrop(
       target.nodeId,
       workspace,
     )
+
     return {
       isValid: validation.isValid,
       reason: validation.isValid ? undefined : "hierarchy",

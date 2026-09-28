@@ -11,10 +11,10 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { HTMLHr } from "../native-react/HTML.Hr"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface HrProps extends HTMLAttributes<HTMLHRElement> {
   "data-seldon-ref"?: string

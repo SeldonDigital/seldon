@@ -10,14 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ListItem, ListItemProps } from "../elements/ListItem"
+import { ListItem } from "../elements/ListItem"
 import { HTMLOl } from "../native-react/HTML.Ol"
 import { HTMLUl } from "../native-react/HTML.Ul"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { ListItemProps } from "../elements/ListItem"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface ListOrderedProps extends HTMLAttributes<HTMLOListElement | HTMLUListElement> {
   "data-seldon-ref"?: string

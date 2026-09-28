@@ -11,10 +11,10 @@
  *
  *****/
 
-import { ImgHTMLAttributes } from "react"
-
 import { HTMLImg } from "../native-react/HTML.Img"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ImgHTMLAttributes } from "react"
 
 export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   "data-seldon-ref"?: string

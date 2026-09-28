@@ -10,19 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { LiHTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { InputCheckbox } from "../primitives/InputCheckbox"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputCheckboxProps } from "../primitives/InputCheckbox"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemProps extends LiHTMLAttributes<HTMLLIElement> {
   "data-seldon-ref"?: string

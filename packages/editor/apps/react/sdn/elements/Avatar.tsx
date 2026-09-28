@@ -11,12 +11,14 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
+import { Image } from "../primitives/Image"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
+import { mergeSlot } from "../utils/merge-slot"
+
+import type { ImageProps } from "../primitives/Image"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface AvatarProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

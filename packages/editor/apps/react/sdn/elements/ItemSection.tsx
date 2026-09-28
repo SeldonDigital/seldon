@@ -10,16 +10,19 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { FormControlCombobox, FormControlComboboxProps } from "../elements/FormControlCombobox"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
   "data-seldon-ref"?: string

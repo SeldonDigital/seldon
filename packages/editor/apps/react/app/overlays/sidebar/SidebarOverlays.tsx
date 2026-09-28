@@ -65,7 +65,7 @@ export function SidebarOverlays({
   const { openComponentPalette } = usePanel()
   const { activeTool } = useTool()
   const isDragging = useDragStateStore((state) => state.isDragging)
-  const { isPlacementAllowed, parentNode, canHaveChildren } = useSidebarPlacementTracking(node)
+  const { isPlacementAllowed, canHaveChildren } = useSidebarPlacementTracking(node)
 
   const handlePlacementClick = useCallback(
     (placement: Placement) => {

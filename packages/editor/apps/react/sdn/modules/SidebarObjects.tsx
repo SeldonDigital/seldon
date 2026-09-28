@@ -10,18 +10,21 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
-import { ComboboxFieldProject, ComboboxFieldProjectProps } from "../elements/ComboboxFieldProject"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonToggle } from "../elements/ButtonToggle"
+import { ComboboxFieldProject } from "../elements/ComboboxFieldProject"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ButtonToggleProps } from "../elements/ButtonToggle"
+import type { ComboboxFieldProjectProps } from "../elements/ComboboxFieldProject"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface SidebarObjectsProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

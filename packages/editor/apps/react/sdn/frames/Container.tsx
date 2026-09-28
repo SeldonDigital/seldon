@@ -11,8 +11,6 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { HTMLArticle } from "../native-react/HTML.Article"
 import { HTMLAside } from "../native-react/HTML.Aside"
 import { HTMLBlockquote } from "../native-react/HTML.Blockquote"
@@ -35,6 +33,8 @@ import { HTMLThead } from "../native-react/HTML.Thead"
 import { HTMLTr } from "../native-react/HTML.Tr"
 import { HTMLUl } from "../native-react/HTML.Ul"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface ContainerProps extends HTMLAttributes<
   | HTMLElement

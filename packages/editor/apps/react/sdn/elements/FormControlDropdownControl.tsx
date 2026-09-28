@@ -10,15 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { Select, SelectProps } from "../elements/Select"
+import { Select } from "../elements/Select"
 import { Frame } from "../frames/Frame"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextOption, TextOptionProps } from "../primitives/TextOption"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextOption } from "../primitives/TextOption"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { SelectProps } from "../elements/Select"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextOptionProps } from "../primitives/TextOption"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlDropdownControlProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

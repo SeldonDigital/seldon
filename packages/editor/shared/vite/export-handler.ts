@@ -3,13 +3,16 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
 import { exportWorkspace } from "@seldon/factory/export/export-workspace"
+import { workspaceExportScopeFlags } from "@seldon/factory/export/options"
+import { resolveOutputLayout } from "@seldon/factory/export/presets"
 import { createResolvedExportAssetReader } from "@seldon/factory/export/resolved-asset-reader"
 import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 import { DEFAULT_COMPONENTS_FOLDER } from "../lib/export/constants"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { ExportAssetReader } from "@seldon/factory/export/asset-reader"
-import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
+import type { FrameworkId } from "@seldon/factory/export/presets"
+import type { ExportOptions, FileToExport, PlatformId } from "@seldon/factory/export/types"
 
 // Re-exported so the `export-seldon` scripts, which bundle this module to reach
 // `runExport`, can read a workspace file through Core instead of `JSON.parse`
@@ -119,20 +122,22 @@ export async function runExport(
 
   const root = path.resolve(serverConfig?.root ?? process.cwd())
   const { rootDirectory, assetReader } = resolveAssetReader(root)
+  const settings = body.workspace.metadata.exportSettings
+  const layout = resolveOutputLayout((settings?.framework ?? "none") as FrameworkId)
 
   const options: ExportOptions = {
     rootDirectory,
-    target: { framework: "react", styles: "css-properties" },
+    target: {
+      framework: (settings?.platform ?? "react") as PlatformId,
+      styles: "css-properties",
+    },
     output: {
-      componentsFolder: DEFAULT_COMPONENTS_FOLDER,
-      // Images write to the project's `public/` and are referenced from the site
-      // root, the static-asset convention shared by Vite and Next.js.
-      assetsFolder: "public",
-      assetPublicPath: "/",
+      componentsFolder: layout.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER,
+      assetsFolder: layout.assetsFolder ?? "public",
+      assetPublicPath: layout.assetPublicPath ?? "/",
     },
     assetReader,
-    // Scope flags come from the workspace inside `exportWorkspace`. Request
-    // options override only the keys this call sets.
+    ...workspaceExportScopeFlags(body.workspace),
     ...body.options,
   }
 

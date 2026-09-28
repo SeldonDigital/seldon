@@ -3905,7 +3905,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenCalloutPreview: {
     component: "TextCallout",
     nodeId: "component-text-ZnnyeW4n",
-    className: "sdn-text-callout sdn-text-subtitle--qgof",
+    className: "sdn-text-callout sdn-text-subheading--bxdp",
     views: [
       {
         component: "Specimen",
@@ -4297,7 +4297,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenSubheadingPreview: {
     component: "TextSubheading",
     nodeId: "component-specimen-Bxdpn48o",
-    className: "sdn-text-subheading sdn-text-subtitle--qgof",
+    className: "sdn-text-subheading sdn-text-subheading--bxdp",
     views: [
       {
         component: "Specimen",
@@ -4353,7 +4353,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenSubtitlePreview: {
     component: "TextSubtitle",
     nodeId: "component-specimen-Hb7Vdamn",
-    className: "sdn-text-subtitle sdn-text-subtitle--qgof",
+    className: "sdn-text-subtitle sdn-text-subheading--bxdp",
     views: [
       {
         component: "Specimen",
@@ -4409,7 +4409,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenTaglinePreview: {
     component: "TextTagline",
     nodeId: "component-text-pxsLILAj",
-    className: "sdn-text-tagline sdn-text-subtitle--qgof",
+    className: "sdn-text-tagline sdn-text-subheading--bxdp",
     views: [
       {
         component: "Specimen",
@@ -4465,7 +4465,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   typeSpecimenTitlePreview: {
     component: "TextTitle",
     nodeId: "component-specimen-oAbDAwzF",
-    className: "sdn-text-title sdn-text-subtitle--qgof",
+    className: "sdn-text-title sdn-text-subheading--bxdp",
     views: [
       {
         component: "Specimen",

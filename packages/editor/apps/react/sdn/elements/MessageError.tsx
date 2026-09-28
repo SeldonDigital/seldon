@@ -10,16 +10,21 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { ButtonSimple } from "../elements/ButtonSimple"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface MessageErrorProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

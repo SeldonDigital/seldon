@@ -132,6 +132,7 @@ function ComponentDragSource({ item }: { item: CatalogComponentItem }) {
     catalogLabel: { children: item.name },
     catalogVariant: { children: item.description },
   }
+
   useEffect(() => {
     const element = ref.current
 

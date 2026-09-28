@@ -132,6 +132,31 @@
             ]
           }
         ]
+      },
+      {
+        "file": "app/palettes/components/ComponentPaletteController.vue",
+        "component": "ComponentPaletteController",
+        "line": 2,
+        "conditional": false,
+        "expression": "e } from \"@app/edito",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": null
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "\"@app/edi",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": null
+              }
+            ]
+          }
+        ]
       }
     ],
     "catalogLabel": [
@@ -165,6 +190,31 @@
             ]
           }
         ]
+      },
+      {
+        "file": "app/palettes/components/ComponentPaletteController.vue",
+        "component": "ComponentPaletteController",
+        "line": 3,
+        "conditional": false,
+        "expression": "{ usePanelStore } from",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": null
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "tore } fro",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": null
+              }
+            ]
+          }
+        ]
       }
     ],
     "catalogVariant": [
@@ -194,6 +244,31 @@
                   "line": 33,
                   "kind": "parameter"
                 }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/components/ComponentPaletteController.vue",
+        "component": "ComponentPaletteController",
+        "line": 4,
+        "conditional": false,
+        "expression": "t FloatingPanel from \"@app/wind",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": null
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "nel from \"@app/wi",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": null
               }
             ]
           }
@@ -3458,6 +3533,39 @@
           }
         ],
         "props": []
+      }
+    ],
+    "filterFieldClear": [
+      {
+        "file": "app/palettes/components/ComponentPaletteController.vue",
+        "component": "ComponentPaletteController",
+        "line": 1,
+        "conditional": false,
+        "expression": "onfigStore } from \"@app/",
+        "inputs": [
+          {
+            "name": "clearQuery",
+            "declaredAt": {
+              "line": 50,
+              "kind": "function"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "} from \"@ap",
+            "inputs": [
+              {
+                "name": "clearQuery",
+                "declaredAt": {
+                  "line": 50,
+                  "kind": "function"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "hariErrorRetry": [
@@ -7097,6 +7205,37 @@
     ],
     "paletteClose": [
       {
+        "file": "app/palettes/components/ComponentPaletteController.vue",
+        "component": "ComponentPaletteController",
+        "line": 3,
+        "conditional": false,
+        "expression": "t { usePanelStore }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 42,
+              "kind": "function"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "lStore",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "function"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "file": "app/palettes/hari/HariPanel.vue",
         "component": "HariPanel",
         "line": 247,
@@ -7723,6 +7862,31 @@
       }
     ],
     "paletteTopBar": [
+      {
+        "file": "app/palettes/components/ComponentPaletteController.vue",
+        "component": "ComponentPaletteController",
+        "line": 2,
+        "conditional": false,
+        "expression": "Store } from \"@app/editor/edi",
+        "inputs": [
+          {
+            "name": "startDrag",
+            "declaredAt": null
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerdown",
+            "expression": "p/editor/e",
+            "inputs": [
+              {
+                "name": "startDrag",
+                "declaredAt": null
+              }
+            ]
+          }
+        ]
+      },
       {
         "file": "app/palettes/hari/HariPanel.vue",
         "component": "HariPanel",
@@ -10144,6 +10308,14 @@
     "BarFilter": {
       "buttonIconic": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 89,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
           "file": "app/sidebars/properties/PropertyPalette.vue",
           "component": "PropertyPalette",
           "line": 105,
@@ -10163,6 +10335,14 @@
       ],
       "comboboxField": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 88,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
           "file": "app/sidebars/properties/PropertyPalette.vue",
           "component": "PropertyPalette",
           "line": 103,
@@ -10180,6 +10360,30 @@
         }
       ],
       "input": [
+        {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 90,
+          "expression": "{ value: query, onInput: onQueryChange }",
+          "inputs": [
+            {
+              "name": "query",
+              "declaredAt": {
+                "line": 37,
+                "kind": "const",
+                "via": "useCatalogDialog"
+              }
+            },
+            {
+              "name": "onQueryChange",
+              "declaredAt": {
+                "line": 46,
+                "kind": "function"
+              }
+            }
+          ],
+          "spread": false
+        },
         {
           "file": "app/sidebars/properties/PropertyPalette.vue",
           "component": "PropertyPalette",
@@ -11466,11 +11670,29 @@
           "spread": false
         }
       ],
+      "draggable": [
+        {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 100,
+          "expression": "\"true\"",
+          "inputs": [],
+          "spread": false
+        }
+      ],
       "icon": [
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
           "line": 217,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 101,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11484,6 +11706,14 @@
           "expression": "{}",
           "inputs": [],
           "spread": false
+        },
+        {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 103,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
         }
       ],
       "textTitle": [
@@ -11491,6 +11721,14 @@
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
           "line": 218,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 102,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -13348,6 +13586,14 @@
     "PanelPalette": {
       "buttonIconic": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 74,
+          "expression": "null",
+          "inputs": [],
+          "spread": false
+        },
+        {
           "file": "app/palettes/hari/HariPanel.vue",
           "component": "HariPanel",
           "line": 309,
@@ -13382,6 +13628,14 @@
       ],
       "buttonIconic2": [
         {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 75,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
           "file": "app/palettes/hari/HariPanel.vue",
           "component": "HariPanel",
           "line": 310,
@@ -13415,6 +13669,22 @@
         }
       ],
       "frame3": [
+        {
+          "file": "app/palettes/components/ComponentPaletteController.vue",
+          "component": "ComponentPaletteController",
+          "line": 76,
+          "expression": "{ style: styles.content }",
+          "inputs": [
+            {
+              "name": "styles",
+              "declaredAt": {
+                "line": 19,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
         {
           "file": "app/palettes/hari/HariPanel.vue",
           "component": "HariPanel",

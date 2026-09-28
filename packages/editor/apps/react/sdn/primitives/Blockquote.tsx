@@ -11,10 +11,10 @@
  *
  *****/
 
-import { BlockquoteHTMLAttributes } from "react"
-
 import { HTMLBlockquote } from "../native-react/HTML.Blockquote"
 import { combineClassNames } from "../utils/class-name"
+
+import type { BlockquoteHTMLAttributes } from "react"
 
 export interface BlockquoteProps extends BlockquoteHTMLAttributes<HTMLQuoteElement> {
   "data-seldon-ref"?: string

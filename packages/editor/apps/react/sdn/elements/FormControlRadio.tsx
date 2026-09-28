@@ -10,18 +10,19 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { HTMLAttributes } from "react"
-
-import {
-  FormControlRadioButtonControl,
-  FormControlRadioButtonControlProps,
-} from "../elements/FormControlRadioButtonControl"
-import { Frame, FrameProps } from "../frames/Frame"
-import { InputRadioButton, InputRadioButtonProps } from "../primitives/InputRadioButton"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { FormControlRadioButtonControl } from "../elements/FormControlRadioButtonControl"
+import { Frame } from "../frames/Frame"
+import { InputRadioButton } from "../primitives/InputRadioButton"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FormControlRadioButtonControlProps } from "../elements/FormControlRadioButtonControl"
+import type { FrameProps } from "../frames/Frame"
+import type { InputRadioButtonProps } from "../primitives/InputRadioButton"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlRadioProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string

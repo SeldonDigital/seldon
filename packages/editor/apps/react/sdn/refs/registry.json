@@ -3575,7 +3575,7 @@
     "typeSpecimenCalloutPreview": {
       "component": "TextCallout",
       "nodeId": "component-text-ZnnyeW4n",
-      "className": "sdn-text-callout sdn-text-subtitle--qgof",
+      "className": "sdn-text-callout sdn-text-subheading--bxdp",
       "views": [
         {
           "component": "Specimen",
@@ -3967,7 +3967,7 @@
     "typeSpecimenSubheadingPreview": {
       "component": "TextSubheading",
       "nodeId": "component-specimen-Bxdpn48o",
-      "className": "sdn-text-subheading sdn-text-subtitle--qgof",
+      "className": "sdn-text-subheading sdn-text-subheading--bxdp",
       "views": [
         {
           "component": "Specimen",
@@ -4023,7 +4023,7 @@
     "typeSpecimenSubtitlePreview": {
       "component": "TextSubtitle",
       "nodeId": "component-specimen-Hb7Vdamn",
-      "className": "sdn-text-subtitle sdn-text-subtitle--qgof",
+      "className": "sdn-text-subtitle sdn-text-subheading--bxdp",
       "views": [
         {
           "component": "Specimen",
@@ -4079,7 +4079,7 @@
     "typeSpecimenTaglinePreview": {
       "component": "TextTagline",
       "nodeId": "component-text-pxsLILAj",
-      "className": "sdn-text-tagline sdn-text-subtitle--qgof",
+      "className": "sdn-text-tagline sdn-text-subheading--bxdp",
       "views": [
         {
           "component": "Specimen",
@@ -4135,7 +4135,7 @@
     "typeSpecimenTitlePreview": {
       "component": "TextTitle",
       "nodeId": "component-specimen-oAbDAwzF",
-      "className": "sdn-text-title sdn-text-subtitle--qgof",
+      "className": "sdn-text-title sdn-text-subheading--bxdp",
       "views": [
         {
           "component": "Specimen",

@@ -10,19 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-
-import { FieldsetHTMLAttributes } from "react"
-
-import {
-  FormControlCheckboxControl,
-  FormControlCheckboxControlProps,
-} from "../elements/FormControlCheckboxControl"
+import { FormControlCheckboxControl } from "../elements/FormControlCheckboxControl"
 import { HTMLFieldset } from "../native-react/HTML.Fieldset"
-import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
-import { Legend, LegendProps } from "../primitives/Legend"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { InputCheckbox } from "../primitives/InputCheckbox"
+import { Legend } from "../primitives/Legend"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
+
+import type { FormControlCheckboxControlProps } from "../elements/FormControlCheckboxControl"
+import type { InputCheckboxProps } from "../primitives/InputCheckbox"
+import type { LegendProps } from "../primitives/Legend"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { FieldsetHTMLAttributes } from "react"
 
 export interface FieldsetCheckboxFieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElement> {
   "data-seldon-ref"?: string

@@ -11,10 +11,10 @@
  *
  *****/
 
-import { AnchorHTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { combineClassNames } from "../utils/class-name"
+
+import type { AnchorHTMLAttributes } from "react"
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   "data-seldon-ref"?: string

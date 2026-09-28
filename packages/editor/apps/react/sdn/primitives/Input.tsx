@@ -11,10 +11,10 @@
  *
  *****/
 
-import { InputHTMLAttributes, Ref } from "react"
-
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputHTMLAttributes, Ref } from "react"
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   "data-seldon-ref"?: string

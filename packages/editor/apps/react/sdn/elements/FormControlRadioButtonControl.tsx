@@ -11,13 +11,16 @@
  *
  *****/
 
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { InputRadioButton, InputRadioButtonProps } from "../primitives/InputRadioButton"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { InputRadioButton } from "../primitives/InputRadioButton"
+import { TextLabel } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
+import { mergeOptionalSlot } from "../utils/merge-slot"
+
+import type { InputRadioButtonProps } from "../primitives/InputRadioButton"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { SeldonRefs } from "../utils/merge-slot"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlRadioButtonControlProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
