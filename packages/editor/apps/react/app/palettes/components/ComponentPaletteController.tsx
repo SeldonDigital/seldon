@@ -6,7 +6,6 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { FloatingPanel } from "@app/windows/FloatingPanel"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { ComboboxFieldFilter } from "@seldon/components/elements/ComboboxFieldFilter"
 import { Frame } from "@seldon/components/frames/Frame"
 import { PanelComponents } from "@seldon/components/modules/PanelComponents"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
@@ -50,9 +49,6 @@ function ComponentPalette({ close }: { close: () => void }) {
   )
   const onClearQuery = useCallback(() => setQuery(""), [setQuery])
   const filterInput = { onChange: onQueryChange, value: query }
-  const componentFilter = (
-    <ComboboxFieldFilter buttonIconic={{ onClick: onClearQuery }} input={filterInput} />
-  )
   const renderPalette = useCallback(
     (api: FloatingPanelApi) => {
       const content = visibleCategories.map((category) => (
@@ -71,11 +67,13 @@ function ComponentPalette({ close }: { close: () => void }) {
         componentsPaletteTopBar: { onPointerDown: api.startDrag },
         componentsPaletteClose: { onClick: close, "data-testid": "component-palette-close" },
         componentsPaletteContents: { children: content, style: contentStyle },
+        componentsPaletteFilterClear: { onClick: onClearQuery },
+        componentsPaletteFilterInput: filterInput,
       }
       const palette = (
         <PanelComponents
           barState={EMPTY_SLOT}
-          barFilter={{ children: componentFilter }}
+          barFilter={EMPTY_SLOT}
           buttonIconic={null}
           buttonIconic2={EMPTY_SLOT}
           comboboxField={EMPTY_SLOT}
@@ -88,7 +86,7 @@ function ComponentPalette({ close }: { close: () => void }) {
 
       return palette
     },
-    [close, componentFilter, visibleCategories],
+    [close, onClearQuery, onQueryChange, query, visibleCategories],
   )
   const floatingPanel = (
     <FloatingPanel

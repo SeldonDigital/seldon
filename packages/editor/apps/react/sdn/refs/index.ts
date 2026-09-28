@@ -519,7 +519,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   componentsCatalogMetadata: {
     component: "TextSubtitle",
     nodeId: "component-listStandard-hQ8Pdn4K",
-    className: "sdn-text-subtitle sdn-text-subtitle--uvjq",
+    className: "sdn-text-subtitle sdn-text-subtitle--hq8p",
     views: [
       {
         component: "PanelComponents",
@@ -916,7 +916,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel14",
+        slot: "textLabel18",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -958,7 +958,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel16",
+        slot: "textLabel20",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -972,7 +972,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame5",
+        slot: "frame8",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -1014,7 +1014,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel15",
+        slot: "textLabel19",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1042,7 +1042,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel17",
+        slot: "textLabel21",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1084,7 +1084,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel19",
+        slot: "textLabel23",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1098,7 +1098,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame6",
+        slot: "frame9",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -1140,7 +1140,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel18",
+        slot: "textLabel22",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1168,7 +1168,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel11",
+        slot: "textLabel15",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1210,7 +1210,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel13",
+        slot: "textLabel17",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1224,7 +1224,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame4",
+        slot: "frame7",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -1266,7 +1266,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel12",
+        slot: "textLabel16",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1294,7 +1294,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel26",
+        slot: "textLabel30",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1336,7 +1336,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel27",
+        slot: "textLabel31",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1392,7 +1392,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel5",
+        slot: "textLabel9",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1434,7 +1434,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel7",
+        slot: "textLabel11",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1448,7 +1448,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame2",
+        slot: "frame5",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -1490,7 +1490,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel6",
+        slot: "textLabel10",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1546,7 +1546,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel2",
+        slot: "textLabel6",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1574,7 +1574,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel8",
+        slot: "textLabel12",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1616,7 +1616,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel10",
+        slot: "textLabel14",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1630,7 +1630,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame3",
+        slot: "frame6",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -1672,7 +1672,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel9",
+        slot: "textLabel13",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1728,7 +1728,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel3",
+        slot: "textLabel7",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1770,7 +1770,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel4",
+        slot: "textLabel8",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1798,7 +1798,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel23",
+        slot: "textLabel27",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1840,7 +1840,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel25",
+        slot: "textLabel29",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1854,7 +1854,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame8",
+        slot: "frame11",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -1896,7 +1896,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel24",
+        slot: "textLabel28",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1938,7 +1938,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel20",
+        slot: "textLabel24",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -1980,7 +1980,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel",
+        slot: "textLabel5",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2022,7 +2022,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel22",
+        slot: "textLabel26",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
@@ -2036,7 +2036,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "frame7",
+        slot: "frame10",
         type: "FrameProps",
         rendersWhen: "unless-null",
       },
@@ -2078,7 +2078,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "textLabel21",
+        slot: "textLabel25",
         type: "TextLabelProps",
         rendersWhen: "when-passed",
       },

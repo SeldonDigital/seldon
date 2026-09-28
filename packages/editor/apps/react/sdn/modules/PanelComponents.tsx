@@ -154,8 +154,9 @@ const sdn: PanelComponentsProps = {
     "data-seldon-ref": "componentsCatalogVariant",
   },
   textSubtitle3: {
-    children: "Description · Tag · Tag · Tag",
-    className: "sdn-text-subtitle sdn-text-subtitle--uvjq",
+    children:
+      "This is the description of the component from it's schema or node metadata. It can be very long or very short · Tag · Tag · Tag",
+    className: "sdn-text-subtitle sdn-text-subtitle--hq8p",
     "data-seldon-ref": "componentsCatalogMetadata",
   },
 

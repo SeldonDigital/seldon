@@ -75,7 +75,7 @@
         }
       ],
       "__editor": {
-        "order": 30
+        "order": 31
       }
     },
     "highContrast": {
@@ -114,7 +114,7 @@
         }
       ],
       "__editor": {
-        "order": 31
+        "order": 32
       }
     },
     "system": {
@@ -140,7 +140,7 @@
         }
       ],
       "__editor": {
-        "order": 33
+        "order": 34
       }
     },
     "googleFonts": {
@@ -182,7 +182,7 @@
         }
       ],
       "__editor": {
-        "order": 34
+        "order": 35
       }
     },
     "seldonIcons": {
@@ -220,7 +220,7 @@
         }
       ],
       "__editor": {
-        "order": 35
+        "order": 36
       }
     },
     "text": {
@@ -329,7 +329,7 @@
         }
       ],
       "__editor": {
-        "order": 26
+        "order": 27
       }
     },
     "icon": {
@@ -409,7 +409,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 21
       }
     },
     "button": {
@@ -586,7 +586,7 @@
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 14
       }
     },
     "input": {
@@ -668,7 +668,7 @@
         }
       ],
       "__editor": {
-        "order": 22
+        "order": 23
       }
     },
     "comboboxField": {
@@ -802,7 +802,7 @@
         }
       ],
       "__editor": {
-        "order": 10
+        "order": 11
       }
     },
     "link": {
@@ -869,7 +869,7 @@
         }
       ],
       "__editor": {
-        "order": 24
+        "order": 25
       }
     },
     "bar": {
@@ -1432,7 +1432,7 @@
         }
       ],
       "__editor": {
-        "order": 3
+        "order": 4
       }
     },
     "frame": {
@@ -1493,7 +1493,7 @@
         }
       ],
       "__editor": {
-        "order": 29
+        "order": 30
       }
     },
     "image": {
@@ -1572,7 +1572,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 22
       }
     },
     "avatar": {
@@ -1684,7 +1684,7 @@
         }
       ],
       "__editor": {
-        "order": 9
+        "order": 10
       }
     },
     "chip": {
@@ -1809,10 +1809,18 @@
               ]
             }
           ]
+        },
+        {
+          "id": "component-chip-mono",
+          "children": [
+            {
+              "id": "component-text-I10EyonW"
+            }
+          ]
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 15
       }
     },
     "formControl": {
@@ -1987,7 +1995,7 @@
         }
       ],
       "__editor": {
-        "order": 8
+        "order": 9
       }
     },
     "item": {
@@ -2439,7 +2447,7 @@
         }
       ],
       "__editor": {
-        "order": 7
+        "order": 8
       }
     },
     "earth": {
@@ -2478,7 +2486,7 @@
         }
       ],
       "__editor": {
-        "order": 37
+        "order": 38
       }
     },
     "industrial": {
@@ -2517,7 +2525,7 @@
         }
       ],
       "__editor": {
-        "order": 38
+        "order": 39
       }
     },
     "sunsetBlue": {
@@ -2556,7 +2564,7 @@
         }
       ],
       "__editor": {
-        "order": 42
+        "order": 43
       }
     },
     "wildberry": {
@@ -2595,7 +2603,7 @@
         }
       ],
       "__editor": {
-        "order": 43
+        "order": 44
       }
     },
     "hr": {
@@ -2656,7 +2664,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 20
       }
     },
     "menuItem": {
@@ -2764,7 +2772,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 17
       }
     },
     "menu": {
@@ -3007,7 +3015,7 @@
         }
       ],
       "__editor": {
-        "order": 6
+        "order": 7
       }
     },
     "combobox": {
@@ -3953,7 +3961,7 @@
         }
       ],
       "__editor": {
-        "order": 28
+        "order": 29
       }
     },
     "popPunk": {
@@ -3992,7 +4000,7 @@
         }
       ],
       "__editor": {
-        "order": 39
+        "order": 40
       }
     },
     "ibmCarbon": {
@@ -4031,7 +4039,7 @@
         }
       ],
       "__editor": {
-        "order": 40
+        "order": 41
       }
     },
     "adobeSpectrum": {
@@ -4070,7 +4078,7 @@
         }
       ],
       "__editor": {
-        "order": 41
+        "order": 42
       }
     },
     "googleSymbols": {
@@ -4108,7 +4116,7 @@
         }
       ],
       "__editor": {
-        "order": 36
+        "order": 37
       }
     },
     "googleMaterial": {
@@ -4147,7 +4155,7 @@
         }
       ],
       "__editor": {
-        "order": 32
+        "order": 33
       }
     },
     "listStandard": {
@@ -4429,7 +4437,7 @@
         }
       ],
       "__editor": {
-        "order": 5
+        "order": 6
       }
     },
     "panel": {
@@ -4619,7 +4627,67 @@
             },
             {
               "id": "component-panel-2wWoLkwm",
-              "children": []
+              "children": [
+                {
+                  "id": "component-articleCard-z7HYnJGv",
+                  "children": [
+                    {
+                      "id": "component-articleCard-KiIVYPli"
+                    },
+                    {
+                      "id": "component-articleCard-S8oosMND",
+                      "children": [
+                        {
+                          "id": "component-articleCard-yCt8QHuC",
+                          "children": [
+                            {
+                              "id": "component-articleCard-KkiEnxFM"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-articleCard-FALe7Hit"
+                        },
+                        {
+                          "id": "component-articleCard-ShWZkCWd"
+                        },
+                        {
+                          "id": "component-articleCard-VMxmFLPZ",
+                          "children": [
+                            {
+                              "id": "component-articleCard-sHj5X72B",
+                              "children": [
+                                {
+                                  "id": "component-articleCard-UaGm7Wwm"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-articleCard-Ut8TuhEt",
+                              "children": [
+                                {
+                                  "id": "component-articleCard-pmrTcATh"
+                                },
+                                {
+                                  "id": "component-articleCard-DFkB7kS6"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-articleCard-bERbyJ3I",
+                              "children": [
+                                {
+                                  "id": "component-articleCard-LiGym1kI"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "component-bar-yMyQuag3",
@@ -5857,7 +5925,7 @@
         }
       ],
       "__editor": {
-        "order": 27
+        "order": 28
       }
     },
     "textarea": {
@@ -5884,7 +5952,7 @@
         }
       ],
       "__editor": {
-        "order": 25
+        "order": 26
       }
     },
     "message": {
@@ -6070,7 +6138,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 13
       }
     },
     "blockquote": {
@@ -6087,7 +6155,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 19
       }
     },
     "listItem": {
@@ -6110,7 +6178,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 16
       }
     },
     "list": {
@@ -6162,7 +6230,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 12
       }
     },
     "dialog": {
@@ -6241,7 +6309,67 @@
             },
             {
               "id": "component-panel-RbPugSMO",
-              "children": []
+              "children": [
+                {
+                  "id": "component-panel-Jaf4jbtC",
+                  "children": [
+                    {
+                      "id": "component-panel-YWeww5P5"
+                    },
+                    {
+                      "id": "component-panel-j5zwfZfx",
+                      "children": [
+                        {
+                          "id": "component-panel-fmf78z3L",
+                          "children": [
+                            {
+                              "id": "component-panel-RhfEMTGD"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-Khq3XbG2"
+                        },
+                        {
+                          "id": "component-panel-Cq5RrxWR"
+                        },
+                        {
+                          "id": "component-panel-YaCPh8B5",
+                          "children": [
+                            {
+                              "id": "component-panel-nWCnpt1P",
+                              "children": [
+                                {
+                                  "id": "component-panel-tEux8Qyl"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-panel-W1VPQiTM",
+                              "children": [
+                                {
+                                  "id": "component-panel-k6fuOnNd"
+                                },
+                                {
+                                  "id": "component-panel-yuQmmQHZ"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-panel-mrQu5S8s",
+                              "children": [
+                                {
+                                  "id": "component-panel-NU9yGFze"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             {
               "id": "component-panel-m8SGWJKZ",
@@ -6373,6 +6501,65 @@
               "id": "component-panel-Q7m72Cwa",
               "children": [
                 {
+                  "id": "component-panel-k4C7gXYk",
+                  "children": [
+                    {
+                      "id": "component-panel-TcEmdHtV"
+                    },
+                    {
+                      "id": "component-panel-5WtIkzlR",
+                      "children": [
+                        {
+                          "id": "component-panel-mLwITAAs",
+                          "children": [
+                            {
+                              "id": "component-panel-QTlofMJr"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-WVsnaxAi"
+                        },
+                        {
+                          "id": "component-panel-ui6rZpg6"
+                        },
+                        {
+                          "id": "component-panel-2j2ujIr0",
+                          "children": [
+                            {
+                              "id": "component-panel-R6fSXl5m",
+                              "children": [
+                                {
+                                  "id": "component-panel-cVKiLlFu"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-panel-dlFvA8ua",
+                              "children": [
+                                {
+                                  "id": "component-panel-BKN64W4Y"
+                                },
+                                {
+                                  "id": "component-panel-sY6QxDGt"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-panel-s99pu3BM",
+                              "children": [
+                                {
+                                  "id": "component-panel-79KhUzxF"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
                   "id": "component-formControl-9HIRnaGt",
                   "children": [
                     {
@@ -6474,6 +6661,65 @@
             {
               "id": "component-panel-wwvDjgGM",
               "children": [
+                {
+                  "id": "component-panel-2ywK2M32",
+                  "children": [
+                    {
+                      "id": "component-panel-bSXDBpIm"
+                    },
+                    {
+                      "id": "component-panel-1i4ThBoL",
+                      "children": [
+                        {
+                          "id": "component-panel-dwo8kq4z",
+                          "children": [
+                            {
+                              "id": "component-panel-8dpGxtOx"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-sTKvQyjX"
+                        },
+                        {
+                          "id": "component-panel-V4BImCbJ"
+                        },
+                        {
+                          "id": "component-panel-cXLyP7da",
+                          "children": [
+                            {
+                              "id": "component-panel-1bFJDoho",
+                              "children": [
+                                {
+                                  "id": "component-panel-zibZzoZw"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-panel-cpJMHSpm",
+                              "children": [
+                                {
+                                  "id": "component-panel-eI09oIZE"
+                                },
+                                {
+                                  "id": "component-panel-Agsz0RgS"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "component-panel-tWrKThFj",
+                              "children": [
+                                {
+                                  "id": "component-panel-46yZMOpG"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
                 {
                   "id": "component-formControl-VMxpUQed",
                   "children": [
@@ -6836,7 +7082,7 @@
         }
       ],
       "__editor": {
-        "order": 44
+        "order": 45
       }
     },
     "legend": {
@@ -6853,7 +7099,7 @@
         }
       ],
       "__editor": {
-        "order": 23
+        "order": 24
       }
     },
     "select": {
@@ -6891,7 +7137,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 18
       }
     },
     "fieldset": {
@@ -7039,7 +7285,7 @@
         }
       ],
       "__editor": {
-        "order": 4
+        "order": 5
       }
     },
     "tokenPreview": {
@@ -7485,7 +7731,7 @@
         }
       ],
       "__editor": {
-        "order": 45
+        "order": 46
       }
     },
     "tokenControls": {
@@ -7681,7 +7927,7 @@
         }
       ],
       "__editor": {
-        "order": 46
+        "order": 47
       }
     },
     "specimen": {
@@ -7967,7 +8213,7 @@
         }
       ],
       "__editor": {
-        "order": 47
+        "order": 48
       }
     },
     "specimenSample": {
@@ -8022,7 +8268,131 @@
         }
       ],
       "__editor": {
-        "order": 48
+        "order": 49
+      }
+    },
+    "articleCard": {
+      "type": "component",
+      "level": "part",
+      "catalogId": "articleCard",
+      "label": "Article Cards",
+      "author": "Seldon Digital",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {},
+      "variants": [
+        {
+          "id": "component-articleCard-default",
+          "children": [
+            {
+              "id": "component-image-YOIz0Epp"
+            },
+            {
+              "id": "component-frame-F3ng1ZUM",
+              "children": [
+                {
+                  "id": "component-chip-7chpqDEk",
+                  "children": [
+                    {
+                      "id": "component-text-pXwmpkCb"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-q8wafiTF"
+                },
+                {
+                  "id": "component-text-LwQ7YoyU"
+                },
+                {
+                  "id": "component-frame-Ts0MZy2W",
+                  "children": [
+                    {
+                      "id": "component-avatar-6m6rQGal",
+                      "children": [
+                        {
+                          "id": "component-image-akOKFIc1"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-frame-yutotRDh",
+                      "children": [
+                        {
+                          "id": "component-text-IdIBbopy"
+                        },
+                        {
+                          "id": "component-text-tAEf7ohS"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-button-LDcnqgwW",
+                      "children": [
+                        {
+                          "id": "component-text-TGE3nZ2G"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-articleCard-minimal",
+          "children": [
+            {
+              "id": "component-image-N6zEfjMr"
+            },
+            {
+              "id": "component-frame-wtnXKVYE",
+              "children": [
+                {
+                  "id": "component-chip-QV5AnOd5",
+                  "children": [
+                    {
+                      "id": "component-text-gl5sqLuk"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-A6YRajaw"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-articleCard-horizontal",
+          "children": [
+            {
+              "id": "component-image-aFq6QUKO"
+            },
+            {
+              "id": "component-frame-ZETTYS0W",
+              "children": [
+                {
+                  "id": "component-chip-B6LIhMjw",
+                  "children": [
+                    {
+                      "id": "component-text-dtmMDrrj"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-AX2RNGRr"
+                },
+                {
+                  "id": "component-text-h4lF5o8F"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 3
       }
     }
   },
@@ -49740,7 +50110,20 @@
       "label": "Subtitle",
       "theme": null,
       "template": "node:component-listStandard-uVJQCOjS",
-      "overrides": {},
+      "overrides": {
+        "lines": {
+          "type": "exact",
+          "value": 5
+        },
+        "wrapText": {
+          "type": "option",
+          "value": true
+        },
+        "content": {
+          "type": "exact",
+          "value": "This is the description of the component from it's schema or node metadata. It can be very long or very short · Tag · Tag · Tag"
+        }
+      },
       "origin": "user"
     },
     "component-listStandard-Gwou5DYh": {
@@ -49902,6 +50285,1277 @@
       "label": "Subtitle",
       "theme": null,
       "template": "node:component-listStandard-lxAkts2J",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-chip-mono": {
+      "type": "variant",
+      "level": "element",
+      "label": "Mono",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "cursor": {
+          "type": "option",
+          "value": "default"
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "none"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      }
+    },
+    "component-text-I10EyonW": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Codeblock",
+      "theme": null,
+      "template": "node:component-text-code",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "/vlak"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-articleCard-default": {
+      "type": "default",
+      "level": "part",
+      "label": "Article Card",
+      "theme": null,
+      "template": "catalog:articleCard",
+      "overrides": {}
+    },
+    "component-image-YOIz0Epp": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-frame-F3ng1ZUM": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-chip-7chpqDEk": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {},
+      "origin": "schema"
+    },
+    "component-text-pXwmpkCb": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-q8wafiTF": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "lines": {
+          "type": "exact",
+          "value": 5
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-LwQ7YoyU": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 5
+        }
+      },
+      "origin": "schema"
+    },
+    "component-frame-Ts0MZy2W": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.cozy"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-avatar-6m6rQGal": {
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-avatar-default",
+      "overrides": {},
+      "origin": "schema"
+    },
+    "component-image-akOKFIc1": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "/avatar-bentley.png"
+        },
+        "width": {
+          "type": "theme.ordinal",
+          "value": "@dimension.large"
+        },
+        "height": {
+          "type": "theme.ordinal",
+          "value": "@dimension.large"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "rounded"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-frame-yutotRDh": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-IdIBbopy": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Sir Bentley"
+        },
+        "font": {
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.medium"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-tAEf7ohS": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Mar 30 · 5 min read"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-button-LDcnqgwW": {
+      "type": "instance",
+      "level": "element",
+      "label": "Simple",
+      "theme": null,
+      "template": "node:component-button-label",
+      "overrides": {
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "none"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-TGE3nZ2G": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Read more"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-articleCard-minimal": {
+      "type": "variant",
+      "level": "part",
+      "label": "Minimal",
+      "theme": null,
+      "template": "node:component-articleCard-default",
+      "overrides": {}
+    },
+    "component-image-N6zEfjMr": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-YOIz0Epp",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-frame-wtnXKVYE": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-chip-QV5AnOd5": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {},
+      "origin": "schema"
+    },
+    "component-text-gl5sqLuk": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-A6YRajaw": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-articleCard-horizontal": {
+      "type": "variant",
+      "level": "part",
+      "label": "Horizontal",
+      "theme": null,
+      "template": "node:component-articleCard-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        }
+      }
+    },
+    "component-image-aFq6QUKO": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-YOIz0Epp",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-frame-ZETTYS0W": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-chip-B6LIhMjw": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {},
+      "origin": "schema"
+    },
+    "component-text-dtmMDrrj": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-AX2RNGRr": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        },
+        "lines": {
+          "type": "exact",
+          "value": 5
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-h4lF5o8F": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 5
+        }
+      },
+      "origin": "schema"
+    },
+    "component-articleCard-z7HYnJGv": {
+      "type": "instance",
+      "level": "part",
+      "label": "Article Card",
+      "theme": null,
+      "template": "node:component-articleCard-default",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-KiIVYPli": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-YOIz0Epp",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-S8oosMND": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-F3ng1ZUM",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-yCt8QHuC": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-7chpqDEk",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-KkiEnxFM": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-pXwmpkCb",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-FALe7Hit": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-q8wafiTF",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-ShWZkCWd": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-LwQ7YoyU",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-VMxmFLPZ": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-Ts0MZy2W",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-sHj5X72B": {
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-avatar-6m6rQGal",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-UaGm7Wwm": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-akOKFIc1",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-Ut8TuhEt": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-yutotRDh",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-pmrTcATh": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-IdIBbopy",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-DFkB7kS6": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-tAEf7ohS",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-bERbyJ3I": {
+      "type": "instance",
+      "level": "element",
+      "label": "Simple",
+      "theme": null,
+      "template": "node:component-button-LDcnqgwW",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-articleCard-LiGym1kI": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-TGE3nZ2G",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Jaf4jbtC": {
+      "type": "instance",
+      "level": "part",
+      "label": "Article Card",
+      "theme": null,
+      "template": "node:component-articleCard-z7HYnJGv",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-YWeww5P5": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-articleCard-KiIVYPli",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-j5zwfZfx": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-articleCard-S8oosMND",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-fmf78z3L": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-articleCard-yCt8QHuC",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-RhfEMTGD": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-articleCard-KkiEnxFM",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Khq3XbG2": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-articleCard-FALe7Hit",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Cq5RrxWR": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-articleCard-ShWZkCWd",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-YaCPh8B5": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-articleCard-VMxmFLPZ",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-nWCnpt1P": {
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-articleCard-sHj5X72B",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-tEux8Qyl": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-articleCard-UaGm7Wwm",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-W1VPQiTM": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-articleCard-Ut8TuhEt",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-k6fuOnNd": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-articleCard-pmrTcATh",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-yuQmmQHZ": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-articleCard-DFkB7kS6",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-mrQu5S8s": {
+      "type": "instance",
+      "level": "element",
+      "label": "Simple",
+      "theme": null,
+      "template": "node:component-articleCard-bERbyJ3I",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-NU9yGFze": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-articleCard-LiGym1kI",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-k4C7gXYk": {
+      "type": "instance",
+      "level": "part",
+      "label": "Article Card",
+      "theme": null,
+      "template": "node:component-panel-Jaf4jbtC",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-TcEmdHtV": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-panel-YWeww5P5",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-5WtIkzlR": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-panel-j5zwfZfx",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-mLwITAAs": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-panel-fmf78z3L",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-QTlofMJr": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-RhfEMTGD",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-WVsnaxAi": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-panel-Khq3XbG2",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-ui6rZpg6": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-panel-Cq5RrxWR",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-2j2ujIr0": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-panel-YaCPh8B5",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-R6fSXl5m": {
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-panel-nWCnpt1P",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-cVKiLlFu": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-panel-tEux8Qyl",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-dlFvA8ua": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-panel-W1VPQiTM",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-BKN64W4Y": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-k6fuOnNd",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-sY6QxDGt": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-yuQmmQHZ",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-s99pu3BM": {
+      "type": "instance",
+      "level": "element",
+      "label": "Simple",
+      "theme": null,
+      "template": "node:component-panel-mrQu5S8s",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-79KhUzxF": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-NU9yGFze",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-2ywK2M32": {
+      "type": "instance",
+      "level": "part",
+      "label": "Article Card",
+      "theme": null,
+      "template": "node:component-panel-Jaf4jbtC",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-bSXDBpIm": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-panel-YWeww5P5",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-1i4ThBoL": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-panel-j5zwfZfx",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-dwo8kq4z": {
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-panel-fmf78z3L",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-8dpGxtOx": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-RhfEMTGD",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-sTKvQyjX": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-panel-Khq3XbG2",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-V4BImCbJ": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-panel-Cq5RrxWR",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-cXLyP7da": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-panel-YaCPh8B5",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-1bFJDoho": {
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-panel-nWCnpt1P",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-zibZzoZw": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-panel-tEux8Qyl",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-cpJMHSpm": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-panel-W1VPQiTM",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-eI09oIZE": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-k6fuOnNd",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-Agsz0RgS": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-yuQmmQHZ",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-tWrKThFj": {
+      "type": "instance",
+      "level": "element",
+      "label": "Simple",
+      "theme": null,
+      "template": "node:component-panel-mrQu5S8s",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-panel-46yZMOpG": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-panel-NU9yGFze",
       "overrides": {},
       "origin": "user"
     }

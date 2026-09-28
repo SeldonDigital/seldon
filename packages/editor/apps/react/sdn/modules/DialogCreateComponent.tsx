@@ -10,33 +10,47 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+import { Avatar } from "../elements/Avatar"
+import { ButtonSimple } from "../elements/ButtonSimple"
+import { Chip } from "../elements/Chip"
 import { ComboboxField } from "../elements/ComboboxField"
 import { FormControl } from "../elements/FormControl"
 import { FormControlCombobox } from "../elements/FormControlCombobox"
 import { ItemCatalog } from "../elements/ItemCatalog"
 import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
+import { ArticleCard } from "../parts/ArticleCard"
 import { Bar } from "../parts/Bar"
 import { BarButtons } from "../parts/BarButtons"
 import { Icon } from "../primitives/Icon"
+import { Image } from "../primitives/Image"
 import { Input } from "../primitives/Input"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextHeading } from "../primitives/TextHeading"
 import { TextLabel } from "../primitives/TextLabel"
 import { TextSubtitle } from "../primitives/TextSubtitle"
 import { TextTitle } from "../primitives/TextTitle"
 import { combineClassNames } from "../utils/class-name"
 import { mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
+import type { AvatarProps } from "../elements/Avatar"
 import type { ButtonProps } from "../elements/Button"
 import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { ChipProps } from "../elements/Chip"
 import type { ComboboxFieldProps } from "../elements/ComboboxField"
 import type { FormControlProps } from "../elements/FormControl"
 import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
 import type { ItemCatalogProps } from "../elements/ItemCatalog"
 import type { FrameProps } from "../frames/Frame"
+import type { ArticleCardProps } from "../parts/ArticleCard"
 import type { BarProps } from "../parts/Bar"
 import type { BarButtonsProps } from "../parts/BarButtons"
 import type { IconProps } from "../primitives/Icon"
+import type { ImageProps } from "../primitives/Image"
 import type { InputProps } from "../primitives/Input"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextHeadingProps } from "../primitives/TextHeading"
 import type { TextLabelProps } from "../primitives/TextLabel"
 import type { TextSubtitleProps } from "../primitives/TextSubtitle"
 import type { TextTitleProps } from "../primitives/TextTitle"
@@ -63,29 +77,44 @@ export interface DialogCreateComponentProps extends HTMLAttributes<HTMLElement> 
   textSubtitle2?: TextSubtitleProps | null
 
   frame4?: FrameProps | null
-  formControl?: FormControlProps | null
+  articleCard?: ArticleCardProps | null
+  image?: ImageProps | null
+  frame5?: FrameProps | null
+  chip?: ChipProps | null
   textLabel?: TextLabelProps | null
+  textHeading?: TextHeadingProps | null
+  textDescription?: TextDescriptionProps | null
+  frame6?: FrameProps | null
+  avatar?: AvatarProps | null
+  image2?: ImageProps | null
+  frame7?: FrameProps | null
+  textLabel2?: TextLabelProps | null
+  textLabel3?: TextLabelProps | null
+  buttonSimple?: ButtonSimpleProps | null
+  textLabel4?: TextLabelProps | null
+  formControl?: FormControlProps | null
+  textLabel5?: TextLabelProps | null
   input?: InputProps | null
   formControlCombobox?: FormControlComboboxProps | null
-  textLabel2?: TextLabelProps | null
+  textLabel6?: TextLabelProps | null
   comboboxField?: ComboboxFieldProps | null
   input2?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
   icon3?: IconProps | null
   formControl2?: FormControlProps | null
-  textLabel3?: TextLabelProps | null
+  textLabel7?: TextLabelProps | null
   input3?: InputProps | null
   formControl3?: FormControlProps | null
-  textLabel4?: TextLabelProps | null
+  textLabel8?: TextLabelProps | null
   input4?: InputProps | null
 
   barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
   icon4?: IconProps | null
-  textLabel5?: TextLabelProps | null
+  textLabel9?: TextLabelProps | null
   button2?: ButtonProps | null
   icon5?: IconProps | null
-  textLabel6?: TextLabelProps | null
+  textLabel10?: TextLabelProps | null
 }
 
 //
@@ -169,11 +198,88 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--q7m7",
   },
+  articleCard: {
+    "aria-hidden": "false",
+    className: "sdn-article-card sdn-article-card--z7hy",
+  },
+  image: {
+    src: "/sdn/assets/background-default-light.jpg",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--yoiz",
+  },
+  frame5: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--f3ng",
+  },
+  chip: {
+    "aria-hidden": "false",
+    className: "sdn-chip sdn-chip--jsvs",
+  },
+  textLabel: {
+    children: "Design",
+    htmlElement: "label",
+    "aria-hidden": "false",
+    className: "sdn-text-label sdn-text-label--lug5",
+  },
+  textHeading: {
+    children: "How to design better cards",
+    htmlElement: "h2",
+    "aria-hidden": "false",
+    className: "sdn-text-heading sdn-text-heading--q8wa",
+  },
+  textDescription: {
+    children:
+      "A short, two-line excerpt written for the card earns the click without giving everything away.",
+    htmlElement: "p",
+    "aria-hidden": "false",
+    className: "sdn-text-description sdn-text-description--lwq7",
+  },
+  frame6: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ts0m",
+  },
+  avatar: {
+    "aria-hidden": "false",
+    className: "sdn-avatar sdn-avatar-rounded--fb5j",
+  },
+  image2: {
+    src: "/avatar-bentley.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--to5v",
+  },
+  frame7: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--yuto",
+  },
+  textLabel2: {
+    children: "Sir Bentley",
+    htmlElement: "label",
+    "aria-hidden": "false",
+    className: "sdn-text-label sdn-text-label--idib",
+  },
+  textLabel3: {
+    children: "Mar 30 · 5 min read",
+    htmlElement: "label",
+    "aria-hidden": "false",
+    className: "sdn-text-label sdn-text-subheading--bxdp",
+  },
+  buttonSimple: {
+    className: "sdn-button-simple sdn-button-simple--ldcn",
+  },
+  textLabel4: {
+    children: "Read more",
+    htmlElement: "label",
+    "aria-hidden": "false",
+    className: "sdn-text-label sdn-text-label--tge3",
+  },
   formControl: {
     "aria-hidden": "false",
     className: "sdn-form-control sdn-form-control--9hir",
   },
-  textLabel: {
+  textLabel5: {
     children: "Name",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -189,7 +295,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-form-control sdn-form-control--9hir",
   },
-  textLabel2: {
+  textLabel6: {
     children: "Level",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -219,7 +325,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-form-control sdn-form-control--9hir",
   },
-  textLabel3: {
+  textLabel7: {
     children: "Intent",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -235,7 +341,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-form-control sdn-form-control--9hir",
   },
-  textLabel4: {
+  textLabel8: {
     children: "Tags",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -260,7 +366,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
-  textLabel5: {
+  textLabel9: {
     children: "Cancel",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -274,7 +380,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
-  textLabel6: {
+  textLabel10: {
     children: "Create",
     htmlElement: "label",
     "aria-hidden": "false",
@@ -304,28 +410,43 @@ const sdn: DialogCreateComponentProps = {
  *         TextTitle        textTitle3
  *         TextSubtitle     textSubtitle2
  *   Frame                  frame4
+ *     ArticleCard          articleCard
+ *       Image              image
+ *       Frame              frame5
+ *         Chip             chip
+ *           TextLabel      textLabel
+ *         TextHeading      textHeading
+ *         TextDescription  textDescription
+ *         Frame            frame6
+ *           Avatar         avatar
+ *             Image        image2
+ *           Frame          frame7
+ *             TextLabel    textLabel2
+ *             TextLabel    textLabel3
+ *           ButtonSimple   buttonSimple
+ *             TextLabel    textLabel4
  *     FormControl          formControl
- *       TextLabel          textLabel
+ *       TextLabel          textLabel5
  *       Input              input                -> createComponentName
  *     FormControlCombobox  formControlCombobox
- *       TextLabel          textLabel2
+ *       TextLabel          textLabel6
  *       ComboboxField      comboboxField        -> createComponentLevel
  *         Input            input2
  *         ButtonIconic     buttonIconic
  *           Icon           icon3
  *     FormControl          formControl2
- *       TextLabel          textLabel3
+ *       TextLabel          textLabel7
  *       Input              input3               -> createComponentIntent
  *     FormControl          formControl3
- *       TextLabel          textLabel4
+ *       TextLabel          textLabel8
  *       Input              input4               -> createComponentTags
  *   BarButtons             barButtons
  *     Button               button
  *       Icon               icon4
- *       TextLabel          textLabel5
+ *       TextLabel          textLabel9
  *     Button               button2
  *       Icon               icon5
- *       TextLabel          textLabel6
+ *       TextLabel          textLabel10
  *
  * @example
  * ```tsx
@@ -339,8 +460,16 @@ const sdn: DialogCreateComponentProps = {
  *   textSubtitle2="Product Title"
  *   itemCatalog2="{}"
  *   frame2="{}"
- *   formControl="{}"
+ *   articleCard="{}"
+ *   image="/image.jpg"
+ *   chip="{}"
  *   textLabel="{}"
+ *   textHeading="{}"
+ *   textDescription2="{}"
+ *   avatar="/image.jpg"
+ *   textLabel2="{}"
+ *   buttonSimple={() => {}}
+ *   formControl="{}"
  *   input="{}"
  *   formControlCombobox2="{}"
  *   comboboxField="{}"
@@ -371,29 +500,44 @@ export function DialogCreateComponent({
   textSubtitle2,
 
   frame4,
-  formControl,
+  articleCard,
+  image,
+  frame5,
+  chip,
   textLabel,
+  textHeading,
+  textDescription,
+  frame6,
+  avatar,
+  image2,
+  frame7,
+  textLabel2,
+  textLabel3,
+  buttonSimple,
+  textLabel4,
+  formControl,
+  textLabel5,
   input,
   formControlCombobox,
-  textLabel2,
+  textLabel6,
   comboboxField,
   input2,
   buttonIconic,
   icon3,
   formControl2,
-  textLabel3,
+  textLabel7,
   input3,
   formControl3,
-  textLabel4,
+  textLabel8,
   input4,
 
   barButtons,
   button,
   icon4,
-  textLabel5,
+  textLabel9,
   button2,
   icon5,
-  textLabel6,
+  textLabel10,
 
   children,
   seldonRefs,
@@ -417,33 +561,48 @@ export function DialogCreateComponent({
   const textSubtitle2Props = mergeOptionalSlot(sdn.textSubtitle2, textSubtitle2, seldonRefs)
 
   const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
-  const formControlProps = mergeOptionalSlot(sdn.formControl, formControl, seldonRefs)
+  const articleCardProps = mergeOptionalSlot(sdn.articleCard, articleCard, seldonRefs)
+  const imageProps = mergeSlot(sdn.image, image, seldonRefs)
+  const frame5Props = mergeSlot(sdn.frame5, frame5, seldonRefs)
+  const chipProps = mergeOptionalSlot(sdn.chip, chip, seldonRefs)
   const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const textHeadingProps = mergeOptionalSlot(sdn.textHeading, textHeading, seldonRefs)
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
+  const frame6Props = mergeSlot(sdn.frame6, frame6, seldonRefs)
+  const avatarProps = mergeOptionalSlot(sdn.avatar, avatar, seldonRefs)
+  const image2Props = mergeSlot(sdn.image2, image2, seldonRefs)
+  const frame7Props = mergeSlot(sdn.frame7, frame7, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const buttonSimpleProps = mergeOptionalSlot(sdn.buttonSimple, buttonSimple, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const formControlProps = mergeOptionalSlot(sdn.formControl, formControl, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
   const inputProps = mergeSlot(sdn.input, input, seldonRefs)
   const formControlComboboxProps = mergeOptionalSlot(
     sdn.formControlCombobox,
     formControlCombobox,
     seldonRefs,
   )
-  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
   const comboboxFieldProps = mergeSlot(sdn.comboboxField, comboboxField, seldonRefs)
   const input2Props = mergeSlot(sdn.input2, input2, seldonRefs)
   const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
   const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
   const formControl2Props = mergeOptionalSlot(sdn.formControl2, formControl2, seldonRefs)
-  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
   const input3Props = mergeSlot(sdn.input3, input3, seldonRefs)
   const formControl3Props = mergeOptionalSlot(sdn.formControl3, formControl3, seldonRefs)
-  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
   const input4Props = mergeSlot(sdn.input4, input4, seldonRefs)
 
   const barButtonsProps = mergeSlot(sdn.barButtons, barButtons, seldonRefs)
   const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
   const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
-  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const textLabel9Props = mergeOptionalSlot(sdn.textLabel9, textLabel9, seldonRefs)
   const button2Props = mergeSlot(sdn.button2, button2, seldonRefs)
   const icon5Props = mergeSlot(sdn.icon5, icon5, seldonRefs)
-  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+  const textLabel10Props = mergeOptionalSlot(sdn.textLabel10, textLabel10, seldonRefs)
 
   return (
     <HTMLDiv className={dialogCreateComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -475,15 +634,41 @@ export function DialogCreateComponent({
             )}
           </Frame>
           <Frame {...frame4Props}>
+            {articleCardProps !== null && (
+              <ArticleCard {...articleCardProps}>
+                {imageProps !== null && <Image {...imageProps} />}
+                <Frame {...frame5Props}>
+                  {chipProps !== null && (
+                    <Chip {...chipProps}>
+                      {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                    </Chip>
+                  )}
+                  {textHeadingProps !== null && <TextHeading {...textHeadingProps} />}
+                  {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
+                  <Frame {...frame6Props}>
+                    {avatarProps !== null && <Avatar {...avatarProps} image={image2Props} />}
+                    <Frame {...frame7Props}>
+                      {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                      {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                    </Frame>
+                    {buttonSimpleProps !== null && (
+                      <ButtonSimple {...buttonSimpleProps}>
+                        {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                      </ButtonSimple>
+                    )}
+                  </Frame>
+                </Frame>
+              </ArticleCard>
+            )}
             {formControlProps !== null && (
               <FormControl {...formControlProps}>
-                {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
                 {inputProps !== null && <Input {...inputProps} />}
               </FormControl>
             )}
             {formControlComboboxProps !== null && (
               <FormControlCombobox {...formControlComboboxProps}>
-                {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
                 {comboboxFieldProps !== null && (
                   <ComboboxField
                     {...comboboxFieldProps}
@@ -497,13 +682,13 @@ export function DialogCreateComponent({
             )}
             {formControl2Props !== null && (
               <FormControl {...formControl2Props}>
-                {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
                 {input3Props !== null && <Input {...input3Props} />}
               </FormControl>
             )}
             {formControl3Props !== null && (
               <FormControl {...formControl3Props}>
-                {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
                 {input4Props !== null && <Input {...input4Props} />}
               </FormControl>
             )}
@@ -513,10 +698,10 @@ export function DialogCreateComponent({
               {...barButtonsProps}
               button4={buttonProps}
               icon4={icon4Props}
-              textLabel4={textLabel5Props}
+              textLabel4={textLabel9Props}
               button5={button2Props}
               icon5={icon5Props}
-              textLabel5={textLabel6Props}
+              textLabel5={textLabel10Props}
             />
           )}
         </>
