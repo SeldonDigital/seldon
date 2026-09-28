@@ -215,7 +215,7 @@ export function SidebarObjects({
               )}
             </Frame>
           </Frame>
-          <Frame {...frame3Props}></Frame>
+          <Frame {...frame3Props} />
         </>
       )}
     </HTMLDiv>

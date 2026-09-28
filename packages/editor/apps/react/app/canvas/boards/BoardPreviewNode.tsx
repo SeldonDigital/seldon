@@ -18,6 +18,7 @@ type BoardPreviewNodeProps = {
   workspace: Workspace
   /** Per-preview className scope so identical node ids do not share CSS across previews. */
   scope: string
+  childrenByNodeId?: Readonly<Record<string, readonly string[]>>
   isRoot?: boolean
   /**
    * Node-id path from the preview root down to this node. Lets a shared child id
@@ -38,6 +39,7 @@ export function BoardPreviewNode({
   nodeId,
   workspace,
   scope,
+  childrenByNodeId,
   isRoot = false,
   rootPath,
 }: BoardPreviewNodeProps) {
@@ -72,7 +74,7 @@ export function BoardPreviewNode({
     return null
   }
 
-  const childNodeIds = getNodeChildIds(node, workspace)
+  const childNodeIds = childrenByNodeId?.[node.id] ?? getNodeChildIds(node, workspace)
 
   // The scope becomes part of a CSS class name. Resource item scopes such as
   // `font-collection:system:appleSystem` contain colons, which would parse as
@@ -98,6 +100,7 @@ export function BoardPreviewNode({
           nodeId={childNodeId}
           workspace={workspace}
           scope={scope}
+          childrenByNodeId={childrenByNodeId}
           rootPath={`${selfPath}/${childNodeId}`}
         />
       ))}

@@ -15,7 +15,7 @@ import {
 const IDENTIFYING_ATTRIBUTES = [...CANVAS_SELECTION_ATTRIBUTES, "data-board-id", "id"]
 
 /** The attribute the walk reads before a copy gives it up. */
-const NODE_ATTRIBUTE = "data-canvas-node-id"
+const DEFAULT_NODE_ATTRIBUTE = "data-canvas-node-id"
 
 /** Tells the walk which component a node renders, so it can read its level. */
 const COMPONENT_ATTRIBUTE = "data-component-id"
@@ -91,8 +91,12 @@ interface MeasuredNode {
  * measurements are divided by so the copy is built in layout pixels. A variant rendered
  * at its own size needs no scale.
  */
-export function buildExplodedSurfaces(source: HTMLElement, scale = 1): HTMLElement {
-  const measured = measureNodes(source, scale)
+export function buildExplodedSurfaces(
+  source: HTMLElement,
+  scale = 1,
+  nodeAttribute = DEFAULT_NODE_ATTRIBUTE,
+): HTMLElement {
+  const measured = measureNodes(source, scale, nodeAttribute)
   // Every node is kept for sizing, so a node that is out of sight still holds the
   // space it held in the variant, but only the ones in sight are copied.
   const sizes = new Map(measured.map((node) => [node.element, node]))
@@ -122,7 +126,7 @@ export function buildExplodedSurfaces(source: HTMLElement, scale = 1): HTMLEleme
       surfaces.set(plane, surface)
     }
 
-    surface.appendChild(buildNodeCopy(node, sizes))
+    surface.appendChild(buildNodeCopy(node, sizes, nodeAttribute))
   }
 
   const ordered = Array.from(surfaces.entries()).sort(([left], [right]) => left - right)
@@ -163,7 +167,11 @@ function buildSurface(plane: number): HTMLElement {
 }
 
 /** A copy of one node alone, placed on its surface where the variant laid it out. */
-function buildNodeCopy(node: MeasuredNode, sizes: Map<Element, MeasuredNode>): Element {
+function buildNodeCopy(
+  node: MeasuredNode,
+  sizes: Map<Element, MeasuredNode>,
+  nodeAttribute: string,
+): Element {
   const copy = node.element.cloneNode(true) as Element
 
   // The nodes inside it are carried by their own surface, so each one is emptied and
@@ -172,8 +180,8 @@ function buildNodeCopy(node: MeasuredNode, sizes: Map<Element, MeasuredNode>): E
   // order as the node it came from, so the two walks line up and each one can be
   // sized from what it stood in for. This runs before stripping, because both
   // walks read the attributes the copy then gives up.
-  const inside = findChildNodes(copy)
-  const originals = findChildNodes(node.element)
+  const inside = findChildNodes(copy, nodeAttribute)
+  const originals = findChildNodes(node.element, nodeAttribute)
 
   inside.forEach((child, index) => {
     const original = originals[index]
@@ -252,11 +260,11 @@ function holdSpace(element: Element, measured: MeasuredNode | undefined): void {
   style.height = `${measured.height}px`
 }
 
-function measureNodes(source: HTMLElement, scale: number): MeasuredNode[] {
+function measureNodes(source: HTMLElement, scale: number, nodeAttribute: string): MeasuredNode[] {
   const origin = source.getBoundingClientRect()
   const found: CollectedNode[] = []
 
-  collectNodes(source, getSurface(source, 0), NO_CLIP, found)
+  collectNodes(source, getSurface(source, 0), NO_CLIP, found, nodeAttribute)
 
   return found.map((node) => measureNode(node, origin, scale))
 }
@@ -329,15 +337,27 @@ interface CollectedNode {
   clip: Clip
 }
 
-function collectNodes(element: Element, surface: number, clip: Clip, found: CollectedNode[]): void {
+function collectNodes(
+  element: Element,
+  surface: number,
+  clip: Clip,
+  found: CollectedNode[],
+  nodeAttribute: string,
+): void {
   found.push({ element, surface, clip })
 
   // Nothing of it is in sight, so nothing inside it can be either. It is still
   // collected, since the space it held is what keeps the content beside it in place.
   if (isClipEmpty(clip)) return
 
-  for (const child of findChildNodes(element)) {
-    collectNodes(child, getSurface(child, surface), getChildClip(child, element, clip), found)
+  for (const child of findChildNodes(element, nodeAttribute)) {
+    collectNodes(
+      child,
+      getSurface(child, surface),
+      getChildClip(child, element, clip),
+      found,
+      nodeAttribute,
+    )
   }
 }
 
@@ -440,17 +460,17 @@ function getSurface(element: Element, parent: number): number {
  * node. A primitive is passed through, which leaves it and anything it renders on the
  * surface of the component holding it.
  */
-function findChildNodes(element: Element): Element[] {
+function findChildNodes(element: Element, nodeAttribute: string): Element[] {
   const nodes: Element[] = []
 
   for (const child of Array.from(element.children)) {
-    if (child.hasAttribute(NODE_ATTRIBUTE) && getLevel(child) !== ComponentLevel.PRIMITIVE) {
+    if (child.hasAttribute(nodeAttribute) && getLevel(child) !== ComponentLevel.PRIMITIVE) {
       nodes.push(child)
 
       continue
     }
 
-    nodes.push(...findChildNodes(child))
+    nodes.push(...findChildNodes(child, nodeAttribute))
   }
 
   return nodes

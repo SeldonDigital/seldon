@@ -21221,7 +21221,7 @@
         "margin": {
           "left": {
             "type": "theme.ordinal",
-            "value": "@margin.cozy"
+            "value": "@margin.tight"
           }
         }
       },

@@ -307,7 +307,7 @@ export function Sidebar({
               textLabel3={textLabel3Props}
             />
           )}
-          <Frame {...frameProps}></Frame>
+          <Frame {...frameProps} />
           {barButtonsProps !== null && (
             <BarButtons {...barButtonsProps}>
               <Frame {...frame2Props}>

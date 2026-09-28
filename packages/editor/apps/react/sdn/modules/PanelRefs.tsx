@@ -201,7 +201,7 @@ export function PanelRefs({
                   {text3Props !== null && <Text {...text3Props} />}
                 </Frame>
                 {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-                <Frame {...frame3Props}></Frame>
+                <Frame {...frame3Props} />
               </>
             )}
           </Frame>

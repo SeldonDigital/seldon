@@ -4418,7 +4418,7 @@ body {
 
 .sdn-text-subtitle--qgof {
   color: var(--sdn-hc-on-white);
-  margin-inline-start: var(--sdn-margins-cozy);
+  margin-inline-start: var(--sdn-margins-tight);
   font-weight: var(--sdn-font-weight-medium);
   font-size: var(--sdn-font-size-xsmall);
 }

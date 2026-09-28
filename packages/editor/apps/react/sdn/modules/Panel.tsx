@@ -315,7 +315,7 @@ export function Panel({
               )}
             </Bar>
           )}
-          <Frame {...frameProps}></Frame>
+          <Frame {...frameProps} />
           {barButtonsProps !== null && (
             <BarButtons {...barButtonsProps}>
               <Frame {...frame2Props}>

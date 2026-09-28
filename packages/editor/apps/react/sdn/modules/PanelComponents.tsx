@@ -345,7 +345,7 @@ export function PanelComponents({
                     <Frame {...containerProps}>
                       {itemCatalogProps !== null && (
                         <ItemCatalog {...itemCatalogProps}>
-                          <Frame {...frame3Props}></Frame>
+                          <Frame {...frame3Props} />
                           <Frame {...frame4Props}>
                             {textTitle2Props !== null && <TextTitle {...textTitle2Props} />}
                             {textSubtitle2Props !== null && (

@@ -135,7 +135,7 @@ export function PanelToken({
               {iconProps !== null && <Icon {...iconProps} />}
             </ChipAssist>
           )}
-          <Frame {...frameProps}></Frame>
+          <Frame {...frameProps} />
         </>
       )}
     </HTMLDiv>

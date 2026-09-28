@@ -24,6 +24,8 @@ import type { CSSProperties } from "react"
 export interface ExplodedSource {
   element: HTMLElement
   scale?: number
+  nodeAttribute?: string
+  fit?: boolean
 }
 
 /**
@@ -37,6 +39,7 @@ export interface ExplodedSource {
  */
 export interface ExplodedStageProps {
   resolveSource: () => ExplodedSource | null
+  compact?: boolean
 }
 
 // The rules do not depend on what is on screen. The stylesheet is therefore built once
@@ -56,10 +59,27 @@ const explodedCss = getExplodedCss()
  * The shadow color travels through a custom property. The stylesheet is built once at
  * module load, and the interface mode is not known then.
  */
-function getStageStyle(ink: string): CSSProperties {
+function getStageStyle(ink: string, compact: boolean): CSSProperties {
   const backdropInk = `color-mix(in srgb, ${ink} ${EXPLODE_BACKDROP_INK_PERCENT}%, transparent)`
   const shadowColor = `color-mix(in srgb, ${ink} ${EXPLODE_SHADOW_INK_PERCENT}%, transparent)`
   const shadow = { [EXPLODE_SHADOW_COLOR_PROPERTY]: shadowColor } as CSSProperties
+
+  if (compact) {
+    return {
+      ...shadow,
+
+      alignSelf: "stretch",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100%",
+      overflow: "visible",
+      perspective: `${EXPLODE_PERSPECTIVE_PX}px`,
+      perspectiveOrigin: "50% 50%",
+      touchAction: "none",
+      width: "100%",
+    }
+  }
 
   return {
     ...shadow,
@@ -92,7 +112,7 @@ const worldStyle: CSSProperties = {
  * no overlay tracks it, so it may be placed anywhere a variant is rendered. The copy is
  * dropped when the stage unmounts, which releases the whole view.
  */
-export function ExplodedStage({ resolveSource }: ExplodedStageProps) {
+export function ExplodedStage({ resolveSource, compact = false }: ExplodedStageProps) {
   const resolvedMode = useResolvedInterfaceMode()
   const stageRef = useRef<HTMLElement>(null)
   const worldRef = useRef<HTMLElement>(null)
@@ -100,7 +120,7 @@ export function ExplodedStage({ resolveSource }: ExplodedStageProps) {
   // The neutral swatches swap with the interface mode, so the stage picks the one that
   // contrasts with the surface behind it. The backdrop and the shadows both use it.
   const ink = resolvedMode === "dark" ? "var(--sdn-swatch-offWhite)" : "var(--sdn-swatch-offBlack)"
-  const stageStyle = useMemo<CSSProperties>(() => getStageStyle(ink), [ink])
+  const stageStyle = useMemo<CSSProperties>(() => getStageStyle(ink, compact), [ink, compact])
 
   useLayoutEffect(() => {
     const stage = stageRef.current
@@ -112,7 +132,14 @@ export function ExplodedStage({ resolveSource }: ExplodedStageProps) {
 
     if (!source) return
 
-    const view = createExplodedView({ source: source.element, stage, world, scale: source.scale })
+    const view = createExplodedView({
+      source: source.element,
+      stage,
+      world,
+      scale: source.scale,
+      nodeAttribute: source.nodeAttribute,
+      fit: source.fit,
+    })
 
     return view.destroy
   }, [resolveSource])

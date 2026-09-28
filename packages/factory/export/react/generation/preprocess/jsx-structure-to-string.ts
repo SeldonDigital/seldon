@@ -41,9 +41,13 @@ export function jsxStructureToString(
 
     if (node.type === "frame") {
       // Frame component
+      if (!node.children) {
+        return `\n${indentStr}<Frame {...${node.propVarName}} />`
+      }
+
       let content = `\n${indentStr}<Frame {...${node.propVarName}}>`
 
-      if (node.ref && node.children) {
+      if (node.ref) {
         content += `\n${" ".repeat(nextIndent)}{${node.propVarName}?.children !== undefined ? (`
         content += `\n${" ".repeat(nextIndent + 2)}${node.propVarName}?.children`
         content += `\n${" ".repeat(nextIndent)}) : (`

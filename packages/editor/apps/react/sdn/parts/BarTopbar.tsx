@@ -310,7 +310,7 @@ export function BarTopbar({
               )}
             </Frame>
           </Frame>
-          <Frame {...frame4Props}></Frame>
+          <Frame {...frame4Props} />
         </>
       )}
     </Frame>

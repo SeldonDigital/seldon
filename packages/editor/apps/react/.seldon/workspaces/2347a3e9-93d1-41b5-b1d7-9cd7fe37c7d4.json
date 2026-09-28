@@ -8,7 +8,7 @@
       "exportSettings": {
         "platform": "react",
         "framework": "none",
-        "outputFolder": "",
+        "outputFolder": ".cursor/cli-export-react",
         "fontLinks": false,
         "allFonts": false,
         "allIcons": true,
@@ -21231,7 +21231,7 @@
           "margin": {
             "left": {
               "type": "theme.ordinal",
-              "value": "@margin.cozy"
+              "value": "@margin.tight"
             }
           }
         },
@@ -48363,6 +48363,7 @@
         "origin": "user"
       },
       "component-panel-NdVBXFwt": {
+        "ref": "componentsPalette",
         "type": "variant",
         "level": "module",
         "label": "Components",
@@ -48404,7 +48405,7 @@
           },
           "display": {
             "type": "option",
-            "value": "mock"
+            "value": "show"
           },
           "corners": {
             "topLeft": {
@@ -48435,6 +48436,7 @@
         }
       },
       "component-panel-l6pV5uUu": {
+        "ref": "componentsPaletteTopBar",
         "type": "instance",
         "level": "frame",
         "label": "Frame",
@@ -48614,7 +48616,7 @@
           },
           "display": {
             "type": "option",
-            "value": "mock"
+            "value": "show"
           }
         },
         "origin": "user"
@@ -48652,6 +48654,7 @@
         "origin": "user"
       },
       "component-panel-VuCwvJK0": {
+        "ref": "componentsPaletteClose",
         "type": "instance",
         "level": "element",
         "label": "Iconic",
@@ -48680,6 +48683,7 @@
         "origin": "user"
       },
       "component-panel-kPNmlLz7": {
+        "ref": "componentsPaletteContents",
         "type": "instance",
         "level": "frame",
         "label": "Frame",
@@ -48710,7 +48714,7 @@
           },
           "display": {
             "type": "option",
-            "value": "mock"
+            "value": "show"
           },
           "height": {
             "type": "option",
@@ -48740,6 +48744,7 @@
         "origin": "user"
       },
       "component-panel-LEOEEp33": {
+        "ref": "componentsPaletteBottomBar",
         "type": "instance",
         "level": "frame",
         "label": "Frame",
@@ -48888,11 +48893,16 @@
                 "value": null
               }
             }
-          ]
+          ],
+          "display": {
+            "type": "option",
+            "value": "show"
+          }
         },
         "origin": "user"
       },
       "component-panel-NnvtKzK8": {
+        "ref": "componentsPaletteFilter",
         "type": "instance",
         "level": "part",
         "label": "Filter",
@@ -48919,7 +48929,7 @@
           },
           "display": {
             "type": "option",
-            "value": "mock"
+            "value": "show"
           }
         },
         "origin": "user"
@@ -48943,6 +48953,7 @@
         "origin": "user"
       },
       "component-panel-SrzP6NW6": {
+        "ref": "componentsPaletteFilterInput",
         "type": "instance",
         "level": "primitive",
         "label": "Input",
@@ -48952,6 +48963,7 @@
         "origin": "user"
       },
       "component-panel-H5DmFajg": {
+        "ref": "componentsPaletteFilterClear",
         "type": "instance",
         "level": "element",
         "label": "Iconic",
@@ -48970,6 +48982,7 @@
         "origin": "user"
       },
       "component-text-MYwkrDha": {
+        "ref": "componentsPaletteTitle",
         "type": "instance",
         "level": "primitive",
         "label": "Title",
@@ -49079,7 +49092,11 @@
                 "value": null
               }
             }
-          ]
+          ],
+          "display": {
+            "type": "option",
+            "value": "show"
+          }
         },
         "origin": "user"
       },
@@ -49651,6 +49668,7 @@
         "origin": "schema"
       },
       "component-listStandard-7ROJJkg6": {
+        "ref": "componentsCatalogList",
         "type": "instance",
         "level": "part",
         "label": "Catalog",
@@ -49660,6 +49678,7 @@
         "origin": "user"
       },
       "component-listStandard-VhoUiFlz": {
+        "ref": "componentsCatalogLevel",
         "type": "instance",
         "level": "primitive",
         "label": "Subtitle",
@@ -49678,6 +49697,7 @@
         "origin": "user"
       },
       "component-listStandard-MfndKm2N": {
+        "ref": "componentsCatalogItem",
         "type": "instance",
         "level": "element",
         "label": "Catalog",
@@ -49687,6 +49707,7 @@
         "origin": "user"
       },
       "component-listStandard-CMn4y9gX": {
+        "ref": "componentsCatalogImage",
         "type": "instance",
         "level": "frame",
         "label": "Frame",
@@ -49705,6 +49726,7 @@
         "origin": "user"
       },
       "component-listStandard-fsG0UIdJ": {
+        "ref": "componentsCatalogName",
         "type": "instance",
         "level": "primitive",
         "label": "Title",
@@ -49714,6 +49736,7 @@
         "origin": "user"
       },
       "component-listStandard-Fm0lptqE": {
+        "ref": "componentsCatalogVariant",
         "type": "instance",
         "level": "primitive",
         "label": "Subtitle",
@@ -49723,6 +49746,7 @@
         "origin": "user"
       },
       "component-listStandard-hQ8Pdn4K": {
+        "ref": "componentsCatalogMetadata",
         "type": "instance",
         "level": "primitive",
         "label": "Subtitle",
@@ -50646,6 +50670,6 @@
     },
     "media": {}
   },
-  "updatedAt": "2026-09-28T15:14:43.102Z",
+  "updatedAt": "2026-09-28T16:39:39.946Z",
   "lastEditor": "react"
 }

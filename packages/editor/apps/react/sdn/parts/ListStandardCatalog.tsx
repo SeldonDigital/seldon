@@ -159,7 +159,7 @@ export function ListStandardCatalog({
               <>
                 {itemCatalogProps !== null && (
                   <ItemCatalog {...itemCatalogProps}>
-                    <Frame {...frameProps}></Frame>
+                    <Frame {...frameProps} />
                     <Frame {...frame2Props}>
                       {textTitleProps !== null && <TextTitle {...textTitleProps} />}
                       {textSubtitle2Props !== null && <TextSubtitle {...textSubtitle2Props} />}

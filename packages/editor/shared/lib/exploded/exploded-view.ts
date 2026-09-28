@@ -28,6 +28,8 @@ export interface CreateExplodedViewParams {
   stage: HTMLElement
   world: HTMLElement
   scale?: number
+  nodeAttribute?: string
+  fit?: boolean
 }
 
 /**
@@ -48,8 +50,12 @@ export function createExplodedView({
   stage,
   world,
   scale,
+  nodeAttribute,
+  fit = false,
 }: CreateExplodedViewParams): ExplodedView {
-  const surfaces = buildExplodedSurfaces(source, scale)
+  const surfaces = buildExplodedSurfaces(source, scale, nodeAttribute)
+
+  if (fit) fitWorldToStage(source, stage, world)
 
   let rotationX = EXPLODE_INITIAL_ROTATION_X_DEG
   let rotationY = EXPLODE_INITIAL_ROTATION_Y_DEG
@@ -174,6 +180,18 @@ export function createExplodedView({
   }
 
   return { destroy }
+}
+
+function fitWorldToStage(source: HTMLElement, stage: HTMLElement, world: HTMLElement): void {
+  const sourceWidth = Math.max(source.offsetWidth, source.scrollWidth)
+  const sourceHeight = Math.max(source.offsetHeight, source.scrollHeight)
+  const scale = Math.min(stage.clientWidth / sourceWidth, stage.clientHeight / sourceHeight, 1)
+  const width = sourceWidth * scale
+  const height = sourceHeight * scale
+
+  world.style.scale = String(scale)
+  world.style.transformOrigin = "top left"
+  world.style.translate = `${(stage.clientWidth - width) / 2}px ${(stage.clientHeight - height) / 2}px`
 }
 
 function clampRotation(degrees: number): number {

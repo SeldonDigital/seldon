@@ -333,7 +333,7 @@ export function PanelDialog({
               )}
             </Bar>
           )}
-          <Frame {...frameProps}></Frame>
+          <Frame {...frameProps} />
           {barButtonsProps !== null && (
             <BarButtons {...barButtonsProps}>
               <Frame {...frame2Props}>

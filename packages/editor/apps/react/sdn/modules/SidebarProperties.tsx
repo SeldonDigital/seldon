@@ -223,7 +223,7 @@ export function SidebarProperties({
               <ButtonToggle {...buttonToggleProps} icon={icon4Props} />
             )}
           </Frame>
-          <Frame {...frame2Props}></Frame>
+          <Frame {...frame2Props} />
         </>
       )}
     </HTMLDiv>

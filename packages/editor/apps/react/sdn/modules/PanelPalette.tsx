@@ -173,7 +173,7 @@ export function PanelPalette({
               frameProps?.children
             ) : (
               <>
-                <Frame {...frame2Props}></Frame>
+                <Frame {...frame2Props} />
                 {buttonIconicProps !== null && (
                   <ButtonIconic {...buttonIconicProps} icon={iconProps} />
                 )}
@@ -183,13 +183,13 @@ export function PanelPalette({
               </>
             )}
           </Frame>
-          <Frame {...frame3Props}></Frame>
+          <Frame {...frame3Props} />
           <Frame {...frame4Props}>
             {frame4Props?.children !== undefined ? (
               frame4Props?.children
             ) : (
               <>
-                <Frame {...frame5Props}></Frame>
+                <Frame {...frame5Props} />
               </>
             )}
           </Frame>

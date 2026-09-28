@@ -6,14 +6,13 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { FloatingPanel } from "@app/windows/FloatingPanel"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Frame } from "@seldon/components/frames/Frame"
 import { PanelComponents } from "@seldon/components/modules/PanelComponents"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
-import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 
 import { useDialog } from "../../dialogs/hooks/use-dialog"
+import { ComponentCatalogPreview } from "./ComponentCatalogPreview"
 
 import type { CatalogComponentItem } from "../../dialogs/hooks/use-dialog"
 import type { FloatingPanelApi } from "@app/windows/FloatingPanel"
@@ -52,12 +51,16 @@ function ComponentPalette({ close }: { close: () => void }) {
   const renderPalette = useCallback(
     (api: FloatingPanelApi) => {
       const content = visibleCategories.map((category) => (
-        <ListStandardCatalog key={category.category}>
-          <TextSubtitle>{category.category}</TextSubtitle>
-          {category.items.map((item) => (
-            <ComponentDragSource key={item.id} item={item} />
-          ))}
-        </ListStandardCatalog>
+        <ListStandardCatalog
+          container={{
+            children: category.items.map((item) => (
+              <ComponentDragSource category={category.category} key={item.id} item={item} />
+            )),
+          }}
+          itemCatalog={null}
+          key={category.category}
+          textSubtitle={EMPTY_SLOT}
+        />
       ))
       const seldonRefs = {
         componentsPaletteTopBar: { onPointerDown: api.startDrag },
@@ -102,8 +105,13 @@ function ComponentPalette({ close }: { close: () => void }) {
   return floatingPanel
 }
 
-function ComponentDragSource({ item }: { item: CatalogComponentItem }) {
-  const ref = useRef<HTMLElement | null>(null)
+interface ComponentDragSourceProps {
+  category: string
+  item: CatalogComponentItem
+}
+
+function ComponentDragSource({ category, item }: ComponentDragSourceProps) {
+  const ref = useRef<HTMLDivElement | null>(null)
   const { setActiveTool } = useTool()
   const { begin, clear } = useComponentDragSession()
   const payload = useMemo<ComponentDragPayload>(
@@ -113,12 +121,6 @@ function ComponentDragSource({ item }: { item: CatalogComponentItem }) {
         : { componentId: item.componentId, kind: "catalog" },
     [item.componentId, item.variantId],
   )
-
-  const refs = {
-    catalogIcon: { icon: item.icon },
-    catalogLabel: { children: item.name },
-    catalogVariant: { children: item.description },
-  }
 
   useEffect(() => {
     const element = ref.current
@@ -139,12 +141,17 @@ function ComponentDragSource({ item }: { item: CatalogComponentItem }) {
     })
   }, [begin, clear, payload, setActiveTool])
   const testId = `component-palette-item-${item.id}`
+  const preview = (
+    <ComponentCatalogPreview componentId={item.componentId} variantId={item.variantId} />
+  )
   const itemContent = (
-    <ItemCatalog
-      icon={EMPTY_SLOT}
-      seldonRefs={refs}
-      textSubtitle={EMPTY_SLOT}
-      textTitle={EMPTY_SLOT}
+    <ListStandardCatalog
+      frame={{ children: preview, style: previewFrameStyle }}
+      itemCatalog={EMPTY_SLOT}
+      textSubtitle={null}
+      textSubtitle2={{ children: category }}
+      textSubtitle3={{ children: item.description }}
+      textTitle={{ children: item.name }}
       data-testid={testId}
     />
   )
@@ -164,4 +171,8 @@ const contentStyle: CSSProperties = {
   flex: 1,
   minHeight: 0,
   overflowY: "auto",
+}
+
+const previewFrameStyle: CSSProperties = {
+  position: "relative",
 }
