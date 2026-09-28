@@ -164,16 +164,18 @@ const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.sel
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
       </ChipAssist>
       <Frame v-bind="frameProps">
-        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-          <Text v-if="textProps !== null" v-bind="textProps" />
-          <Text v-if="text2Props !== null" v-bind="text2Props" />
-          <Text v-if="text3Props !== null" v-bind="text3Props" />
-        </Frame>
-        <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-        <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-          <slot name="refCardControllers" />
-        </Frame>
+        <slot name="refCard">
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+            <Text v-if="textProps !== null" v-bind="textProps" />
+            <Text v-if="text2Props !== null" v-bind="text2Props" />
+            <Text v-if="text3Props !== null" v-bind="text3Props" />
+          </Frame>
+          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+            <slot name="refCardControllers"> </slot>
+          </Frame>
+        </slot>
       </Frame>
     </slot>
   </div>

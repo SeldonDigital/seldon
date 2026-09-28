@@ -690,85 +690,139 @@ export function Specimen({
       ) : (
         <>
           <Frame {...frameProps}>
-            <Frame {...frame2Props}>
-              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
-              {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-            </Frame>
-            <Frame {...frame3Props}>
-              {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
-            </Frame>
+            {frameProps?.children !== undefined ? (
+              frameProps?.children
+            ) : (
+              <>
+                <Frame {...frame2Props}>
+                  {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                  {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                </Frame>
+                <Frame {...frame3Props}>
+                  {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame4Props}>
-            <Frame {...frame5Props}>
-              {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-              {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
-            </Frame>
-            <Frame {...frame6Props}>
-              {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
-            </Frame>
+            {frame4Props?.children !== undefined ? (
+              frame4Props?.children
+            ) : (
+              <>
+                <Frame {...frame5Props}>
+                  {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                  {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                </Frame>
+                <Frame {...frame6Props}>
+                  {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame7Props}>
-            <Frame {...frame8Props}>
-              {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
-              {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
-            </Frame>
-            <Frame {...frame9Props}>
-              {textTaglineProps !== null && <TextTagline {...textTaglineProps} />}
-            </Frame>
+            {frame7Props?.children !== undefined ? (
+              frame7Props?.children
+            ) : (
+              <>
+                <Frame {...frame8Props}>
+                  {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+                  {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                </Frame>
+                <Frame {...frame9Props}>
+                  {textTaglineProps !== null && <TextTagline {...textTaglineProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame10Props}>
-            <Frame {...frame11Props}>
-              {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
-              {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
-            </Frame>
-            <Frame {...frame12Props}>
-              {textCalloutProps !== null && <TextCallout {...textCalloutProps} />}
-            </Frame>
+            {frame10Props?.children !== undefined ? (
+              frame10Props?.children
+            ) : (
+              <>
+                <Frame {...frame11Props}>
+                  {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
+                  {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
+                </Frame>
+                <Frame {...frame12Props}>
+                  {textCalloutProps !== null && <TextCallout {...textCalloutProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame13Props}>
-            <Frame {...frame14Props}>
-              {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
-              {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
-            </Frame>
-            <Frame {...frame15Props}>
-              {textSubtitleProps !== null && <TextSubtitle {...textSubtitleProps} />}
-            </Frame>
+            {frame13Props?.children !== undefined ? (
+              frame13Props?.children
+            ) : (
+              <>
+                <Frame {...frame14Props}>
+                  {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
+                  {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
+                </Frame>
+                <Frame {...frame15Props}>
+                  {textSubtitleProps !== null && <TextSubtitle {...textSubtitleProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame16Props}>
-            <Frame {...frame17Props}>
-              {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
-              {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
-            </Frame>
-            <Frame {...frame18Props}>
-              {textTitleProps !== null && <TextTitle {...textTitleProps} />}
-            </Frame>
+            {frame16Props?.children !== undefined ? (
+              frame16Props?.children
+            ) : (
+              <>
+                <Frame {...frame17Props}>
+                  {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
+                  {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
+                </Frame>
+                <Frame {...frame18Props}>
+                  {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame19Props}>
-            <Frame {...frame20Props}>
-              {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
-              {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
-            </Frame>
-            <Frame {...frame21Props}>
-              {textSubheadingProps !== null && <TextSubheading {...textSubheadingProps} />}
-            </Frame>
+            {frame19Props?.children !== undefined ? (
+              frame19Props?.children
+            ) : (
+              <>
+                <Frame {...frame20Props}>
+                  {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
+                  {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
+                </Frame>
+                <Frame {...frame21Props}>
+                  {textSubheadingProps !== null && <TextSubheading {...textSubheadingProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame22Props}>
-            <Frame {...frame23Props}>
-              {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
-              {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
-            </Frame>
-            <Frame {...frame24Props}>
-              {textHeadingProps !== null && <TextHeading {...textHeadingProps} />}
-            </Frame>
+            {frame22Props?.children !== undefined ? (
+              frame22Props?.children
+            ) : (
+              <>
+                <Frame {...frame23Props}>
+                  {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
+                  {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
+                </Frame>
+                <Frame {...frame24Props}>
+                  {textHeadingProps !== null && <TextHeading {...textHeadingProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
           <Frame {...frame25Props}>
-            <Frame {...frame26Props}>
-              {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
-              {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
-            </Frame>
-            <Frame {...frame27Props}>
-              {textDisplayProps !== null && <TextDisplay {...textDisplayProps} />}
-            </Frame>
+            {frame25Props?.children !== undefined ? (
+              frame25Props?.children
+            ) : (
+              <>
+                <Frame {...frame26Props}>
+                  {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
+                  {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
+                </Frame>
+                <Frame {...frame27Props}>
+                  {textDisplayProps !== null && <TextDisplay {...textDisplayProps} />}
+                </Frame>
+              </>
+            )}
           </Frame>
         </>
       )}

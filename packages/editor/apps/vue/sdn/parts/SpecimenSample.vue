@@ -176,16 +176,31 @@ const hrProps = computed(() => mergeSlot(sdn.hr, props.hr, props.seldonRefs))
   <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
       <Frame v-bind="frameProps">
-        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-        </Frame>
-        <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-          <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
-          <TextDescription v-if="textDescription2Props !== null" v-bind="textDescription2Props" />
-          <TextDescription v-if="textDescription3Props !== null" v-bind="textDescription3Props" />
-          <TextDescription v-if="textDescription4Props !== null" v-bind="textDescription4Props" />
-        </Frame>
+        <slot name="typeSpecimenPreview">
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <slot name="typeSpecimenFamily">
+              <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+              <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+            </slot>
+          </Frame>
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+            <slot name="typeSpecimenGlyphs">
+              <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
+              <TextDescription
+                v-if="textDescription2Props !== null"
+                v-bind="textDescription2Props"
+              />
+              <TextDescription
+                v-if="textDescription3Props !== null"
+                v-bind="textDescription3Props"
+              />
+              <TextDescription
+                v-if="textDescription4Props !== null"
+                v-bind="textDescription4Props"
+              />
+            </slot>
+          </Frame>
+        </slot>
       </Frame>
       <Hr v-if="hrProps !== null" v-bind="hrProps" />
     </slot>

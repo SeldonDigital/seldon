@@ -141,27 +141,31 @@ const frame5Props = computed(() => mergeSlot(sdn.frame5, props.frame5, props.sel
   <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
       <Frame v-bind="frameProps">
-        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-          <slot name="paletteTopBarSlot" />
-        </Frame>
-        <ButtonIconic
-          v-if="buttonIconicProps !== null"
-          v-bind="buttonIconicProps"
-          :icon="iconProps"
-        />
-        <ButtonIconic
-          v-if="buttonIconic2Props !== null"
-          v-bind="buttonIconic2Props"
-          :icon="icon2Props"
-        />
+        <slot name="paletteTopBar">
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <slot name="paletteTopBarSlot"> </slot>
+          </Frame>
+          <ButtonIconic
+            v-if="buttonIconicProps !== null"
+            v-bind="buttonIconicProps"
+            :icon="iconProps"
+          />
+          <ButtonIconic
+            v-if="buttonIconic2Props !== null"
+            v-bind="buttonIconic2Props"
+            :icon="icon2Props"
+          />
+        </slot>
       </Frame>
       <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-        <slot name="paletteContents" />
+        <slot name="paletteContents"> </slot>
       </Frame>
       <Frame v-bind="frame4Props" v-if="frame4Props !== null">
-        <Frame v-bind="frame5Props" v-if="frame5Props !== null">
-          <slot name="paletteBottomBarSlot" />
-        </Frame>
+        <slot name="paletteBottomBar">
+          <Frame v-bind="frame5Props" v-if="frame5Props !== null">
+            <slot name="paletteBottomBarSlot"> </slot>
+          </Frame>
+        </slot>
       </Frame>
     </slot>
   </div>

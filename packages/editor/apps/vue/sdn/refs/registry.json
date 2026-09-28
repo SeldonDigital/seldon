@@ -114,6 +114,230 @@
         }
       ]
     },
+    "componentsCatalogImage": {
+      "component": "Icon",
+      "nodeId": "component-listStandard-bzfvFrRV",
+      "className": "sdn-icon sdn-icon--mene",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "icon2",
+          "type": "IconProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsCatalogItem": {
+      "component": "ItemCatalog",
+      "nodeId": "component-listStandard-p6pn38mb",
+      "className": "sdn-item-catalog sdn-item-catalog--ieif",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "itemCatalog",
+          "type": "ItemCatalogProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsCatalogLevel": {
+      "component": "TextSubtitle",
+      "nodeId": "component-listStandard-KsCTOceL",
+      "className": "sdn-text-subtitle sdn-text-subtitle--ksct",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "textSubtitle",
+          "type": "TextSubtitleProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsCatalogList": {
+      "component": "ListStandardCatalog",
+      "nodeId": "component-listStandard-qf1JO5pO",
+      "className": "sdn-list-standard-catalog sdn-list-standard-catalog--qf1j",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "listStandardCatalog",
+          "type": "ListStandardCatalogProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsCatalogMetadata": {
+      "component": "Text",
+      "nodeId": "component-text-vELMvK6P",
+      "className": "sdn-text sdn-text-title--ulqm",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "text",
+          "type": "TextProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsCatalogName": {
+      "component": "TextTitle",
+      "nodeId": "component-listStandard-r34sNsOe",
+      "className": "sdn-text-title sdn-text-title--r34s",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "textTitle",
+          "type": "TextTitleProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsCatalogVariant": {
+      "component": "TextSubtitle",
+      "nodeId": "component-listStandard-Wcp5KIbI",
+      "className": "sdn-text-subtitle sdn-text-subtitle--wcp5",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "textSubtitle2",
+          "type": "TextSubtitleProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsPalette": {
+      "component": "PanelComponents",
+      "nodeId": "component-panel-ZFq4zT1O",
+      "className": "sdn-panel-palette sdn-panel",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": null,
+          "type": "PanelComponentsProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "componentsPaletteBottomBar": {
+      "component": "Frame",
+      "nodeId": "component-panel-oGFODIG9",
+      "className": "sdn-frame sdn-frame--rc9x",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "frame8",
+          "type": "FrameProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "componentsPaletteClose": {
+      "component": "ButtonIconic",
+      "nodeId": "component-panel-52JT5Xlh",
+      "className": "sdn-button-iconic sdn-button-iconic--tlj6",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "buttonIconic",
+          "type": "ButtonIconicProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsPaletteContents": {
+      "component": "Frame",
+      "nodeId": "component-panel-sSbd2IGk",
+      "className": "sdn-frame sdn-frame--p4qj",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "frame3",
+          "type": "FrameProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "componentsPaletteFilter": {
+      "component": "BarFilter",
+      "nodeId": "component-bar-vn7pWfZL",
+      "className": "sdn-bar-filter sdn-bar-filter--hiy2",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "barFilter",
+          "type": "BarFilterProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsPaletteFilterClear": {
+      "component": "ButtonIconic",
+      "nodeId": "component-bar-svjrpCs7",
+      "className": "sdn-button-iconic sdn-button-iconic--csub",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "buttonIconic2",
+          "type": "ButtonIconicProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "componentsPaletteFilterInput": {
+      "component": "Input",
+      "nodeId": "component-bar-eZKPByzJ",
+      "className": "sdn-input sdn-input--krby",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "input",
+          "type": "InputProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "componentsPaletteTitle": {
+      "component": "TextLabel",
+      "nodeId": "component-panel-d7sTWSCq",
+      "className": "sdn-text-label sdn-text-label--v0o5",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "textLabel",
+          "type": "TextLabelProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "componentsPaletteTopBar": {
+      "component": "Frame",
+      "nodeId": "component-panel-X1C58ouY",
+      "className": "sdn-frame sdn-frame--jbzn",
+      "views": [
+        {
+          "component": "PanelComponents",
+          "file": "modules/PanelComponents.vue",
+          "slot": "frame",
+          "type": "FrameProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
     "createComponentContainer": {
       "component": "ItemCatalog",
       "nodeId": "component-panel-eFZLmrJg",

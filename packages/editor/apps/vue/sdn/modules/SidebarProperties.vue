@@ -193,7 +193,7 @@ const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.sel
         />
       </Frame>
       <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-        <slot name="propertiesTree" />
+        <slot name="propertiesTree"> </slot>
       </Frame>
     </slot>
   </div>

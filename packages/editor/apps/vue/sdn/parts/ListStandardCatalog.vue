@@ -256,34 +256,36 @@ const textSubtitle5Props = computed(() =>
     <slot>
       <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
       <Frame v-bind="containerProps" v-if="containerProps !== null">
-        <ItemCatalog v-if="itemCatalogProps !== null" v-bind="itemCatalogProps">
-          <Icon v-if="iconProps !== null" v-bind="iconProps" />
-          <Frame v-bind="frameProps" v-if="frameProps !== null">
-            <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
-            <TextSubtitle v-if="textSubtitle2Props !== null" v-bind="textSubtitle2Props" />
-          </Frame>
-        </ItemCatalog>
-        <ItemCatalog v-if="itemCatalog2Props !== null" v-bind="itemCatalog2Props">
-          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-            <TextTitle v-if="textTitle2Props !== null" v-bind="textTitle2Props" />
-            <TextSubtitle v-if="textSubtitle3Props !== null" v-bind="textSubtitle3Props" />
-          </Frame>
-        </ItemCatalog>
-        <ItemCatalog v-if="itemCatalog3Props !== null" v-bind="itemCatalog3Props">
-          <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-            <TextTitle v-if="textTitle3Props !== null" v-bind="textTitle3Props" />
-            <TextSubtitle v-if="textSubtitle4Props !== null" v-bind="textSubtitle4Props" />
-          </Frame>
-        </ItemCatalog>
-        <ItemCatalog v-if="itemCatalog4Props !== null" v-bind="itemCatalog4Props">
-          <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-          <Frame v-bind="frame4Props" v-if="frame4Props !== null">
-            <TextTitle v-if="textTitle4Props !== null" v-bind="textTitle4Props" />
-            <TextSubtitle v-if="textSubtitle5Props !== null" v-bind="textSubtitle5Props" />
-          </Frame>
-        </ItemCatalog>
+        <slot name="catalogItems">
+          <ItemCatalog v-if="itemCatalogProps !== null" v-bind="itemCatalogProps">
+            <Icon v-if="iconProps !== null" v-bind="iconProps" />
+            <Frame v-bind="frameProps" v-if="frameProps !== null">
+              <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+              <TextSubtitle v-if="textSubtitle2Props !== null" v-bind="textSubtitle2Props" />
+            </Frame>
+          </ItemCatalog>
+          <ItemCatalog v-if="itemCatalog2Props !== null" v-bind="itemCatalog2Props">
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+            <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+              <TextTitle v-if="textTitle2Props !== null" v-bind="textTitle2Props" />
+              <TextSubtitle v-if="textSubtitle3Props !== null" v-bind="textSubtitle3Props" />
+            </Frame>
+          </ItemCatalog>
+          <ItemCatalog v-if="itemCatalog3Props !== null" v-bind="itemCatalog3Props">
+            <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
+            <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+              <TextTitle v-if="textTitle3Props !== null" v-bind="textTitle3Props" />
+              <TextSubtitle v-if="textSubtitle4Props !== null" v-bind="textSubtitle4Props" />
+            </Frame>
+          </ItemCatalog>
+          <ItemCatalog v-if="itemCatalog4Props !== null" v-bind="itemCatalog4Props">
+            <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
+            <Frame v-bind="frame4Props" v-if="frame4Props !== null">
+              <TextTitle v-if="textTitle4Props !== null" v-bind="textTitle4Props" />
+              <TextSubtitle v-if="textSubtitle5Props !== null" v-bind="textSubtitle5Props" />
+            </Frame>
+          </ItemCatalog>
+        </slot>
       </Frame>
     </slot>
   </ul>

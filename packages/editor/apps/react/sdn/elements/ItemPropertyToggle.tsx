@@ -177,8 +177,14 @@ export function ItemPropertyToggle({
             <FormControlCombobox {...formControlComboboxProps}>
               {inputProps !== null && <Input {...inputProps} />}
               <Frame {...frameProps}>
-                {icon2Props !== null && <Icon {...icon2Props} />}
-                {toggleSwitchProps !== null && <ToggleSwitch {...toggleSwitchProps} />}
+                {frameProps?.children !== undefined ? (
+                  frameProps?.children
+                ) : (
+                  <>
+                    {icon2Props !== null && <Icon {...icon2Props} />}
+                    {toggleSwitchProps !== null && <ToggleSwitch {...toggleSwitchProps} />}
+                  </>
+                )}
               </Frame>
             </FormControlCombobox>
           )}

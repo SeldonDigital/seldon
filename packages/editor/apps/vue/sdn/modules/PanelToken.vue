@@ -115,7 +115,7 @@ const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldon
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
       </ChipAssist>
       <Frame v-bind="frameProps">
-        <slot name="tokenCard" />
+        <slot name="tokenCard"> </slot>
       </Frame>
     </slot>
   </div>

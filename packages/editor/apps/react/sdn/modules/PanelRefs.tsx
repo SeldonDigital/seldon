@@ -190,14 +190,20 @@ export function PanelRefs({
             </ChipAssist>
           )}
           <Frame {...frameProps}>
-            <Frame {...frame2Props}>
-              {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-              {textProps !== null && <Text {...textProps} />}
-              {text2Props !== null && <Text {...text2Props} />}
-              {text3Props !== null && <Text {...text3Props} />}
-            </Frame>
-            {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-            <Frame {...frame3Props}></Frame>
+            {frameProps?.children !== undefined ? (
+              frameProps?.children
+            ) : (
+              <>
+                <Frame {...frame2Props}>
+                  {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                  {textProps !== null && <Text {...textProps} />}
+                  {text2Props !== null && <Text {...text2Props} />}
+                  {text3Props !== null && <Text {...text3Props} />}
+                </Frame>
+                {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                <Frame {...frame3Props}></Frame>
+              </>
+            )}
           </Frame>
         </>
       )}

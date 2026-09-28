@@ -289,7 +289,7 @@ const textLabel5Props = computed(() =>
         />
       </Bar>
       <Frame v-bind="frameProps">
-        <slot name="dialogContent" />
+        <slot name="dialogContent"> </slot>
       </Frame>
       <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps">
         <Frame v-bind="frame2Props" v-if="frame2Props !== null">

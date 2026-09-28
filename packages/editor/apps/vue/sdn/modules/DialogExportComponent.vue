@@ -1125,214 +1125,248 @@ const textLabel27Props = computed(() =>
         <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
       </Bar>
       <Frame v-bind="frameProps">
-        <FormControl v-if="formControlProps !== null" v-bind="formControlProps">
-          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-          <Input v-if="inputProps !== null" v-bind="inputProps" />
-        </FormControl>
-        <FormControl v-if="formControl2Props !== null" v-bind="formControl2Props">
-          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-          <ComboboxField
-            v-if="comboboxFieldProps !== null"
-            v-bind="comboboxFieldProps"
-            :input="input2Props"
-            :buttonIconic="buttonIconicProps"
-            :icon2="iconProps"
-            :icon="null"
-          />
-        </FormControl>
-        <FormControl v-if="formControl3Props !== null" v-bind="formControl3Props">
-          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-          <ComboboxField
-            v-if="comboboxField2Props !== null"
-            v-bind="comboboxField2Props"
-            :input="input3Props"
-            :buttonIconic="buttonIconic2Props"
-            :icon2="icon2Props"
-            :icon="null"
-          />
-        </FormControl>
-        <FormControl v-if="formControl4Props !== null" v-bind="formControl4Props">
-          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
-          <Input v-if="input4Props !== null" v-bind="input4Props" />
-        </FormControl>
-        <FormControlRadio v-if="formControlRadioProps !== null" v-bind="formControlRadioProps">
-          <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
-          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-            <FormControlRadioButtonControl
-              v-if="formControlRadioButtonControlProps !== null"
-              v-bind="formControlRadioButtonControlProps"
+        <slot name="exportComponentsOptions">
+          <FormControl v-if="formControlProps !== null" v-bind="formControlProps">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+            <Input v-if="inputProps !== null" v-bind="inputProps" />
+          </FormControl>
+          <FormControl v-if="formControl2Props !== null" v-bind="formControl2Props">
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+            <ComboboxField
+              v-if="comboboxFieldProps !== null"
+              v-bind="comboboxFieldProps"
+              :input="input2Props"
+              :buttonIconic="buttonIconicProps"
+              :icon2="iconProps"
+              :icon="null"
+            />
+          </FormControl>
+          <FormControl v-if="formControl3Props !== null" v-bind="formControl3Props">
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+            <ComboboxField
+              v-if="comboboxField2Props !== null"
+              v-bind="comboboxField2Props"
+              :input="input3Props"
+              :buttonIconic="buttonIconic2Props"
+              :icon2="icon2Props"
+              :icon="null"
+            />
+          </FormControl>
+          <FormControl v-if="formControl4Props !== null" v-bind="formControl4Props">
+            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+            <Input v-if="input4Props !== null" v-bind="input4Props" />
+          </FormControl>
+          <FormControlRadio v-if="formControlRadioProps !== null" v-bind="formControlRadioProps">
+            <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
+            <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+              <slot name="exportFontLinksRadios">
+                <FormControlRadioButtonControl
+                  v-if="formControlRadioButtonControlProps !== null"
+                  v-bind="formControlRadioButtonControlProps"
+                >
+                  <InputRadioButton
+                    v-if="inputRadioButtonProps !== null"
+                    v-bind="inputRadioButtonProps"
+                  />
+                  <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
+                </FormControlRadioButtonControl>
+                <FormControlRadioButtonControl
+                  v-if="formControlRadioButtonControl2Props !== null"
+                  v-bind="formControlRadioButtonControl2Props"
+                >
+                  <InputRadioButton
+                    v-if="inputRadioButton2Props !== null"
+                    v-bind="inputRadioButton2Props"
+                  />
+                  <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
+                </FormControlRadioButtonControl>
+              </slot>
+            </Frame>
+          </FormControlRadio>
+          <Fieldset v-if="fieldsetProps !== null" v-bind="fieldsetProps">
+            <Legend v-if="legendProps !== null" v-bind="legendProps" />
+            <FormControlRadio
+              v-if="formControlRadio2Props !== null"
+              v-bind="formControlRadio2Props"
             >
-              <InputRadioButton
-                v-if="inputRadioButtonProps !== null"
-                v-bind="inputRadioButtonProps"
-              />
-              <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
-            </FormControlRadioButtonControl>
-            <FormControlRadioButtonControl
-              v-if="formControlRadioButtonControl2Props !== null"
-              v-bind="formControlRadioButtonControl2Props"
+              <TextLabel v-if="textLabel8Props !== null" v-bind="textLabel8Props" />
+              <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+                <slot name="exportHiddenRadios">
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl3Props !== null"
+                    v-bind="formControlRadioButtonControl3Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton3Props !== null"
+                      v-bind="inputRadioButton3Props"
+                    />
+                    <TextLabel v-if="textLabel9Props !== null" v-bind="textLabel9Props" />
+                  </FormControlRadioButtonControl>
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl4Props !== null"
+                    v-bind="formControlRadioButtonControl4Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton4Props !== null"
+                      v-bind="inputRadioButton4Props"
+                    />
+                    <TextLabel v-if="textLabel10Props !== null" v-bind="textLabel10Props" />
+                  </FormControlRadioButtonControl>
+                </slot>
+              </Frame>
+            </FormControlRadio>
+            <FormControlRadio
+              v-if="formControlRadio3Props !== null"
+              v-bind="formControlRadio3Props"
             >
-              <InputRadioButton
-                v-if="inputRadioButton2Props !== null"
-                v-bind="inputRadioButton2Props"
-              />
-              <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
-            </FormControlRadioButtonControl>
-          </Frame>
-        </FormControlRadio>
-        <Fieldset v-if="fieldsetProps !== null" v-bind="fieldsetProps">
-          <Legend v-if="legendProps !== null" v-bind="legendProps" />
-          <FormControlRadio v-if="formControlRadio2Props !== null" v-bind="formControlRadio2Props">
-            <TextLabel v-if="textLabel8Props !== null" v-bind="textLabel8Props" />
-            <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl3Props !== null"
-                v-bind="formControlRadioButtonControl3Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton3Props !== null"
-                  v-bind="inputRadioButton3Props"
-                />
-                <TextLabel v-if="textLabel9Props !== null" v-bind="textLabel9Props" />
-              </FormControlRadioButtonControl>
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl4Props !== null"
-                v-bind="formControlRadioButtonControl4Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton4Props !== null"
-                  v-bind="inputRadioButton4Props"
-                />
-                <TextLabel v-if="textLabel10Props !== null" v-bind="textLabel10Props" />
-              </FormControlRadioButtonControl>
-            </Frame>
-          </FormControlRadio>
-          <FormControlRadio v-if="formControlRadio3Props !== null" v-bind="formControlRadio3Props">
-            <TextLabel v-if="textLabel11Props !== null" v-bind="textLabel11Props" />
-            <Frame v-bind="frame4Props" v-if="frame4Props !== null">
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl5Props !== null"
-                v-bind="formControlRadioButtonControl5Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton5Props !== null"
-                  v-bind="inputRadioButton5Props"
-                />
-                <TextLabel v-if="textLabel12Props !== null" v-bind="textLabel12Props" />
-              </FormControlRadioButtonControl>
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl6Props !== null"
-                v-bind="formControlRadioButtonControl6Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton6Props !== null"
-                  v-bind="inputRadioButton6Props"
-                />
-                <TextLabel v-if="textLabel13Props !== null" v-bind="textLabel13Props" />
-              </FormControlRadioButtonControl>
-            </Frame>
-          </FormControlRadio>
-          <FormControlRadio v-if="formControlRadio4Props !== null" v-bind="formControlRadio4Props">
-            <TextLabel v-if="textLabel14Props !== null" v-bind="textLabel14Props" />
-            <Frame v-bind="frame5Props" v-if="frame5Props !== null">
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl7Props !== null"
-                v-bind="formControlRadioButtonControl7Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton7Props !== null"
-                  v-bind="inputRadioButton7Props"
-                />
-                <TextLabel v-if="textLabel15Props !== null" v-bind="textLabel15Props" />
-              </FormControlRadioButtonControl>
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl8Props !== null"
-                v-bind="formControlRadioButtonControl8Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton8Props !== null"
-                  v-bind="inputRadioButton8Props"
-                />
-                <TextLabel v-if="textLabel16Props !== null" v-bind="textLabel16Props" />
-              </FormControlRadioButtonControl>
-            </Frame>
-          </FormControlRadio>
-          <FormControlRadio v-if="formControlRadio5Props !== null" v-bind="formControlRadio5Props">
-            <TextLabel v-if="textLabel17Props !== null" v-bind="textLabel17Props" />
-            <Frame v-bind="frame6Props" v-if="frame6Props !== null">
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl9Props !== null"
-                v-bind="formControlRadioButtonControl9Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton9Props !== null"
-                  v-bind="inputRadioButton9Props"
-                />
-                <TextLabel v-if="textLabel18Props !== null" v-bind="textLabel18Props" />
-              </FormControlRadioButtonControl>
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl10Props !== null"
-                v-bind="formControlRadioButtonControl10Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton10Props !== null"
-                  v-bind="inputRadioButton10Props"
-                />
-                <TextLabel v-if="textLabel19Props !== null" v-bind="textLabel19Props" />
-              </FormControlRadioButtonControl>
-            </Frame>
-          </FormControlRadio>
-          <FormControlRadio v-if="formControlRadio6Props !== null" v-bind="formControlRadio6Props">
-            <TextLabel v-if="textLabel20Props !== null" v-bind="textLabel20Props" />
-            <Frame v-bind="frame7Props" v-if="frame7Props !== null">
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl11Props !== null"
-                v-bind="formControlRadioButtonControl11Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton11Props !== null"
-                  v-bind="inputRadioButton11Props"
-                />
-                <TextLabel v-if="textLabel21Props !== null" v-bind="textLabel21Props" />
-              </FormControlRadioButtonControl>
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl12Props !== null"
-                v-bind="formControlRadioButtonControl12Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton12Props !== null"
-                  v-bind="inputRadioButton12Props"
-                />
-                <TextLabel v-if="textLabel22Props !== null" v-bind="textLabel22Props" />
-              </FormControlRadioButtonControl>
-            </Frame>
-          </FormControlRadio>
-          <FormControlRadio v-if="formControlRadio7Props !== null" v-bind="formControlRadio7Props">
-            <TextLabel v-if="textLabel23Props !== null" v-bind="textLabel23Props" />
-            <Frame v-bind="frame8Props" v-if="frame8Props !== null">
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl13Props !== null"
-                v-bind="formControlRadioButtonControl13Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton13Props !== null"
-                  v-bind="inputRadioButton13Props"
-                />
-                <TextLabel v-if="textLabel24Props !== null" v-bind="textLabel24Props" />
-              </FormControlRadioButtonControl>
-              <FormControlRadioButtonControl
-                v-if="formControlRadioButtonControl14Props !== null"
-                v-bind="formControlRadioButtonControl14Props"
-              >
-                <InputRadioButton
-                  v-if="inputRadioButton14Props !== null"
-                  v-bind="inputRadioButton14Props"
-                />
-                <TextLabel v-if="textLabel25Props !== null" v-bind="textLabel25Props" />
-              </FormControlRadioButtonControl>
-            </Frame>
-          </FormControlRadio>
-        </Fieldset>
+              <TextLabel v-if="textLabel11Props !== null" v-bind="textLabel11Props" />
+              <Frame v-bind="frame4Props" v-if="frame4Props !== null">
+                <slot name="exportAllThemesRadios">
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl5Props !== null"
+                    v-bind="formControlRadioButtonControl5Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton5Props !== null"
+                      v-bind="inputRadioButton5Props"
+                    />
+                    <TextLabel v-if="textLabel12Props !== null" v-bind="textLabel12Props" />
+                  </FormControlRadioButtonControl>
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl6Props !== null"
+                    v-bind="formControlRadioButtonControl6Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton6Props !== null"
+                      v-bind="inputRadioButton6Props"
+                    />
+                    <TextLabel v-if="textLabel13Props !== null" v-bind="textLabel13Props" />
+                  </FormControlRadioButtonControl>
+                </slot>
+              </Frame>
+            </FormControlRadio>
+            <FormControlRadio
+              v-if="formControlRadio4Props !== null"
+              v-bind="formControlRadio4Props"
+            >
+              <TextLabel v-if="textLabel14Props !== null" v-bind="textLabel14Props" />
+              <Frame v-bind="frame5Props" v-if="frame5Props !== null">
+                <slot name="exportAllFontsRadios">
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl7Props !== null"
+                    v-bind="formControlRadioButtonControl7Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton7Props !== null"
+                      v-bind="inputRadioButton7Props"
+                    />
+                    <TextLabel v-if="textLabel15Props !== null" v-bind="textLabel15Props" />
+                  </FormControlRadioButtonControl>
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl8Props !== null"
+                    v-bind="formControlRadioButtonControl8Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton8Props !== null"
+                      v-bind="inputRadioButton8Props"
+                    />
+                    <TextLabel v-if="textLabel16Props !== null" v-bind="textLabel16Props" />
+                  </FormControlRadioButtonControl>
+                </slot>
+              </Frame>
+            </FormControlRadio>
+            <FormControlRadio
+              v-if="formControlRadio5Props !== null"
+              v-bind="formControlRadio5Props"
+            >
+              <TextLabel v-if="textLabel17Props !== null" v-bind="textLabel17Props" />
+              <Frame v-bind="frame6Props" v-if="frame6Props !== null">
+                <slot name="exportAllIconsRadios">
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl9Props !== null"
+                    v-bind="formControlRadioButtonControl9Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton9Props !== null"
+                      v-bind="inputRadioButton9Props"
+                    />
+                    <TextLabel v-if="textLabel18Props !== null" v-bind="textLabel18Props" />
+                  </FormControlRadioButtonControl>
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl10Props !== null"
+                    v-bind="formControlRadioButtonControl10Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton10Props !== null"
+                      v-bind="inputRadioButton10Props"
+                    />
+                    <TextLabel v-if="textLabel19Props !== null" v-bind="textLabel19Props" />
+                  </FormControlRadioButtonControl>
+                </slot>
+              </Frame>
+            </FormControlRadio>
+            <FormControlRadio
+              v-if="formControlRadio6Props !== null"
+              v-bind="formControlRadio6Props"
+            >
+              <TextLabel v-if="textLabel20Props !== null" v-bind="textLabel20Props" />
+              <Frame v-bind="frame7Props" v-if="frame7Props !== null">
+                <slot name="exportWorkspaceRadios">
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl11Props !== null"
+                    v-bind="formControlRadioButtonControl11Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton11Props !== null"
+                      v-bind="inputRadioButton11Props"
+                    />
+                    <TextLabel v-if="textLabel21Props !== null" v-bind="textLabel21Props" />
+                  </FormControlRadioButtonControl>
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl12Props !== null"
+                    v-bind="formControlRadioButtonControl12Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton12Props !== null"
+                      v-bind="inputRadioButton12Props"
+                    />
+                    <TextLabel v-if="textLabel22Props !== null" v-bind="textLabel22Props" />
+                  </FormControlRadioButtonControl>
+                </slot>
+              </Frame>
+            </FormControlRadio>
+            <FormControlRadio
+              v-if="formControlRadio7Props !== null"
+              v-bind="formControlRadio7Props"
+            >
+              <TextLabel v-if="textLabel23Props !== null" v-bind="textLabel23Props" />
+              <Frame v-bind="frame8Props" v-if="frame8Props !== null">
+                <slot name="exportScriptsRadios">
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl13Props !== null"
+                    v-bind="formControlRadioButtonControl13Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton13Props !== null"
+                      v-bind="inputRadioButton13Props"
+                    />
+                    <TextLabel v-if="textLabel24Props !== null" v-bind="textLabel24Props" />
+                  </FormControlRadioButtonControl>
+                  <FormControlRadioButtonControl
+                    v-if="formControlRadioButtonControl14Props !== null"
+                    v-bind="formControlRadioButtonControl14Props"
+                  >
+                    <InputRadioButton
+                      v-if="inputRadioButton14Props !== null"
+                      v-bind="inputRadioButton14Props"
+                    />
+                    <TextLabel v-if="textLabel25Props !== null" v-bind="textLabel25Props" />
+                  </FormControlRadioButtonControl>
+                </slot>
+              </Frame>
+            </FormControlRadio>
+          </Fieldset>
+        </slot>
       </Frame>
       <BarButtons
         v-if="barButtonsProps !== null"

@@ -1177,211 +1177,283 @@ export function DialogExportComponent({
             <Bar {...barProps}>{textTitleProps !== null && <TextTitle {...textTitleProps} />}</Bar>
           )}
           <Frame {...frameProps}>
-            {formControlProps !== null && (
-              <FormControl {...formControlProps}>
-                {textLabelProps !== null && <TextLabel {...textLabelProps} />}
-                {inputProps !== null && <Input {...inputProps} />}
-              </FormControl>
-            )}
-            {formControl2Props !== null && (
-              <FormControl {...formControl2Props}>
-                {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-                {comboboxFieldProps !== null && (
-                  <ComboboxField
-                    {...comboboxFieldProps}
-                    input={input2Props}
-                    buttonIconic={buttonIconicProps}
-                    icon2={iconProps}
-                    icon={null}
-                  />
+            {frameProps?.children !== undefined ? (
+              frameProps?.children
+            ) : (
+              <>
+                {formControlProps !== null && (
+                  <FormControl {...formControlProps}>
+                    {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                    {inputProps !== null && <Input {...inputProps} />}
+                  </FormControl>
                 )}
-              </FormControl>
-            )}
-            {formControl3Props !== null && (
-              <FormControl {...formControl3Props}>
-                {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-                {comboboxField2Props !== null && (
-                  <ComboboxField
-                    {...comboboxField2Props}
-                    input={input3Props}
-                    buttonIconic={buttonIconic2Props}
-                    icon2={icon2Props}
-                    icon={null}
-                  />
+                {formControl2Props !== null && (
+                  <FormControl {...formControl2Props}>
+                    {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                    {comboboxFieldProps !== null && (
+                      <ComboboxField
+                        {...comboboxFieldProps}
+                        input={input2Props}
+                        buttonIconic={buttonIconicProps}
+                        icon2={iconProps}
+                        icon={null}
+                      />
+                    )}
+                  </FormControl>
                 )}
-              </FormControl>
-            )}
-            {formControl4Props !== null && (
-              <FormControl {...formControl4Props}>
-                {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
-                {input4Props !== null && <Input {...input4Props} />}
-              </FormControl>
-            )}
-            {formControlRadioProps !== null && (
-              <FormControlRadio {...formControlRadioProps}>
-                {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
-                <Frame {...frame2Props}>
-                  {formControlRadioButtonControlProps !== null && (
-                    <FormControlRadioButtonControl {...formControlRadioButtonControlProps}>
-                      {inputRadioButtonProps !== null && (
-                        <InputRadioButton {...inputRadioButtonProps} />
-                      )}
-                      {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
-                    </FormControlRadioButtonControl>
-                  )}
-                  {formControlRadioButtonControl2Props !== null && (
-                    <FormControlRadioButtonControl {...formControlRadioButtonControl2Props}>
-                      {inputRadioButton2Props !== null && (
-                        <InputRadioButton {...inputRadioButton2Props} />
-                      )}
-                      {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
-                    </FormControlRadioButtonControl>
-                  )}
-                </Frame>
-              </FormControlRadio>
-            )}
-            {fieldsetProps !== null && (
-              <Fieldset {...fieldsetProps}>
-                {legendProps !== null && <Legend {...legendProps} />}
-                {formControlRadio2Props !== null && (
-                  <FormControlRadio {...formControlRadio2Props}>
-                    {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
-                    <Frame {...frame3Props}>
-                      {formControlRadioButtonControl3Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl3Props}>
-                          {inputRadioButton3Props !== null && (
-                            <InputRadioButton {...inputRadioButton3Props} />
+                {formControl3Props !== null && (
+                  <FormControl {...formControl3Props}>
+                    {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                    {comboboxField2Props !== null && (
+                      <ComboboxField
+                        {...comboboxField2Props}
+                        input={input3Props}
+                        buttonIconic={buttonIconic2Props}
+                        icon2={icon2Props}
+                        icon={null}
+                      />
+                    )}
+                  </FormControl>
+                )}
+                {formControl4Props !== null && (
+                  <FormControl {...formControl4Props}>
+                    {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                    {input4Props !== null && <Input {...input4Props} />}
+                  </FormControl>
+                )}
+                {formControlRadioProps !== null && (
+                  <FormControlRadio {...formControlRadioProps}>
+                    {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+                    <Frame {...frame2Props}>
+                      {frame2Props?.children !== undefined ? (
+                        frame2Props?.children
+                      ) : (
+                        <>
+                          {formControlRadioButtonControlProps !== null && (
+                            <FormControlRadioButtonControl {...formControlRadioButtonControlProps}>
+                              {inputRadioButtonProps !== null && (
+                                <InputRadioButton {...inputRadioButtonProps} />
+                              )}
+                              {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+                            </FormControlRadioButtonControl>
                           )}
-                          {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                      {formControlRadioButtonControl4Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl4Props}>
-                          {inputRadioButton4Props !== null && (
-                            <InputRadioButton {...inputRadioButton4Props} />
+                          {formControlRadioButtonControl2Props !== null && (
+                            <FormControlRadioButtonControl {...formControlRadioButtonControl2Props}>
+                              {inputRadioButton2Props !== null && (
+                                <InputRadioButton {...inputRadioButton2Props} />
+                              )}
+                              {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                            </FormControlRadioButtonControl>
                           )}
-                          {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
-                        </FormControlRadioButtonControl>
+                        </>
                       )}
                     </Frame>
                   </FormControlRadio>
                 )}
-                {formControlRadio3Props !== null && (
-                  <FormControlRadio {...formControlRadio3Props}>
-                    {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
-                    <Frame {...frame4Props}>
-                      {formControlRadioButtonControl5Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl5Props}>
-                          {inputRadioButton5Props !== null && (
-                            <InputRadioButton {...inputRadioButton5Props} />
+                {fieldsetProps !== null && (
+                  <Fieldset {...fieldsetProps}>
+                    {legendProps !== null && <Legend {...legendProps} />}
+                    {formControlRadio2Props !== null && (
+                      <FormControlRadio {...formControlRadio2Props}>
+                        {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
+                        <Frame {...frame3Props}>
+                          {frame3Props?.children !== undefined ? (
+                            frame3Props?.children
+                          ) : (
+                            <>
+                              {formControlRadioButtonControl3Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl3Props}
+                                >
+                                  {inputRadioButton3Props !== null && (
+                                    <InputRadioButton {...inputRadioButton3Props} />
+                                  )}
+                                  {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                              {formControlRadioButtonControl4Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl4Props}
+                                >
+                                  {inputRadioButton4Props !== null && (
+                                    <InputRadioButton {...inputRadioButton4Props} />
+                                  )}
+                                  {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                            </>
                           )}
-                          {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                      {formControlRadioButtonControl6Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl6Props}>
-                          {inputRadioButton6Props !== null && (
-                            <InputRadioButton {...inputRadioButton6Props} />
+                        </Frame>
+                      </FormControlRadio>
+                    )}
+                    {formControlRadio3Props !== null && (
+                      <FormControlRadio {...formControlRadio3Props}>
+                        {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
+                        <Frame {...frame4Props}>
+                          {frame4Props?.children !== undefined ? (
+                            frame4Props?.children
+                          ) : (
+                            <>
+                              {formControlRadioButtonControl5Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl5Props}
+                                >
+                                  {inputRadioButton5Props !== null && (
+                                    <InputRadioButton {...inputRadioButton5Props} />
+                                  )}
+                                  {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                              {formControlRadioButtonControl6Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl6Props}
+                                >
+                                  {inputRadioButton6Props !== null && (
+                                    <InputRadioButton {...inputRadioButton6Props} />
+                                  )}
+                                  {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                            </>
                           )}
-                          {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                    </Frame>
-                  </FormControlRadio>
+                        </Frame>
+                      </FormControlRadio>
+                    )}
+                    {formControlRadio4Props !== null && (
+                      <FormControlRadio {...formControlRadio4Props}>
+                        {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
+                        <Frame {...frame5Props}>
+                          {frame5Props?.children !== undefined ? (
+                            frame5Props?.children
+                          ) : (
+                            <>
+                              {formControlRadioButtonControl7Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl7Props}
+                                >
+                                  {inputRadioButton7Props !== null && (
+                                    <InputRadioButton {...inputRadioButton7Props} />
+                                  )}
+                                  {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                              {formControlRadioButtonControl8Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl8Props}
+                                >
+                                  {inputRadioButton8Props !== null && (
+                                    <InputRadioButton {...inputRadioButton8Props} />
+                                  )}
+                                  {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                            </>
+                          )}
+                        </Frame>
+                      </FormControlRadio>
+                    )}
+                    {formControlRadio5Props !== null && (
+                      <FormControlRadio {...formControlRadio5Props}>
+                        {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
+                        <Frame {...frame6Props}>
+                          {frame6Props?.children !== undefined ? (
+                            frame6Props?.children
+                          ) : (
+                            <>
+                              {formControlRadioButtonControl9Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl9Props}
+                                >
+                                  {inputRadioButton9Props !== null && (
+                                    <InputRadioButton {...inputRadioButton9Props} />
+                                  )}
+                                  {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                              {formControlRadioButtonControl10Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl10Props}
+                                >
+                                  {inputRadioButton10Props !== null && (
+                                    <InputRadioButton {...inputRadioButton10Props} />
+                                  )}
+                                  {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                            </>
+                          )}
+                        </Frame>
+                      </FormControlRadio>
+                    )}
+                    {formControlRadio6Props !== null && (
+                      <FormControlRadio {...formControlRadio6Props}>
+                        {textLabel20Props !== null && <TextLabel {...textLabel20Props} />}
+                        <Frame {...frame7Props}>
+                          {frame7Props?.children !== undefined ? (
+                            frame7Props?.children
+                          ) : (
+                            <>
+                              {formControlRadioButtonControl11Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl11Props}
+                                >
+                                  {inputRadioButton11Props !== null && (
+                                    <InputRadioButton {...inputRadioButton11Props} />
+                                  )}
+                                  {textLabel21Props !== null && <TextLabel {...textLabel21Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                              {formControlRadioButtonControl12Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl12Props}
+                                >
+                                  {inputRadioButton12Props !== null && (
+                                    <InputRadioButton {...inputRadioButton12Props} />
+                                  )}
+                                  {textLabel22Props !== null && <TextLabel {...textLabel22Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                            </>
+                          )}
+                        </Frame>
+                      </FormControlRadio>
+                    )}
+                    {formControlRadio7Props !== null && (
+                      <FormControlRadio {...formControlRadio7Props}>
+                        {textLabel23Props !== null && <TextLabel {...textLabel23Props} />}
+                        <Frame {...frame8Props}>
+                          {frame8Props?.children !== undefined ? (
+                            frame8Props?.children
+                          ) : (
+                            <>
+                              {formControlRadioButtonControl13Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl13Props}
+                                >
+                                  {inputRadioButton13Props !== null && (
+                                    <InputRadioButton {...inputRadioButton13Props} />
+                                  )}
+                                  {textLabel24Props !== null && <TextLabel {...textLabel24Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                              {formControlRadioButtonControl14Props !== null && (
+                                <FormControlRadioButtonControl
+                                  {...formControlRadioButtonControl14Props}
+                                >
+                                  {inputRadioButton14Props !== null && (
+                                    <InputRadioButton {...inputRadioButton14Props} />
+                                  )}
+                                  {textLabel25Props !== null && <TextLabel {...textLabel25Props} />}
+                                </FormControlRadioButtonControl>
+                              )}
+                            </>
+                          )}
+                        </Frame>
+                      </FormControlRadio>
+                    )}
+                  </Fieldset>
                 )}
-                {formControlRadio4Props !== null && (
-                  <FormControlRadio {...formControlRadio4Props}>
-                    {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
-                    <Frame {...frame5Props}>
-                      {formControlRadioButtonControl7Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl7Props}>
-                          {inputRadioButton7Props !== null && (
-                            <InputRadioButton {...inputRadioButton7Props} />
-                          )}
-                          {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                      {formControlRadioButtonControl8Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl8Props}>
-                          {inputRadioButton8Props !== null && (
-                            <InputRadioButton {...inputRadioButton8Props} />
-                          )}
-                          {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                    </Frame>
-                  </FormControlRadio>
-                )}
-                {formControlRadio5Props !== null && (
-                  <FormControlRadio {...formControlRadio5Props}>
-                    {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
-                    <Frame {...frame6Props}>
-                      {formControlRadioButtonControl9Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl9Props}>
-                          {inputRadioButton9Props !== null && (
-                            <InputRadioButton {...inputRadioButton9Props} />
-                          )}
-                          {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                      {formControlRadioButtonControl10Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl10Props}>
-                          {inputRadioButton10Props !== null && (
-                            <InputRadioButton {...inputRadioButton10Props} />
-                          )}
-                          {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                    </Frame>
-                  </FormControlRadio>
-                )}
-                {formControlRadio6Props !== null && (
-                  <FormControlRadio {...formControlRadio6Props}>
-                    {textLabel20Props !== null && <TextLabel {...textLabel20Props} />}
-                    <Frame {...frame7Props}>
-                      {formControlRadioButtonControl11Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl11Props}>
-                          {inputRadioButton11Props !== null && (
-                            <InputRadioButton {...inputRadioButton11Props} />
-                          )}
-                          {textLabel21Props !== null && <TextLabel {...textLabel21Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                      {formControlRadioButtonControl12Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl12Props}>
-                          {inputRadioButton12Props !== null && (
-                            <InputRadioButton {...inputRadioButton12Props} />
-                          )}
-                          {textLabel22Props !== null && <TextLabel {...textLabel22Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                    </Frame>
-                  </FormControlRadio>
-                )}
-                {formControlRadio7Props !== null && (
-                  <FormControlRadio {...formControlRadio7Props}>
-                    {textLabel23Props !== null && <TextLabel {...textLabel23Props} />}
-                    <Frame {...frame8Props}>
-                      {formControlRadioButtonControl13Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl13Props}>
-                          {inputRadioButton13Props !== null && (
-                            <InputRadioButton {...inputRadioButton13Props} />
-                          )}
-                          {textLabel24Props !== null && <TextLabel {...textLabel24Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                      {formControlRadioButtonControl14Props !== null && (
-                        <FormControlRadioButtonControl {...formControlRadioButtonControl14Props}>
-                          {inputRadioButton14Props !== null && (
-                            <InputRadioButton {...inputRadioButton14Props} />
-                          )}
-                          {textLabel25Props !== null && <TextLabel {...textLabel25Props} />}
-                        </FormControlRadioButtonControl>
-                      )}
-                    </Frame>
-                  </FormControlRadio>
-                )}
-              </Fieldset>
+              </>
             )}
           </Frame>
           {barButtonsProps !== null && (

@@ -641,85 +641,103 @@ const textDisplayProps = computed(() =>
   <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
       <Frame v-bind="frameProps">
-        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-        </Frame>
-        <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-          <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
-        </Frame>
+        <slot name="typeSpecimenNormal">
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+          </Frame>
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+            <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame4Props">
-        <Frame v-bind="frame5Props" v-if="frame5Props !== null">
-          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
-        </Frame>
-        <Frame v-bind="frame6Props" v-if="frame6Props !== null">
-          <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
-        </Frame>
+        <slot name="typeSpecimenLabel">
+          <Frame v-bind="frame5Props" v-if="frame5Props !== null">
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+          </Frame>
+          <Frame v-bind="frame6Props" v-if="frame6Props !== null">
+            <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame7Props">
-        <Frame v-bind="frame8Props" v-if="frame8Props !== null">
-          <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
-          <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
-        </Frame>
-        <Frame v-bind="frame9Props" v-if="frame9Props !== null">
-          <TextTagline v-if="textTaglineProps !== null" v-bind="textTaglineProps" />
-        </Frame>
+        <slot name="typeSpecimenTagline">
+          <Frame v-bind="frame8Props" v-if="frame8Props !== null">
+            <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
+            <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
+          </Frame>
+          <Frame v-bind="frame9Props" v-if="frame9Props !== null">
+            <TextTagline v-if="textTaglineProps !== null" v-bind="textTaglineProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame10Props">
-        <Frame v-bind="frame11Props" v-if="frame11Props !== null">
-          <TextLabel v-if="textLabel8Props !== null" v-bind="textLabel8Props" />
-          <TextLabel v-if="textLabel9Props !== null" v-bind="textLabel9Props" />
-        </Frame>
-        <Frame v-bind="frame12Props" v-if="frame12Props !== null">
-          <TextCallout v-if="textCalloutProps !== null" v-bind="textCalloutProps" />
-        </Frame>
+        <slot name="typeSpecimenCallout">
+          <Frame v-bind="frame11Props" v-if="frame11Props !== null">
+            <TextLabel v-if="textLabel8Props !== null" v-bind="textLabel8Props" />
+            <TextLabel v-if="textLabel9Props !== null" v-bind="textLabel9Props" />
+          </Frame>
+          <Frame v-bind="frame12Props" v-if="frame12Props !== null">
+            <TextCallout v-if="textCalloutProps !== null" v-bind="textCalloutProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame13Props">
-        <Frame v-bind="frame14Props" v-if="frame14Props !== null">
-          <TextLabel v-if="textLabel10Props !== null" v-bind="textLabel10Props" />
-          <TextLabel v-if="textLabel11Props !== null" v-bind="textLabel11Props" />
-        </Frame>
-        <Frame v-bind="frame15Props" v-if="frame15Props !== null">
-          <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
-        </Frame>
+        <slot name="typeSpecimenSubtitle">
+          <Frame v-bind="frame14Props" v-if="frame14Props !== null">
+            <TextLabel v-if="textLabel10Props !== null" v-bind="textLabel10Props" />
+            <TextLabel v-if="textLabel11Props !== null" v-bind="textLabel11Props" />
+          </Frame>
+          <Frame v-bind="frame15Props" v-if="frame15Props !== null">
+            <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame16Props">
-        <Frame v-bind="frame17Props" v-if="frame17Props !== null">
-          <TextLabel v-if="textLabel12Props !== null" v-bind="textLabel12Props" />
-          <TextLabel v-if="textLabel13Props !== null" v-bind="textLabel13Props" />
-        </Frame>
-        <Frame v-bind="frame18Props" v-if="frame18Props !== null">
-          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
-        </Frame>
+        <slot name="typeSpecimenTitle">
+          <Frame v-bind="frame17Props" v-if="frame17Props !== null">
+            <TextLabel v-if="textLabel12Props !== null" v-bind="textLabel12Props" />
+            <TextLabel v-if="textLabel13Props !== null" v-bind="textLabel13Props" />
+          </Frame>
+          <Frame v-bind="frame18Props" v-if="frame18Props !== null">
+            <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame19Props">
-        <Frame v-bind="frame20Props" v-if="frame20Props !== null">
-          <TextLabel v-if="textLabel14Props !== null" v-bind="textLabel14Props" />
-          <TextLabel v-if="textLabel15Props !== null" v-bind="textLabel15Props" />
-        </Frame>
-        <Frame v-bind="frame21Props" v-if="frame21Props !== null">
-          <TextSubheading v-if="textSubheadingProps !== null" v-bind="textSubheadingProps" />
-        </Frame>
+        <slot name="typeSpecimenSubheading">
+          <Frame v-bind="frame20Props" v-if="frame20Props !== null">
+            <TextLabel v-if="textLabel14Props !== null" v-bind="textLabel14Props" />
+            <TextLabel v-if="textLabel15Props !== null" v-bind="textLabel15Props" />
+          </Frame>
+          <Frame v-bind="frame21Props" v-if="frame21Props !== null">
+            <TextSubheading v-if="textSubheadingProps !== null" v-bind="textSubheadingProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame22Props">
-        <Frame v-bind="frame23Props" v-if="frame23Props !== null">
-          <TextLabel v-if="textLabel16Props !== null" v-bind="textLabel16Props" />
-          <TextLabel v-if="textLabel17Props !== null" v-bind="textLabel17Props" />
-        </Frame>
-        <Frame v-bind="frame24Props" v-if="frame24Props !== null">
-          <TextHeading v-if="textHeadingProps !== null" v-bind="textHeadingProps" />
-        </Frame>
+        <slot name="typeSpecimenHeading">
+          <Frame v-bind="frame23Props" v-if="frame23Props !== null">
+            <TextLabel v-if="textLabel16Props !== null" v-bind="textLabel16Props" />
+            <TextLabel v-if="textLabel17Props !== null" v-bind="textLabel17Props" />
+          </Frame>
+          <Frame v-bind="frame24Props" v-if="frame24Props !== null">
+            <TextHeading v-if="textHeadingProps !== null" v-bind="textHeadingProps" />
+          </Frame>
+        </slot>
       </Frame>
       <Frame v-bind="frame25Props">
-        <Frame v-bind="frame26Props" v-if="frame26Props !== null">
-          <TextLabel v-if="textLabel18Props !== null" v-bind="textLabel18Props" />
-          <TextLabel v-if="textLabel19Props !== null" v-bind="textLabel19Props" />
-        </Frame>
-        <Frame v-bind="frame27Props" v-if="frame27Props !== null">
-          <TextDisplay v-if="textDisplayProps !== null" v-bind="textDisplayProps" />
-        </Frame>
+        <slot name="typeSpecimenDisplay">
+          <Frame v-bind="frame26Props" v-if="frame26Props !== null">
+            <TextLabel v-if="textLabel18Props !== null" v-bind="textLabel18Props" />
+            <TextLabel v-if="textLabel19Props !== null" v-bind="textLabel19Props" />
+          </Frame>
+          <Frame v-bind="frame27Props" v-if="frame27Props !== null">
+            <TextDisplay v-if="textDisplayProps !== null" v-bind="textDisplayProps" />
+          </Frame>
+        </slot>
       </Frame>
     </slot>
   </div>

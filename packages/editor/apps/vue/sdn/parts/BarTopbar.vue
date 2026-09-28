@@ -246,31 +246,35 @@ const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4, props.sel
     <slot>
       <Frame v-bind="frameProps" v-if="frameProps !== null">
         <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-          <Image v-if="imageProps !== null" v-bind="imageProps" />
-          <Image v-if="image2Props !== null" v-bind="image2Props" />
+          <slot name="logo">
+            <Image v-if="imageProps !== null" v-bind="imageProps" />
+            <Image v-if="image2Props !== null" v-bind="image2Props" />
+          </slot>
         </Frame>
         <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-          <ButtonSimple v-if="buttonSimpleProps !== null" v-bind="buttonSimpleProps">
-            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-          </ButtonSimple>
-          <ButtonSimple v-if="buttonSimple2Props !== null" v-bind="buttonSimple2Props">
-            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-          </ButtonSimple>
-          <ButtonSimple v-if="buttonSimple3Props !== null" v-bind="buttonSimple3Props">
-            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-          </ButtonSimple>
-          <ButtonSimple v-if="buttonSimple4Props !== null" v-bind="buttonSimple4Props">
-            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
-          </ButtonSimple>
-          <ButtonSimple v-if="buttonSimple5Props !== null" v-bind="buttonSimple5Props">
-            <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
-          </ButtonSimple>
-          <ButtonSimple v-if="buttonSimple6Props !== null" v-bind="buttonSimple6Props">
-            <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
-          </ButtonSimple>
-          <ButtonSimple v-if="buttonSimple7Props !== null" v-bind="buttonSimple7Props">
-            <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
-          </ButtonSimple>
+          <slot name="menus">
+            <ButtonSimple v-if="buttonSimpleProps !== null" v-bind="buttonSimpleProps">
+              <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+            </ButtonSimple>
+            <ButtonSimple v-if="buttonSimple2Props !== null" v-bind="buttonSimple2Props">
+              <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+            </ButtonSimple>
+            <ButtonSimple v-if="buttonSimple3Props !== null" v-bind="buttonSimple3Props">
+              <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+            </ButtonSimple>
+            <ButtonSimple v-if="buttonSimple4Props !== null" v-bind="buttonSimple4Props">
+              <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+            </ButtonSimple>
+            <ButtonSimple v-if="buttonSimple5Props !== null" v-bind="buttonSimple5Props">
+              <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
+            </ButtonSimple>
+            <ButtonSimple v-if="buttonSimple6Props !== null" v-bind="buttonSimple6Props">
+              <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
+            </ButtonSimple>
+            <ButtonSimple v-if="buttonSimple7Props !== null" v-bind="buttonSimple7Props">
+              <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
+            </ButtonSimple>
+          </slot>
         </Frame>
       </Frame>
       <Frame v-bind="frame4Props" v-if="frame4Props !== null"> </Frame>

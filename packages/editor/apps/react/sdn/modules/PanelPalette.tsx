@@ -169,15 +169,29 @@ export function PanelPalette({
       ) : (
         <>
           <Frame {...frameProps}>
-            <Frame {...frame2Props}></Frame>
-            {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
-            {buttonIconic2Props !== null && (
-              <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
+            {frameProps?.children !== undefined ? (
+              frameProps?.children
+            ) : (
+              <>
+                <Frame {...frame2Props}></Frame>
+                {buttonIconicProps !== null && (
+                  <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+                )}
+                {buttonIconic2Props !== null && (
+                  <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
+                )}
+              </>
             )}
           </Frame>
           <Frame {...frame3Props}></Frame>
           <Frame {...frame4Props}>
-            <Frame {...frame5Props}></Frame>
+            {frame4Props?.children !== undefined ? (
+              frame4Props?.children
+            ) : (
+              <>
+                <Frame {...frame5Props}></Frame>
+              </>
+            )}
           </Frame>
         </>
       )}

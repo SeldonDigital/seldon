@@ -153,15 +153,21 @@ export function ListStandardCatalog({
         <>
           {textSubtitleProps !== null && <TextSubtitle {...textSubtitleProps} />}
           <Frame {...containerProps}>
-            {itemCatalogProps !== null && (
-              <ItemCatalog {...itemCatalogProps}>
-                <Frame {...frameProps}></Frame>
-                <Frame {...frame2Props}>
-                  {textTitleProps !== null && <TextTitle {...textTitleProps} />}
-                  {textSubtitle2Props !== null && <TextSubtitle {...textSubtitle2Props} />}
-                  {textSubtitle3Props !== null && <TextSubtitle {...textSubtitle3Props} />}
-                </Frame>
-              </ItemCatalog>
+            {containerProps?.children !== undefined ? (
+              containerProps?.children
+            ) : (
+              <>
+                {itemCatalogProps !== null && (
+                  <ItemCatalog {...itemCatalogProps}>
+                    <Frame {...frameProps}></Frame>
+                    <Frame {...frame2Props}>
+                      {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+                      {textSubtitle2Props !== null && <TextSubtitle {...textSubtitle2Props} />}
+                      {textSubtitle3Props !== null && <TextSubtitle {...textSubtitle3Props} />}
+                    </Frame>
+                  </ItemCatalog>
+                )}
+              </>
             )}
           </Frame>
         </>

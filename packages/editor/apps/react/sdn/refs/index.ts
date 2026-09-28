@@ -20,6 +20,22 @@ export type SeldonRef =
   | "catalogItems"
   | "catalogLabel"
   | "catalogVariant"
+  | "componentsCatalogImage"
+  | "componentsCatalogItem"
+  | "componentsCatalogLevel"
+  | "componentsCatalogList"
+  | "componentsCatalogMetadata"
+  | "componentsCatalogName"
+  | "componentsCatalogVariant"
+  | "componentsPalette"
+  | "componentsPaletteBottomBar"
+  | "componentsPaletteClose"
+  | "componentsPaletteContents"
+  | "componentsPaletteFilter"
+  | "componentsPaletteFilterClear"
+  | "componentsPaletteFilterInput"
+  | "componentsPaletteTitle"
+  | "componentsPaletteTopBar"
   | "createComponentContainer"
   | "createComponentFrame"
   | "createComponentIntent"
@@ -441,6 +457,230 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "textSubtitle",
         type: "TextSubtitleProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsCatalogImage: {
+    component: "Frame",
+    nodeId: "component-listStandard-CMn4y9gX",
+    className: "sdn-frame sdn-frame--pg9d",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "frame3",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  componentsCatalogItem: {
+    component: "ItemCatalog",
+    nodeId: "component-listStandard-MfndKm2N",
+    className: "sdn-item-catalog sdn-item-catalog--yumy",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "itemCatalog",
+        type: "ItemCatalogProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsCatalogLevel: {
+    component: "TextSubtitle",
+    nodeId: "component-listStandard-VhoUiFlz",
+    className: "sdn-text-subtitle sdn-text-subtitle--qgof",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "textSubtitle",
+        type: "TextSubtitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsCatalogList: {
+    component: "ListStandardCatalog",
+    nodeId: "component-listStandard-7ROJJkg6",
+    className: "sdn-list-standard-catalog sdn-list-standard-catalog--7roj",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "listStandardCatalog",
+        type: "ListStandardCatalogProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsCatalogMetadata: {
+    component: "TextSubtitle",
+    nodeId: "component-listStandard-hQ8Pdn4K",
+    className: "sdn-text-subtitle sdn-text-subtitle--uvjq",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "textSubtitle3",
+        type: "TextSubtitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsCatalogName: {
+    component: "TextTitle",
+    nodeId: "component-listStandard-fsG0UIdJ",
+    className: "sdn-text-title sdn-text-subtitle--uv0m",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "textTitle2",
+        type: "TextTitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsCatalogVariant: {
+    component: "TextSubtitle",
+    nodeId: "component-listStandard-Fm0lptqE",
+    className: "sdn-text-subtitle sdn-text-subtitle--glvh",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "textSubtitle2",
+        type: "TextSubtitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsPalette: {
+    component: "PanelComponents",
+    nodeId: "component-panel-NdVBXFwt",
+    className: "sdn-panel-components sdn-panel",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: null,
+        type: "PanelComponentsProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  componentsPaletteBottomBar: {
+    component: "Frame",
+    nodeId: "component-panel-LEOEEp33",
+    className: "sdn-frame sdn-frame--rc9x",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "frame5",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  componentsPaletteClose: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-VuCwvJK0",
+    className: "sdn-button-iconic sdn-button-iconic--tlj6",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "buttonIconic2",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsPaletteContents: {
+    component: "Frame",
+    nodeId: "component-panel-kPNmlLz7",
+    className: "sdn-frame sdn-frame--kpnm",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "frame2",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  componentsPaletteFilter: {
+    component: "BarFilter",
+    nodeId: "component-panel-NnvtKzK8",
+    className: "sdn-bar-filter sdn-bar-filter--hiy2",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "barFilter",
+        type: "BarFilterProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsPaletteFilterClear: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-H5DmFajg",
+    className: "sdn-button-iconic sdn-button-iconic--csub",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "buttonIconic3",
+        type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  componentsPaletteFilterInput: {
+    component: "Input",
+    nodeId: "component-panel-SrzP6NW6",
+    className: "sdn-input sdn-input--krby",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "input",
+        type: "InputProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  componentsPaletteTitle: {
+    component: "TextTitle",
+    nodeId: "component-text-MYwkrDha",
+    className: "sdn-text-title sdn-text-title--sman",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "textTitle",
+        type: "TextTitleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  componentsPaletteTopBar: {
+    component: "Frame",
+    nodeId: "component-panel-l6pV5uUu",
+    className: "sdn-frame sdn-frame--jbzn",
+    views: [
+      {
+        component: "PanelComponents",
+        file: "modules/PanelComponents.tsx",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
       },
     ],
   },

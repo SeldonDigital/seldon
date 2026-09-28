@@ -201,16 +201,42 @@ export function SpecimenSample({
       ) : (
         <>
           <Frame {...frameProps}>
-            <Frame {...frame2Props}>
-              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
-              {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-            </Frame>
-            <Frame {...frame3Props}>
-              {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
-              {textDescription2Props !== null && <TextDescription {...textDescription2Props} />}
-              {textDescription3Props !== null && <TextDescription {...textDescription3Props} />}
-              {textDescription4Props !== null && <TextDescription {...textDescription4Props} />}
-            </Frame>
+            {frameProps?.children !== undefined ? (
+              frameProps?.children
+            ) : (
+              <>
+                <Frame {...frame2Props}>
+                  {frame2Props?.children !== undefined ? (
+                    frame2Props?.children
+                  ) : (
+                    <>
+                      {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                      {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                    </>
+                  )}
+                </Frame>
+                <Frame {...frame3Props}>
+                  {frame3Props?.children !== undefined ? (
+                    frame3Props?.children
+                  ) : (
+                    <>
+                      {textDescriptionProps !== null && (
+                        <TextDescription {...textDescriptionProps} />
+                      )}
+                      {textDescription2Props !== null && (
+                        <TextDescription {...textDescription2Props} />
+                      )}
+                      {textDescription3Props !== null && (
+                        <TextDescription {...textDescription3Props} />
+                      )}
+                      {textDescription4Props !== null && (
+                        <TextDescription {...textDescription4Props} />
+                      )}
+                    </>
+                  )}
+                </Frame>
+              </>
+            )}
           </Frame>
           {hrProps !== null && <Hr {...hrProps} />}
         </>

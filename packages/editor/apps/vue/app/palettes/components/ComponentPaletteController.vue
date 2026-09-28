@@ -3,17 +3,16 @@ import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import FloatingPanel from "@app/windows/FloatingPanel.vue"
 import ItemCatalog from "@seldon/components/elements/ItemCatalog.vue"
-import PanelPalette from "@seldon/components/modules/PanelPalette.vue"
-import BarFilter from "@seldon/components/parts/BarFilter.vue"
+import PanelComponents from "@seldon/components/modules/PanelComponents.vue"
 import ListStandardCatalog from "@seldon/components/parts/ListStandardCatalog.vue"
 import TextSubtitle from "@seldon/components/primitives/TextSubtitle.vue"
-import TextTitle from "@seldon/components/primitives/TextTitle.vue"
 import { storeToRefs } from "pinia"
 
 import { useCatalogDialog } from "../../dialogs/use-catalog-dialog"
 
 import type { CSSProperties } from "vue"
 
+const EMPTY_SLOT = {}
 const INITIAL_HEIGHT = 520
 const INITIAL_WIDTH = 420
 const styles: Record<string, CSSProperties> = {
@@ -22,11 +21,6 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
     height: "100%",
     width: "100%",
-  },
-  content: {
-    flex: 1,
-    minHeight: 0,
-    overflowY: "auto",
   },
 }
 
@@ -70,28 +64,19 @@ function startComponentDrag(event: DragEvent, componentId: string, variantId?: s
     :on-rect-change="config.setComponentPaletteRect"
     #default="{ startDrag }"
   >
-    <PanelPalette
+    <PanelComponents
+      :bar-filter="EMPTY_SLOT"
       :button-iconic="null"
-      :button-iconic2="{}"
-      :frame3="{ style: styles.content }"
+      :combobox-field="EMPTY_SLOT"
       :style="styles.panel"
       :seldon-refs="{
-        paletteTopBar: { onPointerdown: startDrag },
-        paletteClose: { onClick: close },
+        componentsPaletteTopBar: { onPointerdown: startDrag },
+        componentsPaletteClose: { onClick: close },
+        componentsPaletteFilterInput: { value: query, onInput: onQueryChange },
+        componentsPaletteFilterClear: { onClick: clearQuery },
       }"
     >
-      <template #frame2>
-        <TextTitle>Components</TextTitle>
-      </template>
-      <template #frame5>
-        <BarFilter
-          :combobox-field="{}"
-          :button-iconic="{}"
-          :input="{ value: query, onInput: onQueryChange }"
-          :seldon-refs="{ filterFieldClear: { onClick: clearQuery } }"
-        />
-      </template>
-      <template #frame3>
+      <template #componentsPaletteContents>
         <ListStandardCatalog v-for="category in categories" :key="category.category">
           <TextSubtitle>{{ category.category }}</TextSubtitle>
           <ItemCatalog
@@ -110,6 +95,6 @@ function startComponentDrag(event: DragEvent, componentId: string, variantId?: s
           />
         </ListStandardCatalog>
       </template>
-    </PanelPalette>
+    </PanelComponents>
   </FloatingPanel>
 </template>

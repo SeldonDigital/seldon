@@ -8,11 +8,9 @@ import { FloatingPanel } from "@app/windows/FloatingPanel"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Frame } from "@seldon/components/frames/Frame"
-import { PanelPalette } from "@seldon/components/modules/PanelPalette"
-import { BarFilter } from "@seldon/components/parts/BarFilter"
+import { PanelComponents } from "@seldon/components/modules/PanelComponents"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
-import { TextTitle } from "@seldon/components/primitives/TextTitle"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 
 import { useDialog } from "../../dialogs/hooks/use-dialog"
@@ -61,35 +59,24 @@ function ComponentPalette({ close }: { close: () => void }) {
           ))}
         </ListStandardCatalog>
       ))
-      const filter = (
-        <BarFilter
-          comboboxField={EMPTY_SLOT}
-          input={filterInput}
-          buttonIconic={EMPTY_SLOT}
-          seldonRefs={{
-            filterField: { onPointerDown: api.startDrag },
-            filterFieldClear: { onClick: onClearQuery },
-          }}
-        />
-      )
-      const topBar = <TextTitle>Components</TextTitle>
-      const topBarSlot = { children: topBar }
-      const contentSlot = { children: content, style: contentStyle }
-      const bottomBarSlot = { children: filter }
       const seldonRefs = {
-        paletteTopBar: { onPointerDown: api.startDrag },
-        paletteClose: { onClick: close, "data-testid": "component-palette-close" },
+        componentsPaletteTopBar: { onPointerDown: api.startDrag },
+        componentsPaletteClose: { onClick: close, "data-testid": "component-palette-close" },
+        componentsPaletteContents: { children: content, style: contentStyle },
+        componentsPaletteFilterClear: { onClick: onClearQuery },
+        componentsPaletteFilterInput: filterInput,
       }
       const palette = (
-        <PanelPalette
+        <PanelComponents
+          barState={EMPTY_SLOT}
+          barFilter={EMPTY_SLOT}
           buttonIconic={null}
           buttonIconic2={EMPTY_SLOT}
-          frame2={topBarSlot}
-          frame3={contentSlot}
-          frame5={bottomBarSlot}
+          comboboxField={EMPTY_SLOT}
           seldonRefs={seldonRefs}
           style={panelStyle}
           data-testid="component-palette"
+          textTitle={EMPTY_SLOT}
         />
       )
 

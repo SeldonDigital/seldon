@@ -257,44 +257,56 @@ export function BarTopbar({
         <>
           <Frame {...frameProps}>
             <Frame {...frame2Props}>
-              {imageProps !== null && <Image {...imageProps} />}
-              {image2Props !== null && <Image {...image2Props} />}
+              {frame2Props?.children !== undefined ? (
+                frame2Props?.children
+              ) : (
+                <>
+                  {imageProps !== null && <Image {...imageProps} />}
+                  {image2Props !== null && <Image {...image2Props} />}
+                </>
+              )}
             </Frame>
             <Frame {...frame3Props}>
-              {buttonSimpleProps !== null && (
-                <ButtonSimple {...buttonSimpleProps}>
-                  {textLabelProps !== null && <TextLabel {...textLabelProps} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple2Props !== null && (
-                <ButtonSimple {...buttonSimple2Props}>
-                  {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple3Props !== null && (
-                <ButtonSimple {...buttonSimple3Props}>
-                  {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple4Props !== null && (
-                <ButtonSimple {...buttonSimple4Props}>
-                  {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple5Props !== null && (
-                <ButtonSimple {...buttonSimple5Props}>
-                  {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple6Props !== null && (
-                <ButtonSimple {...buttonSimple6Props}>
-                  {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple7Props !== null && (
-                <ButtonSimple {...buttonSimple7Props}>
-                  {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
-                </ButtonSimple>
+              {frame3Props?.children !== undefined ? (
+                frame3Props?.children
+              ) : (
+                <>
+                  {buttonSimpleProps !== null && (
+                    <ButtonSimple {...buttonSimpleProps}>
+                      {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                    </ButtonSimple>
+                  )}
+                  {buttonSimple2Props !== null && (
+                    <ButtonSimple {...buttonSimple2Props}>
+                      {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                    </ButtonSimple>
+                  )}
+                  {buttonSimple3Props !== null && (
+                    <ButtonSimple {...buttonSimple3Props}>
+                      {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                    </ButtonSimple>
+                  )}
+                  {buttonSimple4Props !== null && (
+                    <ButtonSimple {...buttonSimple4Props}>
+                      {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                    </ButtonSimple>
+                  )}
+                  {buttonSimple5Props !== null && (
+                    <ButtonSimple {...buttonSimple5Props}>
+                      {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+                    </ButtonSimple>
+                  )}
+                  {buttonSimple6Props !== null && (
+                    <ButtonSimple {...buttonSimple6Props}>
+                      {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+                    </ButtonSimple>
+                  )}
+                  {buttonSimple7Props !== null && (
+                    <ButtonSimple {...buttonSimple7Props}>
+                      {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                    </ButtonSimple>
+                  )}
+                </>
               )}
             </Frame>
           </Frame>

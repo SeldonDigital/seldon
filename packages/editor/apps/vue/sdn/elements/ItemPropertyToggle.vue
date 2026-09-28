@@ -157,8 +157,10 @@ const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldon
       >
         <Input v-if="inputProps !== null" v-bind="inputProps" />
         <Frame v-bind="frameProps" v-if="frameProps !== null">
-          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-          <ToggleSwitch v-if="toggleSwitchProps !== null" v-bind="toggleSwitchProps" />
+          <slot name="propertyToggleControl">
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+            <ToggleSwitch v-if="toggleSwitchProps !== null" v-bind="toggleSwitchProps" />
+          </slot>
         </Frame>
       </FormControlCombobox>
       <ButtonIconic
