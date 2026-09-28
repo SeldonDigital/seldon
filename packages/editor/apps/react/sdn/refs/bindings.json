@@ -313,14 +313,14 @@
       {
         "file": "app/palettes/components/ComponentPaletteController.tsx",
         "component": "ComponentPalette",
-        "line": 68,
+        "line": 77,
         "conditional": false,
         "expression": "{ onClick: close, \"data-testid\": \"component-palette-close\" }",
         "inputs": [
           {
             "name": "close",
             "declaredAt": {
-              "line": 34,
+              "line": 43,
               "kind": "parameter"
             }
           }
@@ -333,7 +333,7 @@
               {
                 "name": "close",
                 "declaredAt": {
-                  "line": 34,
+                  "line": 43,
                   "kind": "parameter"
                 }
               }
@@ -351,22 +351,22 @@
       {
         "file": "app/palettes/components/ComponentPaletteController.tsx",
         "component": "ComponentPalette",
-        "line": 69,
+        "line": 78,
         "conditional": false,
-        "expression": "{ children: content, style: contentStyle }",
+        "expression": "{ children: content, style: contentsStyle }",
         "inputs": [
           {
             "name": "content",
             "declaredAt": {
-              "line": 54,
+              "line": 63,
               "kind": "const",
               "via": "visibleCategories.map"
             }
           },
           {
-            "name": "contentStyle",
+            "name": "contentsStyle",
             "declaredAt": {
-              "line": 167,
+              "line": 187,
               "kind": "const"
             }
           }
@@ -379,7 +379,7 @@
               {
                 "name": "content",
                 "declaredAt": {
-                  "line": 54,
+                  "line": 63,
                   "kind": "const",
                   "via": "visibleCategories.map"
                 }
@@ -388,12 +388,12 @@
           },
           {
             "key": "style",
-            "expression": "contentStyle",
+            "expression": "contentsStyle",
             "inputs": [
               {
-                "name": "contentStyle",
+                "name": "contentsStyle",
                 "declaredAt": {
-                  "line": 167,
+                  "line": 187,
                   "kind": "const"
                 }
               }
@@ -406,14 +406,14 @@
       {
         "file": "app/palettes/components/ComponentPaletteController.tsx",
         "component": "ComponentPalette",
-        "line": 70,
+        "line": 79,
         "conditional": false,
         "expression": "{ onClick: onClearQuery }",
         "inputs": [
           {
             "name": "onClearQuery",
             "declaredAt": {
-              "line": 50,
+              "line": 59,
               "kind": "const",
               "via": "useCallback"
             }
@@ -427,7 +427,7 @@
               {
                 "name": "onClearQuery",
                 "declaredAt": {
-                  "line": 50,
+                  "line": 59,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -441,14 +441,14 @@
       {
         "file": "app/palettes/components/ComponentPaletteController.tsx",
         "component": "ComponentPalette",
-        "line": 71,
+        "line": 80,
         "conditional": false,
         "expression": "filterInput",
         "inputs": [
           {
             "name": "filterInput",
             "declaredAt": {
-              "line": 51,
+              "line": 60,
               "kind": "const"
             }
           }
@@ -460,14 +460,14 @@
       {
         "file": "app/palettes/components/ComponentPaletteController.tsx",
         "component": "ComponentPalette",
-        "line": 67,
+        "line": 76,
         "conditional": false,
         "expression": "{ onPointerDown: api.startDrag }",
         "inputs": [
           {
             "name": "api",
             "declaredAt": {
-              "line": 53,
+              "line": 62,
               "kind": "parameter"
             }
           }
@@ -480,7 +480,7 @@
               {
                 "name": "api",
                 "declaredAt": {
-                  "line": 53,
+                  "line": 62,
                   "kind": "parameter"
                 }
               }
@@ -14871,27 +14871,27 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 56,
+          "line": 65,
           "expression": "{ children: category.items.map((item) => ( <ComponentDragSource key={item.id} item={item} /> )), }",
           "inputs": [
             {
               "name": "category",
               "declaredAt": {
-                "line": 43,
+                "line": 52,
                 "kind": "parameter"
               }
             },
             {
               "name": "item",
               "declaredAt": {
-                "line": 57,
+                "line": 66,
                 "kind": "parameter"
               }
             },
             {
               "name": "ComponentDragSource",
               "declaredAt": {
-                "line": 112,
+                "line": 121,
                 "kind": "function"
               }
             },
@@ -14903,54 +14903,13 @@
           "spread": false
         }
       ],
-      "frame": [
-        {
-          "file": "app/palettes/components/ComponentPaletteController.tsx",
-          "component": "ComponentDragSource",
-          "line": 146,
-          "expression": "{ children: preview, style: previewFrameStyle }",
-          "inputs": [
-            {
-              "name": "preview",
-              "declaredAt": {
-                "line": 143,
-                "kind": "const"
-              }
-            },
-            {
-              "name": "previewFrameStyle",
-              "declaredAt": {
-                "line": 173,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "itemCatalog": [
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 61,
+          "line": 70,
           "expression": "null",
           "inputs": [],
-          "spread": false
-        },
-        {
-          "file": "app/palettes/components/ComponentPaletteController.tsx",
-          "component": "ComponentDragSource",
-          "line": 147,
-          "expression": "EMPTY_SLOT",
-          "inputs": [
-            {
-              "name": "EMPTY_SLOT",
-              "declaredAt": {
-                "line": 22,
-                "kind": "const"
-              }
-            }
-          ],
           "spread": false
         }
       ],
@@ -14958,75 +14917,13 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 63,
+          "line": 72,
           "expression": "{ children: category.category }",
           "inputs": [
             {
               "name": "category",
               "declaredAt": {
-                "line": 43,
-                "kind": "parameter"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
-          "file": "app/palettes/components/ComponentPaletteController.tsx",
-          "component": "ComponentDragSource",
-          "line": 148,
-          "expression": "null",
-          "inputs": [],
-          "spread": false
-        }
-      ],
-      "textSubtitle2": [
-        {
-          "file": "app/palettes/components/ComponentPaletteController.tsx",
-          "component": "ComponentDragSource",
-          "line": 149,
-          "expression": "{ children: item.description }",
-          "inputs": [
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 57,
-                "kind": "parameter"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "textSubtitle3": [
-        {
-          "file": "app/palettes/components/ComponentPaletteController.tsx",
-          "component": "ComponentDragSource",
-          "line": 150,
-          "expression": "item.details ? { children: item.details } : null",
-          "inputs": [
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 57,
-                "kind": "parameter"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "textTitle": [
-        {
-          "file": "app/palettes/components/ComponentPaletteController.tsx",
-          "component": "ComponentDragSource",
-          "line": 151,
-          "expression": "{ children: item.name }",
-          "inputs": [
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 57,
+                "line": 52,
                 "kind": "parameter"
               }
             }
@@ -15760,13 +15657,13 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 76,
+          "line": 85,
           "expression": "EMPTY_SLOT",
           "inputs": [
             {
               "name": "EMPTY_SLOT",
               "declaredAt": {
-                "line": 22,
+                "line": 25,
                 "kind": "const"
               }
             }
@@ -15778,13 +15675,13 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 75,
+          "line": 84,
           "expression": "EMPTY_SLOT",
           "inputs": [
             {
               "name": "EMPTY_SLOT",
               "declaredAt": {
-                "line": 22,
+                "line": 25,
                 "kind": "const"
               }
             }
@@ -15796,7 +15693,7 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 77,
+          "line": 86,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -15806,13 +15703,13 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 78,
+          "line": 87,
           "expression": "EMPTY_SLOT",
           "inputs": [
             {
               "name": "EMPTY_SLOT",
               "declaredAt": {
-                "line": 22,
+                "line": 25,
                 "kind": "const"
               }
             }
@@ -15824,13 +15721,13 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 79,
+          "line": 88,
           "expression": "EMPTY_SLOT",
           "inputs": [
             {
               "name": "EMPTY_SLOT",
               "declaredAt": {
-                "line": 22,
+                "line": 25,
                 "kind": "const"
               }
             }
@@ -15842,13 +15739,13 @@
         {
           "file": "app/palettes/components/ComponentPaletteController.tsx",
           "component": "ComponentPalette",
-          "line": 83,
+          "line": 92,
           "expression": "EMPTY_SLOT",
           "inputs": [
             {
               "name": "EMPTY_SLOT",
               "declaredAt": {
-                "line": 22,
+                "line": 25,
                 "kind": "const"
               }
             }

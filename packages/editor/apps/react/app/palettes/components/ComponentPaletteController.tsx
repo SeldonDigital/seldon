@@ -6,9 +6,12 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { FloatingPanel } from "@app/windows/FloatingPanel"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
+import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Frame } from "@seldon/components/frames/Frame"
 import { PanelComponents } from "@seldon/components/modules/PanelComponents"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
+import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
+import { TextTitle } from "@seldon/components/primitives/TextTitle"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 
 import { useDialog } from "../../dialogs/hooks/use-dialog"
@@ -22,6 +25,12 @@ import type { CSSProperties, ChangeEvent } from "react"
 const EMPTY_SLOT = {}
 const INITIAL_HEIGHT = 520
 const INITIAL_WIDTH = 420
+const CATALOG_ITEM_CLASS = "sdn-item-catalog--yumy"
+const CATALOG_IMAGE_CLASS = "sdn-frame sdn-frame--pg9d"
+const CATALOG_COPY_CLASS = "sdn-frame sdn-frame--nhfs"
+const CATALOG_NAME_CLASS = "sdn-text-subtitle--uv0m"
+const CATALOG_VARIANT_CLASS = "sdn-text-subtitle--glvh"
+const CATALOG_METADATA_CLASS = "sdn-text-subtitle--hq8p"
 
 export function ComponentPaletteController() {
   const { componentPaletteOpen, closeComponentPalette } = usePanel()
@@ -66,7 +75,7 @@ function ComponentPalette({ close }: { close: () => void }) {
       const seldonRefs = {
         componentsPaletteTopBar: { onPointerDown: api.startDrag },
         componentsPaletteClose: { onClick: close, "data-testid": "component-palette-close" },
-        componentsPaletteContents: { children: content, style: contentStyle },
+        componentsPaletteContents: { children: content, style: contentsStyle },
         componentsPaletteFilterClear: { onClick: onClearQuery },
         componentsPaletteFilterInput: filterInput,
       }
@@ -140,17 +149,28 @@ function ComponentDragSource({ item }: ComponentDragSourceProps) {
     })
   }, [begin, clear, payload, setActiveTool])
   const testId = `component-palette-item-${item.id}`
+  const name = item.name
+  const description = item.description
+  const metadataText = item.details
   const preview = <ComponentCatalogPreview componentId={item.componentId} />
+  const metadata = metadataText ? (
+    <TextSubtitle className={CATALOG_METADATA_CLASS}>{metadataText}</TextSubtitle>
+  ) : null
+  const variantLabel = <TextSubtitle className={CATALOG_VARIANT_CLASS}>{description}</TextSubtitle>
+  const nameLabel = <TextTitle className={CATALOG_NAME_CLASS}>{name}</TextTitle>
+  const imageFrame = <Frame className={CATALOG_IMAGE_CLASS}>{preview}</Frame>
+  const copyFrame = (
+    <Frame className={CATALOG_COPY_CLASS}>
+      {nameLabel}
+      {variantLabel}
+      {metadata}
+    </Frame>
+  )
   const itemContent = (
-    <ListStandardCatalog
-      frame={{ children: preview, style: previewFrameStyle }}
-      itemCatalog={EMPTY_SLOT}
-      textSubtitle={null}
-      textSubtitle2={{ children: item.description }}
-      textSubtitle3={item.details ? { children: item.details } : null}
-      textTitle={{ children: item.name }}
-      data-testid={testId}
-    />
+    <ItemCatalog className={CATALOG_ITEM_CLASS} data-testid={testId}>
+      {imageFrame}
+      {copyFrame}
+    </ItemCatalog>
   )
   const dragSource = <Frame ref={ref}>{itemContent}</Frame>
 
@@ -164,13 +184,9 @@ const panelStyle: CSSProperties = {
   width: "100%",
 }
 
-const contentStyle: CSSProperties = {
+const contentsStyle: CSSProperties = {
   flex: 1,
   minHeight: 0,
   overflowY: "auto",
 }
 
-const previewFrameStyle: CSSProperties = {
-  overflow: "hidden",
-  position: "relative",
-}
