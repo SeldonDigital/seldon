@@ -75,7 +75,7 @@
         }
       ],
       "__editor": {
-        "order": 31
+        "order": 32
       }
     },
     "highContrast": {
@@ -114,7 +114,7 @@
         }
       ],
       "__editor": {
-        "order": 32
+        "order": 33
       }
     },
     "system": {
@@ -140,7 +140,7 @@
         }
       ],
       "__editor": {
-        "order": 34
+        "order": 35
       }
     },
     "googleFonts": {
@@ -182,7 +182,7 @@
         }
       ],
       "__editor": {
-        "order": 35
+        "order": 36
       }
     },
     "seldonIcons": {
@@ -220,7 +220,7 @@
         }
       ],
       "__editor": {
-        "order": 36
+        "order": 37
       }
     },
     "text": {
@@ -329,7 +329,7 @@
         }
       ],
       "__editor": {
-        "order": 27
+        "order": 28
       }
     },
     "icon": {
@@ -409,7 +409,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 22
       }
     },
     "button": {
@@ -583,10 +583,13 @@
               ]
             }
           ]
+        },
+        {
+          "id": "component-button-ghost"
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 15
       }
     },
     "input": {
@@ -668,7 +671,7 @@
         }
       ],
       "__editor": {
-        "order": 23
+        "order": 24
       }
     },
     "comboboxField": {
@@ -802,7 +805,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 12
       }
     },
     "link": {
@@ -869,7 +872,7 @@
         }
       ],
       "__editor": {
-        "order": 25
+        "order": 26
       }
     },
     "bar": {
@@ -1493,7 +1496,7 @@
         }
       ],
       "__editor": {
-        "order": 30
+        "order": 31
       }
     },
     "image": {
@@ -1572,7 +1575,7 @@
         }
       ],
       "__editor": {
-        "order": 22
+        "order": 23
       }
     },
     "avatar": {
@@ -1684,7 +1687,7 @@
         }
       ],
       "__editor": {
-        "order": 10
+        "order": 11
       }
     },
     "chip": {
@@ -1820,7 +1823,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 16
       }
     },
     "formControl": {
@@ -1995,7 +1998,7 @@
         }
       ],
       "__editor": {
-        "order": 9
+        "order": 10
       }
     },
     "item": {
@@ -2447,7 +2450,7 @@
         }
       ],
       "__editor": {
-        "order": 8
+        "order": 9
       }
     },
     "earth": {
@@ -2486,7 +2489,7 @@
         }
       ],
       "__editor": {
-        "order": 38
+        "order": 39
       }
     },
     "industrial": {
@@ -2525,7 +2528,7 @@
         }
       ],
       "__editor": {
-        "order": 39
+        "order": 40
       }
     },
     "sunsetBlue": {
@@ -2564,7 +2567,7 @@
         }
       ],
       "__editor": {
-        "order": 43
+        "order": 44
       }
     },
     "wildberry": {
@@ -2603,7 +2606,7 @@
         }
       ],
       "__editor": {
-        "order": 44
+        "order": 45
       }
     },
     "hr": {
@@ -2664,7 +2667,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 21
       }
     },
     "menuItem": {
@@ -2772,7 +2775,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 18
       }
     },
     "menu": {
@@ -3015,7 +3018,7 @@
         }
       ],
       "__editor": {
-        "order": 7
+        "order": 8
       }
     },
     "combobox": {
@@ -3961,7 +3964,7 @@
         }
       ],
       "__editor": {
-        "order": 29
+        "order": 30
       }
     },
     "popPunk": {
@@ -4000,7 +4003,7 @@
         }
       ],
       "__editor": {
-        "order": 40
+        "order": 41
       }
     },
     "ibmCarbon": {
@@ -4039,7 +4042,7 @@
         }
       ],
       "__editor": {
-        "order": 41
+        "order": 42
       }
     },
     "adobeSpectrum": {
@@ -4078,7 +4081,7 @@
         }
       ],
       "__editor": {
-        "order": 42
+        "order": 43
       }
     },
     "googleSymbols": {
@@ -4116,7 +4119,7 @@
         }
       ],
       "__editor": {
-        "order": 37
+        "order": 38
       }
     },
     "googleMaterial": {
@@ -4155,7 +4158,7 @@
         }
       ],
       "__editor": {
-        "order": 33
+        "order": 34
       }
     },
     "listStandard": {
@@ -4437,7 +4440,7 @@
         }
       ],
       "__editor": {
-        "order": 6
+        "order": 7
       }
     },
     "panel": {
@@ -5865,7 +5868,7 @@
         }
       ],
       "__editor": {
-        "order": 28
+        "order": 29
       }
     },
     "textarea": {
@@ -5892,7 +5895,7 @@
         }
       ],
       "__editor": {
-        "order": 26
+        "order": 27
       }
     },
     "message": {
@@ -6078,7 +6081,7 @@
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 14
       }
     },
     "blockquote": {
@@ -6095,7 +6098,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 20
       }
     },
     "listItem": {
@@ -6118,7 +6121,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 17
       }
     },
     "list": {
@@ -6170,7 +6173,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 13
       }
     },
     "dialog": {
@@ -6844,7 +6847,7 @@
         }
       ],
       "__editor": {
-        "order": 45
+        "order": 46
       }
     },
     "legend": {
@@ -6861,7 +6864,7 @@
         }
       ],
       "__editor": {
-        "order": 24
+        "order": 25
       }
     },
     "select": {
@@ -6899,7 +6902,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 19
       }
     },
     "fieldset": {
@@ -7047,7 +7050,7 @@
         }
       ],
       "__editor": {
-        "order": 5
+        "order": 6
       }
     },
     "tokenPreview": {
@@ -7501,7 +7504,7 @@
         }
       ],
       "__editor": {
-        "order": 46
+        "order": 47
       }
     },
     "tokenControls": {
@@ -7697,7 +7700,7 @@
         }
       ],
       "__editor": {
-        "order": 47
+        "order": 48
       }
     },
     "specimen": {
@@ -7983,7 +7986,7 @@
         }
       ],
       "__editor": {
-        "order": 48
+        "order": 49
       }
     },
     "specimenSample": {
@@ -8038,7 +8041,7 @@
         }
       ],
       "__editor": {
-        "order": 49
+        "order": 50
       }
     },
     "articleCard": {
@@ -8163,6 +8166,39 @@
       ],
       "__editor": {
         "order": 3
+      }
+    },
+    "empty": {
+      "type": "component",
+      "level": "part",
+      "catalogId": "empty",
+      "label": "Empty States",
+      "author": "Seldon Digital",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {},
+      "variants": [
+        {
+          "id": "component-empty-default",
+          "children": [
+            {
+              "id": "component-text-RANfocvs"
+            },
+            {
+              "id": "component-text-xbm3FiWS"
+            },
+            {
+              "id": "component-button-p2IoGpwq",
+              "children": [
+                {
+                  "id": "component-text-TsTRgTgU"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 5
       }
     }
   },
@@ -50787,6 +50823,128 @@
         "lines": {
           "type": "exact",
           "value": 5
+        }
+      },
+      "origin": "schema"
+    },
+    "component-button-ghost": {
+      "type": "variant",
+      "level": "element",
+      "label": "Ghost",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "none"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.comfortable"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.comfortable"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.comfortable"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.comfortable"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
+      }
+    },
+    "component-empty-default": {
+      "type": "default",
+      "level": "part",
+      "label": "Empty State",
+      "theme": null,
+      "template": "catalog:empty",
+      "overrides": {}
+    },
+    "component-text-RANfocvs": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Nothing here yet"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-text-xbm3FiWS": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Create an item to begin."
+        }
+      },
+      "origin": "schema"
+    },
+    "component-button-p2IoGpwq": {
+      "type": "instance",
+      "level": "element",
+      "label": "Ghost",
+      "theme": null,
+      "template": "node:component-button-ghost",
+      "overrides": {},
+      "origin": "schema"
+    },
+    "component-text-TsTRgTgU": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Create item"
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
         }
       },
       "origin": "schema"
